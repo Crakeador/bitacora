@@ -1,0 +1,10 @@
+#Options All -Indexes
+
+#php_value max_input_vars 3000
+#php_value max_execution_time 600
+RewriteEngine On
+
+#1 variable
+RewriteRule ^([a-zA-Z0-9-]+)$ index.php?view=$1
+#2 variables
+RewriteRule ^([a-zA-Z0-9-]+)/([a-zA-Z0-9-]+)$ index.php?view=$1&id=$2

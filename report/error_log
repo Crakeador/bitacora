@@ -1,0 +1,12 @@
+[23-Jan-2021 12:27:58 America/Guayaquil] PHP Warning:  Illegal string offset 'w:compatSetting' in /home/sipsecurityc/public_html/sidai/PhpWord/Writer/Word2007/Part/Settings.php on line 173
+[23-Jan-2021 12:27:58 America/Guayaquil] PHP Warning:  Invalid argument supplied for foreach() in /home/sipsecurityc/public_html/sidai/PhpWord/Writer/Word2007/Part/Settings.php on line 80
+[23-Jan-2021 14:40:01 America/Guayaquil] PHP Warning:  Illegal string offset 'w:compatSetting' in /home/sipsecurityc/public_html/sidai/PhpWord/Writer/Word2007/Part/Settings.php on line 173
+[23-Jan-2021 14:40:01 America/Guayaquil] PHP Warning:  Invalid argument supplied for foreach() in /home/sipsecurityc/public_html/sidai/PhpWord/Writer/Word2007/Part/Settings.php on line 80
+[23-Jan-2021 14:43:40 America/Guayaquil] PHP Warning:  Illegal string offset 'w:compatSetting' in /home/sipsecurityc/public_html/sidai/PhpWord/Writer/Word2007/Part/Settings.php on line 173
+[23-Jan-2021 14:43:40 America/Guayaquil] PHP Warning:  Invalid argument supplied for foreach() in /home/sipsecurityc/public_html/sidai/PhpWord/Writer/Word2007/Part/Settings.php on line 80
+[25-Jan-2021 16:27:45 America/Guayaquil] PHP Warning:  Illegal string offset 'w:compatSetting' in /home/sipsecurityc/public_html/sidai/PhpWord/Writer/Word2007/Part/Settings.php on line 173
+[25-Jan-2021 16:27:45 America/Guayaquil] PHP Warning:  Invalid argument supplied for foreach() in /home/sipsecurityc/public_html/sidai/PhpWord/Writer/Word2007/Part/Settings.php on line 80
+[26-Jan-2021 15:38:58 America/Guayaquil] PHP Warning:  Illegal string offset 'w:compatSetting' in /home/sipsecurityc/public_html/sidai/PhpWord/Writer/Word2007/Part/Settings.php on line 173
+[26-Jan-2021 15:38:58 America/Guayaquil] PHP Warning:  Invalid argument supplied for foreach() in /home/sipsecurityc/public_html/sidai/PhpWord/Writer/Word2007/Part/Settings.php on line 80
+[07-Apr-2021 10:40:58 America/Guayaquil] PHP Warning:  Illegal string offset 'w:compatSetting' in /home/sipsecurityc/public_html/sidai/PhpWord/Writer/Word2007/Part/Settings.php on line 173
+[07-Apr-2021 10:40:58 America/Guayaquil] PHP Warning:  Invalid argument supplied for foreach() in /home/sipsecurityc/public_html/sidai/PhpWord/Writer/Word2007/Part/Settings.php on line 80

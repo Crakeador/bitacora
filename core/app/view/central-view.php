@@ -1,0 +1,254 @@
+<?php
+//Ingreso de Guardias
+date_default_timezone_set('America/Guayaquil');
+$hoy = date("d-m-Y H:i:s"); $fecha = date("Y-m-d H:i:s"); $errores = ''; $_SESSION['guardar'] = 0; $observacion = ''; $estilo = ''; $mensaje = '';
+
+$persons = PersonData::getAllTipo(3, 1);
+
+if(isset($_POST['id_person'])){
+    $user = new NovedadData();
+    $user->idpuesto = (int) $_POST["id_localidad"];
+    $user->idperson = (int) $_POST["idperson"];
+    $user->turno = $_POST["turno"];
+    $user->observacion = $_POST["observacion"];	
+    $user->accion = $_POST["accion"];	
+    $user->is_active = 1;
+    $user->usuario_log = $_SESSION["user_name"];
+    $user->ip = $_SESSION["ip"];
+
+	$observacion = $_POST["observacion"];
+    if($_POST["observacion"]==""){
+        $errores = 'debe de ingresar una observacion del puesto';
+	}else{
+		$_SESSION['turno'] = $_POST["turno"];
+		$_SESSION['puesto'] = (int) $_POST["id_localidad"];
+		
+		$_SESSION['ingreso']=2;		
+		
+        $image = new Upload($_FILES["foto1"]);
+
+        if($image->uploaded){
+            $image->Process("storage/novedad/");
+
+            if($image->processed){
+                $user->foto1 = $image->file_dst_name;
+            }
+        }
+
+        if($_FILES["foto2"]["name"]==""){
+            $user->foto2 = "";
+        }else{
+            $image = new Upload($_FILES["foto2"]);
+
+            if($image->uploaded){
+                $image->Process("storage/novedad/");
+
+                if($image->processed){
+                    $user->foto2 = $image->file_dst_name;
+                }
+            }
+        }
+
+        if($_FILES["foto3"]["name"]==""){
+            $user->foto3 = "";
+        }else{
+            $image = new Upload($_FILES["foto3"]);
+
+            if($image->uploaded){
+                $image->Process("storage/novedad/");
+
+                if($image->processed){
+                    $user->foto3 = $image->file_dst_name;
+                }
+
+            }
+
+        }
+
+        if($_FILES["foto4"]["name"]==""){
+            $user->foto4 = "";
+        }else{
+            $image = new Upload($_FILES["foto4"]);
+
+            if($image->uploaded){
+                $image->Process("storage/novedad/");
+                if($image->processed){
+                    $user->foto4 = $image->file_dst_name;
+                }
+            }
+        }
+
+        if($_FILES["foto5"]["name"]==""){
+            $user->foto5 = "";
+        }else{
+            $image = new Upload($_FILES["foto5"]);
+
+            if($image->uploaded){
+                $image->Process("storage/novedad/");
+
+                if($image->processed){
+                    $user->foto5 = $image->file_dst_name;
+                }
+            }
+        }
+
+        if($_FILES["foto6"]["name"]==""){
+            $user->foto6 = "";
+        }else{
+            $image = new Upload($_FILES["foto6"]);
+
+            if($image->uploaded){
+                $image->Process("storage/novedad/");
+                if($image->processed){
+                    $user->foto6 = $image->file_dst_name;
+                }
+            }
+        }
+
+        $prod = $user->add();
+        
+        if($prod[0]){
+            //Core::redir("home");
+        }else{
+            Core::alert("Error...!!!!", "No se grabo el registro que esta reportando...!!!", "error");
+            $_SESSION['turno'] = 1;
+        }
+    }
+
+    if($errores == ''){
+      // Sin errores
+    }else{
+      Core::alert("Corrija...!!!!", $errores, "error");
+    } 
+}else{
+	if(!isset($_SESSION['turno'])) $_SESSION['turno'] = 1;
+}
+
+// Listado de los puesto de servicio de los guardias
+$puestos = PuestoData::getAll(2);
+$mensaje = 'ingreso de los partes del cliente';
+
+?>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+	<h1>
+		Reporte de Novedades
+		<small><?php echo $mensaje; ?></small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="home"><i class="fa fa-dashboard"></i> Inicio </a></li>
+		<li class="active"> Novedades </li>
+	</ol>
+</section>
+</br>
+<section id="main" role="main">
+  <div class="container-fluid">
+	<!-- Registro de Bitacora -->
+	<div class="row">
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<!-- panel heading/header -->
+				<div class="panel-heading">
+					<h3 class="panel-title"><i class="mr5"></i>Novedades reportadas</h3>
+				</div>
+				<!--/ panel heading/header -->
+				<!-- panel body with collapse capable -->
+				<div class="panel-collapse pull out">
+					<div class="panel-body">						
+						<div class="col-md-6">
+						    <form class="form-horizontal" method="post" enctype="multipart/form-data" id="reporte" name="reporte" action="central" role="form">
+								<input type="hidden" id="id_person"  name="id_person"  value="<?php echo $_SESSION['id_person']; ?>">
+								<div class="form-group">
+									<label class="col-md-4 col-sm-4 control-label"><span class="text-danger">*</span> Puesto:</label>
+									<div class="col-md-8 col-sm-6">
+										<?php
+											echo '<select id="id_localidad" name="id_localidad" class="form-control">';
+											foreach($puestos as $tables) {
+												echo '<option value="'.$tables->id.'">'.$tables->descripcion.'</option>';
+											}
+											echo '</select>';
+										?>
+									</div>
+								</div>
+        						<div class="form-group">
+        							<label class="col-md-4 col-sm-4 control-label"><span class="text-danger">*</span> Agente:</label>
+        							<div class="col-md-8 col-sm-6">
+        							    <?php
+        			                        echo '<select id="idperson" name="idperson" class="form-control select2">';
+        					                    echo '<option value="0"> -- SELECCIONE -- </option>';
+        					                    foreach($persons as $tables) {
+        					                        echo '<option value="'.$tables->id.'">'.$tables->name.'</option>'; //utf8_encode()
+        					                    }
+        					               echo '</select>';
+        		                        ?>
+        							</div>
+        						</div>
+								<div class="form-group">
+									<label class="col-md-4 col-sm-4 control-label"><span class="text-danger">*</span> Fecha:</label>
+									<div class="col-md-8 col-sm-6">
+										<div class="input-group date form_datetime col-md-9 col-sm-6">
+											<input class="form-control" size="10" type="text" value="<?php echo $hoy; ?>" readonly>
+											<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+											<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+											<input type="hidden" name="fecha" value="<?php echo $fecha; ?>">
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-xs-8">
+										<span class="text-danger">Que turno esta reportando?</span>
+										<div class="radiobutton">
+											<input type="radio" id="turno1" name="turno" value="1" <?php if($_SESSION['turno']==1) echo "checked"; ?>> Diurno &nbsp;&nbsp;
+											<input type="radio" id="turno2" name="turno" value="2" <?php if($_SESSION['turno']==2) echo "checked"; ?>> Nocturno
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-4 col-sm-4 control-label">Observaci&oacute;n:</label>
+									<div class="col-sm-8">
+										<textarea class="form-control" id="observacion" name="observacion" placeholder="Se recivio el puesto sin ninguna novedad" cols="40" rows="5"><?php echo $observacion; ?></textarea>
+									</div>
+								</div>
+								</br>
+								<div class="form-group">
+									<label class="col-md-4 col-sm-4 control-label"> Acciones Tomadas:</label>
+									<div class="col-sm-8">
+										<textarea class="form-control" id="accion" name="accion" placeholder="Se recivio el puesto sin ninguna novedad" cols="40" rows="5"><?php echo $observacion; ?></textarea>
+									</div>
+								</div>								
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label"> Ingrese las fotos:</label>
+                                    <div class="col-sm-6">
+                                        <input type="file" name="foto1" id="foto1" class="SubirFoto" accept="image/*" capture="camera" /></br>
+                                        <input type="file" name="foto2" id="foto2" class="SubirFoto" accept="image/*" capture="camera" /></br>
+                                        <input type="file" name="foto3" id="foto3" class="SubirFoto" accept="image/*" capture="camera" /></br>
+                                        <input type="file" name="foto4" id="foto4" class="SubirFoto" accept="image/*" capture="camera" /></br>
+                                        <input type="file" name="foto5" id="foto5" class="SubirFoto" accept="image/*" capture="camera" /></br>
+                                        <input type="file" name="foto6" id="foto6" class="SubirFoto" accept="image/*" capture="camera" /></br>
+                                    </div>
+                                </div>
+								<div class="form-group">
+									<div class="col-sm-10">
+										<button type="submit" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar </button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+  </div>
+</section>
+<script>
+    document.title = "Near Solutions | Registro del Parte";
+</script>
+<script>
+    $(document).ready(function(event) {
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_flat-red',
+            radioClass: 'iradio_flat-red'
+        });
+	});
+</script>

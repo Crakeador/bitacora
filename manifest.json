@@ -1,0 +1,24 @@
+{
+  "short_name": "Latin",
+  "name": "Bitacora Electronica",
+  "icons": [
+    {
+      "src": "https://placeholder.pics/images/icons/android-icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/index.php",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "theme_color": "#3367D6",  
+  "description": "Grupo Latin America",
+  "orientation": "any"
+}

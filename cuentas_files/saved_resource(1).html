@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Ventas Mensual</title>
+	<script type="text/javascript">
+		var safe_url_proyectofield = null;
+		$(function() {
+			leyenda1 = ['Ene ','Feb ','Mar ','Abr ','May ','Jun '];
+			serie1 = [{
+						name: 'Periodo Actual',
+						color: '#0C2137',
+						zIndex: 2,
+						data: [0,0,0,0,42794.22000,36413.00000]
+					 },
+					 {
+						name: 'Periodo Pasado',
+						color: '#2F7ED8',
+						zIndex: 1,
+						data: [0,0,0,0,0,0]
+					 }];
+
+			generarGrafico('container_mens','Ventas Mensuales',leyenda1,serie1)
+		});
+
+		function generarGrafico(div,texto,leyenda,serie)
+		{
+			$("#" + div).highcharts({
+					title: {text: texto},
+					subtitle: {text: 'GPS GLOBAL PROTECTION SECURITY GLOBALPROTECTIONSECURITY CIA. LTDA.'},
+					xAxis: {categories: leyenda},
+					yAxis: {title: {text: 'Ventas'}, min:0},
+					tooltip: {
+	          valuePrefix: '$'
+	        },
+					series: serie,
+					exporting: {enabled: true}
+				});
+		}
+	</script>
+	<style type="text/css" media="screen">
+		.grafica{
+			width:auto;
+			height:200px;
+		}
+  	#header{
+  		display : none;
+  	}
+  	#module_page_title{
+  		display: none;
+  	}
+  	form[name="reporteForm"]{
+  		display: none;
+  	}
+  	#contenido {
+    	overflow-x:hidden !important;
+    	padding-bottom: 10px !important;
+    }
+    #graficos{
+    	height: 200px;
+    	width: 200px;
+    }
+    #reportes{
+    	position: absolute;
+    	top: 420px !important;
+    	margin:0 auto 0 auto !important; width:96% !important;
+    }
+    #zenbox_tab{
+    	display: none !important;
+    }
+    .tdetalles{
+    	width:100% !important;
+    }
+    .porcentaje {
+    	width:15px !important;
+    }
+    .moneda {
+    	width:60px !important;
+    }
+    .grafica{
+			width:auto;
+			height:200px;
+		}
+  </style>
+</head>
+	<body>
+		<div id="container_mens" class="grafica" data-highcharts-chart="0">
+			<div class="highcharts-container" id="highcharts-0" style="position: relative; overflow: hidden; width: 720px; height: 200px; text-align: left; line-height: normal; z-index: 0; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); font-family: &quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif; font-size: 12px;"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="751" height="200"><desc>Created with Highcharts 3.0.7</desc><defs><clippath id="highcharts-1"><rect fill="none" x="0" y="0" width="677" height="77"></rect></clippath></defs><rect rx="5" ry="5" fill="#FFFFFF" x="0" y="0" width="751" height="200"></rect><g class="highcharts-grid" zIndex="1"></g><g class="highcharts-grid" zIndex="1"><path fill="none" d="M 64 55.5 L 741 55.5" stroke="#C0C0C0" stroke-width="1" zIndex="1" opacity="1"></path><path fill="none" d="M 64 133.5 L 741 133.5" stroke="#C0C0C0" stroke-width="1" zIndex="1" opacity="1"></path></g><g class="highcharts-axis" zIndex="2"><path fill="none" d="M 289.5 133 L 289.5 138" stroke="#C0D0E0" stroke-width="1" opacity="1"></path><path fill="none" d="M 402.5 133 L 402.5 138" stroke="#C0D0E0" stroke-width="1" opacity="1"></path><path fill="none" d="M 514.5 133 L 514.5 138" stroke="#C0D0E0" stroke-width="1" opacity="1"></path><path fill="none" d="M 627.5 133 L 627.5 138" stroke="#C0D0E0" stroke-width="1" opacity="1"></path><path fill="none" d="M 740.5 133 L 740.5 138" stroke="#C0D0E0" stroke-width="1" opacity="1"></path><path fill="none" d="M 176.5 133 L 176.5 138" stroke="#C0D0E0" stroke-width="1" opacity="1"></path><path fill="none" d="M 63.5 133 L 63.5 138" stroke="#C0D0E0" stroke-width="1"></path><path fill="none" d="M 64 133.5 L 741 133.5" stroke="#C0D0E0" stroke-width="1" zIndex="7" visibility="visible"></path></g><g class="highcharts-axis" zIndex="2"><text x="26" y="94.5" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:12px;color:#4d759e;font-weight:bold;fill:#4d759e;" zIndex="7" text-anchor="middle" transform="translate(0,0) rotate(270 26 94.5)" visibility="visible"><tspan x="26">Ventas</tspan></text></g><g class="highcharts-series-group" zIndex="3"><g class="highcharts-series" visibility="visible" zIndex="1" transform="translate(64,56) scale(1 1)" clip-path="url(#highcharts-1)"><path fill="none" d="M 56.416666666666664 77 L 169.25 77 L 282.0833333333333 77 L 394.9166666666667 77 L 507.75 77 L 620.5833333333333 77" stroke="#2F7ED8" stroke-width="2" zIndex="1" stroke-linejoin="round" stroke-linecap="round"></path><path fill="none" d="M 46.416666666666664 77 L 56.416666666666664 77 L 169.25 77 L 282.0833333333333 77 L 394.9166666666667 77 L 507.75 77 L 620.5833333333333 77 L 630.5833333333333 77" stroke-linejoin="round" visibility="visible" stroke-opacity="0.0001" stroke="rgb(192,192,192)" stroke-width="22" zIndex="2" class=" highcharts-tracker" style=""></path></g><g class="highcharts-markers highcharts-tracker" visibility="visible" zIndex="1" transform="translate(64,56) scale(1 1)" clip-path="none" style=""><path fill="#2F7ED8" d="M 620 73 L 624 77 620 81 616 77 Z"></path><path fill="#2F7ED8" d="M 507 73 L 511 77 507 81 503 77 Z"></path><path fill="#2F7ED8" d="M 394 73 L 398 77 394 81 390 77 Z"></path><path fill="#2F7ED8" d="M 282 73 L 286 77 282 81 278 77 Z"></path><path fill="#2F7ED8" d="M 169 73 L 173 77 169 81 165 77 Z"></path><path fill="#2F7ED8" d="M 56 73 L 60 77 56 81 52 77 Z"></path></g><g class="highcharts-series" visibility="visible" zIndex="2" transform="translate(64,56) scale(1 1)" clip-path="url(#highcharts-1)"><path fill="none" d="M 56.416666666666664 77 L 169.25 77 L 282.0833333333333 77 L 394.9166666666667 77 L 507.75 11.096901200000005 L 620.5833333333333 20.92398" stroke="#0C2137" stroke-width="2" zIndex="1" stroke-linejoin="round" stroke-linecap="round"></path><path fill="none" d="M 46.416666666666664 77 L 56.416666666666664 77 L 169.25 77 L 282.0833333333333 77 L 394.9166666666667 77 L 507.75 11.096901200000005 L 620.5833333333333 20.92398 L 630.5833333333333 20.92398" stroke-linejoin="round" visibility="visible" stroke-opacity="0.0001" stroke="rgb(192,192,192)" stroke-width="22" zIndex="2" class=" highcharts-tracker" style=""></path></g><g class="highcharts-markers highcharts-tracker" visibility="visible" zIndex="2" transform="translate(64,56) scale(1 1)" clip-path="none" style=""><path fill="#0C2137" d="M 620 16.92398 C 625.328 16.92398 625.328 24.92398 620 24.92398 C 614.672 24.92398 614.672 16.92398 620 16.92398 Z"></path><path fill="#0C2137" d="M 507 7.096901200000005 C 512.328 7.096901200000005 512.328 15.096901200000005 507 15.096901200000005 C 501.672 15.096901200000005 501.672 7.096901200000005 507 7.096901200000005 Z"></path><path fill="#0C2137" d="M 394 73 C 399.328 73 399.328 81 394 81 C 388.672 81 388.672 73 394 73 Z"></path><path fill="#0C2137" d="M 282 73 C 287.328 73 287.328 81 282 81 C 276.672 81 276.672 73 282 73 Z"></path><path fill="#0C2137" d="M 169 73 C 174.328 73 174.328 81 169 81 C 163.672 81 163.672 73 169 73 Z"></path><path fill="#0C2137" d="M 56 73 C 61.328 73 61.328 81 56 81 C 50.672 81 50.672 73 56 73 Z"></path></g></g><text x="376" y="25" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:16px;color:#274b6d;fill:#274b6d;" text-anchor="middle" class="highcharts-title" zIndex="4"><tspan x="376">Ventas Mensuales</tspan></text><text x="376" y="40" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:12px;color:#4d759e;fill:#4d759e;" text-anchor="middle" class="highcharts-subtitle" zIndex="4"><tspan x="376">GPS GLOBAL PROTECTION SECURITY GLOBALPROTECTIONSECURITY CIA. LTDA.</tspan></text><g class="highcharts-legend" zIndex="7" transform="translate(256,158)"><rect rx="5" ry="5" fill="none" x="0.5" y="0.5" width="238" height="26" stroke="#909090" stroke-width="1" visibility="visible"></rect><g zIndex="1"><g><g class="highcharts-legend-item" zIndex="1" transform="translate(8,3)"><path fill="none" d="M 0 11 L 16 11" stroke="#0C2137" stroke-width="2"></path><path fill="#0C2137" d="M 8 7 C 13.328 7 13.328 15 8 15 C 2.6719999999999997 15 2.6719999999999997 7 8 7 Z"></path><text x="21" y="15" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:12px;cursor:pointer;color:#274b6d;fill:#274b6d;" text-anchor="start" zIndex="2"><tspan x="21">Periodo Actual</tspan></text></g><g class="highcharts-legend-item" zIndex="1" transform="translate(120,3)"><path fill="none" d="M 0 11 L 16 11" stroke="#2F7ED8" stroke-width="2"></path><path fill="#2F7ED8" d="M 8 7 L 12 11 8 15 4 11 Z"></path><text x="21" y="15" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:12px;cursor:pointer;color:#274b6d;fill:#274b6d;" text-anchor="start" zIndex="2"><tspan x="21">Periodo Pasado</tspan></text></g></g></g></g><g class="highcharts-axis-labels" zIndex="7"><text x="120.41666666666666" y="147" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:11px;color:#666;cursor:default;line-height:14px;fill:#666;" text-anchor="middle" opacity="1"><tspan x="120.41666666666666">Ene </tspan></text><text x="233.24999999999997" y="147" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:11px;color:#666;cursor:default;line-height:14px;fill:#666;" text-anchor="middle" opacity="1"><tspan x="233.24999999999997">Feb </tspan></text><text x="346.0833333333333" y="147" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:11px;color:#666;cursor:default;line-height:14px;fill:#666;" text-anchor="middle" opacity="1"><tspan x="346.0833333333333">Mar </tspan></text><text x="458.9166666666666" y="147" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:11px;color:#666;cursor:default;line-height:14px;fill:#666;" text-anchor="middle" opacity="1"><tspan x="458.9166666666666">Abr </tspan></text><text x="571.75" y="147" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:11px;color:#666;cursor:default;line-height:14px;fill:#666;" text-anchor="middle" opacity="1"><tspan x="571.75">May </tspan></text><text x="684.5833333333333" y="147" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:11px;color:#666;cursor:default;line-height:14px;fill:#666;" text-anchor="middle" opacity="1"><tspan x="684.5833333333333">Jun </tspan></text></g><g class="highcharts-axis-labels" zIndex="7"><text x="56" y="137.5" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:11px;color:#666;cursor:default;line-height:14px;fill:#666;" text-anchor="end" opacity="1"><tspan x="56">0k</tspan></text><text x="56" y="60.5" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:11px;color:#666;cursor:default;line-height:14px;fill:#666;" text-anchor="end" opacity="1"><tspan x="56">50k</tspan></text></g><g class="highcharts-tooltip" zIndex="8" style="cursor:default;padding:0;white-space:nowrap;" transform="translate(0,-999)"><rect rx="3" ry="3" fill="none" x="0.5" y="0.5" width="16" height="16" fill-opacity="0.85" isShadow="true" stroke="black" stroke-opacity="0.049999999999999996" stroke-width="5" transform="translate(1, 1)"></rect><rect rx="3" ry="3" fill="none" x="0.5" y="0.5" width="16" height="16" fill-opacity="0.85" isShadow="true" stroke="black" stroke-opacity="0.09999999999999999" stroke-width="3" transform="translate(1, 1)"></rect><rect rx="3" ry="3" fill="none" x="0.5" y="0.5" width="16" height="16" fill-opacity="0.85" isShadow="true" stroke="black" stroke-opacity="0.15" stroke-width="1" transform="translate(1, 1)"></rect><rect rx="3" ry="3" fill="rgb(255,255,255)" x="0.5" y="0.5" width="16" height="16" fill-opacity="0.85"></rect><text x="8" y="21" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:12px;color:#333333;fill:#333333;" zIndex="1"></text></g><text x="741" y="195" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:9px;cursor:pointer;color:#909090;fill:#909090;" text-anchor="end" zIndex="8"><tspan x="741">Highcharts.com</tspan></text></svg></div></div>
+
+ </body>
+ </html>

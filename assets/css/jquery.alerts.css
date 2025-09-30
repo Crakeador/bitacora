@@ -1,0 +1,116 @@
+#popup_container {
+	font-family: Arial, sans-serif;
+	font-size: 12px;
+	min-width: 300px; /* Dialog will be no smaller than this */
+	max-width: 600px; /* Dialog will wrap after this width */
+	background: #FFF;
+/*	border: solid 5px #999;*/
+	border: solid 1px #999;
+	color: #000;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+
+#popup_title {
+	font-size: 14px;
+	font-weight: bold;
+	text-align: center;
+	line-height: 1.75em;
+/*	color: #666;        */
+        color: #FFF;
+/*	background: #CCC url('../images/title.gif') top repeat-x;*/
+	background: #CCC url('../img/icon/lineaFondoLogo.png') top repeat-x;
+/*	border: solid 3px #FFF;*/
+        border: solid 1px #FFF;
+	border-bottom: solid 1px #999;
+	cursor: default;
+	padding: 0em;
+	margin: 0em;
+}
+
+#popup_content {
+	background: 16px 16px no-repeat url('../img/info.gif');
+	padding: 1em 1.75em;
+	margin: 0em;
+}
+
+/*Este es para el .MsgWarning*/
+#popup_content.alert {
+/*        background-image: url('../images/info.gif') ;	*/
+          background-image: url('../img/msg/msgWarning.png') ;
+          /*EL Oringal solo tenia background-image*/
+          font-family: Arial, Verdana;
+          font-size: 10pt;
+          color:orange;
+          background-color: black;
+          border-top: orange 1px solid;
+          border-left: orange 1px solid;
+          border-right: orange 3px inset;
+          border-bottom: orange 3px inset;
+          padding: 2px 2px 2px 2px;
+}
+
+/*Este es para el .MsgError*/
+#popup_content.error {
+          background-image: url('../img/msg/msgError.png') ;
+          font-family: Arial, Verdana;
+          font-size: 10pt;
+          color:red;
+          background-color: #FFFFCC;
+          border-top: red 1px solid;
+          border-left: red 1px solid;
+          border-right: red 3px inset;
+          border-bottom: red 3px inset;
+          padding: 2px 2px 2px 2px;
+}
+
+/*Este es para el .MsgInfo*/
+#popup_content.info {
+          background-image: url('../img/msg/msgInfo.png') ;
+          font-family: Arial, Verdana;
+          font-size: 10pt;
+          color:yellow;
+          background-color: black;
+          border-top: yellow 1px solid;
+          border-left: yellow 1px solid;
+          border-right: yellow 3px inset;
+          border-bottom: yellow 3px inset;
+          padding: 2px 2px 2px 2px;
+}
+
+/*Este es para el .MsgOK*/
+#popup_content.ok {
+          background-image: url('../img/msg/msgOk.png') ;
+          font-family: Arial, Verdana;
+          font-size: 10pt;
+          color:#ADFF2F;
+          background-color: black;
+          border-top: #ADFF2F 1px solid;
+          border-left: #ADFF2F 1px solid;
+          border-right: #ADFF2F 3px inset;
+          border-bottom: #ADFF2F 3px inset;
+          padding: 2px 2px 2px 2px;
+}
+
+#popup_content.confirm {
+
+    background-image: url('../img/msg/important.jpeg') ;
+}
+
+#popup_content.prompt {
+    background-image: url('../img/help.gif') ;
+}
+
+#popup_message {
+	padding-left: 48px;
+}
+
+#popup_panel {
+	text-align: center;
+	margin: 1em 0em 0em 1em;
+}
+
+#popup_prompt {
+	margin: .5em 0em;
+}
