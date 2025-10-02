@@ -179,7 +179,7 @@ function buscarDetalle(idarticulo,articulo,precio_venta){
 		var fila='<tr class="filas" id="fila'+cont+'">'+
 			'<td>'+
 				'<button type="button" class="btn btn-danger" onclick="eliminarDetalle('+cont+')"><i class="fa fa-remove"></i></button>'+
-				'<button type="button" onclick="modificarSubtotales()" class="btn btn-info"><i class="fa fa-refresh"></i></button>'+
+				'<button type="button" onclick="modificarSubtotales()" class="btn btn-info"><i class="fa fa-sync"></i></button>'+
 			'</td>'+
 			'<td><input type="hidden" name="idarticulo[]" value="'+idarticulo+'">'+articulo+'</td>'+
 			'<td width="8%"><input type="number" name="cantidad[]" id="cantidad[]" value="'+cantidad+'"></td>'+
@@ -205,7 +205,7 @@ function agregarDetalle(idarticulo,articulo,precio_venta){
 		var fila='<tr class="filas" id="fila'+cont+'">'+
 			'<td width="8%">'+
 				'<button type="button" class="btn btn-danger" onclick="eliminarDetalle('+cont+')"><i class="fa fa-remove"></i></button>'+
-				'<button type="button" class="btn btn-info"  onclick="modificarSubtotales()"><i class="fa fa-refresh"></i></button>'+
+				'<button type="button" class="btn btn-info"  onclick="modificarSubtotales()"><i class="fa fa-sync"></i></button>'+
 			'</td>'+
 			'<td><input type="hidden" name="idarticulo[]" value="'+idarticulo+'">'+articulo+'</td>'+
 			'<td width="8%"><input type="number" name="cantidad[]" id="cantidad[]" value="'+cantidad+'"></td>'+

@@ -92,7 +92,7 @@ class CotizacionData {
 	}
 
 	public static function getAll(){
-		$sql = "SELECT * FROM ".self::$tablename." WHERE idcompany = ".$_SESSION['id_company'];
+		$sql = "SELECT * FROM ".self::$tablename." WHERE idcompany = ".$_SESSION['id_company']; 
 		$query = Executor::doit($sql); 
 		return Model::many($query[0],new CotizacionData());
 	}

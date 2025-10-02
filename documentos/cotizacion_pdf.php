@@ -8,7 +8,7 @@ require('../plugins/fpdf/fpdf.php');
 class PDF extends FPDF{
 	function Header(){
 		// Logo
-		$this->Image('../assets/images/parte.png',0, 0, 214);
+		$this->Image('../assets/images/parte.jpg',0, 0, 214);
 		$this->SetFont('Arial','B',15);
 	}
 

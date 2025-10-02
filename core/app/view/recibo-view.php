@@ -322,29 +322,9 @@ switch ($method) {
 					<div class="panel-body">
 						<!-- tabs content -->
 						<div class="tab-content panel">
-							<div class="tab-pane" id="tab_personal">
-							    <button id="btn_cargar_fechas_empresa" type="button" data-toggle="modal" data-target="#dlg_fechas_empresa" class="btn btn-sm btn-primary mb5" aria-label="">
-									<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-									Agregar/Modificar
-								</button>									
-								</br></br>
-								<div class="row">
-									<div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="col-sm-4 control-label"> Ingrese las fotos:</label>
-                                            <div class="col-sm-6">
-                                                <input type="file" name="foto1" id="foto1" class="SubirFoto" accept="image/*" capture="camera" /></br>
-                                                <input type="file" name="foto2" id="foto2" class="SubirFoto" accept="image/*" capture="camera" /></br>
-                                                <input type="file" name="foto3" id="foto3" class="SubirFoto" accept="image/*" capture="camera" /></br>
-                                                <input type="file" name="foto4" id="foto4" class="SubirFoto" accept="image/*" capture="camera" /></br>
-                                                <input type="file" name="foto5" id="foto5" class="SubirFoto" accept="image/*" capture="camera" /></br>
-                                                <input type="file" name="foto6" id="foto6" class="SubirFoto" accept="image/*" capture="camera" /></br>
-                                            </div>
-                                        </div>					
-									</div>
-								</div> <?php
+							<div class="tab-pane" id="tab_personal"><?php
                                 if($person->image == NULL) {
-                                    $nombre_fichero1 = "http://localhost/bitacora/storage/persons/logo-Cipol-color.png"; 
+                                    $nombre_fichero1 = "https://latin.near-solution.com/storage/persons/american.png"; 
                                 }else {
                                     $nombre_fichero1 = "http://localhost/bitacora/storage/persons/".$person->image;
 
@@ -355,7 +335,7 @@ switch ($method) {
                                     }
                                 }
                                 if($person->cedula1 == NULL) {
-                                    $nombre_fichero2 = "http://localhost/bitacora/storage/persons/logo-Cipol-color.png"; 
+                                    $nombre_fichero2 = "https://latin.near-solution.com/storage/persons/american.png"; 
                                 }else {
                                     $nombre_fichero2 = "http://localhost/bitacora/storage/documento/".$person->cedula1;
 
@@ -366,7 +346,7 @@ switch ($method) {
                                     }
                                 }
                                 if($person->cedula2 == NULL) {
-                                    $nombre_fichero3 = "http://localhost/bitacora/storage/persons/logo-Cipol-color.png"; 
+                                    $nombre_fichero3 = "https://latin.near-solution.com/storage/persons/american.png"; 
                                 }else {
                                     $nombre_fichero3 = "http://localhost/bitacora/storage/documento/".$person->cedula2;
 
@@ -377,7 +357,7 @@ switch ($method) {
                                     }
                                 }
                                 if($person->votacion == NULL) {
-                                    $nombre_fichero4 = "http://localhost/bitacora/storage/persons/logo-Cipol-color.png"; 
+                                    $nombre_fichero4 = "https://latin.near-solution.com/storage/persons/american.png"; 
                                 }else {
                                     $nombre_fichero4 = "http://localhost/bitacora/storage/documento/".$person->votacion;
 
@@ -388,7 +368,7 @@ switch ($method) {
                                     }
                                 }
                                 if($person->firma == NULL) {
-                                    $nombre_fichero5 = "http://localhost/bitacora/storage/persons/logo-Cipol-color.png"; 
+                                    $nombre_fichero5 = "https://latin.near-solution.com/storage/persons/american.png"; 
                                 }else {
                                     $nombre_fichero5 = "http://localhost/bitacora/storage/documento/".$person->firma;
 
@@ -399,7 +379,7 @@ switch ($method) {
                                     }
                                 }
                                 if($person->archivo == NULL) {
-                                    $nombre_fichero6 = "http://localhost/bitacora/storage/persons/logo-Cipol-color.png"; 
+                                    $nombre_fichero6 = "https://latin.near-solution.com/storage/persons/american.png"; 
                                 }else {
                                     $nombre_fichero6 = "http://localhost/bitacora/storage/documento/".$person->archivo;
 
@@ -425,7 +405,7 @@ switch ($method) {
                                         <div class="box box-primary">
                                             <div class="box-body box-profile">
                                                 <div align="center">
-                                                    <img class="profile-user-img img-responsive img-circle" style="width:80%; height:60%;" src="<?php echo $nombre_fichero1; ?>" alt="User profile picture">
+                                                    <img class="img-responsive" style="width:80%; height:60%;" src="https://latin.near-solution.com/storage/products/carro.jpg" alt="User profile picture">
                                                     <h3 class="profile-username text-center"><?php echo $_SESSION['name']; ?></h3>
                                                     <p class="text-muted text-center">Software Engineer</p>
                                                 </div>

@@ -450,7 +450,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                       }elseif(isset($_SESSION["depart"]) && $_SESSION["depart"]=='1') { ?>
                           <!-- Notifications: style can be found in dropdown.less -->
                           <li class="dropdown notifications-menu">
-                              <a href="#" class="dropdown-toggle1" data-toggle="dropdown" data-original-title="Notificaciones actualizadas">
+                              <a href="#" class="dropdown-notificacion" rel="tooltip" data-toggle="tooltip" data-placement="bottom" data-original-title="Notificaciones actualizadas">
                                   <i class="fa fa-bell"></i>
                                   <?php if($notificacion > 0) echo '<span class="label label-warning">'.$notificacion.'</span>'; ?>
                               </a>
@@ -503,7 +503,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                       }
                   } ?>
                   <?php // Administrador
-                    if($_SESSION["is_admin"] == 1): ?>
+                    if($_SESSION["rol"] == 99): ?>
                       <li>
                           <a href="./index.php?view=siscof.lista" rel="tooltip" data-toggle="tooltip" data-placement="bottom" data-original-title="Compañía">
                             <span class="meta">
@@ -586,8 +586,8 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                               echo '<li class="treeview">
                                       <a href="#"><i class="fa fa-random"></i> <span>Vehiculos</span> <i class="fa fa-angle-left pull-right"></i></a>
                                       <ul class="treeview-menu">
-                                        <li><a href="recibos"><i class="fa fa-circle-o"></i>Entregas</a></li>
-                                        <li><a href="entregas"><i class="fa fa-circle-o"></i>Recepcion</a></li>
+                                        <li><a href="recibos"><i class="fa fa-circle"></i>Entregas</a></li>
+                                        <li><a href="entregas"><i class="fa fa-circle"></i>Recepcion</a></li>
                                       </ul>
                                     </li>';
                               echo '<li><a href="./puestos"><i class="fa fa-hotel"></i><span> Puestos </span></a></li>';
@@ -616,8 +616,8 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                               echo '<li class="treeview">'; 
                                       echo '<a href="#"><i class="fa fa-print"></i> <span>Reportes</span> <i class="fa fa-angle-left pull-right"></i></a>'; 
                                       echo '<ul class="treeview-menu">'; 
-                                            echo '<li><a href="./index.php?view=repent.lista"><span>Dotación de Agentes </span></a></li>'; 
-                                            echo '<li><a href="./index.php?view=reppus.lista"><span>Dotaci&oacute;n de Puestos </span></a></li>'; 
+                                            echo '<li><a href="./index.php?view=repent.lista"><i class="fa fa-circle"></i><span>Dotaci&oacute;n de Agentes </span></a></li>'; 
+                                            echo '<li><a href="./index.php?view=reppus.lista"><i class="fa fa-circle"></i><span>Dotaci&oacute;n de Puestos </span></a></li>'; 
                                       echo '</ul>'; 
                               echo '</li> '; 
                               echo '<li><a href="./novedades"><i class="fa fa-book-open"></i> <span> Novedades </span></a></li>';
@@ -635,6 +635,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                                 <li><a href="./camara"><i class="fa fa-camera"></i><span> Camara </span></a></li>
                                 <li><a href="./index.php?view=rrsdoc.lista"><i class="fa fa-barcode"></i><span> Sanciones </span></a></li>
                                 <li><a href="./telefonos"><i class="fa fa-users"></i><span> Telefonos </span></a></li>
+                                <li><a href="./reporte"><i class="fa fa-fax"></i> <span>Parte</span></a></li>	
                                 <li><a href="./supervisar"><i class='fa fa-taxi'></i> <span>Supervici&oacute;n</span></a></li><?php
                               }else{
                                 if($_SESSION['idrol'] == 7){ // Opcion del Guardia 
@@ -682,13 +683,13 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                           } ?>
                         <?php // 4 Comercial
                           if($_SESSION['depart'] == 4): ?>
-                            <li><a href="./index.php?view=correo"><i class='fa fa-envelope'></i> <span>E-Mail</span></a></li>
-                            <li><a href="./index.php?view=calendar"><i class='fa fa-calendar'></i> <span>Calendario</span></a></li>                          
-                            <li><a href="./index.php?view=ventas"><i class='fa fa-database'></i> <span>Clientes</span></a></li>
+                            <li><a href="./index.php?view=correo"><i class="fa fa-envelope"></i> <span>E-Mail</span></a></li>
+                            <li><a href="./index.php?view=calendar"><i class="fa fa-calendar"></i> <span>Calendario</span></a></li>                          
+                            <li><a href="./index.php?view=ventas"><i class="fa fa-database"></i> <span>Clientes</span></a></li>
                             <li class="treeview">
-                              <a href="#"><i class='fa fa-print'></i> <span>Reportes</span> <i class="fa fa-angle-left pull-right"></i></a>
+                              <a href="#"><i class="fa fa-print"></i> <span>Reportes</span> <i class="fa fa-angle-left pull-right"></i></a>
                               <ul class="treeview-menu">
-                                <li><a href="./index.php?view=reports"><i class="fa fa-book-open"></i>Inventario</a></li>
+                                <li><a href="./index.php?view=reports"><i class="fa fa-circle"></i>Inventario</a></li>
                                 <li><a href="./index.php?view=sellreports"><i class="fa fa-circle"></i>Entregas</a></li>
                               </ul>
                             </li>
@@ -775,19 +776,19 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                         <?php endif; ?>
                         <?php // 7 Logistica
                           if($_SESSION['depart'] == 7): ?>
-                            <li><a href="carnets"><i class='fa fa-image'></i> <span>Carnets</span></a></li>
-                            <li><a href="conducta"><i class='fa fa-key'></i> <span>Salvo Conducto</span></a></li>
-                            <li><a href="productos"><i class='fa fa-sitemap'></i> <span>Productos</span></a></li>
-                            <li><a href="prendas"><i class='fa fa-clipboard'></i> <span>Entregar dotaci&oacute;n</span></a></li>
-                            <li><a href="puestos"><i class='fa fa-briefcase'></i><span>Dotar Puesto</span></a></li>
-                            <li><a href="descuento"><i class='fa fa-credit-card'></i><span>Liquidaci&oacute;n</span></a></li>
+                            <li><a href="carnets"><i class="fa fa-image"></i> <span>Carnets</span></a></li>
+                            <li><a href="conducta"><i class="fa fa-key"></i> <span>Salvo Conducto</span></a></li>
+                            <li><a href="productos"><i class="fa fa-sitemap"></i> <span>Productos</span></a></li>
+                            <li><a href="prendas"><i class="fa fa-clipboard"></i> <span>Entregar dotaci&oacute;n</span></a></li>
+                            <li><a href="dotar"><i class="fa fa-briefcase"></i><span>Dotar Puesto</span></a></li>
+                            <li><a href="descuento"><i class="fa fa-credit-card"></i><span>Liquidaci&oacute;n</span></a></li>
                             <?php if($_SESSION['idrol'] == 3): ?>
-                              <!--- <li><a href="./index.php?view=caja"><i class='fa fa-cube'></i> <span>Caja Chica</span></a></li> --->
+                                <li><a href="./index.php?view=caja"><i class="fa fa-cube"></i> <span>Caja Chica</span></a></li>
                             <?php endif; ?>
                             <li class="treeview">
                               <a href="#"><i class='fa fa-chart-pie'></i> <span>Inventario</span> <i class="fa fa-angle-left pull-right"></i></a>
                               <ul class="treeview-menu">
-                                <li><a href="./index.php?view=inventary"><i class="fa fa-circle"></i>Inventario</a></li>
+                                <li><a href="./inventary"><i class="fa fa-circle"></i>Inventario</a></li>
                                 <li><a href="./index.php?view=re"><i class="fa fa-circle"></i>Abastecer</a></li>
                                 <li><a href="./index.php?view=res"><i class="fa fa-circle"></i>Abastecimientos</a></li>
                               </ul>
@@ -795,8 +796,8 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                             <li class="treeview">
                               <a href="#"><i class='fa fa-random'></i> <span>Custodia</span> <i class="fa fa-angle-left pull-right"></i></a>
                               <ul class="treeview-menu">
-                                <li><a href="<?php echo $url; ?>recibos"><i class="fa fa-circle-o"></i>Entregas</a></li>
-                                <li><a href="<?php echo $url; ?>entregas"><i class="fa fa-circle-o"></i>Recepcion</a></li>
+                                <li><a href="<?php echo $url; ?>recibos"><i class="fa fa-circle"></i>Entregas</a></li>
+                                <li><a href="<?php echo $url; ?>entregas"><i class="fa fa-circle"></i>Recepcion</a></li>
                               </ul>
                             </li>
                             <li class="treeview">
@@ -804,8 +805,8 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                               <ul class="treeview-menu">
                                 <?php
                                   if($_SESSION["actividad"] == 1){
-                                    echo '<li><a href="./index.php?view=repent.lista"><span>Dotaci&oacute;n de Agentes</span></a></li>';
-                                    echo '<li><a href="./index.php?view=reppus.lista"><span>Dotaci&oacute;n de Puestos</span></a></li>';
+                                    echo '<li><a href="./index.php?view=repent.lista"><i class="fa fa-circle"></i><span>Dotaci&oacute;n de Agentes</span></a></li>';
+                                    echo '<li><a href="./index.php?view=reppus.lista"><i class="fa fa-circle"></i><span>Dotaci&oacute;n de Puestos</span></a></li>';
                                   }
                                 ?>
                                 <li><a href="./index.php?view=reports"><i class="fa fa-circle"></i>Inventario</a></li>
@@ -816,7 +817,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                               <a href="#"><i class='fa fa-database'></i> <span>Catalogos</span> <i class="fa fa-angle-left pull-right"></i></a>
                               <ul class="treeview-menu">
                                 <li><a href="./categorias"><i class="fa fa-circle"></i>Categorias</a></li>
-                                <li><a href="./index.php?view=catpro.lista"><i class="fa fa-circle"></i>Proveedores</a></li>
+                                <li><a href="./proveedores"><i class="fa fa-circle"></i>Proveedores</a></li>
                               </ul>
                             </li>
                         <?php endif; ?>
@@ -837,8 +838,8 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                                 <li class='treeview'>
                                 <a href=\"#\"><i class='fa fa-print'></i> <span>Reportes</span> <i class='fa fa-angle-left pull-right'></i></a>
                                 <ul class='treeview-menu'>
-                                  <li><a href=\"./index.php?view=repent.lista\"> <span>Dotación de Agentes</span></a></li>
-                                  <li><a href=\"./index-php?view=reppus.lista\"> <span>Dotación de Puestos</span></a></li>
+                                  <li><a href=\"./index.php?view=repent.lista\"><i class=\"fa fa-circle\"></i><span>Dotaci&oacute;n de Agentes</span></a></li>
+                                  <li><a href=\"./index-php?view=reppus.lista\"><i class=\"fa fa-circle\"></i><span>Dotaci&oacute;n de Puestos</span></a></li>
                                   <li><a href=\"./index.php?view=reports\"><i class='fa fa-circle'></i>Inventario</a></li>
                                   <li><a href=\"./index.php?view=sellreports\"><i class='fa fa-circle'></i>Entregas</a></li>
                                 </ul>
@@ -966,14 +967,14 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                             <li><a href="./partes"><i class='fa fa-binoculars'></i> <span>Parte</span></a></li>
                             <li><a href="./index.php?view=opeasi.lista"><i class='fa fa-handshake'></i><span> Asignar Efectivo</span></a></li>
                             <li><a href="./prendas"><i class='fa fa-clipboard'></i><span> Entregar dotaci&oacute;n </span></a></li>
-                            <li><a href="./index.php?view=opedot.puestos"><i class='fa fa-briefcase'></i><span> Dotar Puesto </span></a></li>
+                            <li><a href="./dotar "><i class='fa fa-briefcase'></i><span> Dotar Puesto </span></a></li>
                             <li><a href="./residentes"><i class='fa fa-building'></i> <span>Residentes</span></a></li>
                             <li class="header">Logistica</li>
                             <li class="treeview">
                               <a href="#"><i class='fa fa-chart-pie'></i> <span>Inventario</span> <i class="fa fa-angle-left pull-right"></i></a>
                               <ul class="treeview-menu">
-                                <li><a href="./index.php?view=inventary"><i class="fa fa-circle"></i><span> Resumen </span></a></li>
-                                <li><a href="./index.php?view=dotacion"><i class="fa fa-circle"></i><span> Asignados </span></a></li>
+                                <li><a href="./inventary"><i class="fa fa-circle"></i><span> Resumen </span></a></li>
+                                <li><a href="./dotacion"><i class="fa fa-circle"></i><span> Asignados </span></a></li>
                                 <li><a href="./index.php?view=re"><i class="fa fa-circle"></i><span> Abastecer </span></a></li>
                                 <li><a href="./index.php?view=res"><i class="fa fa-circle"></i><span> Abastecimientos </span></a></li>
                               </ul>
@@ -993,7 +994,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                                 <li><a href="./index.php?view=catdes.lista"><i class="fa fa-circle"></i><span> Descuentos </span></a></li>
                                 <li><a href="./categorias"><i class="fa fa-circle"></i><span> Categorias </span></a></li>
                                 <li><a href="./productos"><i class="fa fa-circle"></i><span> Productos </span></a></li>
-                                <li><a href="./index.php?view=catpro.lista"><i class="fa fa-circle"></i><span> Proveedores </span></a></li>
+                                <li><a href="./proveedores"><i class="fa fa-circle"></i><span> Proveedores </span></a></li>
                               </ul>
                             </li>
                             <li class="treeview">
@@ -1001,8 +1002,8 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                               <ul class="treeview-menu">
                                 <?php
                                   if($_SESSION["actividad"] == 1){
-                                    echo '<li><a href="./index.php?view=repent.lista"><span>Dotaci&oacute;n de Agentes</span></a></li>';
-                                    echo '<li><a href="./index.php?view=reppus.lista"><span>Dotaci&oacute;n de Puestos</span></a></li>';
+                                    echo '<li><a href="./index.php?view=repent.lista"><i class="fa fa-circle"></i><span>Dotaci&oacute;n de Agentes</span></a></li>';
+                                    echo '<li><a href="./index.php?view=reppus.lista"><i class="fa fa-circle"></i><span>Dotaci&oacute;n de Puestos</span></a></li>';
                                   }
                                 ?>
                                 <li><a href="reports"><i class="fa fa-circle"></i><span> Inventario </span></a></li>
@@ -1118,18 +1119,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
       <script type="text/javascript">
         document.frm.username.focus();
       </script> <?php 
-    endif;    
-    
-    if (isset($_SESSION['sweetalert_message'])) {;
-        echo '<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js?v=1.0.1"></script>';
-        $alert = $_SESSION['sweetalert_message'];
-        echo "<script>
-                document.addEventListener('DOMContentLoaded', function() {
-                  swal('".$alert['title']."', '".$alert['text']."', '".$alert['icon']."');
-                });
-              </script>";
-        unset($_SESSION['sweetalert_message']); // Limpia la sesión después de usarla
-    } ?>
+    endif;  ?>
     <!-- AdminLTE App -->
     <script type="text/javascript" src="./assets/js/app.min.js?v=1.0.1"></script>
     <script type="text/javascript" src="./assets/js/bootstrap-select.min.js?v=1.0.1"></script>
@@ -1179,8 +1169,9 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
 				echo '<script type="text/javascript" src="plugins/jsqrcode/llqrcode.js?v=1.0.1"></script>';
 				echo '<script type="text/javascript" src="plugins/jsqrcode/webqr.js?v=1.0.1"></script>';
 			}
-			if($_GET["view"]=="asignar" || $_GET["view"]=="novedad" || $_GET["view"]=="informe" || $_GET["view"]=="supervisar" || $_GET["view"]=="aspirantes" || $_GET["view"]=="reporte"){
-			    echo '<script type="text/javascript">
+			if($_GET["view"]=="asignar" || $_GET["view"]=="novedad" || $_GET["view"]=="informe" || $_GET["view"]=="supervisar" || $_GET["view"]=="aspirantes" || 
+         $_GET["view"]=="reporte"){
+          echo '<script type="text/javascript">
                   initiate_geolocation();
 
                   var watchId;
@@ -1194,18 +1185,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                   // Con PositionOptions aseguramos que la posición no corresponde a caché
                   function initiate_geolocation() {
                     if (navigator.geolocation) {
-                      var watchId = navigator.geolocation.getCurrentPosition(successCallback,                       <?php
-                      // filepath: core/app/layouts/layout.php
-                      // ...existing code...
-                                        /* Posibles errores que se pueden producir en la geolocalización */
-                                        function errorCallback(error) {
-                                          var appErrMessage = null;
-                      
-                                          if (error.code == error.PERMISSION_DENIED) {
-                                            appErrMessage = "El usuario no ha concedido los privilegios de geolocalización"
-                                          } else if (error.code == error.POSITION_UNAVAILABLE) {
-                      // ...existing code...
-                      ?>, PositionOptions);
+                      var watchId = navigator.geolocation.getCurrentPosition(successCallback, errorCallback, PositionOptions);
                     } else {
                       document.getElementById("mensaje").innerHTML = "Lo sentimos pero el API de Geolocalización de HTM5 no está disponible para su navegador";
                     }
@@ -1304,7 +1284,17 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
               </script>';
             }
         }
-    ?>
+    
+    if (isset($_SESSION['sweetalert_message'])) {;
+        echo '<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js?v=1.0.1"></script>';
+        $alert = $_SESSION['sweetalert_message'];
+        echo "<script>
+                document.addEventListener('DOMContentLoaded', function() {
+                  swal('".$alert['title']."', '".$alert['text']."', '".$alert['icon']."');
+                });
+              </script>";
+        unset($_SESSION['sweetalert_message']); // Limpia la sesión después de usarla
+    } ?>
     <script type="text/javascript">      
         document.getElementById('alertButton').addEventListener('click', async () => {
           try {
@@ -1408,7 +1398,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
 		      $_GET["view"]=="agentes" || $_GET["view"]=="conducta" || $_GET["view"]=="catdes.lista" || $_GET["view"]=="rrphor.activos" || $_GET["view"]=="puestos" || 
           $_GET["view"]=="faltas" || $_GET["view"]=="rondas" || $_GET["view"]=="vehiculos" || $_GET["view"]=="novedades" || $_GET["view"]=="clientes" ||
           $_GET["view"]=="telefonos" || $_GET["view"]=="apertura" || $_GET["view"]=="recibos" || $_GET["view"]=="entregas" || $_GET["view"]=="conducta" ||
-		      $_GET["view"]=="residentes" || $_GET["view"]=="catpro.lista" || $_GET["view"]=="rrhpre.lista" || $_GET["view"]=="opecor.lista" ||
+		      $_GET["view"]=="residentes" || $_GET["view"]=="proveedores" || $_GET["view"]=="rrhpre.lista" || $_GET["view"]=="opecor.lista" ||
           $_GET["view"]=="catrol.lista" || $_GET["view"]=="cobnom.lista" || $_GET["view"]=="sisnot.lista" || $_GET["view"]=="carnets" || 
           $_GET["view"]=="rrhpre.lista" || $_GET["view"]=="rrhliq.lista" || $_GET["view"]=="rrhmac.lista" || $_GET["view"]=="usuarios" || 
           $_GET["view"]=="rrsdoc.lista" || $_GET["view"]=="opeasp.lista" || $_GET["view"]=="opeasi.lista" || $_GET["view"]=="rrhdoc.lista" ||

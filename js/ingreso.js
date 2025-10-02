@@ -216,7 +216,7 @@ function agregarDetalle(idarticulo,articulo){
         '<td><input type="number" name="precio_compra[]" id="precio_compra[]" value="'+precio_compra+'"></td>'+
         '<td><input type="number" name="precio_venta[]" value="'+precio_venta+'"></td>'+
         '<td><span id="subtotal'+cont+'" name="subtotal">'+subtotal+'</span></td>'+
-        '<td><button type="button" onclick="modificarSubtotales()" class="btn btn-info"><i class="fa fa-refresh"></i></button></td>'+
+        '<td><button type="button" onclick="modificarSubtotales()" class="btn btn-info"><i class="fa fa-sync"></i></button></td>'+
 		'</tr>';
 		cont++;
 		detalles++;

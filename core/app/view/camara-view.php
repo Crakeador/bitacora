@@ -3,7 +3,7 @@
 		<div class="row">
 			<div class="col">
 				<script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
-				<h1>Camara para Rondas</h1>
+				<h1>&nbsp;&nbsp;Camara del Sistema</h1>
 				<div class="col-sm-12">
 					<video id="preview" class="p-1 border" style="width:100%;"></video>
 				</div>

@@ -1,17 +1,67 @@
 <?php
-$msg = '';
+//Manejo de categorias
+$msg = 'Agregar categoría';
+$category = (object) [
+					"id" => 0,
+					"name" => ""
+				];
 
-if(isset($_POST['add_cat'])){	
-	$user = new CategoryData();
-	$user->name = strtoupper($_POST["categorie-name"]);
-	$user->description = '';
-	$errors = $user->add();
-	
-    if(!empty($errors)){	
-		$msg = Core::display_msg("success", "Categoría agregada exitosamente.");
-	}else{
-		$msg = Core::display_msg("danger", "Lo siento, registro falló");
-	}
+// Manejar las solicitudes
+$method = $_SERVER['REQUEST_METHOD'];
+
+switch ($method) {
+    case 'GET':
+		var_dump($_GET);
+		if(isset($_GET['id']) && isset($_GET['tipo']) && $_GET['tipo']==2){
+			// Manejar la edición de una categoria
+			$category = CategoryData::getById($_GET['id']);
+			if($category){
+				echo '<br>--------------------------------<br>';
+				var_dump($category); 
+				
+				$msg = 'Modificar categoría'; 
+				/*
+				
+				$errors = $category->update();
+				if(!empty($errors)){	
+					$msg = Core::display_msg("success", "Categoría desactivada exitosamente.");
+				}else{
+					$msg = Core::display_msg("danger", "Lo siento, registro falló");
+				} */
+			}
+		}
+        // Mostrar la lista de anuncios
+        break;
+    case 'POST': 
+		var_dump($_POST);
+		$user = new CategoryData();
+		$user->id = $_POST['categorie-id'];
+		$user->name = strtoupper($_POST["categorie-name"]);
+		$user->description = '';
+
+		// Manejar la creación de una categoria
+		if(isset($_POST['categorie-id']) && $_POST['categorie-id']>0){	
+			$errors = $user->update();
+			
+			if(!empty($errors)){	
+				$msg = Core::display_msg("success", "Categoría agregada exitosamente.");
+			}else{
+				$msg = Core::display_msg("danger", "Lo siento, registro falló");
+			}
+		}elseif(isset($_POST['add_cat'])){			
+			$errors = $user->add();
+			
+			if(!empty($errors)){	
+				$msg = Core::display_msg("success", "Categoría agregada exitosamente.");
+			}else{
+				$msg = Core::display_msg("danger", "Lo siento, registro falló");
+			}
+		}
+
+		break;
+	default:
+		// Manejar otros métodos HTTP si es necesario
+		break;
 }
 ?>
 <!-- Content Header (Page header) -->
@@ -41,17 +91,18 @@ if(isset($_POST['add_cat'])){
 						<div class="panel-heading">
 							<strong>
 								<span class="glyphicon glyphicon-th"></span>
-								<span>Agregar categoría</span>
+								<span><?php echo $msg; ?></span>
 							</strong>
 						</div>
 						<div class="panel-body">
-							<form class="form-horizontal" method="post" id="addtask" action="index.php?view=categorias" role="form">				
+							<form class="form-horizontal" method="post" id="addtask" action="index.php?view=categorias" role="form">
+								<input type="hidden" name="categorie-id" value="<?php echo $category->id; ?>">
 								<div class="col-md-12">
 									<div class="form-group">
-										<input type="text" class="form-control" name="categorie-name" placeholder="Nombre de la categoría" required>
+										<input type="text" class="form-control" name="categorie-name" placeholder="Nombre de la categoría" value="<?php echo $category->name; ?>" required>
 									</div>
 								</div>
-								<button type="submit" name="add_cat" class="btn btn-primary">Agregar categoría</button>
+								<button type="submit" name="add_cat" class="btn btn-primary"><?php echo $msg; ?></button>
 							</form>
 						</div>
 					</div>
@@ -94,7 +145,7 @@ if(isset($_POST['add_cat'])){
 												echo '<td width="8%">';
 													echo '<div align="center">';
 														echo '<button type="button" class="btn btn-default btn-sm" onClick="btn_EnviarOnClick(\''.$product->id.'\');"><i class="fa fa-trash"></i></button>';
-														echo '<a href="index.php?view=editcategory&id='.$product->id.'" class="btn btn-default btn-sm"><i class="fa fa-edit"></i></a>';
+														echo '<a href="index.php?view=categorias&id='.$product->id.'&tipo=2" class="btn btn-default btn-sm"><i class="fa fa-edit"></i></a>';
 													echo '</div>';
 												echo '</td>';
 											echo '</tr>';

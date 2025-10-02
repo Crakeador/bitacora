@@ -120,14 +120,14 @@ if(!isset($_SESSION['mesf'])) $_SESSION['mesf'] = $_SESSION['mes'];
 				if($resultado > 0){
 				    // echo '<button type="button" class="btn btn-danger btn-sm" onClick="javascript:location.href=\'index.php?action=calcula&ano='.$_SESSION['ano'].'&mes='.$_SESSION['mes'].'\';"><i class="fa fa-calculator"></i> Recalcula Nomina </button>';
 				}else{
-				    echo '<button type="button" class="btn btn-success btn-sm" onClick="javascript:location.href=\'index.php?action=nomina&ano='.$_SESSION['ano'].'&mes='.$_SESSION['mes'].'\';"><i class="fa fa-refresh"></i> Generar Nomina </button>';
+				    echo '<button type="button" class="btn btn-success btn-sm" onClick="javascript:location.href=\'index.php?action=nomina&ano='.$_SESSION['ano'].'&mes='.$_SESSION['mes'].'\';"><i class="fa fa-sync"></i> Generar Nomina </button>';
 				}
                 //RECALCULAR				    
 				//echo '<a href="#" id="calcula" class="btn btn-danger btn-sm button"><i class="fa fa-calculator"></i>&nbsp; Recalcular Nomina </a>';
 				//cALCULO    
 				//echo '<a href="#" id="nomina" class="btn btn-success btn-sm button"><i class="fa fa-users"></i>&nbsp; Generar Nomina </a>';
 			?>
-			<!-- button type="button" class="btn btn-default btn-sm" onClick="btn_EnviarQuincena();"><i class="fa fa-refresh"></i> Generar Quincena</button -->
+			<!-- button type="button" class="btn btn-default btn-sm" onClick="btn_EnviarQuincena();"><i class="fa fa-sync"></i> Generar Quincena</button -->
 			<button type="button" class="btn btn-default btn-sm" onClick="btn_EnviarRecibo();"><i class="fa fa-print"></i> Generar Recibos</button>
 			<!-- button type="button" class="btn btn-default btn-sm" onClick="btn_EnviarMovilizacion();"><i class="fa fa-motorcycle"></i> Generar Recibos</button -->
 			<div id="content"></div>

@@ -195,8 +195,8 @@ if(!isset($_SESSION["user_id"])) {
 								echo '<script>window.location="noticias";</script>';
 							}
 						}
-						//$_SESSION['sweetalert_message'] = ['icon' => 'error', 'title' => '¡Error!', 'text' => '1. Usuario no registrado en el sistema, consulte con el administrador.'];
-						//echo "<script>window.location='./';</script>";
+						$_SESSION['sweetalert_message'] = ['icon' => 'error', 'title' => '¡Error!', 'text' => '1. Usuario no registrado en el sistema, consulte con el administrador.'];
+						echo "<script>window.location='./';</script>";
 					}else{						
 						$rolid = 7;
 						$roldes = 'Agente de Seguridad';

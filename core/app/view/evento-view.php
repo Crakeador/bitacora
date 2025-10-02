@@ -221,7 +221,7 @@ if($total > 1){
 			<!-- panel heading/header -->
 			<div class="box-header with-border">
 				<h3 class="box-title"><i class="mr5"></i>NOVEDADES </h3>
-                <a href="evento" class="btn btn-warning pull-right"><i class="fa fa-refresh"></i></a>
+                <a href="evento" class="btn btn-warning pull-right"><i class="fa fa-sync"></i></a>
                 <button type="submit" class="btn btn-success pull-right" style="font-size: 14px; font-weight: bold;"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar </button>&nbsp;&nbsp;
 			</div>
 			<div class="box-body">

@@ -29,8 +29,8 @@ class CategoryData {
 	}
 
 	public function update(){
-		$sql = "update ".self::$tablename." set name=\"$this->name\", description=\"$this->description\" where id=$this->id"; echo $sql;
-		Executor::doit($sql);
+		$sql = "update ".self::$tablename." set name=\"$this->name\" where id=$this->id"; 
+		return Executor::doit($sql);
 	}
 
 	public static function getById($id){

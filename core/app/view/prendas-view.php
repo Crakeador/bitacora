@@ -8,7 +8,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 switch ($method) {
     case 'POST':
-        var_dump($_POST);
+        //var_dump($_POST);
     	if($_POST["idagente"] == 0){
     	    Core::alert("Error...!!!!", "No se ha seleccionado ningun agente de seguridad...!!!", "error");
     	}else{
@@ -222,7 +222,7 @@ array(7) {
 					<?php
 						//Lista de los productos
 						foreach($products as $tables) {
-							var_dump($tables);
+							//var_dump($tables);
 							$serial = ProductData::getSerial($tables->id);										
 							$resultado = count($serial); $cadena = '';
 							

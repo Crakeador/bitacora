@@ -82,7 +82,7 @@ if(isset($_GET['observacion'])){
 		<small><?php echo $mensaje; ?></small>
 	</h1>
 	<ol class="breadcrumb">
-		<li><a href="./index.php?view=cotizacion"><i class="fa fa-database"></i> Cotizaciones </a></li>
+		<li><a href="./cotizacion"><i class="fa fa-database"></i> Cotizaciones </a></li>
 		<li class="active"> Cotizar </li>
 	</ol>
 </section>

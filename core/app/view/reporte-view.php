@@ -30,13 +30,100 @@ if(isset($_POST['id_person'])){
         if($_POST["observacion"]==""){
             $errores = 'debe de ingresar una observacion del puesto';
 		}else{
+			if($_FILES["foto1"]["name"]==""){
+				$errores = 'debe de tomarse una foto para verificar la novedad';
+			}else{
+				$image = new Upload($_FILES["foto1"]);
+
+				if($image->uploaded){
+					$image->Process("storage/parte/");
+
+					if($image->processed){
+						$user->foto1 = $image->file_dst_name;
+					}
+				}
+
+				if($_FILES["foto2"]["name"]==""){
+					$user->foto2 = "";
+				}else{
+					$image = new Upload($_FILES["foto2"]);
+
+					if($image->uploaded){
+						$image->Process("storage/parte/");
+
+						if($image->processed){
+							$user->foto2 = $image->file_dst_name;
+						}
+					}
+				}
+
+				if($_FILES["foto3"]["name"]==""){
+					$user->foto3 = "";
+				}else{
+					$image = new Upload($_FILES["foto3"]);
+
+					if($image->uploaded){
+						$image->Process("storage/parte/");
+
+						if($image->processed){
+							$user->foto3 = $image->file_dst_name;
+						}
+					}
+				}
+
+				if($_FILES["foto4"]["name"]==""){
+					$user->foto4 = "";
+				}else{
+					$image = new Upload($_FILES["foto4"]);
+
+					if($image->uploaded){
+						$image->Process("storage/parte/");
+
+						if($image->processed){
+							$user->foto4 = $image->file_dst_name;
+						}
+					}
+				}
+
+				if($_FILES["foto5"]["name"]==""){
+					$user->foto5 = "";
+				}else{
+					$image = new Upload($_FILES["foto5"]);
+
+					if($image->uploaded){
+						$image->Process("storage/parte/");
+
+						if($image->processed){
+							$user->foto5 = $image->file_dst_name;
+						}
+					}
+				}
+
+				if($_FILES["foto6"]["name"]==""){
+					$user->foto6 = "";
+				}else{
+					$image = new Upload($_FILES["foto6"]);
+
+					if($image->uploaded){
+						$image->Process("storage/parte/");
+
+						if($image->processed){
+							$user->foto6 = $image->file_dst_name;
+						}
+					}
+				}
+
+				$prod = $user->add();
+				$guardar = 1;
+			}
+		
 			$_SESSION['turno'] = $_POST["turno"];
 			$_SESSION['puesto'] = (int) $_POST["id_localidad"];
 			
 			$_SESSION['ingreso']=2;
 			$prod = $user->addIMG();	
 
-            Core::redir("parte");			
+            Core::redir("home");			
         }
     }
 

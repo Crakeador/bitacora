@@ -25,7 +25,7 @@ $_SESSION['cotizar'] = 0;
 <section class="content" style="padding: 1.5rem !important;">
 	<div class="box">
 		<div class="box-header with-border">
-			<a id="btn_productos" class="btn btn-success btn-sm" href="index.php?view=cotizar">
+			<a id="btn_productos" class="btn btn-success btn-sm" href="./cotizar">
 				<span class="glyphicon glyphicon-plus"></span> Nueva cotizacion
 			</a>
 		</div>

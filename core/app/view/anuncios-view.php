@@ -94,62 +94,60 @@ switch ($method) {
                     </div>
                 </div>
             </div>
-            <div class="table-responsive">
-                <table class="table table-striped" id="tblAnuncios">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Título</th>
-                            <th>Tipo</th>
-                            <th>Fecha</th>
-                            <th>Imagen</th>
-                            <th>Reacciones</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach($anuncios as $a): ?>
-                        <tr>
-                            <td><?php echo $a->id; ?></td>
-                            <td><?php echo htmlspecialchars($a->title); ?></td>
-                            <td><?php echo htmlspecialchars($a->type); ?></td>
-                            <td><?php echo $a->date; ?></td>
-                            <td><?php if($a->imagen) echo '<img src="storage/anuncios/'.htmlspecialchars($a->imagen).'" style="height:40px">'; ?></td> <?php 
-                            $counts = ReaccionesData::getCountsByAnuncio($a->id); $totalReac = 0; 
-                            
-                            foreach($counts as $ct){ $totalReac += intval($ct); } ?>
-                            <td data-order="<?php echo $totalReac; ?>" data-reactions='<?php echo json_encode($counts); ?>'>
-                                <div align="center"> <?php 
-                                    if(!empty($counts)){
-                                        $order = ["👍","❤️","😂","😢","😮","👏","🔥","🎉"]; 
-                                        $printed = 0;
-                                        foreach($order as $em){ 
-                                            if(isset($counts[$em])){ 
-                                                echo '<span style="margin-right:6px">'.$em.' <b>'.intval($counts[$em]).'</b></span>'; $printed++; 
-                                            } 
-                                        }
-                                        foreach($counts as $em=>$ct){ if(!in_array($em,$order)){ 
-                                            echo '<span style="margin-right:6px">'.htmlspecialchars($em).' <b>'.intval($ct).'</b></span>'; $printed++; } 
-                                        }
+            <table class="table table-striped" id="tblAnuncios">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Título</th>
+                        <th>Tipo</th>
+                        <th>Fecha</th>
+                        <th>Imagen</th>
+                        <th>Reacciones</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach($anuncios as $a): ?>
+                    <tr>
+                        <td><?php echo $a->id; ?></td>
+                        <td><?php echo htmlspecialchars($a->title); ?></td>
+                        <td><?php echo htmlspecialchars($a->type); ?></td>
+                        <td><?php echo $a->date; ?></td>
+                        <td><?php if($a->imagen) echo '<img src="storage/anuncios/'.htmlspecialchars($a->imagen).'" style="height:40px">'; ?></td> <?php 
+                        $counts = ReaccionesData::getCountsByAnuncio($a->id); $totalReac = 0; 
+                        
+                        foreach($counts as $ct){ $totalReac += intval($ct); } ?>
+                        <td data-order="<?php echo $totalReac; ?>" data-reactions='<?php echo json_encode($counts); ?>'>
+                            <div align="center"> <?php 
+                                if(!empty($counts)){
+                                    $order = ["👍","❤️","😂","😢","😮","👏","🔥","🎉"]; 
+                                    $printed = 0;
+                                    foreach($order as $em){ 
+                                        if(isset($counts[$em])){ 
+                                            echo '<span style="margin-right:6px">'.$em.' <b>'.intval($counts[$em]).'</b></span>'; $printed++; 
+                                        } 
+                                    }
+                                    foreach($counts as $em=>$ct){ if(!in_array($em,$order)){ 
+                                        echo '<span style="margin-right:6px">'.htmlspecialchars($em).' <b>'.intval($ct).'</b></span>'; $printed++; } 
+                                    }
 
-                                        if($printed===0){ 
-                                            echo '<span class="text-muted"><b>0</b></span>'; 
-                                        }
-                                        echo '<span class="hidden"> Total: '.$totalReac.'</span>';
-                                    } else { 
+                                    if($printed===0){ 
                                         echo '<span class="text-muted"><b>0</b></span>'; 
-                                    } ?>
-                                </div>
-                            </td>
-                            <td>
-                                <button class="btn btn-xs btn-warning btn-edit" data-id="<?php echo $a->id; ?>" data-title="<?php echo htmlspecialchars($a->title); ?>" data-body="<?php echo htmlspecialchars($a->body); ?>" data-type="<?php echo htmlspecialchars($a->type); ?>"><i class="fa fa-pen"></i></button>
-                                <a class="btn btn-xs btn-danger" href="index.php?view=anuncios.eliminar&id=<?php echo $a->id; ?>" onclick="return confirm('¿Eliminar anuncio?');"><i class="fa fa-trash"></i></a>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
+                                    }
+                                    echo '<span class="hidden"> Total: '.$totalReac.'</span>';
+                                } else { 
+                                    echo '<span class="text-muted"><b>0</b></span>'; 
+                                } ?>
+                            </div>
+                        </td>
+                        <td>
+                            <button class="btn btn-xs btn-warning btn-edit" data-id="<?php echo $a->id; ?>" data-title="<?php echo htmlspecialchars($a->title); ?>" data-body="<?php echo htmlspecialchars($a->body); ?>" data-type="<?php echo htmlspecialchars($a->type); ?>"><i class="fa fa-pen"></i></button>
+                            <a class="btn btn-xs btn-danger" href="index.php?view=anuncios.eliminar&id=<?php echo $a->id; ?>" onclick="return confirm('¿Eliminar anuncio?');"><i class="fa fa-trash"></i></a>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -237,12 +235,35 @@ switch ($method) {
         var table;
         if($.fn.DataTable){
             table = $('#tblAnuncios').DataTable({
-                order: [[5, 'desc']],
-                pageLength: 10,
-                responsive: true,
-                language: {
-                    url: 'plugins/datatables/i18n/Spanish.json'
-                }
+                "order": [[0, 'desc']],
+                "responsive": true,
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "stateSave": true,
+                "autoWidth": false,
+                "language": {
+                      "lengthMenu": "Ver _MENU_ registros",
+                      "zeroRecords": "Lo sentimos, no hay ninguna coincidencia...!!!",
+                      "info": "_PAGE_ de _PAGES_",
+                      "infoEmpty": "No hay ningun registro disponible...!!!",
+                      "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+                      "search": "Buscar",
+                      "paginate": {
+                        "first": "Primero",
+                        "previous": "Anterior",
+                        "next": "Siguiente",
+                        "last": "Ultimo"
+                      }
+                  },
+                  "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+                  "aria": {
+                      "SortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                      "SortDescending": ": Activar para ordenar la columna de manera descendente"
+                  },
+                  "pagingType": "full_numbers"
             });
             
             // Filtros por emoji

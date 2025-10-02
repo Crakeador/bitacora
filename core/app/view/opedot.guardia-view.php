@@ -83,7 +83,7 @@ if(isset($_GET["puesto"])){
 						<div class="col-md-12">
 							<div class="form-group">
 								<div class="input-group">
-								<span class="input-group-addon"><i class="fa fa-bank"></i></span>
+								<span class="input-group-addon"><i class="fa fa-university"></i></span>
 									<select class="form-control" id="listaCliente" name="listaCliente" onchange="javascript:location.href='index.php?view=opedot.guardia&id='+value;" required>
 										<option value="0" selected="selected"> Selecione el cliente </option>
 										<?php
@@ -95,7 +95,7 @@ if(isset($_GET["puesto"])){
 							</div>
 							<div class="form-group">
 								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-newspaper-o"></i></span>
+									<span class="input-group-addon"><i class="fa fa-book"></i></span>
 									<select class="form-control" id="listaPuesto" name="listaPuesto" onchange="javascript:location.href='index.php?view=opedot.guardia&puesto='+value;" required>
 										<option value="0" selected="selected"> Selecione el puesto </option>
 										<?php

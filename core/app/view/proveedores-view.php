@@ -5,14 +5,14 @@
 		<small>listado de los proveedores</small>
 	</h1>
 	<ol class="breadcrumb">
-		<li><a href="index.php?view=home"><i class="fa fa-dashboard"></i> Panel de control </a></li>
+		<li><a href="home"><i class="fa fa-dashboard"></i> Panel de control </a></li>
 	</ol>
 </section>
 <!-- Main content -->
 <section class="content" style="padding: 1.5rem !important;">
 	<div class="box">	
 		<div class="box-header with-border">
-			<a href="index.php?view=newprovider" class="btn btn-success btn-sm">
+			<a href="index.php?view=proveedor&id=0" class="btn btn-success btn-sm">
 				<span class="glyphicon glyphicon-plus"></span> Ingresar Proveedor
 			</a>		
 		</div>
@@ -38,7 +38,7 @@
 							if($tables->tipo == 1) $persona = 'Natural'; else if($tables->tipo == 2) $persona = 'Jur&iacute;dico'; else $persona = 'Sin RUC';
 							echo '<tr>';
 								echo '<td>';
-									echo '<a class="text-primary" href="?view=editprovider&id='.$tables->id.'">'.$tables->nombre.'</a>';
+									echo '<a class="text-primary" href="./index.php?view=proveedor&id='.$tables->id.'">'.$tables->nombre.'</a>';
 									echo '<div class="mini-tabla">';
 										echo '<small>';
 											echo '<span class="glyphicon glyphicon-ok-sign text-success"></span>';
@@ -58,10 +58,8 @@
 					?>
 				</tbody>
 			</table>
-		</div>
-		<!-- /.box-body -->
-	</div>
-	<!-- /.box -->
+		</div>	<!-- /.box-body -->
+	</div>	<!-- /.box -->
 </section>
 <!-- Page specific script -->
 <script type='text/javascript'><!--

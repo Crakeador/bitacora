@@ -195,7 +195,7 @@ endif;
 						  <div class="checkbox">
 							<label>
 							<a href="index.php?view=clearre" class="btn btn-lg btn-danger"><i class="glyphicon glyphicon-remove"></i> Cancelar</a>
-							<button class="btn btn-lg btn-primary"><i class="fa fa-refresh"></i> Procesar Reabastecimiento</button>
+							<button class="btn btn-lg btn-primary"><i class="fa fa-sync"></i> Procesar Reabastecimiento</button>
 							</label>
 						  </div>
 						</div>
