@@ -19,7 +19,7 @@ if(isset($_GET['id'])){
 		<small>lista de los clientes</small>
 	</h1>
 	<ol class="breadcrumb">
-		<li><a href="./index.php?view=home"><i class="fa fa-dashboard"></i> Panel de control </a></li>
+		<li><a href="./home"><i class="fa fa-dashboard"></i> Panel de control </a></li>
 		<li class="active"> Listado </li>
 	</ol>
 </section>
@@ -27,7 +27,7 @@ if(isset($_GET['id'])){
 <section class="content" style="padding: 1.5rem !important;">
 	<div class="box">
 		<div class="box-header with-border">
-			<a id="btn_productos" class="btn btn-success btn-sm" href="index.php?view=cliente">
+			<a id="btn_productos" class="btn btn-success btn-sm" href="./cliente">
 				<span class="glyphicon glyphicon-plus"></span> Ingresar un cliente
 			</a>
 		</div>

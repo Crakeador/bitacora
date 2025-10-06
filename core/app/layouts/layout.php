@@ -112,7 +112,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
             echo '<link type="text/css" rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css?v=1.0.1"/>';
             echo '<link type="text/css" rel="stylesheet" href="plugins/datatables/extensions/Responsive/css/responsive.bootstrap.min.css?v=1.0.1"/>';
             // Font Awesome Icons
-            echo '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css?v=1.0.1">';
+            echo '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">';
             // Theme style
             echo '<link type="text/css" rel="stylesheet" href="plugins/icheck/all.css?v=1.0.1">';
             // Alertas del Sistema
@@ -302,7 +302,8 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
           object-position: 50% 50%; /* Posición (opcional) */
       }
     </style>
-    <script type="text/javascript" src="plugins/jQuery/jquery.min.js?v=1.0.1"></script> <!-- jquery-2.2.4 -->
+    <!-- jQuery jquery-2.2.4 -->
+    <script type="text/javascript" src="plugins/jQuery/jquery.min.js?v=1.0.1"></script>     
     <script type="text/javascript" src="plugins/jQueryUI/jquery-ui.js?v=1.0.1"></script>
 	  <script type="text/javascript" src="assets/js/jquery.flexslider.js?v=1.0.1"></script>	
     <!-- Switchery -->
@@ -786,7 +787,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                                 <li><a href="./index.php?view=caja"><i class="fa fa-cube"></i> <span>Caja Chica</span></a></li>
                             <?php endif; ?>
                             <li class="treeview">
-                              <a href="#"><i class='fa fa-chart-pie'></i> <span>Inventario</span> <i class="fa fa-angle-left pull-right"></i></a>
+                              <a href="#"><i class='fa fa-area-chart'></i> <span>Inventario</span> <i class="fa fa-angle-left pull-right"></i></a>
                               <ul class="treeview-menu">
                                 <li><a href="./inventary"><i class="fa fa-circle"></i>Inventario</a></li>
                                 <li><a href="./index.php?view=re"><i class="fa fa-circle"></i>Abastecer</a></li>
@@ -828,7 +829,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                                 <li><a href=\"./index.php?view=repent.lista\"><i class='fa fa-edit'></i> <span>Entrega de dotaci&oacute;n</span></a></li>
                                 <li><a href=\"./productos\"><i class='fa fa-book'></i> <span>Listado de Productos</span></a></li>
                                 <li class='treeview'>
-                                <a href=\"#\"><i class='fa fa-chart-pie'></i> <span>Catalogos</span> <i class='fa fa-angle-left pull-right'></i></a>
+                                <a href=\"#\"><i class='fa fa-area-chart'></i> <span>Catalogos</span> <i class='fa fa-angle-left pull-right'></i></a>
                                 <ul class='treeview-menu'>
                                   <li><a href=\"./clientes\"><i class='fa fa-circle'></i> Clientes </a></li>
                                   <li><a href=\"./puestos\"><i class='fa fa-circle'></i> Puestos </a></li>
@@ -873,8 +874,8 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                             <li class="header">Comercial</li>
                             <li><a href="./anuncios"><i class='fa fa-bullhorn'></i><span> Anuncios </span></a></li>
                             <li><a href="./informes"><i class='fa fa-envelope'></i><span> Informes </span></a></li>
-                            <li><a href="./cotizacion"><i class='fa fa-toolbox'></i><span> Cotizaciones </span></a></li>
-                            <li><a href="./estadistica"><i class='fa fa-images'></i><span> Estadisticas </span></a></li>
+                            <li><a href="./cotizacion"><i class='fa fa-diamond'></i><span> Cotizaciones </span></a></li>
+                            <li><a href="./estadistica"><i class='fa fa-line-chart'></i><span> Estadisticas </span></a></li>
                             <!-- li class="header">Contabilidad</li>
                             <li class="treeview">
                               <a href="#"><i class="fa fa-tasks"></i> <span> Registro</span><i class="fa fa-angle-left pull-right"></i></a>
@@ -905,8 +906,8 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                             <li class="treeview">
                               <a href="#"><i class="fa fa-table"></i> <span>Talento Humano</span><i class="fa fa-angle-left pull-right"></i></a>
                               <ul class="treeview-menu">
-                                <li><a href="./index.php?view=rrging.lista">Registro de guardias </a></li>
-                                <li><a href="./index.php?view=rrping.lista">Registro de personal </a></li>
+                                <li><a href="./index.php?view=rrging.lista"><i class="fa fa-circle"></i> Registro de guardias </a></li>
+                                <li><a href="./index.php?view=rrping.lista"><i class="fa fa-circle"></i> Registro de personal </a></li>
                                 <li><a href="./index.php?view=rrhliq.lista"><i class="fa fa-circle"></i> Liquidaci&oacute;n </a></li>
                                 <li><a href="./index.php?view=rrhvac.lista"><i class="fa fa-circle"></i> Vacaciones </a></li>
                                 <li><a href="./index.php?view=rrhdoc.lista"><i class="fa fa-circle"></i> Sansiones </a></li>
@@ -965,13 +966,13 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                             </li>
                             <li><a href="./bitacora"><i class='fa fa-book'></i> <span>Bitacora</span></a></li>
                             <li><a href="./partes"><i class='fa fa-binoculars'></i> <span>Parte</span></a></li>
-                            <li><a href="./index.php?view=opeasi.lista"><i class='fa fa-handshake'></i><span> Asignar Efectivo</span></a></li>
+                            <li><a href="./index.php?view=opeasi.lista"><i class='fa fa-sign-in'></i><span> Asignar Efectivo</span></a></li>
                             <li><a href="./prendas"><i class='fa fa-clipboard'></i><span> Entregar dotaci&oacute;n </span></a></li>
                             <li><a href="./dotar "><i class='fa fa-briefcase'></i><span> Dotar Puesto </span></a></li>
                             <li><a href="./residentes"><i class='fa fa-building'></i> <span>Residentes</span></a></li>
                             <li class="header">Logistica</li>
                             <li class="treeview">
-                              <a href="#"><i class='fa fa-chart-pie'></i> <span>Inventario</span> <i class="fa fa-angle-left pull-right"></i></a>
+                              <a href="#"><i class='fa fa-area-chart'></i> <span>Inventario</span> <i class="fa fa-angle-left pull-right"></i></a>
                               <ul class="treeview-menu">
                                 <li><a href="./inventary"><i class="fa fa-circle"></i><span> Resumen </span></a></li>
                                 <li><a href="./dotacion"><i class="fa fa-circle"></i><span> Asignados </span></a></li>
@@ -1017,9 +1018,9 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                                 <li><a href="./settings"><i class="fa fa-circle"></i><span> Configuracion </span></a></li>
                                 <li><a href="./index.php?view=sisaud.lista"><i class="fa fa-circle"></i> Auditoria </a></li>
                               </ul>
-                            </li>
-                        <?php endif; 
-                        if($_SESSION['idrol'] == 7 || $_SESSION['idrol'] == 8){
+                            </li>  <?php 
+                        endif; 
+                        if($_SESSION['idrol'] == 7 || $_SESSION['idrol'] == 8 || $_SESSION['idrol'] == 11){
                             // Vigilante Residencial
                         }elseif($_SESSION['idrol'] == 9){
                           echo '<li><a href="./residentpass"><i class="fa fa-cube"></i> <span>Cambio de clave</span></a></li>';

@@ -1,7 +1,7 @@
 <?php
 include_once('../../core/controller/Database.php');
 
-var_dump($_POST);
+//var_dump($_POST);
 if(isset($_POST["action"])) //show all events
 {
     if($_POST["action"] == "add") // add new event

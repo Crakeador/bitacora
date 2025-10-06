@@ -27,13 +27,13 @@
         <div class="containerDg">
             <div class="row">
                 <?php 
-                    var_dump($_GET);
+                    //var_dump($_GET);
                     if(isset($_GET["id"]) && $_GET["id"]!=""){
                         $persons = PersonData::getLike('idcard', $_GET["id"]);
                         
                         if(count($persons)>0){
                             $cargos = CargoData::getById($persons->cargo);
-                            var_dump($cargos);
+                            //var_dump($cargos);
                             if($persons->is_active=='1'){
                                 $activo = 'Activo';
                                 $clase = '';

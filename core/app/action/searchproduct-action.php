@@ -5,7 +5,7 @@
 */
 ini_set('max_input_vars', 5000);
 
-var_dump($_POST);
+//var_dump($_POST);
 if(count($_POST)>0){
 	echo '<script type="text/javascript" src="plugins/sweetalert/sweetalert.min.js"></script>
 	      <script type="text/javascript">

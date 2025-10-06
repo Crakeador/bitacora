@@ -2,7 +2,8 @@
 // Sistema de Rsporte de la dotacion entregadas
 
 $sell = SellData::getByIdPerson($_GET["id"]); 
-// print_r($sell); 
+$valor = $sell->id;
+//print_r($sell); 
 ?>
 <!-- Content Header (Page header) --> 
 <section class="content-header">
@@ -26,10 +27,9 @@ $sell = SellData::getByIdPerson($_GET["id"]);
 </section>
 <!-- Main content -->
 <section class="content" style="padding: 1.5rem !important;">
-  <?php if(isset($_GET["id"]) && $_GET["id"]!=""):?>
-  <?php
-    $productos = $sell->getByIdProduct($_GET["id"]);
-    $operations = OperationData::getAllProductsBySellId($_GET["id"]);
+  <?php if(isset($_GET["id"]) && $_GET["id"]!=""):
+    $productos = $sell->getByIdProduct($valor); //$_GET["id"]
+    $operations = OperationData::getAllProductsBySellId($valor); //$_GET["id"]
     $total = 0;
     
     if(isset($_COOKIE["selled"])){

@@ -1,7 +1,7 @@
 <?php
 // Funcion de Conexion
 function getConn(){
-  $mysqli = mysqli_connect("localhost", "american", "1234", "bitacora");
+  $mysqli = mysqli_connect("localhost", "root", "MyNewPass", "bitacora");
   if (mysqli_connect_errno($mysqli))
     echo "Fallo al conectar a MySQL: " . mysqli_connect_error();
  

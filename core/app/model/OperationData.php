@@ -215,7 +215,7 @@ class OperationData {
 	}
 
 	public static function getAllProductsBySellId($sell_id){
-		$sql = "select * from ".self::$tablename." where sell_id=$sell_id order by created_at desc";
+		$sql = "select * from ".self::$tablename." where sell_id=$sell_id order by created_at desc"; 
 		$query = Executor::doit($sql);
 
 		return Model::many($query[0],new OperationData());
