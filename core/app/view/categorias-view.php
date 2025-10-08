@@ -20,14 +20,6 @@ switch ($method) {
 				var_dump($category); 
 				
 				$msg = 'Modificar categoría'; 
-				/*
-				
-				$errors = $category->update();
-				if(!empty($errors)){	
-					$msg = Core::display_msg("success", "Categoría desactivada exitosamente.");
-				}else{
-					$msg = Core::display_msg("danger", "Lo siento, registro falló");
-				} */
 			}
 		}
         // Mostrar la lista de anuncios
@@ -75,9 +67,7 @@ switch ($method) {
 	</ol>
 </section>
 <!-- Main content -->
-<section class="content container-fluid" style="padding: 1.5rem !important;">	
-	<input type='hidden' name='hid_frmEstado' id='hid_frmEstado' value='' />
-	<input type='hidden' name='hid_frmIdrol' id='hid_frmIdrol' value='<?php echo $_SESSION['idrol']; ?>'/>
+<section class="content container-fluid" style="padding: 1.5rem !important;">
 	<div class="row">
 		<div class="col-md-12">		
 			<div class="row">

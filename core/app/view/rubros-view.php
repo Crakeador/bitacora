@@ -12,7 +12,7 @@
 <section class="content" style="padding: 1.5rem !important;">
 	<div class="box">
 		<div class="box-header with-border">
-			<a id="btn_productos" class="btn btn-success btn-sm" href="index.php?view=catrub.rubro">
+			<a id="btn_productos" class="btn btn-success btn-sm" href="rubro">
 				<span class="glyphicon glyphicon-plus"></span> Ingresar un cliente
 			</a>
 		</div>
@@ -138,6 +138,6 @@
 	} //--
 	
 	function btn_UpdateOnClick($id) {
-		window.location.href = "./?view=catrub.rubro&id="+$id;
+		window.location.href = "./index.php?view=rubro&id="+$id;
 	} //
 </script>

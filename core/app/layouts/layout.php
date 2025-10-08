@@ -575,8 +575,8 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                             <li class="treeview">
                               <a href="#"><i class='fa fa-print'></i> <span>Reportes</span> <i class="fa fa-angle-left pull-right"></i></a>
                               <ul class="treeview-menu">
-                                <li><a href="./reports"><i class="fa fa-circle"></i>Inventario</a></li>
-                                <li><a href="./sellreports"><i class="fa fa-circle"></i>Entregas</a></li>
+                                <li><a href="./reports"><i class="fa fa-bullseye"></i>Inventario</a></li>
+                                <li><a href="./sellreports"><i class="fa fa-bullseye"></i>Entregas</a></li>
                               </ul>
                             </li>
                         <?php endif; ?>
@@ -587,12 +587,12 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                               echo '<li class="treeview">
                                       <a href="#"><i class="fa fa-random"></i> <span>Vehiculos</span> <i class="fa fa-angle-left pull-right"></i></a>
                                       <ul class="treeview-menu">
-                                        <li><a href="recibos"><i class="fa fa-circle"></i>Entregas</a></li>
-                                        <li><a href="entregas"><i class="fa fa-circle"></i>Recepcion</a></li>
+                                        <li><a href="recibos"><i class="fa fa-bullseye"></i>Entregas</a></li>
+                                        <li><a href="entregas"><i class="fa fa-bullseye"></i>Recepcion</a></li>
                                       </ul>
                                     </li>';
                               echo '<li><a href="./puestos"><i class="fa fa-hotel"></i><span> Puestos </span></a></li>';
-                              echo '<li><a href="./index.php?view=opeasi.lista"><i class="fa fa-handshake"></i><span> Asignar Efectivo</span></a></li>';
+                              echo '<li><a href="./personas"><i class="fa fa-sign-in"></i><span> Asignar Efectivo</span></a></li>';
                               echo '<li><a href="./descuento"><i class="fa fa-credit-card"></i><span>Liquidaci&oacute;n</span></a></li>';
                               echo '<li><a href="./agentes"><i class="fa fa-building"></i> <span>Agentes Dotados</span></a></li>'; 
                               echo '<li><a href="./bitacora"><i class="fa fa-book"></i> <span>Bitacora</span></a></li>'; 
@@ -601,9 +601,9 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                               echo '<li class="treeview">'; 
                                       echo '<a href="#"><i class="fa fa-calendar"></i> <span>Horario</span><i class="fa fa-angle-left pull-right"></i></a>'; 
                                       echo '<ul class="treeview-menu">'; 
-                                        echo '<li><a href="./planificado"><i class="fa fa-circle"></i> Planificado </a> </li>'; 
+                                        echo '<li><a href="./planificado"><i class="fa fa-bullseye"></i> Planificado </a> </li>'; 
                                         echo '<li>'; 
-                                          echo '<a href="#"><i class="fa fa-circle"></i> Asistencia <i class="fa fa-angle-left pull-right"></i></a>'; 
+                                          echo '<a href="#"><i class="fa fa-bullseye"></i> Asistencia <i class="fa fa-angle-left pull-right"></i></a>'; 
                                           echo '<ul class="treeview-menu">'; 
                                             echo '<li><a href="./index.php?view=opehor.activos"><i class="fa fa-bullseye"></i><span> Activos </span></a></li>'; 
                                             echo '<li><a href="./index.php?view=opehor.eventual"><i class="fa fa-bullseye"></i><span> Eventuales </span></a></li>'; 
@@ -611,26 +611,26 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                                             echo '<li><a href="./index.php?view=opehor.clientes"><i class="fa fa-bullseye"></i><span> Clientes </span></a></li>'; 
                                           echo '</ul>'; 
                                         echo '</li>'; 
-                                        echo '<li><a href="./faltas"><i class="fa fa-circle"></i><span> Faltas </span></a></li>'; 
+                                        echo '<li><a href="./faltas"><i class="fa fa-bullseye"></i><span> Faltas </span></a></li>'; 
                                       echo '</ul>'; 
                               echo '</li>'; 
                               echo '<li class="treeview">'; 
                                       echo '<a href="#"><i class="fa fa-print"></i> <span>Reportes</span> <i class="fa fa-angle-left pull-right"></i></a>'; 
                                       echo '<ul class="treeview-menu">'; 
-                                            echo '<li><a href="./index.php?view=repent.lista"><i class="fa fa-circle"></i><span>Dotaci&oacute;n de Agentes </span></a></li>'; 
-                                            echo '<li><a href="./index.php?view=reppus.lista"><i class="fa fa-circle"></i><span>Dotaci&oacute;n de Puestos </span></a></li>'; 
+                                            echo '<li><a href="./index.php?view=repent.lista"><i class="fa fa-bullseye"></i><span>Dotaci&oacute;n de Agentes </span></a></li>'; 
+                                            echo '<li><a href="./index.php?view=reppus.lista"><i class="fa fa-bullseye"></i><span>Dotaci&oacute;n de Puestos </span></a></li>'; 
                                       echo '</ul>'; 
                               echo '</li> '; 
-                              echo '<li><a href="./novedades"><i class="fa fa-book-open"></i> <span> Novedades </span></a></li>';
+                              echo '<li><a href="./novedades"><i class="fa fa-clipboard"></i> <span> Novedades </span></a></li>';
                               echo '<li><a href="./vehiculos"><i class="fa fa-car"></i> <span> Veniculos </span></a></li>';
                             }else{
                               if($_SESSION['idrol'] == 6){ // Opcion del Supervisor ?>
                                 <li class="treeview">
                                   <a href="#"><i class="fa fa-calendar"></i> <span>Horario</span><i class="fa fa-angle-left pull-right"></i></a>
                                   <ul class="treeview-menu">
-                                  <li><a href="./planificado"><i class="fa fa-circle"></i> Planificado </a></li>
-                                  <li><a href="./index.php?view=opecor.lista"><i class="fa fa-circle"></i><span> Coordinaci&oacute;n </span></a></li>
-                                  <li><a href="./faltas"><i class="fa fa-circle"></i><span> Faltas </span></a></li>
+                                  <li><a href="./planificado"><i class="fa fa-bullseye"></i> Planificado </a></li>
+                                  <li><a href="./index.php?view=opecor.lista"><i class="fa fa-bullseye"></i><span> Coordinaci&oacute;n </span></a></li>
+                                  <li><a href="./faltas"><i class="fa fa-bullseye"></i><span> Faltas </span></a></li>
                                   </ul>
                                 </li>
                                 <li><a href="./camara"><i class="fa fa-camera"></i><span> Camara </span></a></li>
@@ -671,7 +671,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                                             // Supervisor Interno
                                             echo '<li><a href="./supervisar"><i class="fa fa-motorcycle"></i> <span> Supervisi&oacute;n </span></a></li>';
                                           }else{
-                                            echo '<li><a href="./novedad"><i class="fa fa-book-open"></i> <span> Novedades </span></a></li>';
+                                            echo '<li><a href="./novedad"><i class="fa fa-clipboard"></i> <span> Novedades </span></a></li>';
                                             echo '<li><a href="./vehiculos"><i class="fa fa-car"></i> <span> Veniculos </span></a></li>';
                                             echo '<li><a href="./camara"><i class="fa fa-camera"></i><span> Ronda </span></a></li>';                                          
                                           } 
@@ -690,8 +690,8 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                             <li class="treeview">
                               <a href="#"><i class="fa fa-print"></i> <span>Reportes</span> <i class="fa fa-angle-left pull-right"></i></a>
                               <ul class="treeview-menu">
-                                <li><a href="./index.php?view=reports"><i class="fa fa-circle"></i>Inventario</a></li>
-                                <li><a href="./index.php?view=sellreports"><i class="fa fa-circle"></i>Entregas</a></li>
+                                <li><a href="./index.php?view=reports"><i class="fa fa-bullseye"></i>Inventario</a></li>
+                                <li><a href="./index.php?view=sellreports"><i class="fa fa-bullseye"></i>Entregas</a></li>
                               </ul>
                             </li>
                         <?php endif; ?>
@@ -702,29 +702,29 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                               <a href="#"><i class="fa fa-book"></i> <span> Contabilidad</span><i class="fa fa-angle-left pull-right"></i></a>
                               <ul class="treeview-menu">
                                 <li>
-                                  <a href="#"><i class="fa fa-circle"></i> Asientos <i class="fa fa-angle-left pull-right"></i></a>
+                                  <a href="#"><i class="fa fa-bullseye"></i> Asientos <i class="fa fa-angle-left pull-right"></i></a>
                                   <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle"></i> Registrar </a></li>
-                                    <li><a href="#"><i class="fa fa-circle"></i> Libro diario </a></li>
+                                    <li><a href="#"><i class="fa fa-bullseye"></i> Registrar </a></li>
+                                    <li><a href="#"><i class="fa fa-bullseye"></i> Libro diario </a></li>
                                   </ul>
                                 </li>
-                                <li><a href="./index.php?view=ejercicio"><i class="fa fa-circle"></i> Ejercicio Contable </a></li>
-                                <li><a href="./index.php?view=cuentas"><i class="fa fa-circle"></i> Plan de Cuentas </a></li>
-                                <li><a href="./index.php?view=cuentas"><i class="fa fa-circle"></i> Centros de Costo </a></li>
+                                <li><a href="./index.php?view=ejercicio"><i class="fa fa-bullseye"></i> Ejercicio Contable </a></li>
+                                <li><a href="./index.php?view=cuentas"><i class="fa fa-bullseye"></i> Plan de Cuentas </a></li>
+                                <li><a href="./index.php?view=cuentas"><i class="fa fa-bullseye"></i> Centros de Costo </a></li>
                               </ul>
                             </li>
                             <li class="treeview">
                               <a href="#"><i class="fa fa-archive"></i> <span>Financiero</span><i class="fa fa-angle-left pull-right"></i></a>
                               <ul class="treeview-menu">
-                                <li><a href="./factura"><i class="fa fa-circle"></i> Facturaci&oacute;n</a></li>
-                                <li><a href="./caja"><i class="fa fa-circle"></i> Administrar caja </a></li>
+                                <li><a href="./factura"><i class="fa fa-bullseye"></i> Facturaci&oacute;n</a></li>
+                                <li><a href="./caja"><i class="fa fa-bullseye"></i> Administrar caja </a></li>
                               </ul>
                             </li>
                             <li class="treeview">
                               <a href="#"><i class='fa fa-database'></i> <span>Catalogos</span> <i class="fa fa-angle-left pull-right"></i></a>
                               <ul class="treeview-menu">
-                                <li><a href="./clientes"><i class="fa fa-circle"></i> Clientes </a></li>
-                                <li><a href="./puestos"><i class="fa fa-circle"></i> Servicios </a></li>
+                                <li><a href="./clientes"><i class="fa fa-bullseye"></i> Clientes </a></li>
+                                <li><a href="./puestos"><i class="fa fa-bullseye"></i> Servicios </a></li>
                               </ul>
                             </li>
                         <?php endif; ?>
@@ -732,17 +732,17 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                           if($_SESSION['depart'] == 6 && $_SESSION['idrol'] < 10): ?>
                               <li><a href="./index.php?view=rrping.lista"><i class='fa fa-fax'></i> <span> Personal Oficina </span></a></li>
                               <li><a href="./index.php?view=rrging.lista"><i class='fa fa-bullhorn'></i> <span> Personal Operativo </span></a></li>							
-                              <li><a href="./index.php?view=opeasp.lista"><i class='fa fa-fax'></i> <span>Aspirantes</span></a></li>
+                              <li><a href="./aspirantes"><i class='fa fa-fax'></i> <span>Aspirantes</span></a></li>
                               <?php if($_SESSION['idrol'] == 3): ?>
                                   <li><a href="./index.php?view=caja"><i class='fa fa-cube'></i> <span>Caja Chica</span></a></li>
                               <?php endif; ?>
                               <li class="treeview">
                                 <a href="#"><i class="fa fa-archive"></i> <span>Nomina</span><i class="fa fa-angle-left pull-right"></i></a>
                                 <ul class="treeview-menu">
-                                  <li><a href="./index.php?view=rrhnom.lista"><i class="fa fa-circle"></i> Roles </a></li>
-                                  <li><a href="./index.php?view=rrhpre.lista"><i class="fa fa-circle"></i> Descuentos </a></li>
-                                  <li><a href="./index.php?view=rrhliq.lista"><i class="fa fa-circle"></i> Liquidaci&oacute;n </a></li>
-                                  <li><a href="./index.php?view=rrhmac.lista"><i class="fa fa-circle"></i> Asignaci&oacute;n </a></li>
+                                  <li><a href="./index.php?view=rrhnom.lista"><i class="fa fa-bullseye"></i> Roles </a></li>
+                                  <li><a href="./index.php?view=rrhpre.lista"><i class="fa fa-bullseye"></i> Descuentos </a></li>
+                                  <li><a href="./index.php?view=rrhliq.lista"><i class="fa fa-bullseye"></i> Liquidaci&oacute;n </a></li>
+                                  <li><a href="./index.php?view=rrhmac.lista"><i class="fa fa-bullseye"></i> Asignaci&oacute;n </a></li>
                                 </ul>
                               </li>
                               <li><a href="./index.php?view=rrhvac.lista"><i class="fa fa-calendar"></i><span> Vacaciones </span></a></li>
@@ -760,8 +760,8 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                                   <li>
                                     <a href="#"><i class="fa fa-folder-open-o"></i> Administrativo <i class="fa fa-angle-left pull-right"></i></a>
                                     <ul class="treeview-menu">
-                                      <li><a href="./index.php?view=rrphor.registro"><i class="fa fa-circle"></i> Asistencias </a></li>
-                                      <li><a href="./index.php?view=rrphor.resumen"><i class="fa fa-circle"></i> Resumen  </a></li>
+                                      <li><a href="./index.php?view=rrphor.registro"><i class="fa fa-bullseye"></i> Asistencias </a></li>
+                                      <li><a href="./index.php?view=rrphor.resumen"><i class="fa fa-bullseye"></i> Resumen  </a></li>
                                     </ul>
                                   </li>
                                 </ul>
@@ -769,9 +769,9 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                               <li class="treeview">
                                 <a href="#"><i class='fa fa-database'></i> <span>Catalogos</span> <i class="fa fa-angle-left pull-right"></i></a>
                                 <ul class="treeview-menu">
-                                  <li><a href="departamento"><i class="fa fa-circle"></i><span> Departamentos </span></a></li>
-                                  <li><a href="./index.php?view=catcar.lista"><i class="fa fa-circle"></i><span> Cargos </span></a></li>
-                                  <li><a href="./index.php?view=catrub.lista"><i class="fa fa-circle"></i><span> Rubros </span></a></li>
+                                  <li><a href="departamentos"><i class="fa fa-bullseye"></i><span> Departamentos </span></a></li>
+                                  <li><a href="cargos"><i class="fa fa-bullseye"></i><span> Cargos </span></a></li>
+                                  <li><a href="rubros"><i class="fa fa-bullseye"></i><span> Rubros </span></a></li>
                                 </ul>
                               </li>
                         <?php endif; ?>
@@ -789,16 +789,16 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                             <li class="treeview">
                               <a href="#"><i class='fa fa-area-chart'></i> <span>Inventario</span> <i class="fa fa-angle-left pull-right"></i></a>
                               <ul class="treeview-menu">
-                                <li><a href="./inventary"><i class="fa fa-circle"></i>Inventario</a></li>
-                                <li><a href="./index.php?view=re"><i class="fa fa-circle"></i>Abastecer</a></li>
-                                <li><a href="./index.php?view=res"><i class="fa fa-circle"></i>Abastecimientos</a></li>
+                                <li><a href="./inventary"><i class="fa fa-bullseye"></i>Inventario</a></li>
+                                <li><a href="./index.php?view=re"><i class="fa fa-bullseye"></i>Abastecer</a></li>
+                                <li><a href="./index.php?view=res"><i class="fa fa-bullseye"></i>Abastecimientos</a></li>
                               </ul>
                             </li>
                             <li class="treeview">
                               <a href="#"><i class='fa fa-random'></i> <span>Custodia</span> <i class="fa fa-angle-left pull-right"></i></a>
                               <ul class="treeview-menu">
-                                <li><a href="<?php echo $url; ?>recibos"><i class="fa fa-circle"></i>Entregas</a></li>
-                                <li><a href="<?php echo $url; ?>entregas"><i class="fa fa-circle"></i>Recepcion</a></li>
+                                <li><a href="<?php echo $url; ?>recibos"><i class="fa fa-bullseye"></i>Entregas</a></li>
+                                <li><a href="<?php echo $url; ?>entregas"><i class="fa fa-bullseye"></i>Recepcion</a></li>
                               </ul>
                             </li>
                             <li class="treeview">
@@ -806,19 +806,19 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                               <ul class="treeview-menu">
                                 <?php
                                   if($_SESSION["actividad"] == 1){
-                                    echo '<li><a href="./index.php?view=repent.lista"><i class="fa fa-circle"></i><span>Dotaci&oacute;n de Agentes</span></a></li>';
-                                    echo '<li><a href="./index.php?view=reppus.lista"><i class="fa fa-circle"></i><span>Dotaci&oacute;n de Puestos</span></a></li>';
+                                    echo '<li><a href="./index.php?view=repent.lista"><i class="fa fa-bullseye"></i><span>Dotaci&oacute;n de Agentes</span></a></li>';
+                                    echo '<li><a href="./index.php?view=reppus.lista"><i class="fa fa-bullseye"></i><span>Dotaci&oacute;n de Puestos</span></a></li>';
                                   }
                                 ?>
-                                <li><a href="./index.php?view=reports"><i class="fa fa-circle"></i>Inventario</a></li>
-                                <li><a href="./index.php?view=sellreports"><i class="fa fa-circle"></i>Entregas</a></li>
+                                <li><a href="./index.php?view=reports"><i class="fa fa-bullseye"></i>Inventario</a></li>
+                                <li><a href="./index.php?view=sellreports"><i class="fa fa-bullseye"></i>Entregas</a></li>
                               </ul>
                             </li>
                             <li class="treeview">
                               <a href="#"><i class='fa fa-database'></i> <span>Catalogos</span> <i class="fa fa-angle-left pull-right"></i></a>
                               <ul class="treeview-menu">
-                                <li><a href="./categorias"><i class="fa fa-circle"></i>Categorias</a></li>
-                                <li><a href="./proveedores"><i class="fa fa-circle"></i>Proveedores</a></li>
+                                <li><a href="./categorias"><i class="fa fa-bullseye"></i>Categorias</a></li>
+                                <li><a href="./proveedores"><i class="fa fa-bullseye"></i>Proveedores</a></li>
                               </ul>
                             </li>
                         <?php endif; ?>
@@ -831,18 +831,18 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                                 <li class='treeview'>
                                 <a href=\"#\"><i class='fa fa-area-chart'></i> <span>Catalogos</span> <i class='fa fa-angle-left pull-right'></i></a>
                                 <ul class='treeview-menu'>
-                                  <li><a href=\"./clientes\"><i class='fa fa-circle'></i> Clientes </a></li>
-                                  <li><a href=\"./puestos\"><i class='fa fa-circle'></i> Puestos </a></li>
-                                  <li><a href=\"./index.php?view=res\"><i class='fa fa-circle'></i> Abastecimientos</a></li>
+                                  <li><a href=\"./clientes\"><i class='fa fa-bullseye'></i> Clientes </a></li>
+                                  <li><a href=\"./puestos\"><i class='fa fa-bullseye'></i> Puestos </a></li>
+                                  <li><a href=\"./index.php?view=res\"><i class='fa fa-bullseye'></i> Abastecimientos</a></li>
                                 </ul>
                                 </li>
                                 <li class='treeview'>
                                 <a href=\"#\"><i class='fa fa-print'></i> <span>Reportes</span> <i class='fa fa-angle-left pull-right'></i></a>
                                 <ul class='treeview-menu'>
-                                  <li><a href=\"./index.php?view=repent.lista\"><i class=\"fa fa-circle\"></i><span>Dotaci&oacute;n de Agentes</span></a></li>
-                                  <li><a href=\"./index-php?view=reppus.lista\"><i class=\"fa fa-circle\"></i><span>Dotaci&oacute;n de Puestos</span></a></li>
-                                  <li><a href=\"./index.php?view=reports\"><i class='fa fa-circle'></i>Inventario</a></li>
-                                  <li><a href=\"./index.php?view=sellreports\"><i class='fa fa-circle'></i>Entregas</a></li>
+                                  <li><a href=\"./index.php?view=repent.lista\"><i class=\"fa fa-bullseye\"></i><span>Dotaci&oacute;n de Agentes</span></a></li>
+                                  <li><a href=\"./index-php?view=reppus.lista\"><i class=\"fa fa-bullseye\"></i><span>Dotaci&oacute;n de Puestos</span></a></li>
+                                  <li><a href=\"./index.php?view=reports\"><i class='fa fa-bullseye'></i>Inventario</a></li>
+                                  <li><a href=\"./index.php?view=sellreports\"><i class='fa fa-bullseye'></i>Entregas</a></li>
                                 </ul>
                                 </li>";
                           } 
@@ -863,7 +863,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                           // Pasantes
                           if($_SESSION['idrol'] == 10){								
                             if($_SESSION['depart'] == 3){								
-                              echo "<li><a href=\"./index.php?view=opeasi.personal\"><i class='fa fa-handshake'></i><span> Asignar Efectivo</span></a></li>";
+                              echo "<li><a href=\"./index.php?view=opeasi.personal\"><i class='fa fa-sign-in'></i><span> Asignar Efectivo</span></a></li>";
                             }else{
                               echo "<li><a href=\"./index.php?view=rrging.persons\"><i class='fa fa-bullhorn'></i> <span> Personal Operativo </span></a></li>";
                             }
@@ -881,15 +881,15 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                               <a href="#"><i class="fa fa-tasks"></i> <span> Registro</span><i class="fa fa-angle-left pull-right"></i></a>
                               <ul class="treeview-menu">
                                 <li>
-                                  <a href="#"><i class="fa fa-circle"></i> Asientos <i class="fa fa-angle-left pull-right"></i></a>
+                                  <a href="#"><i class="fa fa-bullseye"></i> Asientos <i class="fa fa-angle-left pull-right"></i></a>
                                   <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle"></i> Registrar </a></li>
-                                    <li><a href="#"><i class="fa fa-circle"></i> Libro diario </a></li>
+                                    <li><a href="#"><i class="fa fa-bullseye"></i> Registrar </a></li>
+                                    <li><a href="#"><i class="fa fa-bullseye"></i> Libro diario </a></li>
                                   </ul>
                                 </li>
-                                <li><a href="./index.php?view=ejercicio"><i class="fa fa-circle"></i> Ejercicio Contable </a></li>
-                                <li><a href="./index.php?view=cuentas"><i class="fa fa-circle"></i> Plan de Cuentas </a></li>
-                                <li><a href="./index.php?view=cuentas"><i class="fa fa-circle"></i> Centros de Costo </a></li>
+                                <li><a href="./index.php?view=ejercicio"><i class="fa fa-bullseye"></i> Ejercicio Contable </a></li>
+                                <li><a href="./index.php?view=cuentas"><i class="fa fa-bullseye"></i> Plan de Cuentas </a></li>
+                                <li><a href="./index.php?view=cuentas"><i class="fa fa-bullseye"></i> Centros de Costo </a></li>
                               </ul>
                             </li -->
                             <li><a href="./index.php?view=cobnom.lista"><i class='fa fa-hotel'></i><span> Control de Nomina </span></a></li>
@@ -897,48 +897,48 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                             <li class="treeview">
                               <a href="#"><i class="fa fa-archive"></i> <span>Financiero</span><i class="fa fa-angle-left pull-right"></i></a>
                               <ul class="treeview-menu">
-                                <li><a href="./clientes"><i class="fa fa-circle"></i> Clientes </a></li>
-                                <li><a href="./factura"><i class="fa fa-circle"></i> Facturaci&oacute;n</a></li>
-                                <li><a href="./caja"><i class="fa fa-circle"></i> Administrar caja </a></li>
+                                <li><a href="./clientes"><i class="fa fa-bullseye"></i> Clientes </a></li>
+                                <li><a href="./factura"><i class="fa fa-bullseye"></i> Facturaci&oacute;n</a></li>
+                                <li><a href="./caja"><i class="fa fa-bullseye"></i> Administrar caja </a></li>
                               </ul>
                             </li>
                             <li class="header">Talento Humano</li>
                             <li class="treeview">
                               <a href="#"><i class="fa fa-table"></i> <span>Talento Humano</span><i class="fa fa-angle-left pull-right"></i></a>
                               <ul class="treeview-menu">
-                                <li><a href="./index.php?view=rrging.lista"><i class="fa fa-circle"></i> Registro de guardias </a></li>
-                                <li><a href="./index.php?view=rrping.lista"><i class="fa fa-circle"></i> Registro de personal </a></li>
-                                <li><a href="./index.php?view=rrhliq.lista"><i class="fa fa-circle"></i> Liquidaci&oacute;n </a></li>
-                                <li><a href="./index.php?view=rrhvac.lista"><i class="fa fa-circle"></i> Vacaciones </a></li>
-                                <li><a href="./index.php?view=rrhdoc.lista"><i class="fa fa-circle"></i> Sansiones </a></li>
+                                <li><a href="./index.php?view=rrging.lista"><i class="fa fa-bullseye"></i> Registro de guardias </a></li>
+                                <li><a href="./index.php?view=rrping.lista"><i class="fa fa-bullseye"></i> Registro de personal </a></li>
+                                <li><a href="./index.php?view=rrhliq.lista"><i class="fa fa-bullseye"></i> Liquidaci&oacute;n </a></li>
+                                <li><a href="./index.php?view=rrhvac.lista"><i class="fa fa-bullseye"></i> Vacaciones </a></li>
+                                <li><a href="./index.php?view=rrhdoc.lista"><i class="fa fa-bullseye"></i> Sansiones </a></li>
                                 <li>
-                                  <a href="#"><i class="fa fa-circle"></i> Nomina <i class="fa fa-angle-left pull-right"></i></a>
+                                  <a href="#"><i class="fa fa-bullseye"></i> Nomina <i class="fa fa-angle-left pull-right"></i></a>
                                   <ul class="treeview-menu">
-                                    <li><a href="./index.php?view=rrhnom.lista"><i class="fa fa-circle"></i> Roles </a></li>
-                                    <li><a href="./index.php?view=rrhpre.lista"><i class="fa fa-circle"></i> Adicionales </a></li>
-                                    <li><a href="./index.php?view=rrhliq.lista"><i class="fa fa-circle"></i> Liquidaci&oacute;n </a></li>
-                                    <li><a href="./index.php?view=rrhmac.lista"><i class="fa fa-circle"></i> Asignaci&oacute;n </a></li>
+                                    <li><a href="./index.php?view=rrhnom.lista"><i class="fa fa-bullseye"></i> Roles </a></li>
+                                    <li><a href="./index.php?view=rrhpre.lista"><i class="fa fa-bullseye"></i> Adicionales </a></li>
+                                    <li><a href="./index.php?view=rrhliq.lista"><i class="fa fa-bullseye"></i> Liquidaci&oacute;n </a></li>
+                                    <li><a href="./index.php?view=rrhmac.lista"><i class="fa fa-bullseye"></i> Asignaci&oacute;n </a></li>
                                   </ul>
                                 </li>
                                 <li>
-                                  <a href="#"><i class="fa fa-circle"></i> Operaciones <i class="fa fa-angle-left pull-right"></i></a>
+                                  <a href="#"><i class="fa fa-bullseye"></i> Operaciones <i class="fa fa-angle-left pull-right"></i></a>
                                   <ul class="treeview-menu">
-                                    <li><a href="./index.php?view=opeasp.lista"><i class='fa fa-circle'></i> Aspirantes </a></li>
-                                    <li><a href="./index.php?view=opegur.lista"><i class='fa fa-circle'></i> Guardias </a></li>
-                                    <li><a href="./index.php?view=rrphor.activos"><i class="fa fa-circle"></i> Resumen Activo</a></li>
-                                    <li><a href="./index.php?view=rrphor.inactivos"><i class="fa fa-circle"></i> Resumen Inactivo</a></li>
+                                    <li><a href="./aspirantes"><i class='fa fa-bullseye'></i> Aspirantes </a></li>
+                                    <li><a href="./index.php?view=opegur.lista"><i class='fa fa-bullseye'></i> Guardias </a></li>
+                                    <li><a href="./index.php?view=rrphor.activos"><i class="fa fa-bullseye"></i> Resumen Activo</a></li>
+                                    <li><a href="./index.php?view=rrphor.inactivos"><i class="fa fa-bullseye"></i> Resumen Inactivo</a></li>
                                   </ul>
                                 </li>
                                 <li>
-                                  <a href="#"><i class="fa fa-circle"></i> Asistencia <i class="fa fa-angle-left pull-right"></i></a>
+                                  <a href="#"><i class="fa fa-bullseye"></i> Asistencia <i class="fa fa-angle-left pull-right"></i></a>
                                   <ul class="treeview-menu">
-                                    <li><a href="./index.php?view=opehor.activos"><i class="fa fa-circle"></i><span> Activos </span></a></li>
-                                    <li><a href="./index.php?view=opehor.eventual"><i class="fa fa-circle"></i><span> Eventuales </span></a></li>
-                                    <li><a href="./index.php?view=opehor.inactivos"><i class="fa fa-circle"></i><span> Inactivos </span></a></li>
+                                    <li><a href="./index.php?view=opehor.activos"><i class="fa fa-bullseye"></i><span> Activos </span></a></li>
+                                    <li><a href="./index.php?view=opehor.eventual"><i class="fa fa-bullseye"></i><span> Eventuales </span></a></li>
+                                    <li><a href="./index.php?view=opehor.inactivos"><i class="fa fa-bullseye"></i><span> Inactivos </span></a></li>
                                   </ul>
                                 </li>
                                 <li>
-                                  <a href="#"><i class="fa fa-circle"></i> Administrativo <i class="fa fa-angle-left pull-right"></i></a>
+                                  <a href="#"><i class="fa fa-bullseye"></i> Administrativo <i class="fa fa-angle-left pull-right"></i></a>
                                   <ul class="treeview-menu">
                                     <li><a href="./index.php?view=rrphor.registro"><i class="fa fa-bullseye"></i><span> Asistencias </span></a></li>
                                     <li><a href="./index.php?view=rrphor.resumen"><i class="fa fa-bullseye"></i><span> Resumen </span></a></li>
@@ -950,23 +950,23 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                             <li class="treeview">
                               <a href="#"><i class="fa fa-calendar"></i> <span>Operaciones</span><i class="fa fa-angle-left pull-right"></i></a>
                               <ul class="treeview-menu">
-                                <li><a href="./index.php?view=opeasp.lista"><i class='fa fa-circle'></i> <span>Aspirantes</span></a></li>
-                                <li><a href="./index.php?view=planificado"><i class="fa fa-circle"></i> Planificado </a></li>
+                                <li><a href="./aspirantes"><i class='fa fa-bullseye'></i> <span>Aspirantes</span></a></li>
+                                <li><a href="./planificado"><i class="fa fa-bullseye"></i> Planificado </a></li>
                                 <li>
-                                  <a href="#"><i class="fa fa-circle"></i> Asistencia <i class="fa fa-angle-left pull-right"></i></a>
+                                  <a href="#"><i class="fa fa-bullseye"></i> Asistencia <i class="fa fa-angle-left pull-right"></i></a>
                                   <ul class="treeview-menu">
                                     <li><a href="./index.php?view=opehor.activos"><i class="fa fa-bullseye"></i><span> Activos </span></a></li>
                                     <li><a href="./index.php?view=opehor.eventual"><i class="fa fa-bullseye"></i><span> Eventuales </span></a></li>
                                     <li><a href="./index.php?view=opehor.inactivos"><i class="fa fa-bullseye"></i><span> Inactivos </span></a></li>
                                   </ul>
                                 </li>
-                                <li><a href="./index.php?view=faltas"><i class="fa fa-circle"></i><span> Faltas </span></a></li>
-                                <li><a href="./index.php?view=puestos"><i class="fa fa-circle"></i><span> Servicios </span></a></li>
+                                <li><a href="./faltas"><i class="fa fa-bullseye"></i><span> Faltas </span></a></li>
+                                <li><a href="./puestos"><i class="fa fa-bullseye"></i><span> Servicios </span></a></li>
                               </ul>
                             </li>
                             <li><a href="./bitacora"><i class='fa fa-book'></i> <span>Bitacora</span></a></li>
                             <li><a href="./partes"><i class='fa fa-binoculars'></i> <span>Parte</span></a></li>
-                            <li><a href="./index.php?view=opeasi.lista"><i class='fa fa-sign-in'></i><span> Asignar Efectivo</span></a></li>
+                            <li><a href="./personas"><i class='fa fa-sign-in'></i><span> Asignar Efectivo</span></a></li>
                             <li><a href="./prendas"><i class='fa fa-clipboard'></i><span> Entregar dotaci&oacute;n </span></a></li>
                             <li><a href="./dotar "><i class='fa fa-briefcase'></i><span> Dotar Puesto </span></a></li>
                             <li><a href="./residentes"><i class='fa fa-building'></i> <span>Residentes</span></a></li>
@@ -974,10 +974,10 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                             <li class="treeview">
                               <a href="#"><i class='fa fa-area-chart'></i> <span>Inventario</span> <i class="fa fa-angle-left pull-right"></i></a>
                               <ul class="treeview-menu">
-                                <li><a href="./inventary"><i class="fa fa-circle"></i><span> Resumen </span></a></li>
-                                <li><a href="./dotacion"><i class="fa fa-circle"></i><span> Asignados </span></a></li>
-                                <li><a href="./index.php?view=re"><i class="fa fa-circle"></i><span> Abastecer </span></a></li>
-                                <li><a href="./index.php?view=res"><i class="fa fa-circle"></i><span> Abastecimientos </span></a></li>
+                                <li><a href="./inventary"><i class="fa fa-bullseye"></i><span> Resumen </span></a></li>
+                                <li><a href="./dotacion"><i class="fa fa-bullseye"></i><span> Asignados </span></a></li>
+                                <li><a href="./index.php?view=re"><i class="fa fa-bullseye"></i><span> Abastecer </span></a></li>
+                                <li><a href="./index.php?view=res"><i class="fa fa-bullseye"></i><span> Abastecimientos </span></a></li>
                               </ul>
                             </li>
                             <!--- Administracion del Sistema --->
@@ -987,15 +987,15 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                             <li class="treeview">
                               <a href="#"><i class='fa fa-database'></i> <span>Catalogos</span> <i class="fa fa-angle-left pull-right"></i></a>
                               <ul class="treeview-menu">
-                                <li><a href="./index.php?view=catloc.lista"><i class="fa fa-circle"></i><span> Localidades </span></a></li>
-                                <li><a href="./index.php?view=catofi.lista"><i class="fa fa-circle"></i><span> Oficinas </span></a></li>
-                                <li><a href="./departamento"><i class="fa fa-circle"></i><span> Departamentos </span></a></li>
-                                <li><a href="./index.php?view=catcar.lista"><i class="fa fa-circle"></i><span> Cargos </span></a></li>
-                                <li><a href="./index.php?view=catrub.lista"><i class="fa fa-circle"></i><span> Rubros </span></a></li>
-                                <li><a href="./index.php?view=catdes.lista"><i class="fa fa-circle"></i><span> Descuentos </span></a></li>
-                                <li><a href="./categorias"><i class="fa fa-circle"></i><span> Categorias </span></a></li>
-                                <li><a href="./productos"><i class="fa fa-circle"></i><span> Productos </span></a></li>
-                                <li><a href="./proveedores"><i class="fa fa-circle"></i><span> Proveedores </span></a></li>
+                                <li><a href="./index.php?view=catloc.lista"><i class="fa fa-bullseye"></i><span> Localidades </span></a></li>
+                                <li><a href="./index.php?view=catofi.lista"><i class="fa fa-bullseye"></i><span> Oficinas </span></a></li>
+                                <li><a href="./departamentos"><i class="fa fa-bullseye"></i><span> Departamentos </span></a></li>
+                                <li><a href="./cargos"><i class="fa fa-bullseye"></i><span> Cargos </span></a></li>
+                                <li><a href="./rubros"><i class="fa fa-bullseye"></i><span> Rubros </span></a></li>
+                                <li><a href="./index.php?view=catdes.lista"><i class="fa fa-bullseye"></i><span> Descuentos </span></a></li>
+                                <li><a href="./categorias"><i class="fa fa-bullseye"></i><span> Categorias </span></a></li>
+                                <li><a href="./productos"><i class="fa fa-bullseye"></i><span> Productos </span></a></li>
+                                <li><a href="./proveedores"><i class="fa fa-bullseye"></i><span> Proveedores </span></a></li>
                               </ul>
                             </li>
                             <li class="treeview">
@@ -1003,20 +1003,20 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                               <ul class="treeview-menu">
                                 <?php
                                   if($_SESSION["actividad"] == 1){
-                                    echo '<li><a href="./index.php?view=repent.lista"><i class="fa fa-circle"></i><span>Dotaci&oacute;n de Agentes</span></a></li>';
-                                    echo '<li><a href="./index.php?view=reppus.lista"><i class="fa fa-circle"></i><span>Dotaci&oacute;n de Puestos</span></a></li>';
+                                    echo '<li><a href="./index.php?view=repent.lista"><i class="fa fa-bullseye"></i><span>Dotaci&oacute;n de Agentes</span></a></li>';
+                                    echo '<li><a href="./index.php?view=reppus.lista"><i class="fa fa-bullseye"></i><span>Dotaci&oacute;n de Puestos</span></a></li>';
                                   }
                                 ?>
-                                <li><a href="reports"><i class="fa fa-circle"></i><span> Inventario </span></a></li>
-                                <li><a href="sellreports"><i class="fa fa-circle"></i><span> Entregas </span></a></li>
+                                <li><a href="reports"><i class="fa fa-bullseye"></i><span> Inventario </span></a></li>
+                                <li><a href="sellreports"><i class="fa fa-bullseye"></i><span> Entregas </span></a></li>
                               </ul>
                             </li>
                             <li class="treeview">
                               <a href="#"><i class="fa fa-cog"></i> <span>Administraci&oacute;n</span> <i class="fa fa-angle-left pull-right"></i></a>
                               <ul class="treeview-menu">
-                                <li><a href="./usuarios"><i class="fa fa-circle"></i><span> Usuarios </span></a></li>
-                                <li><a href="./settings"><i class="fa fa-circle"></i><span> Configuracion </span></a></li>
-                                <li><a href="./index.php?view=sisaud.lista"><i class="fa fa-circle"></i> Auditoria </a></li>
+                                <li><a href="./usuarios"><i class="fa fa-bullseye"></i><span> Usuarios </span></a></li>
+                                <li><a href="./settings"><i class="fa fa-bullseye"></i><span> Configuracion </span></a></li>
+                                <li><a href="./index.php?view=sisaud.lista"><i class="fa fa-bullseye"></i> Auditoria </a></li>
                               </ul>
                             </li>  <?php 
                         endif; 
@@ -1395,17 +1395,17 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
       if(isset($_GET["view"]) && ($_GET["view"]=="home" || $_GET["view"]=="inventary" || $_GET["view"]=="cuentas" || $_GET["view"]=="bitacora" || 
 	        $_GET["view"]=="autorizan" || $_GET["view"]=="autorizo" || $_GET["view"]=="verificados" || $_GET["view"]=="cotizacion" || $_GET["view"]=="cotizar" ||
           $_GET["view"]=="fechas" || $_GET["view"]=="partes" || $_GET["view"]=="prendas" || $_GET["view"]=="descuento" || $_GET["view"]=="visitas" || 
-		      $_GET["view"]=="departamento" || $_GET["view"]=="categorias" || $_GET["view"]=="productos" || $_GET["view"]=="informes" || $_GET["view"]=="anuncios" ||
+		      $_GET["view"]=="departamentos" || $_GET["view"]=="categorias" || $_GET["view"]=="productos" || $_GET["view"]=="informes" || $_GET["view"]=="anuncios" ||
 		      $_GET["view"]=="agentes" || $_GET["view"]=="conducta" || $_GET["view"]=="catdes.lista" || $_GET["view"]=="rrphor.activos" || $_GET["view"]=="puestos" || 
           $_GET["view"]=="faltas" || $_GET["view"]=="rondas" || $_GET["view"]=="vehiculos" || $_GET["view"]=="novedades" || $_GET["view"]=="clientes" ||
           $_GET["view"]=="telefonos" || $_GET["view"]=="apertura" || $_GET["view"]=="recibos" || $_GET["view"]=="entregas" || $_GET["view"]=="conducta" ||
 		      $_GET["view"]=="residentes" || $_GET["view"]=="proveedores" || $_GET["view"]=="rrhpre.lista" || $_GET["view"]=="opecor.lista" ||
-          $_GET["view"]=="catrol.lista" || $_GET["view"]=="cobnom.lista" || $_GET["view"]=="sisnot.lista" || $_GET["view"]=="carnets" || 
+          $_GET["view"]=="catrol.lista" || $_GET["view"]=="cobnom.lista" || $_GET["view"]=="sisnot.lista" || $_GET["view"]=="carnets" || $_GET["view"]=="rubros" ||
           $_GET["view"]=="rrhpre.lista" || $_GET["view"]=="rrhliq.lista" || $_GET["view"]=="rrhmac.lista" || $_GET["view"]=="usuarios" || 
-          $_GET["view"]=="rrsdoc.lista" || $_GET["view"]=="opeasp.lista" || $_GET["view"]=="opeasi.lista" || $_GET["view"]=="rrhdoc.lista" ||
+          $_GET["view"]=="rrsdoc.lista" || $_GET["view"]=="aspirantes" || $_GET["view"]=="personas" || $_GET["view"]=="rrhdoc.lista" ||
           $_GET["view"]=="sisaud.lista" || $_GET["view"]=="rrging.lista" || $_GET["view"]=="rrping.lista" || $_GET["view"]=="rrhvac.lista" ||
-          $_GET["view"]=="catdes.lista" || $_GET["view"]=="catlim.lista" || $_GET["view"]=="repent.lista" || $_GET["view"]=="catrub.lista" ||            
-          $_GET["view"]=="catloc.lista" || $_GET["view"]=="catcar.lista" || $_GET["view"]=="reppus.lista" || $_GET["view"]=="catofi.lista")): ?>
+          $_GET["view"]=="catdes.lista" || $_GET["view"]=="catlim.lista" || $_GET["view"]=="repent.lista" ||             
+          $_GET["view"]=="catloc.lista" || $_GET["view"]=="cargos" || $_GET["view"]=="reppus.lista" || $_GET["view"]=="catofi.lista")): ?>
           <!-- DataTables $_GET["view"]=="rrsing.lista" || -->
           <script src="plugins/datatables/jquery.dataTables.min.js?v=1.0.1"></script>
           <script src="plugins/datatables/dataTables.bootstrap.min.js?v=1.0.1"></script>

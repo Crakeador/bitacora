@@ -306,7 +306,7 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 							echo '<div class="icon">';
 								echo '<i class="ion ion-pie-graph"></i>';
 								echo '</div>';
-								echo '<a href="./index.php?view=catcar.lista" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
+								echo '<a href="./cargos" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
 							echo '</div>';
 						echo '</div>';
 						break;

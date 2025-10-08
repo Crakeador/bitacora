@@ -229,10 +229,10 @@ class PuestoData {
 
 	public static function getByFaltas(){
 		$con = Database::getCon();
-		$sql = "SELECT B.codigo, B.descripcion, C.name, D.description, A.* ";
-		$sql .= "FROM horario A, puestos B, person C, cargo D ";
-		$sql .= "WHERE A.turno=4 AND A.tipo = 2 AND A.idservicio = B.id AND A.idagente = C.id AND C.cargo = D.id AND A.is_active = 1 ";
-		$sql .= "AND C.cargo IN (7,8) ORDER BY B.grupo, A.idservicio, C.cargo"; 
+		$sql = "SELECT B.codigo, B.descripcion, C.name, D.description, A.* 
+		          FROM horario A, puestos B, person C, cargo D 
+		        WHERE A.turno=4 AND A.tipo = 2 AND A.idservicio = B.id AND A.idagente = C.id AND C.idcargo = D.id AND 
+				      A.is_active = 1 AND C.idcargo IN (7,8) ORDER BY B.grupo, A.idservicio, C.idcargo"; 
 		$query = $con->query($sql); 
 
 		$x = 0; $array = array();
@@ -264,7 +264,7 @@ class PuestoData {
 		$con = Database::getCon();
 		$sql = "SELECT B.codigo, B.descripcion, C.name, D.description, A.* ";
 		$sql .= "FROM horario A, puestos B, person C, cargo D ";
-		$sql .= "WHERE A.turno=4 AND A.tipo = 2 AND A.idservicio = B.id AND A.idagente = C.id AND C.cargo = D.id AND A.is_active = 1 ";
+		$sql .= "WHERE A.turno=4 AND A.tipo = 2 AND A.idservicio = B.id AND A.idagente = C.id AND C.idcargo = D.id AND A.is_active = 1 ";
 		$sql .= "AND C.cargo IN (7,8) AND B.idlugar = ".$_SESSION['id_localidad']." ORDER BY B.grupo, A.idservicio, C.cargo";
 		$query = $con->query($sql);
 
@@ -297,7 +297,7 @@ class PuestoData {
 		$con = Database::getCon();
 		$sql = "SELECT B.codigo, B.descripcion, C.name, D.description, C.id, A.idservicio, C.startwork 
 		          FROM personpuestos A, puestos B, person C, cargo D 
-				 WHERE A.idservicio = B.id AND A.idperson = C.id AND C.cargo = D.id AND A.is_active = 1 AND B.id = 1 AND D.idtipo in (1, 2) AND B.idlugar = $id AND 
+				 WHERE A.idservicio = B.id AND A.idperson = C.id AND C.idcargo = D.id AND A.is_active = 1 AND B.id = 1 AND D.idtipo in (1, 2) AND B.idlugar = $id AND 
 				       C.idcompany = ".$_SESSION['id_company']." ORDER BY B.grupo, A.idservicio, C.cargo"; 
 		$query = $con->query($sql); 
 
@@ -406,7 +406,7 @@ class PuestoData {
 		$con = Database::getCon();
 		$sql = "SELECT B.codigo, B.descripcion, C.name, D.description, A.dia, A.mes, A.ano, C.id
   				    FROM horario A, puestos B, person C, cargo D
- 				     WHERE A.idservicio = B.id AND A.idagente = C.id AND C.cargo = D.id AND A.id = $id AND A.is_active = 1";
+ 				     WHERE A.idservicio = B.id AND A.idagente = C.id AND C.idcargo = D.id AND A.id = $id AND A.is_active = 1";
 		$query = $con->query($sql);
 
 		$found = null;
@@ -517,16 +517,16 @@ class PuestoData {
 	}
 
 	public static function getAll($tipo, $activo=1){
-		$sql = "SELECT C.nombre cliente, B.descripcion lugar, A.* FROM puestos A, localidad B, client C ";
-		$sql .= "WHERE A.idclient = C.idclient AND A.idlugar = B.id AND A.tipo = $tipo AND A.is_active = $activo ";
-		$sql .= "ORDER by idclient, codigo";
+		$sql = "SELECT C.nombre cliente, B.descripcion lugar, A.* FROM puestos A, localidad B, client C 
+		         WHERE A.idclient = C.id AND A.idlugar = B.id AND A.tipo = $tipo AND A.is_active = $activo 
+		      ORDER by idclient, codigo";
 		$query = Executor::doit($sql);
 		return Model::many($query[0],new PuestoData());
 	}
 
 	public static function getAllLugar($tipo){
 		$sql = "SELECT C.nombre cliente, B.descripcion lugar, A.* FROM puestos A, localidad B, client C ";
-		$sql .= "WHERE A.idclient = C.idclient AND A.idlugar = B.id AND A.tipo = $tipo AND A.idlugar = ".$_SESSION['id_localidad']." AND A.is_active = 1 ";
+		$sql .= "WHERE A.idclient = C.id AND A.idlugar = B.id AND A.tipo = $tipo AND A.idlugar = ".$_SESSION['id_localidad']." AND A.is_active = 1 ";
 		$sql .= "ORDER by idclient, codigo";
 		$query = Executor::doit($sql);
 		return Model::many($query[0],new PuestoData());
@@ -535,8 +535,8 @@ class PuestoData {
 	public static function getAllpuesto($id, $estado){
 		$sql = "SELECT A.id servicio, A.created_at, B.codigo, B.descripcion, E.descripcion lugar, C.idcard, C.direccion, C.name, C.fechanacimiento, C.demanda, D.description cargo, C.id, A.idservicio, A.is_active ";
 		$sql .=  "FROM personpuestos A, puestos B, person C, cargo D, localidad E ";
-		$sql .= "WHERE A.idservicio = B.id AND A.idperson = C.id AND C.cargo = D.id AND B.idlugar = E.id AND A.idservicio = $id AND A.is_active = $estado ";
-		$sql .= "ORDER BY B.grupo, A.idservicio, C.cargo"; 
+		$sql .= "WHERE A.idservicio = B.id AND A.idperson = C.id AND C.idcargo = D.id AND B.idlugar = E.id AND A.idservicio = $id AND A.is_active = $estado ";
+		$sql .= "ORDER BY B.grupo, A.idservicio, C.idcargo"; 
 		$query = Executor::doit($sql);
 		return Model::many($query[0],new PuestoData());
 	}
@@ -546,8 +546,8 @@ class PuestoData {
 		          FROM person A ";
 		$sql .= "LEFT JOIN personpuestos B ON B.idperson = A.id ";
 		$sql .= "LEFT JOIN puestos C ON C.id = B.idservicio ";
-		$sql .= "LEFT JOIN cargo D ON D.id = A.cargo ";
-		$sql .= "LEFT JOIN localidad E ON E.id = C.idlugar";
+		$sql .= "LEFT JOIN cargo D ON D.id = A.idcargo ";
+		$sql .= "LEFT JOIN localidad E ON E.id = C.idlugar"; 
 		$query = Executor::doit($sql); 
 		return Model::many($query[0],new PuestoData());
 	}

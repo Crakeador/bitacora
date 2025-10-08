@@ -98,7 +98,7 @@ if(isset($_GET['id'])){
             }else{
                 $user->upd_backup();
             }
-            Core::redir('opeasp.lista');
+            Core::redir("aspirantes");
         }else{
             Core::alert("Corrija...!!!!", $errores, "error");
         }

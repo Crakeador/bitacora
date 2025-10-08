@@ -94,7 +94,7 @@ class ReciboData {
 	}
 
 	public static function getNomina(){
-		$sql = "SELECT * FROM person WHERE company = ".$_SESSION['id_company']." AND is_active=1 AND is_empleado=1";
+		$sql = "SELECT * FROM person WHERE company = ".$_SESSION['id_company']." AND is_active = 1";
 		$query = Executor::doit($sql);
 		$array = array();
 		$cnt = 0;

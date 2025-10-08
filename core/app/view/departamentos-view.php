@@ -1,16 +1,49 @@
 <?php
-$msg = '';
+$msg = 'Agregar departamento'; $error = '';
+$departa = (object) [
+					"id" => 0,
+					"name" => ""
+				];
 
-if(isset($_POST['add_cat'])){	
-	$depart = new DepartamentoData();
-	$depart->description = strtoupper($_POST["description"]);
-	$errors = $depart->add();
-	
-    if(!empty($errors)){	
-		$msg = Core::display_msg("success", "Departamento agregada exitosamente.");
-	}else{
-		$msg = Core::display_msg("danger", "Lo siento, registro falló");
-	}
+// Manejar las solicitudes
+$method = $_SERVER['REQUEST_METHOD'];
+
+switch ($method) {
+    case 'GET':
+		if(isset($_GET['id']) && isset($_GET['tipo']) && $_GET['tipo']==2){
+			$departa = DepartamentoData::getById($_GET['id']);
+			if($departa){
+				$msg = 'Modificar categoría'; 
+			}else{
+				$error = Core::display_msg("danger", "No se encontro el departamento");
+			}
+		}
+        break;
+    case 'POST': 
+		var_dump($_POST);
+		/*
+		if(isset($_POST['add_cat'])){	
+			$depart = new DepartamentoData();
+			$depart->description = strtoupper($_POST["description"]);
+			$errors = $depart->add();
+			
+			if(!empty($errors)){	
+				$msg = Core::display_msg("success", "Departamento agregada exitosamente.");
+			}else{
+				$msg = Core::display_msg("danger", "Lo siento, registro falló");
+			} */
+
+		if(count($_POST)>0){
+			$user = DepartamentoData::getById($_POST["user_id"]);
+			$user->name = strtoupper($_POST["description"]);
+			$user->update();
+			print "<script>window.location='index.php?view=departamento';</script>";
+		}
+
+        break;
+	default:
+		// Manejar otros métodos HTTP si es necesario
+		break;
 }
 ?>
 <!-- Content Header (Page header) -->
@@ -24,34 +57,33 @@ if(isset($_POST['add_cat'])){
 	</ol>
 </section>
 <!-- Main content -->
-<section class="content container-fluid" style="padding: 1.5rem !important;">	
-	<input type='hidden' name='hid_frmEstado' id='hid_frmEstado' value='' />
-	<input type='hidden' name='hid_frmIdrol' id='hid_frmIdrol' value='<?php echo $_SESSION['idrol']; ?>'/>
+<section class="content container-fluid" style="padding: 1.5rem !important;">
 	<div class="row">
 		<div class="col-md-12">		
 			<div class="row">
 				<div class="col-md-5">
-					<div class="row">
-						<div class="col-md-12">
-						   <?php echo $msg; ?>
-						</div>
-					</div>
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<strong>
 								<span class="glyphicon glyphicon-th"></span>
-								<span>Ingresar Departamento</span>
+								<span><?php echo $msg; ?></span>
 							</strong>
 						</div>
 						<div class="panel-body">
-							<form class="form-horizontal" method="post" id="addtask" action="index.php?view=categorias" role="form">				
+							<form class="form-horizontal" method="post" id="addtask" action="departamentos" role="form">
+								<input type="hidden" id="id" name="id" value="<?php echo $departa->id; ?>">
 								<div class="col-md-12">
 									<div class="form-group">
-										<input type="text" class="form-control" name="categorie-name" placeholder="Nombre del Departamento" required>
+										<input type="text" class="form-control" id="name" name="name" placeholder="Nombre del Departamento" value="<?php echo $departa->name; ?>" required>
 									</div>
 								</div>
-								<button type="submit" name="add_cat" class="btn btn-primary">Agregar Departamento</button>
-							</form>
+								<button type="submit" name="add_cat" class="btn btn-primary"><?php echo $msg; ?></button>
+							</form>	<?php 
+							if($error == "") { 
+								//Sin Error 
+							} else {
+								echo '<br>'.$error; 
+							} ?>
 						</div>
 					</div>
 				</div>
@@ -60,7 +92,7 @@ if(isset($_POST['add_cat'])){
 						<div class="panel-heading">
 							<strong>
 							  <span class="glyphicon glyphicon-th"></span>
-							  <span>Lista de categorías</span>
+							  <span>Lista de departamentos</span>
 							</strong>
 						</div>
 						<div class="panel-body">
@@ -74,11 +106,11 @@ if(isset($_POST['add_cat'])){
 								</thead>
 								<tbody>
 									<?php
-										$products = DepartamentoData::getDepart();
+										$products = DepartamentoData::getAll();
 										// Crea tabla de Ventas
 										foreach($products as $tables) {
 											echo '<tr>';
-												echo '<td width="30%">'.$tables->description.'</td>';
+												echo '<td width="30%">'.$tables->name.'</td>';
 												echo '<td width="6%">';
 													echo '<small>';
 														if($tables->is_active == 1){
@@ -93,7 +125,7 @@ if(isset($_POST['add_cat'])){
 												echo '<td width="8%">';
 													echo '<div align="center">';
 														echo '<button type="button" class="btn btn-default btn-sm" onClick="btn_EnviarOnClick(\''.$tables->id.'\');"><i class="fa fa-trash"></i></button>';
-														echo '<a href="?view=editdepartamento&id='.$tables->id.'" class="btn btn-default btn-sm"><i class="fa fa-edit"></i></a>';
+														echo '<a href="index.php?view=departamentos&id='.$tables->id.'&tipo=2" class="btn btn-default btn-sm"><i class="fa fa-edit"></i></a>';
 													echo '</div>';
 												echo '</td>';
 											echo '</tr>';

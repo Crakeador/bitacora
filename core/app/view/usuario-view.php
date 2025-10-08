@@ -1,7 +1,7 @@
 <?php
 // INgreso de los Usuarios del Sistema
 $local = LugarData::getAll();
-$depar = DepartamentoData::getDepart();
+$depar = DepartamentoData::getAll();
 $roles = RolesData::getRol();
 $hoy = date("Y-m-d H:i:s");
 $user_id = 0; $error1 =0; $error2 = 0;

@@ -35,8 +35,7 @@ class PersonData {
 		$this->firma = "";
 		$this->total = "";
 		$this->acumula3 = 0;	
-		$this->acumula4 = 0;	
-		$this->is_empleado = 1;		
+		$this->acumula4 = 0;
 		$this->is_active = 1;
 		$this->created_at = "NOW()";
 	}
@@ -86,7 +85,7 @@ class PersonData {
 
 	public function addAMD(){
 		$sql = "INSERT INTO person(idcompany, idcard, name, cargo, startwork, endwork, licencia, tipo_licencia, copia_licencia, ";
-		$sql .= "is_empleado, tiene_carnet, fechanacimiento, copiacedula, phone1, phone2, genero, sueldo, tipo_contrato, region, ";
+		$sql .= "tiene_carnet, fechanacimiento, copiacedula, phone1, phone2, genero, sueldo, tipo_contrato, region, ";
 		$sql .= "bachiller, especializacion1, esc_tecnico, especializacion2, computadora, celulartactil, curso_realizado, certificados, ";
 		$sql .= "tipo_sangre, altura, certificadosangre, recibe, direccion, sector, referencia, croquis, planilla, contrato, banco, tipo, cuenta, tipo_pago, recibo, is_active, created_at, usuario_log, ip)";
 		$sql .= " VALUES (".$_SESSION['id_company'].", \"$this->idcard\", \"$this->name\", \"$this->cargo\", \"$this->startwork\", \"$this->endwork\", ";
@@ -101,7 +100,7 @@ class PersonData {
 
 	public function addIMG(){
 		$sql = "INSERT INTO person(idcompany, image, idcard, name, cargo, startwork, endwork, licencia, tipo_licencia, copia_licencia, ";
-		$sql .= "is_empleado, tiene_carnet, fechanacimiento, copiacedula, phone1, phone2, genero, sueldo, tipo_contrato, ";
+		$sql .= "tiene_carnet, fechanacimiento, copiacedula, phone1, phone2, genero, sueldo, tipo_contrato, ";
 		$sql .= "bachiller, especializacion1, esc_tecnico, especializacion2, computadora, celulartactil, curso_realizado, certificados, ";
 		$sql .= "tipo_sangre, altura, certificadosangre, recibe, direccion, sector, referencia, croquis, planilla, contrato, banco, tipo, cuenta, tipo_pago, recibo, is_active, created_at, usuario_log, ip)";
 		$sql .= " VALUES (".$_SESSION['id_company'].", \"$this->image\", \"$this->idcard\", \"$this->name\", \"$this->cargo\", \"$this->startwork\", \"$this->endwork\", ";
@@ -116,7 +115,7 @@ class PersonData {
 
 	public function add(){
 		$sql = "INSERT INTO person(idcompany, idcard, name, cargo, startwork, endwork, licencia, tipo_licencia, copia_licencia, ";
-		$sql .= "is_empleado, inscrito_curso, tiene_carnet, copia_ministerio, premilitar, militar, carrera_militar, ";
+		$sql .= "inscrito_curso, tiene_carnet, copia_ministerio, premilitar, militar, carrera_militar, ";
 		$sql .= "copia_militar, uso_arma, nombre_curso, copia_curso, fechanacimiento, copiacedula, phone1, phone2, genero, sueldo, tipo_contrato, ";
 		$sql .= "bachiller, especializacion1, esc_tecnico, especializacion2, computadora, celulartactil, curso_realizado, certificados, ";
 		$sql .= "tipo_sangre, altura, certificadosangre, recibe, direccion, decimo, acumula3, acumula4, sector, referencia, croquis, planilla, contrato, banco, tipo, cuenta, tipo_pago, recibo, is_active, usuario_log, ip, created_at)";
@@ -134,7 +133,7 @@ class PersonData {
 
 	public function addFisico(){
 		$sql = "INSERT INTO person(idcompany, idcard, name, cargo, startwork, endwork, licencia, tipo_licencia, copia_licencia, ";
-		$sql .= "is_empleado, inscrito_curso, tiene_carnet, copia_ministerio, premilitar, militar, carrera_militar, ";
+		$sql .= "inscrito_curso, tiene_carnet, copia_ministerio, premilitar, militar, carrera_militar, ";
 		$sql .= "copia_militar, uso_arma, nombre_curso, copia_curso, fechanacimiento, copiacedula, phone1, phone2, genero, sueldo, tipo_contrato, ";
 		$sql .= "bachiller, especializacion1, esc_tecnico, especializacion2, computadora, celulartactil, curso_realizado, certificados, ";
 		$sql .= "tipo_sangre, altura, certificadosangre, recibe, direccion, decimo, acumula3, acumula4, sector, referencia, croquis, planilla, contrato, banco, tipo, cuenta, tipo_pago, recibo, is_active, usuario_log, ip, created_at)";
@@ -152,7 +151,7 @@ class PersonData {
 	
 	public function add_aspirante(){
 		$sql = "INSERT INTO person(idcompany, idcard, name, latitude, longitude, mensaje, cargo, email, carnet, conyuge, embarazada, estado_civil, ";
-		$sql .= "is_empleado, fechanacimiento, phone1, phone2, phone3, genero, image, cedula1, cedula2, votacion, tipo_sangre, ";
+		$sql .= "fechanacimiento, phone1, phone2, phone3, genero, image, cedula1, cedula2, votacion, tipo_sangre, ";
 		$sql .= "bachiller, computadora, celulartactil, curso_realizado, certificados, altura, ";
 		$sql .= "idlugar, archivo, direccion, sector, referencia, tiene_carnet, reentrenamiento, vivienda, referencia1, referencia2, referencia3, is_active, usuario_log, ip, created_at)";
 		$sql .= " VALUES (".$_SESSION['id_company'].", \"$this->idcard\", \"$this->name\", \"$this->latitude\", \"$this->longitude\", \"$this->mensaje\", \"$this->cargo\", \"$this->email\", \"$this->carnet\", \"$this->conyuge\", $this->embarazada, $this->estado_civil, ";
@@ -181,7 +180,7 @@ class PersonData {
 	
 	public function add_backup(){
 		$sql = "INSERT INTO person(idcompany, idcard, name, cargo, hijos, monto, ";
-		$sql .= "is_empleado, fechanacimiento, phone1, phone2, genero, firma, ";
+		$sql .= "fechanacimiento, phone1, phone2, genero, firma, ";
 		$sql .= "bachiller, especializacion1, esc_tecnico, especializacion2, computadora, celulartactil, curso_realizado, certificados, ";
 		$sql .= "direccion, sector, referencia, tiene_carnet, is_active, usuario_log, ip, created_at)";
 		$sql .= " VALUES (".$_SESSION['id_company'].", \"$this->idcard\", \"$this->name\", \"$this->cargo\", \"$this->hijos\", \"$this->monto\", ";
@@ -246,7 +245,7 @@ class PersonData {
 		$sql .= "computadora=\"$this->computadora\", celulartactil=\"$this->celulartactil\", curso_realizado=\"$this->curso_realizado\", certificados=\"$this->certificados\", tipo_sangre=\"$this->tipo_sangre\", ";
 		$sql .= "recibe=\"$this->recibe\", decimo=\"$this->decimo\", acumula3=\"$this->acumula3\", acumula4=\"$this->acumula4\", ";
 		$sql .= "direccion=\"$this->direccion\", sector=\"$this->sector\", croquis=\"$this->croquis\", planilla=\"$this->planilla\", contrato=\"$this->contrato\", banco=\"$this->banco\", tipo=\"$this->tipo\", cuenta=\"$this->cuenta\", tipo_pago=\"$this->tipo_pago\", ";
-		$sql .= "is_empleado=\"$this->is_empleado\", is_active=\"$this->is_active\", created_at=$this->created_at WHERE id=$this->id"; 
+		$sql .= "is_active=\"$this->is_active\", created_at=$this->created_at WHERE id=$this->id"; 
         
 		Executor::doit($sql); 
 	}
@@ -449,22 +448,21 @@ class PersonData {
 		return Model::many($query[0],new PersonData());
 	}
 	
-	public static function getAllTipo($tipo, $activo, $eventual=1){
-		$sql = "SELECT A.*, B.description FROM person A, cargo B WHERE A.cargo = B.id AND B.idtipo = $tipo AND A.idcompany = ".$_SESSION['id_company']." AND A.is_empleado = $eventual AND A.is_active = $activo ORDER BY name"; 
+	public static function getAllTipo($tipo, $activo){
+		$sql = "SELECT A.*, B.description FROM person A, cargo B WHERE A.idcargo = B.id AND B.idtipo = $tipo AND A.idcompany = ".$_SESSION['id_company']." AND A.is_active = $activo ORDER BY name";
 		$query = Executor::doit($sql); 
-
 		return Model::many($query[0],new PersonData());
 	}
 
 	public static function getAsignado(){
-		$sql = "SELECT C.idservicio, A.id, A.name FROM person A LEFT JOIN cargo B ON B.id = A.cargo LEFT JOIN personpuestos C ON C.idperson = A.id WHERE B.idtipo = 3 AND C.idservicio is null ORDER BY name";
+		$sql = "SELECT C.idservicio, A.id, A.name FROM person A LEFT JOIN cargo B ON B.id = A.idcargo LEFT JOIN personpuestos C ON C.idperson = A.id WHERE B.idtipo = 3 AND C.idservicio is null ORDER BY name";
 		$query = Executor::doit($sql);
 
 		return Model::many($query[0],new PersonData());
 	}
 
 	public static function getAllCargo($cargo){
-		$sql = "SELECT * FROM person A, cargo B WHERE A.cargo = B.id AND A.is_active = 1 AND A.cargo = $cargo ORDER BY name";
+		$sql = "SELECT * FROM person A, cargo B WHERE A.cargo = B.id AND A.is_active = 1 AND A.idcargo = $cargo ORDER BY name";
 		$query = Executor::doit($sql);
 
 		return Model::many($query[0],new PersonData());
@@ -473,7 +471,7 @@ class PersonData {
     public static function getOficina($tipo){
     	 $sql = "SELECT A.id, A.image, A.idcard, A.tipo_sangre, A.name, A.cargo, B.description, A.email, A.phone1, A.direccion, A.startwork, A.endwork, A.kind, A.is_active, A.created_at 
 		           FROM person A, cargo B 
-				  WHERE A.idcompany = ".$_SESSION['id_company']." AND A.cargo = B.id AND B.idtipo IN (1, 2) AND A.is_empleado = 1 AND A.is_active=$tipo
+				  WHERE A.idcompany = ".$_SESSION['id_company']." AND A.cargo = B.id AND B.idtipo IN (1, 2) AND A.is_active=$tipo
 			   ORDER BY A.name, A.is_active"; 
     	 $query = Executor::doit($sql);
 
@@ -481,20 +479,19 @@ class PersonData {
 	}
 
 	public static function getAll(){
-		$sql = "SELECT * FROM ".self::$tablename." WHERE idcompany = ".$_SESSION['id_company']." AND is_active = 1 AND is_empleado=1 ORDER BY name";
+		$sql = "SELECT * FROM ".self::$tablename." WHERE idcompany = ".$_SESSION['id_company']." AND is_active = 1 ORDER BY name";
 		$query = Executor::doit($sql);
-
 		return Model::many($query[0],new PersonData());
 	}
 
 	public static function getTodos(){
-		$sql = "SELECT * FROM ".self::$tablename." WHERE idcompany = ".$_SESSION['id_company']." AND is_empleado = 1 ORDER BY name";
+		$sql = "SELECT * FROM ".self::$tablename." WHERE idcompany = ".$_SESSION['id_company']." ORDER BY name";
 		$query = Executor::doit($sql);
 		return Model::many($query[0],new PersonData());
 	}
 
 	public static function getNomina(){
-		$sql = "SELECT * FROM person WHERE idcompany = ".$_SESSION['id_company']." AND is_active=1 AND is_empleado = 1";
+		$sql = "SELECT * FROM person WHERE idcompany = ".$_SESSION['id_company']." AND is_active=1";
 		$query = Executor::doit($sql);
 
 		$array = array();
@@ -519,7 +516,7 @@ class PersonData {
 	}
 
 	public static function getTipos($id, $tipo){ 
-		$sql = "SELECT C.id, C.estado, C.tipo_despido, A.idcard, A.name, A.cargo, B.description, A.phone1, C.startwork, C.endwork, C.created_at 
+		$sql = "SELECT C.id, C.estado, C.tipo_despido, A.idcard, A.name, A.idcargo, B.description, A.phone1, C.startwork, C.endwork, C.created_at 
 		          FROM persond C, person A, cargo B
 				 WHERE C.idperson = A.id AND A.cargo = B.id AND C.estado='$tipo' AND C.idperson=$id
 			  ORDER BY C.created_at DESC"; 
@@ -529,7 +526,7 @@ class PersonData {
 	}
 
 	public static function getContratos($id){
-		$sql = "SELECT C.id, C.estado, A.idcard, A.name, A.cargo, B.description, A.phone1, C.acumula, C.startwork, C.endwork, C.created_at 
+		$sql = "SELECT C.id, C.estado, A.idcard, A.name, A.idcargo, B.description, A.phone1, C.acumula, C.startwork, C.endwork, C.created_at 
 		          FROM persond C, person A, cargo B
 				 WHERE C.idperson = A.id AND A.cargo = B.id AND C.estado IN ('I', 'E') AND C.idperson=$id
 			  ORDER BY C.created_at DESC";
@@ -539,61 +536,61 @@ class PersonData {
 	}
 
 	public static function getFiniquito($id){
-		$sql = "SELECT C.id, E.name motivo, A.idcard, A.name, A.cargo, B.description, A.phone1, C.startwork, C.endwork, C.created_at 
+		$sql = "SELECT C.id, E.name motivo, A.idcard, A.name, A.idcargo, B.description, A.phone1, C.startwork, C.endwork, C.created_at 
 		          FROM persond C, person A, cargo B, operation_type E 
-				 WHERE C.idperson = A.id AND A.cargo = B.id AND C.tipo_despido = E.id AND C.estado='E' AND C.idperson=$id"; 
+				 WHERE C.idperson = A.id AND A.idcargo = B.id AND C.tipo_despido = E.id AND C.estado='E' AND C.idperson=$id"; 
 
 		$query = Executor::doit($sql);
 		return Model::many($query[0],new PersonData());
 	}
 
 	public static function getByCodigo($id){
-		$sql = "SELECT C.id, C.idperson, C.dias, C.observacion, A.idcard, A.name, A.cargo, B.description, A.phone1, C.startwork, C.endwork, C.created_at 
+		$sql = "SELECT C.id, C.idperson, C.dias, C.observacion, A.idcard, A.name, A.idcargo, B.description, A.phone1, C.startwork, C.endwork, C.created_at 
 		          FROM persond C, person A, cargo B
-				 WHERE C.idperson = A.id AND A.cargo = B.id AND C.id=$id"; 
+				 WHERE C.idperson = A.id AND A.idcargo = B.id AND C.id=$id"; 
 		$query = Executor::doit($sql);
 
 		return Model::many($query[0],new PersonData());
 	}
 
 	public static function getVacaciones(){
-		$sql = "select C.id, C.dias, A.idcard, A.name, A.cargo, B.description, A.phone1, C.startwork, C.endwork, C.created_at 
+		$sql = "select C.id, C.dias, A.idcard, A.name, A.idcargo, B.description, A.phone1, C.startwork, C.endwork, C.created_at 
 		          FROM persond C, person A, cargo B
-				 WHERE C.idperson = A.id AND A.cargo = B.id AND C.estado='V'"; 
+				 WHERE C.idperson = A.id AND A.idcargo = B.id AND C.estado='V'"; 
 		$query = Executor::doit($sql);
 
 		return Model::many($query[0],new PersonData());
 	}
 
 	public static function getValores($id, $estado){
-		$sql = "select C.id, C.sueldo, A.idcard, A.name, A.cargo, B.description, C.tipo_contrato, C.startwork, C.endwork, C.created_at 
+		$sql = "select C.id, C.sueldo, A.idcard, A.name, A.idcargo, B.description, C.tipo_contrato, C.startwork, C.endwork, C.created_at 
 		          FROM persond C, person A, cargo B
-				 WHERE C.idperson = A.id AND A.cargo = B.id AND C.idperson='".$id."' AND C.estado='".$estado."'"; 
+				 WHERE C.idperson = A.id AND A.idcargo = B.id AND C.idperson='".$id."' AND C.estado='".$estado."'"; 
 		$query = Executor::doit($sql);
 
 		return Model::many($query[0],new PersonData());
 	}
 
 	public static function getMotivo($id, $estado){
-		$sql = "select C.id, E.name motivo, A.idcard, A.name, A.cargo, B.description, A.phone1, C.startwork, C.endwork, C.created_at 
+		$sql = "select C.id, E.name motivo, A.idcard, A.name, A.idcargo, B.description, A.phone1, C.startwork, C.endwork, C.created_at 
 		          FROM persond C, person A, cargo B, operation_type E 
-				 WHERE C.idperson = A.id AND A.cargo = B.id AND C.tipo_despido = E.id AND C.estado='$estado' AND C.idperson=$id"; 
+				 WHERE C.idperson = A.id AND A.idcargo = B.id AND C.tipo_despido = E.id AND C.estado='$estado' AND C.idperson=$id"; 
 		$query = Executor::doit($sql);
 
 		return Model::one($query[0],new PersonData());
 	}
 	
 	public static function getLiquidacion(){
-		$sql = "select C.id, E.name motivo, A.idcard, A.name, A.cargo, B.description, A.phone1, C.startwork, C.endwork, C.created_at 
+		$sql = "select C.id, E.name motivo, A.idcard, A.name, A.idcargo, B.description, A.phone1, C.startwork, C.endwork, C.created_at 
 		          FROM persond C, person A, cargo B, operation_type E 
-				 WHERE C.idperson = A.id AND A.cargo = B.id AND C.tipo_despido = E.id AND C.estado='E'"; 
+				 WHERE C.idperson = A.id AND A.idcargo = B.id AND C.tipo_despido = E.id AND C.estado='E'"; 
 		$query = Executor::doit($sql);
 
 		return Model::many($query[0],new PersonData());
 	}
 
 	public static function getClients(){
-		$sql = "select A.id, A.idcard, A.name, A.cargo, B.description, A.email, A.phone1, A.direccion, A.startwork, A.endwork, A.kind, A.is_active, A.created_at from person A, cargo B where A.idcompany = ".$_SESSION['id_company']." and A.cargo = B.id order by name";
+		$sql = "select A.id, A.idcard, A.name, A.idcargo, B.description, A.email, A.phone1, A.direccion, A.startwork, A.endwork, A.kind, A.is_active, A.created_at from person A, cargo B where A.idcompany = ".$_SESSION['id_company']." and A.cargo = B.id order by name";
 		$query = Executor::doit($sql); 
 
 		$array = array();
@@ -605,7 +602,7 @@ class PersonData {
 			$array[$cnt]->id = $r['id'];
 			$array[$cnt]->idcard = $r['idcard'];
 			$array[$cnt]->name = $r['name'];
-			$array[$cnt]->idcargo = $r['cargo'];
+			$array[$cnt]->idcargo = $r['idcargo'];
 			$array[$cnt]->cargo = $r['description'];
 			$array[$cnt]->email = $r['email'];
 			$array[$cnt]->phone1 = $r['phone1'];

@@ -32,7 +32,7 @@ if(count($_POST)>0){
 			$valor = $lugar->update();
 		}
 		
-		Core::redir('opeasi.lista');
+		Core::redir("personas");
     }else{
         Core::alert("Error...!!!!", $error, "error");
     }
@@ -64,7 +64,7 @@ if(count($_POST)>0){
 		<small><?php echo $mensaje; ?></small>
 	</h1>
 	<ol class="breadcrumb">
-		<li><a href="./index.php?view=opeasi.lista"><i class="fa fa-database"></i> Asignacion </a></li>
+		<li><a href="./personas"><i class="fa fa-database"></i> Asignacion </a></li>
 		<li class="active"><?php echo $enlaces; ?></li>
 	</ol>
 </section>
@@ -85,7 +85,7 @@ if(count($_POST)>0){
 					</div>
 					<div class="panel-body">
 						<div class="form-group">
-							<label class="col-md-2 col-sm-3 control-label"><span class="text-danger">*</span> Puesto: </label>
+							<label for="idservicio" class="col-md-2 col-sm-3 control-label"><span class="text-danger">*</span> Puesto: </label>
 							<div class="col-md-8 col-sm-8">
 							    <?php
 						            echo '<select id="idservicio" name="idservicio" class="form-control">';
@@ -99,7 +99,7 @@ if(count($_POST)>0){
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-md-2 col-sm-3 control-label"><span class="text-danger">*</span> Agente:</label>
+							<label for="idperson" class="col-md-2 col-sm-3 control-label"><span class="text-danger">*</span> Agente:</label>
 							<div class="col-md-8 col-sm-8">
 							    <?php
 			                        echo '<select id="idperson" name="idperson" class="form-control select2">';

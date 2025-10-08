@@ -62,7 +62,7 @@ if(count($_POST)>0){
 		<small><?php echo $mensaje; ?></small>
 	</h1>
 	<ol class="breadcrumb">
-		<li><a href="./index.php?view=opeasi.lista"><i class="fa fa-database"></i> Asignacion </a></li>
+		<li><a href="./personas"><i class="fa fa-database"></i> Asignacion </a></li>
 		<li class="active"><?php echo $enlaces; ?></li>
 	</ol>
 </section>

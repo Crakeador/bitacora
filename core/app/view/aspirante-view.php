@@ -159,12 +159,10 @@ if(isset($_GET['id'])){
            "recibo" => 0,
            "completo" => 0,
            "decimo" => 0,
-           // "extension" => $_POST["acumular_fondosreserva"],
            "region" => 2,
            "extencion" => 0,
            "acumula3" => $acumular3,		   
            "acumula4" => $acumular4,
-           "kind" => $_POST["kind"],
            "is_active" => $_POST["is_active"]
         ];
 
@@ -270,10 +268,8 @@ if(isset($_GET['id'])){
             $user->recibo = 0;
             $user->completo = 0;            
             $user->decimo = 0; 
-            // $user->extension = $_POST["acumular_fondosreserva"]; 
             $user->acumula3 = $acumular3; 
             $user->acumula4 = $acumular4; 
-            $user->kind = $_POST["kind"];
             $user->is_active = $_POST["is_active"];
 
             if($_POST["id_person"] == 0) { 
@@ -436,7 +432,6 @@ if(isset($_GET['id'])){
            "acumula4"=>0,
            "acumular_decimos"=>"1",
            "acumular_cuartos"=>"1",
-           "kind"=>"1",
            "is_active"=>"1"
         ];
     }
@@ -626,7 +621,7 @@ if(isset($_GET['id'])){
                                                         <div class="radiobutton">
                                                             <input type="radio" id="kind" name="kind" value="1" <?php if($person->kind==1) echo 'checked'; ?>> Si &nbsp;&nbsp;
                                                             <input type="radio" id="kind" name="kind" value="0" <?php if($person->kind==0) echo 'checked'; ?>> No&nbsp;&nbsp;
-                                                            <input type="radio" id="kind" name="kind" value="2" <?php if($person->kind==2) echo 'checked'; ?>> Eventual
+                                                            <input type="radio" id="kind" name="kind" value="2" <?php if($person->kind==0) echo 'checked'; ?>> Eventual
                                                         </div>
                                                     </div>
                                                 </div>

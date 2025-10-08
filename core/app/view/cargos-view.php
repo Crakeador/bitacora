@@ -11,7 +11,7 @@
 <section class="content" style="padding: 1.5rem !important;">
 	<div class="box"> 
 		<div class="box-header with-border">
-			<a id="btn_cargos" class="btn btn-success btn-sm" href="index.php?view=catcar.cargo">
+			<a id="btn_cargos" class="btn btn-success btn-sm" href="cargo">
 				<span class="glyphicon glyphicon-plus"></span> Ingresar Cargos
 			</a>
 		</div>
@@ -50,7 +50,7 @@
 								echo '<td width="10%">';
 									echo '<div align="center">';
 										echo '<button type="button" class="btn btn-danger btn-sm" onClick="btn_EnviarOnClick(\''.$tables->id.'\', \''.$tables->is_active.'\');"><i class="fa fa-trash"></i></button>';
-										echo '<a href="index.php?view=catcar.cargo&id='.$tables->id.'" class="btn btn-sm btn-success"><i class="fa fa-edit"></i></a>';
+										echo '<a href="index.php?view=cargo&id='.$tables->id.'" class="btn btn-sm btn-success"><i class="fa fa-edit"></i></a>';
 									echo '</div>';
 								echo '</td>';
 							echo '</tr>';
@@ -125,3 +125,4 @@
 		 }
 	} //--
 </script>
+ 

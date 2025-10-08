@@ -333,7 +333,6 @@ if(isset($_GET['id'])){
            "acumula4"=>0,
            "acumular_decimos"=>"1",
            "acumular_cuartos"=>"1",
-           "is_empleado"=>"1",
            "is_active" => "1"
         ];
     }

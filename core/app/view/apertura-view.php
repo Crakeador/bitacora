@@ -1,6 +1,6 @@
 <?php
 // Clase de la Tabla de Departamentos
-$local = DepartamentoData::getDepart();
+$local = DepartamentoData::getAll();
 ?>
 <!-- Content Header (Page header) -->
 <section class="content-header">
