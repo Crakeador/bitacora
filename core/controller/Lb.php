@@ -3,12 +3,9 @@
 // Lb.php
 // @brief el objeto legobox
 
-class Lb {
-	function __construct(){
-		//Constructor de la Clases
-	}	
-	
-	public function Lb(){
+class Lb {	
+	public function __construct(){
+		// Constructor de la clase
 	}
 
 	public function start(){

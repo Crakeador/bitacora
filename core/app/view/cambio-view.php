@@ -139,13 +139,14 @@ if(isset($_GET['id'])){
 								</div>
 							</div><?php 
 						}
-						if($person->manzana !== NULL && $person->villa !== NULL)
-							echo '<p>
+						if($person->manzana !== NULL && $person->manzana !== "")
+							echo '<br>
+							      <p>
 									<small>
 										<span class="glyphicon glyphicon-Home text-success"></span>&nbsp;
 										<span class="text-success">Manzana '.$person->manzana.' - Villa '.$person->villa.'</span>
 									</small>
-									</p>';
+								  </p>';
 						?>
 						</br>
 						<form class="form-horizontal" method="post" id="addtask" action="index.php?view=cambio" role="form">

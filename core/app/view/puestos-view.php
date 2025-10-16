@@ -87,8 +87,7 @@ if(isset($_GET["id"])){
 								<th style="width:8%;"></th>
 							</tr>
 							</thead>
-							<tbody>
-							<?php
+							<tbody>	<?php
 								$puestos = PuestoData::getAll(2);
 
 								// Crea tabla de Ventas
@@ -106,8 +105,7 @@ if(isset($_GET["id"])){
 										    echo '<a id="buttResumen'.$sell->id.'" title="Puesto'.$sell->id.'"href="index.php?view=puesto&id='.$sell->id.'" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-edit"></i></a></div>';
 										echo '</td>';
 									echo '</tr>';
-								}
-							?>
+								} ?>
 							</tbody>
 						</table>
 					</form>

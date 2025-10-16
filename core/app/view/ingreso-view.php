@@ -402,7 +402,7 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
 							.then(nombreDeLaFoto => {
 								// nombreDeLaFoto trae el nombre de la imagen que le dio PHP
 								console.log(nombreDeLaFoto);
-								$estado.innerHTML = `Foto guardada con éxito. Puedes verla <a target='_blank' href='./storage/fotos/${nombreDeLaFoto}'> aquí</a>`;
+								$estado.innerHTML = `Foto guardada con éxito. Puedes verla <a target='_blank' href='./storage/ingreso/${nombreDeLaFoto}'> aquí</a>`;
 								$foto.value = nombreDeLaFoto;
 							})
 

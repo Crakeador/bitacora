@@ -18,7 +18,7 @@ $total = count($users);
         <div class="col-xs-12">
             <div class="box">                	
 	    		<div class="box-header with-border">
-    				<a id="btn_productos" class="btn btn-success btn-sm" href="index.php?view=opeasp.persons">
+    				<a id="btn_productos" class="btn btn-success btn-sm" href="aspirante">
     					<span class="glyphicon glyphicon-plus"></span> Ingresar Aspirante
     				</a>
 	    		</div>
@@ -49,7 +49,7 @@ $total = count($users);
 										    	if($_SESSION["idrol"] == 1 && $_SESSION["idrol"] == 6)
 													echo utf8_encode($tables->name).'</br>';
 												else
-													echo '<a class="text-primary" href="index.php?view=opeasp.persons&id='.$tables->id.'">'.utf8_encode($tables->name).'</a></br>';
+													echo '<a class="text-primary" href="index.php?view=aspirante&id='.$tables->id.'">'.utf8_encode($tables->name).'</a></br>';
 
 												echo '<small>';
 													if($tables->tiene_carnet == 1){

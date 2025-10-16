@@ -17,7 +17,7 @@ if(isset($_GET['id'])){
 	$control = new ControlData();	
 	$control->id = $_GET['id'];
 	$control->estado = $_GET['estado'];
-	$valor = $control->control();
+	$valor = $control->control(); 
 }
 
 ?>
@@ -38,7 +38,7 @@ if(isset($_GET['id'])){
 	<div class="col-xs-12" style="padding: 1.5rem !important;">
 		<div class="box">
 			<div class="box-header with-border">
-				<label> Cliente: </label>
+				<label for="idclient"> Cliente: </label>
 				<select class="select-input form-control input-sm" id="idclient" name="idclient" onchange="javascript:location.href='index.php?view=cobnom.lista&client='+value;">
 					<option value="0" selected="selected"> Selecione... </option>
 					<?php

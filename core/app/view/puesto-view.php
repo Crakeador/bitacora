@@ -270,7 +270,6 @@ if(isset($_GET["id"])){
                     <!-- Tabs within a box -->
                     <ul class="nav nav-tabs pull-right ui-sortable-handle">
                       <li class="active"><a href="#revenue-chart" data-toggle="tab">Rondas</a></li>
-                      <li><a href="#sales-chart" data-toggle="tab">Zonas</a></li>
                       <li class="pull-left header"><i class="fa fa-inbox"></i>Listado de los Puntos</li>
                     </ul>
                     <div class="tab-content no-padding">
@@ -391,85 +390,6 @@ if(isset($_GET["id"])){
             					</div> <!--/ END modal -->								
             				</div>
                         </div>
-                        <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;">
-                            <div class="group">
-                                <br>
-            					<button id="btn_cargar_zona" type="button" data-toggle="modal" data-target="#dlg_zona" class="btn btn-sm btn-primary mb5" aria-label="">
-            						<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-            						Agregar/Modificar
-            					</button>									
-            					</br></br>
-            					<!--- Datos de Liquidacion --->
-            					<table id="viewBitacora" class="table table-bordered table-hover">
-            						<thead>
-            							<tr>
-            								<th style="width: 12%"><div align="center">ACCION</div></th>
-            								<th><div align="center">ZONA</div></th>
-            								<th style="width: 20%"><div align="center">CODIGO</div></th>
-            								<th style="width: 12%"><div align="center">ESTADO</div></th>
-            							</tr>
-            						</thead>
-            						<tbody>
-            							<?php
-            								$users = PuestoData::getZonas($lugar_id);
-            								$resultado = count($users);
-            								
-            								$total=1;
-            								if($resultado > 0){
-            									foreach($users as $tables) {
-            										echo '<tr>';
-            											echo '<td>
-            													<div align="center">'.$total.'</div>
-            												  </td>';
-            											echo '<td>'.$tables->name.'</td>';
-            											echo '<td>'.$tables->codigo.'</td>';
-            											echo '<td><div align="center">Activo</div></td>';
-            										echo '</tr>';
-            										$total++;
-            									}
-            								}
-            							?>
-            						</tbody>
-            					</table>
-            					<!-- pop up fechas Ingreso y Salida del empleado -->
-            					<div id="dlg_zona" class="modal">
-            						<div class="modal-dialog">
-            							<div class="modal-content">
-            								<div class="box-header with-border">
-            									<h3 class="box-title">Ingreso de las zonas</h3>
-            									<div class="box-tools pull-right">
-            										<button type="button" class="close" data-dismiss="modal">×</button>
-            									</div><!-- /.box-tools -->
-            								</div><!-- /.box-header -->
-            								<div class="box-body" style="display: block;">		
-            									<input type="hidden" id="puesto2" name="puesto2" value="<?php echo $_SESSION["puesto"]; ?>">
-            									<div class="form-group">
-            										<label for="name2" class="col-md-4 col-sm-3 control-label"><span class="text-danger">*</span> Descripci&oacute;n:</label>
-            										<div class="col-md-8 col-sm-5">
-            											<input type="text" class="form-control" id="name2" name="name2" value="" placeholder="Descripcion del punto" max="60">
-            										</div>
-            									</div>
-            									<div class="form-group">
-            										<label for="codigo2" class="col-md-4 col-sm-3 control-label"><span class="text-danger">*</span> Codigo:</label>
-            										<div class="col-md-4 col-sm-5">
-            											<input type="text" class="form-control" id="codigo2" name="codigo2" value="" placeholder="Codigo del punto" max="20">
-            										</div>
-            									</div>
-            								</div>
-            								<div class="modal-footer">
-            									<button id="agregar_zonas" class="btn btn-success">
-            										<span class="glyphicon glyphicon-floppy-disk"></span> Grabar
-            									</button>
-            									<button type="button" class="btn btn-danger" data-dismiss="modal">
-            										<span class="glyphicon glyphicon-remove"> </span> Cancelar
-            									</button>
-            									<div id="finiquito"></div>
-            								</div>
-            							</div> <!-- /.modal-content -->
-            						</div> <!-- /.modal-dialog -->
-            					</div> <!--/ END modal -->								
-            				</div>
-                        </div>
                     </div>
                 </div>
 			</div>
@@ -491,30 +411,6 @@ if(isset($_GET["id"])){
     	});
     
     	$(function(){
-    	    $("#agregar_zonas").click(function(e){
-                e.preventDefault();
-                $puesto = $('#puesto2').val();
-    			$name = $('#name2').val();
-    			$codigo = $('#codigo2').val();
-    			
-    			console.log($puesto+'-'+$latitude+'-'+$longitude+'-'+$orden+'-'+$name+'-'+$codigo);
-    			if($puesto == '' || $name == '' || $codigo == ''){
-    				sweetAlert('Errores pendientes...!!!', 'Debe seleccionar todos los campos para continuar', 'error');
-    			}else{
-    				$.ajax({
-    					type: "POST",
-    					url: "https://latin.near-solution.com/ajax/zonas.php?puesto="+$puesto+"&name="+$name+"&codigo="+$codigo,
-    					success: function(data) {
-    					    //sweetAlert('Excelente', 'Se ingeso un punto nuevo', 'success');
-    						/* Cargamos finalmente el contenido deseado */
-    						window.location="https://latin.near-solution.com/index.php?view=puesto&id="+$puesto;
-    					}
-    				});
-    			} 
-    
-                return false;
-            }) 
-            
             $("#agregar_ronda").click(function(e){
                 e.preventDefault();
                 $puesto = $('#puesto1').val();

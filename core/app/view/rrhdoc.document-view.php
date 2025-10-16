@@ -1,7 +1,5 @@
 <?php
-// Registro de Faltas
-
-$tipo = DocumentoData::getAll();
+// Registro de Sansiones de los Agentes
 $persons = PersonData::getAll();
 $users = UserData::getAll();
 
@@ -48,15 +46,17 @@ if(isset($_GET['id'])){
 	}
 }
 
-$rowCount = count($tipo); $var = '<option value="0" selected="selected"> Selecione... </option>'; $valor = '';
-for ($i = 0; $i < $rowCount; $i++) {
-	if($documen_id == 0){
-	    // Sin accion
-	}else{
-		if($tipo[$i]->id == $documen->tipo_documen) $valor = 'selected="selected"'; else $valor = '';
-    }
-	$var .= '<option value="'.$tipo[$i]->id.'" '.$valor.'>'.$tipo[$i]->description.'</option>';
+$var = '<option value="0" selected="selected"> Selecione... </option>'; $valor = '';
+if($documen->tipo_documen == 1) {
+	$valor1 = 'selected="selected"'; $valor2 = ''; $valor3 = '';
+}elseif($documen->tipo_documen == 2) {
+	$valor1 = ''; $valor2 = 'selected="selected"'; $valor3 = '';
+}elseif($documen->tipo_documen == 3) {
+	$valor1 = ''; $valor2 = ''; $valor3 = 'selected="selected"'; 
 }
+$var .= '<option value="1" '.$valor1.'>Memorandum</option>';
+$var .= '<option value="2" '.$valor2.'>Llamado de atencion</option>';
+$var .= '<option value="3" '.$valor3.'>Faltas</option>';
 
 ?>
 <!-- Content Header (Page header) -->

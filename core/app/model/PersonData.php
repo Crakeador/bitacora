@@ -441,7 +441,7 @@ class PersonData {
 
 	public static function getAllLiquida($tipo, $activo){
 		$sql = "SELECT A.*, B.description FROM person A, cargo B
-		         WHERE A.cargo = B.id AND B.idtipo = $tipo AND A.idcompany = ".$_SESSION['id_company']." AND A.is_active = $activo AND A.endwork != '' 
+		         WHERE A.idcargo = B.id AND B.idtipo = $tipo AND A.idcompany = ".$_SESSION['id_company']." AND A.is_active = $activo AND A.endwork != '' 
 			  ORDER BY name";
 		$query = Executor::doit($sql); 
 
@@ -449,7 +449,7 @@ class PersonData {
 	}
 	
 	public static function getAllTipo($tipo, $activo){
-		$sql = "SELECT A.*, B.description FROM person A, cargo B WHERE A.idcargo = B.id AND B.idtipo = $tipo AND A.idcompany = ".$_SESSION['id_company']." AND A.is_active = $activo ORDER BY name";
+		$sql = "SELECT A.*, B.description FROM person A, cargo B WHERE A.idcargo = B.id AND B.idtipo = $tipo AND A.idcompany = ".$_SESSION['id_company']." AND A.is_active = $activo ORDER BY name"; 
 		$query = Executor::doit($sql); 
 		return Model::many($query[0],new PersonData());
 	}
@@ -462,16 +462,16 @@ class PersonData {
 	}
 
 	public static function getAllCargo($cargo){
-		$sql = "SELECT * FROM person A, cargo B WHERE A.cargo = B.id AND A.is_active = 1 AND A.idcargo = $cargo ORDER BY name";
+		$sql = "SELECT * FROM person A, cargo B WHERE A.idcargo = B.id AND A.is_active = 1 AND A.idcargo = $cargo ORDER BY name";
 		$query = Executor::doit($sql);
 
 		return Model::many($query[0],new PersonData());
 	}
 
     public static function getOficina($tipo){
-    	 $sql = "SELECT A.id, A.image, A.idcard, A.tipo_sangre, A.name, A.cargo, B.description, A.email, A.phone1, A.direccion, A.startwork, A.endwork, A.kind, A.is_active, A.created_at 
+    	 $sql = "SELECT A.id, A.image, A.idcard, A.tipo_sangre, A.name, A.idcargo, B.description, A.email, A.phone1, A.direccion, A.startwork, A.endwork, A.kind, A.is_active, A.created_at 
 		           FROM person A, cargo B 
-				  WHERE A.idcompany = ".$_SESSION['id_company']." AND A.cargo = B.id AND B.idtipo IN (1, 2) AND A.is_active=$tipo
+				  WHERE A.idcompany = ".$_SESSION['id_company']." AND A.idcargo = B.id AND B.idtipo IN (1, 2) AND A.is_active=$tipo
 			   ORDER BY A.name, A.is_active"; 
     	 $query = Executor::doit($sql);
 
@@ -590,7 +590,7 @@ class PersonData {
 	}
 
 	public static function getClients(){
-		$sql = "select A.id, A.idcard, A.name, A.idcargo, B.description, A.email, A.phone1, A.direccion, A.startwork, A.endwork, A.kind, A.is_active, A.created_at from person A, cargo B where A.idcompany = ".$_SESSION['id_company']." and A.cargo = B.id order by name";
+		$sql = "select A.id, A.idcard, A.name, A.idcargo, B.description, A.email, A.phone1, A.direccion, A.startwork, A.endwork, A.kind, A.is_active, A.created_at from person A, cargo B where A.idcompany = ".$_SESSION['id_company']." and A.idcargo = B.id order by name";
 		$query = Executor::doit($sql); 
 
 		$array = array();

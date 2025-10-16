@@ -340,17 +340,17 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
         setInterval(countdown, 1000); <?php 
     } ?>
 		function cerrar() {		
-			// Protección para evitar cierres accidentales de la ventana
+			console.log('Protección para evitar cierres accidentales de la ventana'); /*
 			var allowExit = false;
 			function beforeUnloadHandler(e){
 				if(!allowExit){
 					e.preventDefault();
 					e.returnValue = '';
 					return '';
-				}
+				} 
 			}
 			window.addEventListener('beforeunload', beforeUnloadHandler);
-
+      */
 			// Si el usuario hace clic en un enlace o envía un formulario, permitimos la navegación
 			document.addEventListener('click', function(e){
 				var a = e.target && e.target.closest ? e.target.closest('a') : null;
@@ -599,27 +599,27 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                               echo '<li><a href="./rondas"><i class="fa fa-bicycle"></i> <span>Rondas</span></a></li>'; 
                               echo '<li><a href="./partes"><i class="fa fa-binoculars"></i> <span>Parte</span></a></li>'; 
                               echo '<li class="treeview">'; 
-                                      echo '<a href="#"><i class="fa fa-calendar"></i> <span>Horario</span><i class="fa fa-angle-left pull-right"></i></a>'; 
-                                      echo '<ul class="treeview-menu">'; 
-                                        echo '<li><a href="./planificado"><i class="fa fa-bullseye"></i> Planificado </a> </li>'; 
-                                        echo '<li>'; 
-                                          echo '<a href="#"><i class="fa fa-bullseye"></i> Asistencia <i class="fa fa-angle-left pull-right"></i></a>'; 
-                                          echo '<ul class="treeview-menu">'; 
-                                            echo '<li><a href="./index.php?view=opehor.activos"><i class="fa fa-bullseye"></i><span> Activos </span></a></li>'; 
-                                            echo '<li><a href="./index.php?view=opehor.eventual"><i class="fa fa-bullseye"></i><span> Eventuales </span></a></li>'; 
-                                            echo '<li><a href="./index.php?view=opehor.inactivos"><i class="fa fa-bullseye"></i><span> Inactivos </span></a></li>'; 
-                                            echo '<li><a href="./index.php?view=opehor.clientes"><i class="fa fa-bullseye"></i><span> Clientes </span></a></li>'; 
-                                          echo '</ul>'; 
-                                        echo '</li>'; 
-                                        echo '<li><a href="./faltas"><i class="fa fa-bullseye"></i><span> Faltas </span></a></li>'; 
-                                      echo '</ul>'; 
+                                echo '<a href="#"><i class="fa fa-calendar"></i> <span>Horario</span><i class="fa fa-angle-left pull-right"></i></a>'; 
+                                echo '<ul class="treeview-menu">'; 
+                                  echo '<li><a href="./planificado"><i class="fa fa-bullseye"></i> Planificado </a> </li>'; 
+                                  echo '<li>'; 
+                                    echo '<a href="#"><i class="fa fa-bullseye"></i> Asistencia <i class="fa fa-angle-left pull-right"></i></a>'; 
+                                    echo '<ul class="treeview-menu">'; 
+                                      echo '<li><a href="./index.php?view=opehor.activos"><i class="fa fa-bullseye"></i><span> Activos </span></a></li>'; 
+                                      echo '<li><a href="./index.php?view=opehor.eventual"><i class="fa fa-bullseye"></i><span> Eventuales </span></a></li>'; 
+                                      echo '<li><a href="./index.php?view=opehor.inactivos"><i class="fa fa-bullseye"></i><span> Inactivos </span></a></li>'; 
+                                      echo '<li><a href="./index.php?view=opehor.clientes"><i class="fa fa-bullseye"></i><span> Clientes </span></a></li>'; 
+                                    echo '</ul>'; 
+                                  echo '</li>'; 
+                                  echo '<li><a href="./faltas"><i class="fa fa-bullseye"></i><span> Faltas </span></a></li>'; 
+                                echo '</ul>'; 
                               echo '</li>'; 
                               echo '<li class="treeview">'; 
-                                      echo '<a href="#"><i class="fa fa-print"></i> <span>Reportes</span> <i class="fa fa-angle-left pull-right"></i></a>'; 
-                                      echo '<ul class="treeview-menu">'; 
-                                            echo '<li><a href="./index.php?view=repent.lista"><i class="fa fa-bullseye"></i><span>Dotaci&oacute;n de Agentes </span></a></li>'; 
-                                            echo '<li><a href="./index.php?view=reppus.lista"><i class="fa fa-bullseye"></i><span>Dotaci&oacute;n de Puestos </span></a></li>'; 
-                                      echo '</ul>'; 
+                                echo '<a href="#"><i class="fa fa-print"></i> <span>Reportes</span> <i class="fa fa-angle-left pull-right"></i></a>'; 
+                                echo '<ul class="treeview-menu">'; 
+                                  echo '<li><a href="./index.php?view=repent.lista"><i class="fa fa-bullseye"></i><span>Dotaci&oacute;n de Agentes </span></a></li>'; 
+                                  echo '<li><a href="./index.php?view=reppus.lista"><i class="fa fa-bullseye"></i><span>Dotaci&oacute;n de Puestos </span></a></li>'; 
+                                echo '</ul>'; 
                               echo '</li> '; 
                               echo '<li><a href="./novedades"><i class="fa fa-clipboard"></i> <span> Novedades </span></a></li>';
                               echo '<li><a href="./vehiculos"><i class="fa fa-car"></i> <span> Veniculos </span></a></li>';
@@ -1031,6 +1031,8 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                   <?php endif; ?>
                 </ul><!-- /.sidebar-menu -->
               </section>
+              <div class="slimScrollBar" style="background: rgb(0, 0, 0); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 392.482px;"></div>
+              <div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
               <!-- /.sidebar -->
             </div>
           </aside>

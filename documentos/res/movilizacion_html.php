@@ -10,7 +10,7 @@ $tipo = $_SESSION['tipo'];
 
 $sql = "select * from company where idcompany=".$_SESSION['id_company'];
 $query = $con->query($sql);
-echo $sql;
+
 while($r = $query->fetch_array()){
 	$name = $r['nombre'];
 	break;

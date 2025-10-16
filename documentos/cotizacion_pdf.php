@@ -32,7 +32,7 @@ $sql = "SELECT A.* FROM cotizacion A WHERE A.id = ".$_GET["id"];
 $coriza = $con->query($sql);
 
 if (empty($coriza)){
-	echo '<script>alert(\'No hay productos agregados a la cotizacion\')</script>';
+	echo '<script>alert("'.$sql.'")</script>'; //No hay productos agregados a la cotizacion
 	echo '<script>window.close();</script>';
 	exit;
 }else{
@@ -42,12 +42,24 @@ if (empty($coriza)){
 	$pdf->AddPage();
 
 	while($r = $coriza->fetch_array()){
-		// Salto de línea
+		/* Salto de línea
         $pdf->SetFont('Arial', 'B',11);
         $pdf->Text(136, 20, 'COTIZACION Nro. '.$r['oficio']);
         $pdf->Ln(30);
         $pdf->SetLeftMargin(5);
         $pdf->SetFontSize(10);
+		------------------------------------------------------
+		*/
+		$pdf->SetTextColor(220, 50, 50);
+		$pdf->SetTextColor(0, 0, 0);
+		$pdf->Ln(5);
+		$pdf->Cell(90);
+		$pdf->SetFont('Arial', '',20);
+		$pdf->Cell(20,10,'COTIZACION Nro. '.$r['oficio'], 0, 0, 'C');
+		$pdf->Ln(5);
+		$pdf->Ln(20);
+    	$pdf->SetLeftMargin(5);
+    	$pdf->SetFontSize(10);
         $pdf->Text( 26, 40, '   FECHA: '.$r['ini_fec']);
         $pdf->Text( 26, 45, 'CLEINTE: '.$r['contacto']);
         $pdf->Text( 26, 50, 'ASUNTO: '.$r['asunto']);

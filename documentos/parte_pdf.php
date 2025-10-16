@@ -1,7 +1,5 @@
 <?php
-
 setlocale(LC_ALL, 'es_ES');
-
 session_start();
 
 include('../core/controller/Database.php');
@@ -27,11 +25,11 @@ class PDF extends FPDF{
 $base = new Database();
 $con = $base->connect();
 
-$sql = "SELECT B.name, B.lastname, C.descripcion, C.codigo, A.* FROM bitacora A, person B, puestos C WHERE A.idperson = B.id AND A.idpuesto = C.id AND A.id = ".$_GET["id"];
+$sql = "SELECT B.name, C.descripcion, C.codigo, A.* FROM bitacora A, person B, puestos C WHERE A.idperson = B.id AND A.idpuesto = C.id AND A.id = ".$_GET["id"];
 
 $lugares = $con->query($sql);
 if (empty($lugares)){
-	echo '<script>alert(\'No hay productos agregados a la cotizacion\')</script>';
+	echo '<script>alert("No hay datos de esta Bitacora...!!!")</script>'; 
 	echo '<script>window.close();</script>';
 	exit;
 }else{
@@ -106,7 +104,7 @@ if (empty($lugares)){
         $pdf->Image('../storage/parte/'.$r['foto1'],40,150,35);
 
         if($r['foto2'] == "")
-            $pdf->Image('../assets/images/logo-Cipol-color.png',124,152,50);
+            $pdf->Image('../assets/images/american.jpg',124,152,50);
         else
             $pdf->Image('../storage/parte/'.$r['foto2'],120,150,35);
          

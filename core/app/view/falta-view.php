@@ -1,5 +1,5 @@
 <?php
-
+// Manejo de las faltas de los agentes
 $persons = PersonData::getAllTipo(3, 1); 
 $users = UserData::getAll();
 
@@ -64,7 +64,7 @@ switch ($method) {
 <!-- Content Header (Page header) -->
 <section class="content-header">
 	<h1>
-		Operaciones
+		Operaciones 
 		<small>reporte de faltas de los agentes</small>
 	</h1>
 	<ol class="breadcrumb">

@@ -6,15 +6,15 @@ require('../plugins/fpdf/html_table.php');
 
 $html='';
 $mysqli = getConn();
-$query = "SELECT A.*, B.idcard, B.name, C.description, E.descripcion ";
-$query .=  "FROM sell A, person B, cargo C, personpuestos D, puestos E ";
-$query .= "WHERE A.person_id = B.id AND B.cargo = C.id AND D.idperson = A.person_id AND D.idservicio = E.id AND A.id=".$_GET['id'];
+$query = "SELECT A.*, B.idcard, B.name, C.description, E.descripcion 
+            FROM sell A, person B, cargo C, personpuestos D, puestos E 
+           WHERE A.person_id = B.id AND B.idcargo = C.id AND D.idperson = A.person_id AND D.idservicio = E.id AND A.id = ".$_GET['id'];
 $result = $mysqli->query($query);
 
 if (empty($result)){
-	echo '<script>alert(\'No hay productos asociados a los guardias\')</script>';
-	echo '<script>window.close();</script>';
-	exit;
+	echo '<script>alert("'.$query.'")</script>'; //No hay productos asociados a los guardias
+	//echo '<script>window.close();</script>';
+	//exit;
 }else{
 	while($row = $result->fetch_array(MYSQLI_ASSOC)){
 		$venta = $row['id'];
@@ -25,9 +25,9 @@ if (empty($result)){
 		$contrato = $row['descripcion'];
 	}
 	if(!isset($venta)){
-		echo '<script>alert(\'No hay productos asociados a los guardias\')</script>';
-		echo '<script>window.close();</script>';
-		exit;
+		echo '<script>alert("'.$query.'")</script>'; //\'No hay productos asociados a los guardias\
+		//echo '<script>window.close();</script>';
+		//exit;
 	}
 
 	$sql = "SELECT A.*, B.description FROM operation A, product B ";

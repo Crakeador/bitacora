@@ -55,7 +55,7 @@ if(isset($_GET['id'])){
 		<small><?php echo $mensaje; ?></small>
 	</h1>
 	<ol class="breadcrumb">
-		<li><a href="./index.php?view=informes"><i class="fa fa-database"></i> Informes </a></li>
+		<li><a href="./informes"><i class="fa fa-database"></i> Informes </a></li>
 		<li class="active"> Inf
 		orme </li>
 	</ol>
@@ -81,11 +81,11 @@ if(isset($_GET['id'])){
 						<label>
 							<?php
 								echo '<select id="localidad_id" name="localidad_id" class="form-control">';
-								echo '<option value="0"> -- SELECCIONE EL CLIENTE -- </option>';
-								foreach($puestos as $tables) {
-									if($tables->id == $lugar) $valor = 'selected'; else $valor = '';
-									echo '<option value="'.$tables->id.'" '.$valor.'>'.$tables->descripcion.'</option>';
-								}
+									echo '<option value="0"> -- SELECCIONE EL CLIENTE -- </option>';
+									foreach($puestos as $tables) {
+										if($tables->id == $lugar) $valor = 'selected'; else $valor = '';
+										echo '<option value="'.$tables->id.'" '.$valor.'>'.$tables->codigo.' ('.$tables->descripcion.')</option>';
+									}
 								echo '</select>';
 							?>
 						</label>  
@@ -201,7 +201,7 @@ if(isset($_GET['id'])){
     var element = document.getElementById("sidai");
 
     element.classList.add("sidebar-collapse");
-    document.title = "Near Solution | Registro de las cotizaciones";
+    document.title = "Near Solutions | Registro de las cotizaciones";
 	
 	$('.datepicker').datepicker({		
 		locale: 'es',

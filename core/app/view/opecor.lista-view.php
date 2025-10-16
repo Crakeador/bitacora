@@ -32,54 +32,52 @@
 									<th><div align="center">Reportado el</div></th>
 								</tr>
 							</thead>
-							<tbody>
-								<?php
-									if($_SESSION["idrol"] == "6")
-										$users = PuestoData::getByLugar();
-									else
-										$users = PuestoData::getByFaltas();
+							<tbody> <?php
+								if($_SESSION["idrol"] == "6")
+									$users = PuestoData::getByLugar();
+								else
+									$users = PuestoData::getByFaltas();
 
-									foreach($users as $sell) {
-										echo '<tr>';
-											echo '<td>'.$sell["descripcion"];
-												echo '<div class="mini-tabla">';
-													echo '<small>';
-														echo '<span class="glyphicon glyphicon-briefcase"></span> '.$sell["codigo"];
-													echo '</small>';
-												echo '</div>';
-											echo '</td>';
-											echo '<td>'.utf8_encode($sell["nombre"]).'</td>';
-											echo '<td><div align="center">'.$sell["fecha"].'</div></td>';
-											$thearray = HorarioData::getByIdFalta($sell["idhorario"]);
-											if(count($thearray) > 0) {
-												$operations = get_object_vars($thearray);
-												if($operations["tipo"] == 1)
-													$valor = 'Falta programada';
+								foreach($users as $sell) {
+									echo '<tr>';
+										echo '<td>'.$sell["descripcion"];
+											echo '<div class="mini-tabla">';
+												echo '<small>';
+													echo '<span class="glyphicon glyphicon-briefcase"></span> '.$sell["codigo"];
+												echo '</small>';
+											echo '</div>';
+										echo '</td>';
+										echo '<td>'.utf8_encode($sell["nombre"]).'</td>';
+										echo '<td><div align="center">'.$sell["fecha"].'</div></td>';
+										$thearray = HorarioData::getByIdFalta($sell["idhorario"]);
+										if(count($thearray) > 0) {
+											$operations = get_object_vars($thearray);
+											if($operations["tipo"] == 1)
+												$valor = 'Falta programada';
+											else
+												if($operations["tipo"] == 2)
+													$valor = 'Falta justificada y avisada';
 												else
-													if($operations["tipo"] == 2)
-														$valor = 'Falta justificada y avisada';
+													if($operations["tipo"] == 3)
+														$valor = 'Falta injustificada';
 													else
-														if($operations["tipo"] == 3)
-															$valor = 'Falta injustificada';
+														if($operations["tipo"] == 4)
+															$valor = 'Falta en feriado o fiesta';
 														else
-															if($operations["tipo"] == 4)
-																$valor = 'Falta en feriado o fiesta';
-															else
-																$valor = 'Sin definir';
-											}else{
-												$operations = 0;
-											}
+															$valor = 'Sin definir';
+										}else{
+											$operations = 0;
+										}
 
-											echo $operations == 0 ? '<td>No registrado</td>' : '<td>'.$valor.'</td>';
-											echo '<td style="width:180px;">';
-												if($operations == 0)
-													echo '<div align="center">'.$sell["created_at"].'&nbsp;&nbsp;<a href="index.php?view=opefal.edit&id='.$sell["idhorario"].'" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-plus"></i></a></div>';
-												else
-													echo '<div align="center">'.$sell["created_at"].'&nbsp;&nbsp;<a href="index.php?view=opefal.edit&id='.$sell["idhorario"].'&falta='.$operations["tipo"].'" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-eye-open"></i></a></div>';
-											echo '</td>';
-										echo '</tr>';
-									}
-								?>
+										echo $operations == 0 ? '<td>No registrado</td>' : '<td>'.$valor.'</td>';
+										echo '<td style="width:180px;">';
+											if($operations == 0)
+												echo '<div align="center">'.$sell["created_at"].'&nbsp;&nbsp;<a href="index.php?view=opefal.edit&id='.$sell["idhorario"].'" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-plus"></i></a></div>';
+											else
+												echo '<div align="center">'.$sell["created_at"].'&nbsp;&nbsp;<a href="index.php?view=opefal.edit&id='.$sell["idhorario"].'&falta='.$operations["tipo"].'" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-eye-open"></i></a></div>';
+										echo '</td>';
+									echo '</tr>';
+								} ?>
 							</tbody>
 						</table>
 					</div>	<!-- /.box-body -->

@@ -5,7 +5,7 @@
 		<small>listado de los productos</small>
 	</h1>
 	<ol class="breadcrumb">
-		<li><a href="index.php?view=home"><i class="fa fa-dashboard"></i> Panel de control </a></li>
+		<li><a href="home"><i class="fa fa-dashboard"></i> Panel de control </a></li>
 	</ol>
 </section>
 <section class="content" style="padding: 1.5rem !important;">
@@ -33,7 +33,7 @@
 					// print_r($operation);
 					$qx = OperationData::getQYesF($operation->product_id);
 					// print "qx=$qx";
-						$p = $operation->getProduct();
+					$p = $operation->getProduct();
 					if($qx==0){
 						echo "<p class='alert alert-danger'>El producto <b style='text-transform:uppercase;'> $p->name</b> no tiene existencias en inventario.</p>";			
 					}else if($qx<=$p->inventary_min/2){
@@ -75,11 +75,9 @@
 					<th>Fecha de </br>Vencimiento</th>
 					<th>Precio Unitario</th>
 					<th>Total</th>
-
-				</thead>
-			<?php
+				</thead> <?php
 				foreach($operations as $operation){
-					$product  = $operation->getProduct();	?>
+					$product = $operation->getProduct();	?>
 					<tr>
 						<td><?php echo $product->id; ?></td>
 						<td><?php echo $operation->q; ?></td>
@@ -90,8 +88,7 @@
 						<td>$ <?php echo number_format($product->price_in,2,".",",") ;?></td>
 						<td><b>$ <?php echo number_format($operation->q*$product->price_in,2,".",",");$total+=$operation->q*$product->price_in;?></b></td>
 					</tr> 	<?php
-				}
-				?>
+				} ?>
 			</table>
 			<br><br><h1>Total: $ <?php echo number_format($total,2,'.',','); ?></h1>
 				<?php

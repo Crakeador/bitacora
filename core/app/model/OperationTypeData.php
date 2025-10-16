@@ -1,4 +1,6 @@
 <?php
+//Modelo de Pantallas
+
 class OperationTypeData {
 	public static $tablename = "operation_type";
 
@@ -30,6 +32,13 @@ class OperationTypeData {
 		Executor::doit($sql);
 	}
 
+	public static function getLike($m, $n){
+		$sql = "SELECT * FROM ".self::$tablename." WHERE $m LIKE '%$n%'";
+		$query = Executor::doit($sql);
+
+		return Model::one($query[0],new OperationTypeData());
+	}
+	
 	public static function getByType($type){
 		$sql = "SELECT * FROM ".self::$tablename." where modulo like '$type'";
 		$query = Executor::doit($sql); 
@@ -37,17 +46,9 @@ class OperationTypeData {
 	}
 
 	public static function getById($id){
-		$sql = "SELECT * FROM ".self::$tablename." where id=$id";
-		$query = Executor::doit($sql);
-		$found = null;
-		$data = new OperationTypeData();
-		while($r = $query[0]->fetch_array()){
-			$data->id = $r['id'];
-			$data->name = $r['name'];
-			$found = $data;
-			break;
-		}
-		return $found;
+		$sql = "SELECT * FROM ".self::$tablename." WHERE id=$id"; 
+		$query = Executor::doit($sql); 
+		return Model::one($query[0],new OperationTypeData());
 	}
 
 	public static function getByName($name){
@@ -78,8 +79,13 @@ class OperationTypeData {
 		return $array;
 	}
 	
-	public static function getAllType($modulo){
-		$sql = "SELECT * FROM ".self::$tablename." WHERE idactividad = ".$_SESSION['actividad']." AND padre > 0 AND modulo = '$modulo'"; 
+	public static function getAllType($modulo, $id=999){
+	    if($id == 999)
+	        $padre = " AND padre > 0";
+	    else
+	        $padre = " AND padre = ".$id;
+	    
+		$sql = "SELECT * FROM ".self::$tablename." WHERE idactividad = ".$_SESSION['actividad'].$padre." AND modulo = '$modulo'"; 
 		$query = Executor::doit($sql);
 		return Model::many($query[0],new OperationTypeData());
 	}

@@ -171,12 +171,12 @@ switch ($method) {
 						<div class="col-md-12">
 							<div class="form-group">
 								<div class="input-group">
-								    <span class="input-group-addon"><i class="fa fa-city"></i></span>
+								    <span class="input-group-addon"><i class="fa fa-cubes"></i></span>
 									<select class="form-control" id="listaCliente" name="listaCliente" onchange="javascript:location.href='index.php?view=dotar&id='+value;" <?php if(isset($_SESSION["id_puesto"]) && $_SESSION["id_puesto"] > 0) echo 'disabled="disabled"'; else echo 'required'; ?>>
 										<option value="0" selected="selected"> Selecione el cliente </option>
 										<?php
 											foreach($clientes as $clients):?>
-												<option value="<?php echo $clients->idclient; ?>" <?php if($clients->idclient == $_SESSION["id_cliente"]) echo 'selected="selected"'; ?>><?php echo $clients->nombre;?></option>
+												<option value="<?php echo $clients->id; ?>" <?php if($clients->id == $_SESSION["id_cliente"]) echo 'selected="selected"'; ?>><?php echo $clients->nombre;?></option>
 										<?php endforeach;	?>
 									</select>
 								</div>
@@ -313,7 +313,7 @@ switch ($method) {
     var element = document.getElementById("sidai");
 
     element.classList.add("sidebar-collapse");
-    document.title = "SIDAI | Dotacion de puesto";
+    document.title = "Near Solutions | Dotacion de puesto";
 
 	function recargarLista(){
 		$.ajax({

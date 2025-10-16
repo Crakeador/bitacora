@@ -56,7 +56,6 @@ $sql = 'SELECT C.idservicio, D.descripcion, E.descripcion lugar FROM nomina A, p
 $sql .= 'WHERE A.person = B.id AND B.cargo = F.id AND B.id = C.idperson AND C.idservicio = D.id AND D.idlugar = E.id AND A.mes = '.$mes.' AND A.ano = '.$ano.' AND B.company = '.$_SESSION['id_company'].' AND F.idtipo = '.$tipo.' GROUP BY C.idservicio ORDER BY E.descripcion, D.descripcion ';
 $lugares = $con->query($sql);
 
-// echo $sql;
 if (empty($lugares)){
 	echo '<script>alert(\'No hay productos agregados a la cotizacion\')</script>';
 	echo '<script>window.close();</script>';

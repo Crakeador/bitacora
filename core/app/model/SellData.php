@@ -96,7 +96,7 @@ class SellData {
 	}
 
 	public static function getAgentes(){
-		$sql = "select B.name, A.* from sell A, person B where A.person_id = B.id and A.operation_type_id=2 and B.cargo in (7,8) GROUP by A.person_id order by created_at desc";
+		$sql = "select B.name, A.* from sell A, person B where A.person_id = B.id and A.operation_type_id=2 and B.idcargo in (7,8) GROUP by A.person_id order by created_at desc";
 		$query = Executor::doit($sql);
 		return Model::many($query[0],new SellData());
 	}
@@ -112,7 +112,7 @@ class SellData {
 		$query = Executor::doit($sql);
 		return Model::many($query[0],new SellData());
 	}
-
+	
 	public static function getRes(){
 		$sql = "select * from ".self::$tablename." where operation_type_id=1 order by created_at desc";
 		$query = Executor::doit($sql);

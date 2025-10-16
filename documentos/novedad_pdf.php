@@ -37,7 +37,8 @@ class PDF extends FPDF{
 $base = new Database();
 $con = $base->connect();
 
-$sql = "SELECT B.name, B.lastname, C.descripcion, C.codigo, A.* FROM bitacora A, person B, puestos C WHERE A.idperson = B.id AND A.idpuesto = C.id AND A.id = ".$_GET["id"];
+$sql = "SELECT B.name, C.descripcion, C.codigo, A.* FROM bitacora A, person B, puestos C 
+         WHERE A.idperson = B.id AND A.idpuesto = C.id AND A.id = ".$_GET["id"];
 
 $lugares = $con->query($sql);
 if (empty($lugares)){
@@ -106,7 +107,7 @@ if (empty($lugares)){
         $pdf->Image('../storage/novedad/'.$r['foto1'],40,150,35);
 
         if($r['foto2'] == "")
-            $pdf->Image('../assets/images/logo-Cipol-color.png',124,152,50);
+            $pdf->Image('../assets/images/american.jpg',124,152,50);
         else
             $pdf->Image('../storage/novedad/'.$r['foto2'],120,150,35);
          
