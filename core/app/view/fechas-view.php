@@ -13,7 +13,7 @@ if(isset($_GET['mes'])){
 		$_SESSION['mes']=$mes;
 	}
 }
-// Visualicacion de la Bitacora Electronica
+// Visualicacion de la Bitacora Electronica 
 $hoy = date("Y-m-d"); $cadena = "";
 
 if($_SERVER['dispositivo'] == 1) $cadena = " AND fecha BETWEEN '".date("Y-m-d", strtotime("-30 day", strtotime($hoy)))." 00:00:00' AND '".date("Y-m-d", strtotime("+1 day", strtotime($hoy)))." 00:00:00'";
@@ -54,28 +54,37 @@ If(isset($_POST["sd"])){
 						<thead>
 							<tr>
 								<th><div align="center">Ingreso</div></th>
-								<th width="8%"><div align="center">Codigo</div></th>
+								<!-- th width="8%"><div align="center">Codigo</div></th -->
 								<th width="8%"><div align="center">Turno</div></th>
-								<th>Nombre del Guardia</th>
-								<th width="30%"><div align="center">Observaci&oacute;n</div></th>
+								<th width="30%">Nombre del Guardia</th>
+								<th><div align="center">Observaci&oacute;n</div></th>
 								<th width="8%"><div align="center">Acci&oacute;n</div></th>
 							</tr>
 						</thead>
 						<tbody>
 							<?php
 								// Crea tabla de Ventas
-								foreach($users as $tables) {
+								foreach($users as $tables) {									
+									$ruta = '';
+									if($tables->proceso == "Observacion") $ruta = 1;
+									if($tables->proceso == "Ingreso" || $tables->proceso == "Salida") $ruta = 2;
+									if($tables->proceso == "Alerta") $ruta = 3;
+									if($tables->proceso == "Supervicion") $ruta = 5;
+									if($tables->proceso == "Rondas") $ruta = 6;
+									if($tables->proceso == "Visitas") $ruta = 7;
+									if($tables->proceso == "Custodia") $ruta = 8;
+
 									echo '<tr>';
 										echo '<td><div align="center">'.$tables->fecha.'</div></td>';
-										echo '<td>'.$tables->codigo.'</td>';
+										//echo '<td>'.$tables->descripcion.'</td>'; // Codigo
 										echo '<td>'.$tables->turno.'</td>';
 										echo '<td>';
-											echo utf8_encode($tables->lastname).' '.utf8_encode($tables->name).'</br>';
+											echo $tables->name.'</br>'; //utf8_encode()
 										echo '</td>';
 										echo '<td>'.$tables->observacion.'</td>';
 										echo '<td>';
 											  echo '<div align="center">';
-														echo '<a href="index.php?view=info&id='.$tables->id.'&ruta=4" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></a>';
+														echo '<a href="index.php?view=info&id='.$tables->id.'&ruta='.$ruta.'" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></a>';
 											  echo '</div>';
 										echo '</td>';
 									echo '</tr>';

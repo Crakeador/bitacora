@@ -1142,7 +1142,7 @@ switch ($method) {
     var element = document.getElementById("sidai");
 
     element.classList.add("sidebar-collapse");
-    document.title = "Near Solutions | Registro de entregas";
+    document.title = "Near Solution | Registro de entregas";
 	
 	$('.datepicker').datepicker({		
 		locale: 'es',

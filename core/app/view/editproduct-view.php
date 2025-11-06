@@ -195,7 +195,7 @@ if(isset($_GET["id"])){
 		</section>
 		<script>
 			$(document).ready(function(){
-				document.title = "Near Solutions | Listado de Productos"
+				document.title = "Near Solution | Listado de Productos"
 			});
 		</script> <?php	
 	}

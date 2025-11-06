@@ -34,31 +34,61 @@ if(isset($_GET['id'])){
         $nombre_fichero1 = 'storage/persons/american.png';
     }else{
 		$nombre_fichero1 = "storage/".$ruta."/".$person->foto1;
-    }
+		if (file_exists($nombre_fichero1)) {
+			//$fotos1 = 1;
+		}else{
+			$nombre_fichero1 = 'storage/persons/american.png';
+		}
+	}
     if($person->foto2 == ""){
         $nombre_fichero2 = 'storage/persons/american.png';
     }else{
-        $nombre_fichero2 = "storage/".$ruta."/".$person->foto2; $fotos2 = 1;
+        $nombre_fichero2 = "storage/".$ruta."/".$person->foto2; 
+		if (file_exists($nombre_fichero2)) {
+			//$fotos2 = 1;
+		}else{
+			$nombre_fichero2 = 'storage/persons/american.png';
+		}
     }    
     if($person->foto3 == ""){
         $nombre_fichero3 = 'storage/persons/american.png';
     }else{    
-        $nombre_fichero3 = "storage/".$ruta."/".$person->foto3; $fotos3 = 1;
+        $nombre_fichero3 = "storage/".$ruta."/".$person->foto3; 
+		if (file_exists($nombre_fichero3)) {
+			//$fotos3 = 1;
+		}else{
+			$nombre_fichero3 = 'storage/persons/american.png';
+		}
     }    
     if($person->foto4 == ""){
         $nombre_fichero4 = 'storage/persons/american.png';
     }else{    
-        $nombre_fichero4 = "storage/".$ruta."/".$person->foto4; $fotos4 = 1;
+        $nombre_fichero4 = "storage/".$ruta."/".$person->foto4; 
+		if (file_exists($nombre_fichero4)) {
+			//$fotos4 = 1;
+		}else{
+			$nombre_fichero4 = 'storage/persons/american.png';
+		}
     }    
     if($person->foto5 == ""){
         $nombre_fichero5 = 'storage/persons/american.png';
     }else{
-        $nombre_fichero5 = "storage/".$ruta."/".$person->foto5; $fotos5 = 1;
+        $nombre_fichero5 = "storage/".$ruta."/".$person->foto5; 
+		if (file_exists($nombre_fichero5)) {
+			//$fotos5 = 1;
+		}else{
+			$nombre_fichero5 = 'storage/persons/american.png';
+		}
     }    
     if($person->foto6 == ""){
         $nombre_fichero6 = 'storage/persons/american.png';
     }else{
-        $nombre_fichero6 = "storage/".$ruta."/".$person->foto6; $fotos6 = 1;
+        $nombre_fichero6 = "storage/".$ruta."/".$person->foto6; 
+		if (file_exists($nombre_fichero6)) {
+			//$fotos6 = 1; 
+		}else{
+			$nombre_fichero6 = 'storage/persons/american.png';
+		}
     }    
     $sumas = BitacoraData::updateVista($_GET['id'], $vistas);
     
@@ -191,7 +221,7 @@ if(isset($_GET['id'])){
 </section>
 <!--/ END To Top Scroller --> 
 <script>
-    document.title = "Near Solutions | Verificacion de la Bitacora";
+    document.title = "Near Solution | Verificacion de la Bitacora";
     
     // Can also be used with $(document).ready()
     $(window).load(function() {

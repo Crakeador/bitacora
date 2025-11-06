@@ -191,7 +191,7 @@ If(isset($_POST["sd"])){
     var element = document.getElementById("sidai");
 
     element.classList.add("sidebar-collapse");
-    document.title = "Near Solutions | Bitacora Electronica";
+    document.title = "Near Solution | Bitacora Electronica";
 	
 	function btn_Imprimir($id) {
 		VentanaCentrada('documentos/novedad_pdf.php?id='+$id,'Reporte de Bitacora','','1024','768','true');

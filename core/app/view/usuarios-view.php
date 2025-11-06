@@ -73,8 +73,8 @@ $users = UserData::getAll();
 												}
 											echo '</td>';
 											echo '<td>';
-												if($tables->iddepartamento!=null){
-													echo $tables->description;
+												if($tables->iddepartamento > 0){
+													echo $tables->departamento;
 												}else{
 													echo "Sin Departamento"; 
 												}

@@ -298,7 +298,7 @@ if(isset($_GET["id"])){
 	</form>
 </section>
 <script type='text/javascript'><!--
-    document.title = "Near Solutions | Ingreso de Clientes";
+    document.title = "Near Solution | Ingreso de Clientes";
     
     $(function(){
         $("#agregar_fechas_empresa").click(function(e){

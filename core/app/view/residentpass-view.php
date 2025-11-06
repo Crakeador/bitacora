@@ -91,7 +91,7 @@ if(isset($_POST['btn_update'])){
   </div>
 </section>
 <script>
-  document.title = "Near Solutions | Cambio de clave";
+  document.title = "Near Solution | Cambio de clave";
  
   $("#changepasswd").submit(function(e){
     if($("#password").val()=="" || $("#newpassword").val()=="" || $("#confirmnewpassword").val()==""){

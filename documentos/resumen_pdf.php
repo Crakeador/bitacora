@@ -37,7 +37,7 @@ if (empty($result)){
 	if($_SESSION["valor"] == 1) $nombre = $_SESSION["puesto"]; 
 
 	$pdf = new PDF();
-	$pdf->SetAuthor('Near Solutions c.a.');
+	$pdf->SetAuthor('Near Solution c.a.');
 	// First page
 	$pdf->AliasNbPages();
 	$pdf->AddPage();	

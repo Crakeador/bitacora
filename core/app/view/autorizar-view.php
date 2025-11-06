@@ -148,9 +148,9 @@ if(isset($_GET["id"])){
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="manzana" class="col-md-2 col-sm-2 control-label">Manzana:</label>
+							<label for="manzana" class="col-md-2 col-sm-2 control-label"><?php if(isset($_SESSION['residencial']) && $_SESSION['residencial'] == 0) echo 'Piso:'; else echo 'Manzana:'; ?></label>
 							<div class="col-md-4 col-sm-4">
-								<input class="text-field form-control input-sm" id="manzana" name="manzana" maxlength="10" type="number" placeholder="Numero de la manzana" value="<?php echo $client->manzana; ?>">
+								<input class="text-field form-control input-sm" id="manzana" name="manzana" maxlength="10" type="number" placeholder="Numero de la manzana" value="<?php echo $client->manzana; ?>" readonly>
 							</div>
 							<label for="email" class="col-md-2 col-sm-2 control-label">Correo Electronico:</label>
 							<div class="col-md-4 col-sm-4">
@@ -158,9 +158,9 @@ if(isset($_GET["id"])){
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="villa" class="col-md-2 col-sm-3 control-label">Villa:</label>
+							<label for="villa" class="col-md-2 col-sm-3 control-label"><?php if(isset($_SESSION['residencial']) && $_SESSION['residencial'] == 0) echo 'Apartamento:'; else echo 'Villa:'; ?></label>
 							<div class="col-md-4 col-sm-4">
-								<input class="text-field form-control input-sm" id="villa" name="villa" maxlength="10" type="text" placeholder="Numero de la villa" value="<?php echo $client->villa; ?>">
+								<input class="text-field form-control input-sm" id="villa" name="villa" maxlength="10" type="text" placeholder="Numero de la villa" value="<?php echo $client->villa; ?>" readonly>
 							</div>
 							<label for="observacion" class="col-md-2 col-sm-2 control-label">Observaciones:</label>
 							<div class="col-md-4">

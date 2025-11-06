@@ -141,7 +141,7 @@ switch ($method) {
                             </div>
                         </td>
                         <td>
-                            <button class="btn btn-xs btn-warning btn-edit" data-id="<?php echo $a->id; ?>" data-title="<?php echo htmlspecialchars($a->title); ?>" data-body="<?php echo htmlspecialchars($a->body); ?>" data-type="<?php echo htmlspecialchars($a->type); ?>"><i class="fa fa-pen"></i></button>
+                            <button class="btn btn-xs btn-warning btn-edit" data-id="<?php echo $a->id; ?>" data-title="<?php echo htmlspecialchars($a->title); ?>" data-body="<?php echo htmlspecialchars($a->body); ?>" data-type="<?php echo htmlspecialchars($a->type); ?>"><i class="fa fa-edit"></i></button>
                             <a class="btn btn-xs btn-danger" href="index.php?view=anuncios.eliminar&id=<?php echo $a->id; ?>" onclick="return confirm('¿Eliminar anuncio?');"><i class="fa fa-trash"></i></a>
                         </td>
                     </tr>

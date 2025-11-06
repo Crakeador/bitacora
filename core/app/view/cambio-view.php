@@ -209,7 +209,7 @@ if(isset($_GET['id'])){
 </section>
 <!--/ END To Top Scroller --> 
 <script>
-    document.title = "Near Solutions | Verificacion del Parte";
+    document.title = "Near Solution | Verificacion del Parte";
     
     // Can also be used with $(document).ready()
     $(window).load(function() {

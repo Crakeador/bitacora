@@ -68,7 +68,7 @@ class ResidenteData {
 		}else{
 			$valor = "AND A.idclient != 0 ";
 		}
-		$sql = "SELECT B.nombre AS cliente, A.* FROM ".self::$tablename." A, client B WHERE A.idclient = B.idclient ".$valor." AND A.is_active = $activo"; 
+		$sql = "SELECT B.nombre AS cliente, A.* FROM ".self::$tablename." A, client B WHERE A.idclient = B.id ".$valor." AND A.is_active = $activo";
 		$query = Executor::doit($sql); 
 
 		return Model::many($query[0],new ResidenteData());

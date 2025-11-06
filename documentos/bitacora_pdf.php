@@ -40,7 +40,7 @@ if (empty($result)){
 	exit;
 }else{
   $pdf = new PDF();
-  $pdf->SetAuthor('Near Solutions c.a.');
+  $pdf->SetAuthor('Near Solution c.a.');
   // First page
   $pdf->AliasNbPages();
   $i=1;

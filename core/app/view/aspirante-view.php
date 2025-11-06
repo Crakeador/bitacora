@@ -1,15 +1,12 @@
 <?php
-//Ingreso de Guardias
-$cargos = CargoData::getAll();
-$puesto = PuestoData::getAll(2);
-$bancos = BancoData::getAll();
-
+//Ingreso de Aspirantes - RRHH
 $hoy = date("Y-m-d H:i:s");
+var_dump($_GET);
 
 if(isset($_GET['id'])){
     $mensaje = "modificar un usuario del sistema";
     $enlaces = "Modificar";
-    $person = PersonData::getById($_GET['id']);
+    $person = PersonData::getByCedula($_GET['id']);
 
     if($person->firma == ""){
         $nombre_fichero1 = 'storage/persons/logo-Cipol-color.png';
@@ -43,6 +40,8 @@ if(isset($_GET['id'])){
     }         
     
     $id_person = $_GET['id'];
+    var_dump($person);
+    //storage/persons/
 }else{
     $mensaje = "crear un nuevo usuario del sistema";
     $enlaces = "Crear";
@@ -435,8 +434,8 @@ if(isset($_GET['id'])){
            "is_active"=>"1"
         ];
     }
-}
-
+} /*
+*/
 ?>
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -445,7 +444,7 @@ if(isset($_GET['id'])){
 		<small><?php echo $mensaje; ?></small>
 	</h1>
 	<ol class="breadcrumb">
-		<li><a href="./index.php?view=rrging.lista"><i class="fa fa-database"></i> Personal </a></li>
+		<li><a href="./home"><i class="fa fa-database"></i> Personal </a></li>
 		<li class="active"> Operativo </li>
 	</ol>
 </section>
@@ -460,16 +459,15 @@ if(isset($_GET['id'])){
         </div>
         </br>
         <div class="panel panel-default">
-
             <!-- tabs -->
             <ul class="nav nav-tabs">
                 <li class="active">
                     <a href="#tab_generales" data-toggle="tab" aria-expanded="false"><b>Datos Generales</b></a>
                 </li>
-                <li>
+                <li <?php if($id_person==0) echo 'style="display:none"'; ?>>
                     <a href="#tab_informacionfisica" data-toggle="tab" aria-expanded="false"><b>Ficha M&eacute;dica</b></a>
                 </li>
-                <li>
+                <li <?php if($id_person==0) echo 'style="display:none"'; ?>>
                     <a href="#tab_documentos" data-toggle="tab" aria-expanded="false"><b>Documentacion</b></a>
                 </li>
             </ul>
@@ -496,7 +494,7 @@ if(isset($_GET['id'])){
                                                     <div class="col-sm-2">
                                                         <input type="file" name="image" id="image" placeholder="">
                                                         <br>
-                                                        <img src="storage/persons/<?php echo $person->image;?>" class="img-responsive">
+                                                        <img src="<?php echo $person->image;?>" class="img-responsive">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -514,6 +512,31 @@ if(isset($_GET['id'])){
                                                         <option value="1" <?php if($person->genero==1) echo 'selected="selected"'; ?>>Masculino</option>
                                                         <option value="2" <?php if($person->genero==2) echo 'selected="selected"'; ?>>Femenino</option>
                                                         </select>
+                                                    </div>
+                                                </div>                                                
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label"><span class="text-danger">*</span> Tipo de Sangre:</label>
+                                                    <div class="col-sm-3">
+                                                        <select class="select-input form-control input-sm" id="tipo_sangre" name="tipo_sangre">
+                                                            <option value="0" <?php if($person->tipo_sangre==0) echo 'selected="selected"'; ?>>Seleccione</option>
+                                                            <option value="1" <?php if($person->tipo_sangre==1) echo 'selected="selected"'; ?>>A-</option>
+                                                            <option value="2" <?php if($person->tipo_sangre==2) echo 'selected="selected"'; ?>>A+</option>
+                                                            <option value="3" <?php if($person->tipo_sangre==3) echo 'selected="selected"'; ?>>AB-</option>
+                                                            <option value="4" <?php if($person->tipo_sangre==4) echo 'selected="selected"'; ?>>AB+</option>
+                                                            <option value="5" <?php if($person->tipo_sangre==5) echo 'selected="selected"'; ?>>B-</option>
+                                                            <option value="6" <?php if($person->tipo_sangre==6) echo 'selected="selected"'; ?>>B+</option>
+                                                            <option value="7" <?php if($person->tipo_sangre==7) echo 'selected="selected"'; ?>>O-</option>
+                                                            <option value="8" <?php if($person->tipo_sangre==8) echo 'selected="selected"'; ?>>O+</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-sm-offset-1 col-sm-10">
+                                                        <span class="text-danger">Adjunto el certificado de Tipo de Sangre de la Cruz Roja</span>
+                                                        <div class="radiobutton">
+                                                            <input type="radio" id="certificadosangre" name="certificadosangre" value="1" <?php if($person->certificadosangre==1) echo 'checked'; ?>> Si
+                                                            <input type="radio" id="certificadosangre" name="certificadosangre" value="0" <?php if($person->certificadosangre==0) echo 'checked'; ?>> No
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -740,160 +763,57 @@ if(isset($_GET['id'])){
                                                                 <input type="radio" id="esc_tecnico" name="esc_tecnico" value="0" <?php if($person->esc_tecnico==0) echo 'checked'; ?>> No
                                                             </div>
                                                         </div>
-
                                                     </div>
-
                                                 </div>
-
                                                 <div class="form-group">
-
                                                     <label class="col-sm-4 control-label">Especializaci&oacute;n:</label>
-
                                                     <div class="col-md-6 col-sm-6">
-
                                                         <input class="form-control input-sm" id="especializacion2" maxlength="40" name="especializacion2" size="30" type="text" placeholder="Titulo de especializaci&oacute;n" value="<?php echo $person->especializacion2; ?>">
-
                                                     </div>
-
                                                 </div>
-
                                                 <div class="form-group">
-
                                                     <div class="col-sm-15">
-
                                                         <label class="col-sm-8 control-label">Sabe utilizar la computadora?</label>
-
                                                         <div class="col-md-4">
-
                                                             <div class="radiobutton">
-
                                                                 <input type="radio" id="computadora" name="computadora" value="1" <?php if($person->computadora==1) echo 'checked'; ?>> Si &nbsp;&nbsp;
-
                                                                 <input type="radio" id="computadora" name="computadora" value="0" <?php if($person->computadora==0) echo 'checked'; ?>> No
-
                                                             </div>
-
                                                         </div>
-
                                                     </div>
-
                                                 </div>
-
                                                 <div class="form-group">
-
                                                     <div class="col-sm-15">
-
                                                         <label class="col-sm-8 control-label">Sabe utilizar celular tactil?</label>
-
                                                         <div class="col-md-4">
-
                                                             <div class="radiobutton">
-
                                                                 <input type="radio" id="celulartactil" name="celulartactil" value="1" <?php if($person->celulartactil==1) echo 'checked'; ?>> Si &nbsp;&nbsp;
-
                                                                 <input type="radio" id="celulartactil" name="celulartactil" value="0" <?php if($person->celulartactil==0) echo 'checked'; ?>> No
-
                                                             </div>
-
                                                         </div>
-
                                                     </div>
-
                                                 </div>
-
                                                 <div class="form-group">
-
                                                     <label class="col-sm-4 control-label">Cursos realizados:</label>
-
                                                     <div class="col-sm-8">
-
                                                         <textarea class="form-control" id="curso_realizado" name="curso_realizado" placeholder="Especifique los cursos realizados"><?php echo $person->curso_realizado; ?></textarea>
-
                                                     </div>
-
                                                 </div>
-
                                                 <div class="form-group">
-
                                                     <div class="col-sm-10">
-
                                                         <span class="text-danger">Adjunto copia de certificados y capacitaciones</span>
-
                                                         <div class="radiobutton">
-
                                                             <input type="radio" id="certificados" name="certificados" value="1" <?php if($person->certificados==1) echo 'checked'; ?>> Si &nbsp;&nbsp;
-
                                                             <input type="radio" id="certificados" name="certificados" value="2" <?php if($person->certificados==2) echo 'checked'; ?>> No &nbsp;&nbsp;
-
                                                             <input type="radio" id="certificados" name="certificados" value="0" <?php if($person->certificados==0) echo 'checked'; ?>> No procede
-
                                                         </div>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-                            <!--/ Nivel de educacion -->
-                            <!-- Datos Bancarios -->
-                            <div class="col-md-7 ajuste_div_datos_bancarios" style="display: none;"></div>
-                            <div class="col-md-5">
-                                <div id="datos_bancarios" class="" style="display: block;">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title"><i class="mr5"></i>Datos Bancarios</h3>
-                                        </div>
-                                        <div class="panel-collapse pull out">
-                                            <div class="panel-body">
-                                                <div class="form-group">
-                                                    <label class="col-sm-5 control-label">Banco:</label>
-                                                    <div class="col-md-6 col-sm-6">
-                                                        <select class="form-control input-sm" id="banco" name="banco" tabindex="-1" title="">
-                                                            <option value="0"> -- Seleccionar -- </option>
-                                                            <?php
-                                                                foreach($bancos as $banco): ?>
-                                                                    <option value="<?php echo $banco->id; ?>" <?php if($banco->id==$person->banco) echo 'selected="selected"'; ?>><?php echo $banco->description; ?></option>
-                                                            <?php endforeach; ?>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-5 control-label">Tipo Cuenta:</label>
-                                                    <div class="col-md-6 col-sm-6">
-                                                        <select class="form-control input-sm" id="tipo" name="tipo">
-                                                            <option value="0" <?php if($person->tipo==0) echo 'selected="selected"'; ?>> -- Seleccionar -- </option>
-                                                            <option value="1" <?php if($person->tipo==1) echo 'selected="selected"'; ?>>Cuenta de Ahorros</option>
-                                                            <option value="2" <?php if($person->tipo==2) echo 'selected="selected"'; ?>>Cuenta Corriente</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-5 control-label">N° Cuenta:</label>
-                                                    <div class="col-md-6 col-sm-6"><input class="form-control input-sm" id="cuenta" maxlength="40" name="cuenta" size="30" type="text" placeholder="456456456" value="<?php echo $person->cuenta; ?>"></div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-5 control-label">Tipo de Pago:</label>
-                                                    <div class="col-md-6 col-sm-6">
-                                                        <select class="select-input input-sm form-control" id="id_tipo_pago" maxlength="1" name="tipo_pago">
-                                                            <option value="D" <?php if($person->tipo_pago=="D") echo 'selected="selected"'; ?>>Deposito</option>
-                                                            <option value="B" <?php if($person->tipo_pago=="B") echo 'selected="selected"'; ?>>Cheque</option>
-                                                            <option value="T" <?php if($person->tipo_pago=="T") echo 'selected="selected"'; ?>>Transferencia</option>
-                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div> <!--/ Datos Bancarios -->
+                            </div> <!--/ Nivel de educacion -->
                         </div>
                     </div>
                     <div class="tab-pane" id="tab_informacionfisica">

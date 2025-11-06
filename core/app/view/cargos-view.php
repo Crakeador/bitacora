@@ -27,15 +27,25 @@
 						<th width="14%"></th>
 					</tr>
 					</thead>
-					<tbody>
-					<?php
+					<tbody>	<?php
 						$cargos = CargoData::getAll();
 						// Crea tabla de Cargos
 						foreach($cargos as $tables) {
+							if($tables->idtipo == 1){
+								$cadena = "Administrativo";
+							}else if($tables->idtipo == 2){
+								$cadena = "Operativo";
+							}else if($tables->idtipo == 3){
+								$cadena = "Guardia";
+							}else if($tables->idtipo == 4){
+								$cadena = "Aspirante";
+							}else{
+								$cadena = "Comercial";
+							}
 							echo '<tr>';
 								echo '<td>'.$tables->departamento.'</td>';
 								echo '<td>'.$tables->description.'</td>';
-								echo '<td>'.$tables->tipo.'</td>';
+								echo '<td>'.$cadena.'</td>';
 								echo '<td>';
 									echo '<small>';
 										if($tables->is_active == 1){
@@ -54,8 +64,7 @@
 									echo '</div>';
 								echo '</td>';
 							echo '</tr>';
-						}
-					?>
+						} ?>
 					</tbody>
 				</table>
 			</form>

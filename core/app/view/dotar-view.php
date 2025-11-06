@@ -313,7 +313,7 @@ switch ($method) {
     var element = document.getElementById("sidai");
 
     element.classList.add("sidebar-collapse");
-    document.title = "Near Solutions | Dotacion de puesto";
+    document.title = "Near Solution | Dotacion de puesto";
 
 	function recargarLista(){
 		$.ajax({

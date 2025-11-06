@@ -305,18 +305,18 @@ class PersonData {
 	}
 
 	public static function getByIdDatos($id){
-		$sql = "SELECT E.descripcion, A.id, A.idcard, A.name, A.cargo, B.description, A.startwork, A.endwork, A.sueldo 
+		$sql = "SELECT E.descripcion, A.id, A.idcard, A.name, A.idcargo, B.description, A.startwork, A.endwork, A.sueldo 
 		          FROM person A, cargo B, personpuestos D, puestos E
-				 WHERE A.cargo = B.id AND D.idperson=A.id AND D.idservicio=E.id AND A.id=$id AND D.is_active=0";
+				 WHERE A.idcargo = B.id AND D.idperson=A.id AND D.idservicio=E.id AND A.id=$id AND D.is_active=0";
 
 		$query = Executor::doit($sql); 
 		return Model::one($query[0],new PersonData());
 	}
 	
 	public static function getByIdLiquidacion($id){		
-		$sql = "SELECT C.observacion, C.tipo_despido, A.id, A.idcard, A.name, A.cargo, B.description, A.startwork, A.endwork, A.sueldo 
+		$sql = "SELECT C.observacion, C.tipo_despido, A.id, A.idcard, A.name, A.idcargo, B.description, A.startwork, A.endwork, A.sueldo 
 		          FROM person A, cargo B, persond C, personpuestos D, puestos E
-				 WHERE A.cargo = B.id AND C.idperson=A.id AND D.idperson=A.id AND D.idservicio=E.id AND A.id=$id AND C.estado='L' AND D.is_active=0"; 
+				 WHERE A.idcargo = B.id AND C.idperson=A.id AND D.idperson=A.id AND D.idservicio=E.id AND A.id=$id AND C.estado='L' AND D.is_active=0"; 
 				 
 		$sql = "SELECT A.id, A.observacion, A.tipo_despido, B.idcard, B.name, A.startwork, A.endwork, A.sueldo, A.idpuesto
                   FROM persond A, person B WHERE B.id=A.idperson AND A.idperson=$id AND A.estado='L'"; 
@@ -325,9 +325,9 @@ class PersonData {
 	}
 
 	public static function getByIdVacacion($id){		
-		$sql = "select C.id, C.idperson, C.observacion, C.sueldo, C.tipo_despido, C.dias, A.idcard, A.name, A.cargo, B.description, A.phone1, C.startwork, C.endwork, C.created_at 
+		$sql = "select C.id, C.idperson, C.observacion, C.sueldo, C.tipo_despido, C.dias, A.idcard, A.name, A.idcargo, B.description, A.phone1, C.startwork, C.endwork, C.created_at 
 		          FROM persond C, person A, cargo B
-				 WHERE C.idperson = A.id AND A.cargo = B.id AND A.id=$id AND C.estado='V'"; 
+				 WHERE C.idperson = A.id AND A.idcargo = B.id AND A.id=$id AND C.estado='V'"; 
 
 		$query = Executor::doit($sql); 
 		return Model::one($query[0],new PersonData());
@@ -348,9 +348,9 @@ class PersonData {
 	}
 	
 	public static function getPersona($id){
-		$sql = "SELECT A.id, A.idcard, A.name, A.sueldo, A.tipo_contrato, A.created_at, A.startwork, A.cargo, E.descripcion, B.description, A.hijos, A.cargo
+		$sql = "SELECT A.id, A.idcard, A.name, A.sueldo, A.tipo_contrato, A.created_at, A.startwork, A.idcargo, E.descripcion, B.description, A.hijos
 		          FROM person A, cargo B, personpuestos D, puestos E
-		         WHERE A.cargo = B.id AND D.idperson=A.id AND D.idservicio=E.id AND A.id=$id"; 
+		         WHERE A.idcargo = B.id AND D.idperson=A.id AND D.idservicio=E.id AND A.id=$id"; 
 
 		$query = Executor::doit($sql);
 		return Model::one($query[0],new PersonData());
@@ -400,8 +400,15 @@ class PersonData {
 		return Model::one($query[0],new PersonData());
 	}
 
+	public static function getByCedula($id){
+		$sql = "SELECT * FROM ".self::$tablename." WHERE idcard='$id'";
+		$query = Executor::doit($sql); 
+
+		return Model::one($query[0],new PersonData());
+	}
+
 	public static function getById($id){
-		$sql = "SELECT * FROM ".self::$tablename." WHERE id=$id"; 
+		$sql = "SELECT * FROM ".self::$tablename." WHERE id=$id";
 		$query = Executor::doit($sql); 
 
 		return Model::one($query[0],new PersonData());
@@ -419,7 +426,7 @@ class PersonData {
 		          FROM person A 
 	         LEFT JOIN personpuestos B ON B.idperson = A.id
 	         LEFT JOIN puestos C ON C.id = B.idservicio
-	         LEFT JOIN cargo D ON D.id = A.cargo
+	         LEFT JOIN cargo D ON D.id = A.idcargo
 	             WHERE D.idtipo = 3 AND A.is_active = $activo ORDER BY C.grupo"; 
 
 		$query = Executor::doit($sql); 
@@ -518,7 +525,7 @@ class PersonData {
 	public static function getTipos($id, $tipo){ 
 		$sql = "SELECT C.id, C.estado, C.tipo_despido, A.idcard, A.name, A.idcargo, B.description, A.phone1, C.startwork, C.endwork, C.created_at 
 		          FROM persond C, person A, cargo B
-				 WHERE C.idperson = A.id AND A.cargo = B.id AND C.estado='$tipo' AND C.idperson=$id
+				 WHERE C.idperson = A.id AND A.idcargo = B.id AND C.estado='$tipo' AND C.idperson=$id
 			  ORDER BY C.created_at DESC"; 
 
 		$query = Executor::doit($sql);
@@ -528,7 +535,7 @@ class PersonData {
 	public static function getContratos($id){
 		$sql = "SELECT C.id, C.estado, A.idcard, A.name, A.idcargo, B.description, A.phone1, C.acumula, C.startwork, C.endwork, C.created_at 
 		          FROM persond C, person A, cargo B
-				 WHERE C.idperson = A.id AND A.cargo = B.id AND C.estado IN ('I', 'E') AND C.idperson=$id
+				 WHERE C.idperson = A.id AND A.idcargo = B.id AND C.estado IN ('I', 'E') AND C.idperson=$id
 			  ORDER BY C.created_at DESC";
 
 		$query = Executor::doit($sql);
@@ -619,7 +626,7 @@ class PersonData {
 	}
 
 	public static function getSupervisor(){
-		$sql = "select * from person A, cargo B where A.cargo in(4, 5) and A.is_active=1 and A.cargo = B.id";
+		$sql = "select * from person A, cargo B where A.idcargo in(4, 5) and A.is_active=1 and A.idcargo = B.id";
 		$query = Executor::doit($sql);
 
 		$array = array();
@@ -646,7 +653,7 @@ class PersonData {
 	}
 
 	public static function getAgentes(){
-		$sql = "select * from person A, cargo B where A.cargo in(7) and A.is_active=1 and A.cargo = B.id";
+		$sql = "select * from person A, cargo B where A.idcargo in(7) and A.is_active=1 and A.idcargo = B.id";
 		$query = Executor::doit($sql);
 		$array = array();
 

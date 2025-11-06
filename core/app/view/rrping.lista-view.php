@@ -5,14 +5,14 @@
 		<small>listado del personal administrativo</small>
 	</h1>
 	<ol class="breadcrumb">
-		<li class="active"><a href="./index.php?view=home"><i class="fa fa-dashboard"></i> Panel de control </a></li>
+		<li class="active"><a href="./home"><i class="fa fa-dashboard"></i> Panel de control </a></li>
 	</ol>
 </section>
 <!-- Main content -->
 <section class="content" style="padding: 1.5rem !important;">
     <div class="box box-primary">
     	<div class="box-header with-border">
-    		<a id="btn_productos" class="btn btn-success btn-sm" href="index.php?view=addpersons">
+    		<a id="btn_productos" class="btn btn-success btn-sm" href="addpersons">
     			<span class="glyphicon glyphicon-plus"></span> Ingresar Personal
     		</a>
     	</div>

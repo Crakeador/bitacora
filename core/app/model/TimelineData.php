@@ -21,9 +21,17 @@ class TimelineData {
 		$this->created_at = "NOW()";
 	}
 
+	public function add_tarea(){
+		$sql = "insert into timeline (idcompany, idclient, quien_asigna, prioridad, status, asunto, title, type, date_event, date_pass, prorroga, created_at) ";
+		$sql .= "value (".$_SESSION['id_company'].", ".$_SESSION['client_id'].", \"$this->quien_asigna\", \"$this->prioridad\", 1, \"$this->asunto\", \"$this->title\", \"$this->type\", \"$this->date_event\", 0, $this->created_at)"; 
+		echo $sql;
+		Executor::doit($sql);
+	}
+
 	public function add_task(){
 		$sql = "insert into timeline (idcompany, idperson, quien_asigna, prioridad, status, asunto, title, type, date_event, date_pass, porcentaje, created_at) ";
-		$sql .= "value (".$_SESSION['id_company'].", \"$this->idperson\", \"$this->quien_asigna\", \"$this->prioridad\", 1, \"$this->asunto\", \"$this->title\", \"$this->type\", \"$this->date_event\", \"$this->date_pass\", \"$this->porcentaje\", $this->created_at)";
+		$sql .= "value (".$_SESSION['id_company'].", \"$this->idperson\", \"$this->quien_asigna\", \"$this->prioridad\", 1, \"$this->asunto\", \"$this->title\", \"$this->type\", \"$this->date_event\", \"$this->date_pass\", \"$this->porcentaje\", $this->created_at)"; 
+		echo $sql;
 		Executor::doit($sql);
 	}
 
@@ -80,7 +88,7 @@ class TimelineData {
 	}
 
 	public static function getTipe($id){	    
-		$sql = "select * from ".self::$tablename." where idcompany = ".$_SESSION['id_company']." AND type=$id order by date_event DESC"; 
+		$sql = "select * from ".self::$tablename." where idcompany = ".$_SESSION['id_company']." AND type=$id order by date_event DESC"; echo $sql;
 		$query = Executor::doit($sql);
 
 		return Model::many($query[0],new TimelineData());

@@ -1,6 +1,6 @@
 <?php
 // Procedimiento de verificacion de Usuarios
-//Core::cargando();
+Core::cargando();
 
 date_default_timezone_set('America/Guayaquil');
 $fecha = date('Y-m-d'); $hora = date('H:i:s');
@@ -28,11 +28,10 @@ if(!isset($_SESSION["user_id"])) {
 	$_SESSION['correos']=$correos;
 	$_SESSION['ingreso']=0; $_SESSION['etapas']=0;
 	if(is_numeric($_POST['username'])){
-		if(strlen($_POST['username']) > 10){
+		if(strlen($_POST['username']) == 13){
 			if($_POST['username'] && $_POST['password']){
-				echo "Son iguales..!!!<br>";
 				$sql = "SELECT * FROM client WHERE ruc = \"".$user."\" AND telefono1 = \"".$_POST['password']."\" AND is_active = 1"; 
-				
+
 				if($query = $con->query($sql)){
 					$total = mysqli_num_rows($query);
 
@@ -40,24 +39,17 @@ if(!isset($_SESSION["user_id"])) {
 						$_SESSION['sweetalert_message'] = ['icon' => 'error', 'title' => '¡Error!', 'text' => 'El número de identificación no esta registrado en el sistema.'];
 						echo "<script>window.location='./';</script>";
 					}else{
-						$id = 0; $residencial = 0;
-						$name = '';
-						$userid = null;
-
-						while($r = $query->fetch_array()){
-							$userid = $r['idclient'];
-							$name = $r['contacto'];
-							$idclient = $r['idclient'];
-							$etapas = $r['etapas'];
-						}
- 
-						$_SESSION['user_id']=$userid;
-						$_SESSION["client_id"]=$userid;
+						$id = 0; $residencial = 0; $name = ''; $userid = null;
+						$query = $con->query($sql);
+						$r = $query->fetch_array();
+						
+						$_SESSION['user_id']=$r['id'];
+						$_SESSION['client_id']=$r['id'];
 						$_SESSION['id_card']=$_POST['username'];
 						$_SESSION['usuario']='Sistema de Consultas';
 						$_SESSION['id_corporacion']=1;
 						$_SESSION['id_company']=1;
-						$_SESSION['id_client']=$idclient;
+						$_SESSION['id_client']=$r['id'];
 						$_SESSION['id_localidad']=1;
 						$_SESSION['id_actividad']=8;
 						$_SESSION['company']='SECURITY';
@@ -68,31 +60,32 @@ if(!isset($_SESSION["user_id"])) {
 						$_SESSION['residencial']=$residencial;
 						$_SESSION['is_admin']=0;
 
-						$_SESSION['name']=$name;
+						$_SESSION['name']=$r['contacto'];
 						$_SESSION['lastname']='';
 						$_SESSION['idrol']=8;
 						$_SESSION['desrol']="Administrador";
 						$_SESSION['depart']=9;
 						$_SESSION['reportes']='';
 						$_SESSION['ultima_sesion']=$fechaActual;
-						$_SESSION['etapas']=$etapas;
+						$_SESSION['etapas']=$r['etapas'];
 						$_SESSION['user_name']='Bitacora Electronica';
 
 						setcookie('userid', $userid);
 						Core::redir('fechas');
 					}
-				}else{
-					echo "Error, al ejecutar una consulta";
+				}else{					
+					$_SESSION['sweetalert_message'] = ['icon' => 'error', 'title' => '¡Error!', 'text' => 'Este usuario no tiene acceso al sistema.'];
+					echo "<script>window.location='./';</script>";
 				}
 			}
 		}else{
-			if($_POST['username'] && $_POST['password']){
+			if(strlen($_POST['username']) == 10){
 				$sql = "SELECT * FROM person WHERE idcard = '".$user."' AND is_active=1"; 
-				
+
 				if($query = $con->query($sql)){
 					$total = mysqli_num_rows($query);
 					if($total==0){
-						$sql = "SELECT B.nombre AS clientes, A.* FROM residente A, client B WHERE B.idclient = A.idclient AND A.cedula = '".$user."' AND A.is_active=1";
+						$sql = "SELECT B.nombre AS clientes, A.* FROM residente A, client B WHERE B.id = A.idclient AND A.cedula = '".$user."' AND A.is_active=1";
 						
 						if($query = $con->query($sql)){
 							$total = mysqli_num_rows($query);
@@ -136,9 +129,9 @@ if(!isset($_SESSION["user_id"])) {
 											var ingreso = localStorage.getItem("ingreso");
 											var turno = localStorage.getItem("turno");
 												
-											window.location="index.php?view=aspirantes&usuario="+usuario+"&puesto="+puesto+"&ingreso="+ingreso+"&turno="+turno;
+											window.location="index.php?view=aspirante&usuario="+usuario+"&puesto="+puesto+"&ingreso="+ingreso+"&turno="+turno;
 										}else{
-											window.location="index.php?view=aspirantes";
+											window.location="aspirante";
 										}
 									  </script>';
 							}else{
@@ -148,25 +141,19 @@ if(!isset($_SESSION["user_id"])) {
 								$id = 0; $residencial = 9;
 								$name = '';
 
-								$userid = null;
-								while($r = $query->fetch_array()){
-									$id = $r['id'];
-									$idclient = $r['idclient'];
-									$clientes = $r['clientes'];
-									$nombre = $r['nombre'];
-									$manzana = $r['manzana'];
-									$villa = $r['villa'];
-								}
+								$userid = null;								
+								$query = $con->query($sql);
+								$r = $query->fetch_array();
 
 								$_SESSION['ingreso']=0;
-								$_SESSION['user_id']=$id;
+								$_SESSION['user_id']=$r['id'];
 								$_SESSION['id_card']=$_POST['username'];
 								$_SESSION['usuario']='Autorizan las visita';
 								$_SESSION['asigna']=$asigna;
 								$_SESSION['id_corporacion']=1;
 								$_SESSION['id_company']=1;
-								$_SESSION['id_client']=$idclient;
-								$_SESSION['clientes']=$clientes;
+								$_SESSION['id_client']=$r['idclient'];
+								$_SESSION['clientes']=$r['clientes'];
 								$_SESSION['id_localidad']=1;
 								$_SESSION['id_actividad']=1;
 								$_SESSION['company']='SECURITY';
@@ -177,15 +164,15 @@ if(!isset($_SESSION["user_id"])) {
 								$_SESSION['residencial']=$residencial;
 								$_SESSION['is_admin']=0;
 
-								$_SESSION['name']=$nombre;
+								$_SESSION['name']=$r['nombre'];
 								$_SESSION['lastname']='';
 
 								$_SESSION['idrol']=$rolid;
 								$_SESSION['desrol']=$roldes;
 								$_SESSION['depart']=9;
 								$_SESSION['reportes']='';
-								$_SESSION['manzana']=$manzana;
-								$_SESSION['villa']=$villa;
+								$_SESSION['manzana']=$r['manzana'];
+								$_SESSION['villa']=$r['villa'];
 								$_SESSION['ultima_sesion']=$fechaActual;
 								$_SESSION['user_name']='Residente';
 								$_SESSION['consigna']=$consigna;
@@ -194,9 +181,9 @@ if(!isset($_SESSION["user_id"])) {
 								setcookie('userid', $userid);
 								echo '<script>window.location="noticias";</script>';
 							}
+						}else{
+							echo '<script>window.location="index.php?view=aspirante&id='.$user.'";</script>';
 						}
-						$_SESSION['sweetalert_message'] = ['icon' => 'error', 'title' => '¡Error!', 'text' => '1. Usuario no registrado en el sistema, consulte con el administrador.'];
-						echo "<script>window.location='./';</script>";
 					}else{						
 						$rolid = 7;
 						$roldes = 'Agente de Seguridad';
@@ -212,7 +199,7 @@ if(!isset($_SESSION["user_id"])) {
 						}
 
 						$sql1 = "SELECT C.idcompany, D.name, C.etapas, A.*, B.idclient, B.residencial, B.principal FROM personpuestos A, puestos B, client C, company D 
-						          WHERE A.idservicio = B.id AND B.idclient = C.idclient AND D.id = C.idcompany AND A.idperson = ".$id." AND A.is_active = 1"; 
+						          WHERE A.idservicio = B.id AND B.idclient = C.id AND D.id = C.idcompany AND A.idperson = ".$id." AND A.is_active = 1"; 
 						
 						if($query = $con->query($sql1)){ 
 							$total = mysqli_num_rows($query);
@@ -250,11 +237,11 @@ if(!isset($_SESSION["user_id"])) {
 								$_SESSION['consigna']=$consigna;
 								$_SESSION['correos']=$correos;
 								
-								echo '<script>window.location="index.php?view=aspirantes&id='.$id.'";</script>';
+								echo '<script>window.location="index.php?view=aspirante&id='.$id.'";</script>';
 							}else{
 								$asigna = array(); $i = 0;
 								while($m = $query->fetch_array()){
-									$idclient = $m['idclient'];
+									$idclient = $m['id'];
 									$etapas = $m['etapas'];
 									$compania = $m['name'];
 									$principal = $m['principal'];
@@ -310,9 +297,6 @@ if(!isset($_SESSION["user_id"])) {
 							}
 						}
 					}
-				}else{
-					$_SESSION['sweetalert_message'] = ['icon' => 'error', 'title' => '¡Error!', 'text' => 'El número de identificación debe tener 10 o 13 dígitos.'];
-					echo "<script>window.location='./';</script>";
 				}
 			}else{
 				$_SESSION['sweetalert_message'] = ['icon' => 'error', 'title' => '¡Error!', 'text' => 'El número de identificación debe tener 10 o 13 dígitos.'];
@@ -322,7 +306,7 @@ if(!isset($_SESSION["user_id"])) {
 	}else{
 		$sql = "SELECT B.name AS compania, A.id AS user, A.username, A.name AS nombre, A.lastname, A.email AS correo, A.cambio, A.is_admin, A.idrol, A.idperson, A.iddepartamento, idlocalidad, A.ultima_session, B.id AS company, B.*, C.nombre desrol FROM user A, company B, rol C 
 		         WHERE username= \"".$user."\" and password= \"".$pass."\" and A.idcompany = B.id and A.idrol = C.id and A.is_active=1";
-		$query = $con->query($sql);
+		$query = $con->query($sql); 
 		
 		if($query->num_rows > 0){
 			$r = $query->fetch_array();

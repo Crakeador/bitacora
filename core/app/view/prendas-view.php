@@ -277,7 +277,7 @@ array(7) {
     var element = document.getElementById("sidai");
  
     element.classList.add("sidebar-collapse");
-    document.title = "Near Solutions | Registro de los Salvoconductos";
+    document.title = "Near Solution | Registro de los Salvoconductos";
 	
 	$('.fecha_hora').datepicker({		
 		locale: 'es',

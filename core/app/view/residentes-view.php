@@ -68,7 +68,7 @@ if(isset($_GET["id"])){
 												echo '<div align="center">';
 													echo $tables->cedula.'</br>';
 													echo '<a href="index.php?view=catres.resumen&id='.$tables->idclient.'" class="btn btn-xs btn-warning"><i class="glyphicon glyphicon-eye-open"></i></a>';
-													echo '<a href="index.php?view=catres.residents&id='.$tables->idclient.'" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-edit"></i></a>';
+													echo '<a href="index.php?view=residente&id='.$tables->idclient.'" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-edit"></i></a>';
 													echo '<button type="button" class="btn btn-xs btn-danger btn-sm" onClick="btn_EnviarOnClick(\''.$tables->idclient.'\', \''.$tables->is_active.'\');"><i class="fa fa-trash"></i></button>';
 												echo '</div>';
 											echo '</td>';
@@ -106,10 +106,14 @@ if(isset($_GET["id"])){
 										echo '<td><div align="center">'.$tables->cedula.'</br></div></td>';
 										echo '<td>'.$tables->nombre.'</td>';
 										echo '<td>'.$tipo.'</td>';
-										echo '<td>Mz. '.$tables->manzana.', Villa '.$tables->villa.'</td>';									
+										if($_SESSION['residencial'] == 0)
+										    echo '<td>Piso '.$tables->manzana.' - Apartamento: '.$tables->villa.'</td>';
+										else
+											echo '<td>Mz. '.$tables->manzana.', Villa '.$tables->villa.'</td>';
+
 										echo '<td><div align="center">';
 												echo '<a href="index.php?view=catres.resumen&id='.$tables->idclient.'" class="btn btn-xs btn-warning"><i class="glyphicon glyphicon-eye-open"></i></a>';
-												echo '<a href="index.php?view=catres.residents&id='.$tables->idclient.'" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-edit"></i></a>';
+												echo '<a href="index.php?view=residente&id='.$tables->idclient.'" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-edit"></i></a>';
 												echo '<button type="button" class="btn btn-xs btn-danger btn-sm" onClick="btn_EnviarOnClick(\''.$tables->idclient.'\', \''.$tables->is_active.'\');"><i class="fa fa-trash"></i></button>';
 										echo '</div></td>';
 									echo '</tr>';

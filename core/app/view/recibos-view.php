@@ -86,7 +86,7 @@ if(isset($_GET['id'])){
     var element = document.getElementById("sidai");
 
     element.classList.add("sidebar-collapse");
-    document.title = "Near Solutions | Registro de cotizaciones";
+    document.title = "Near Solution | Registro de cotizaciones";
 
 	function btn_Entrega($id) {
 		VentanaCentrada('documentos/entregado_pdf.php?id='+$id,'Reporte de Entrega','','1024','768','true');

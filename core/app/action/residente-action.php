@@ -49,9 +49,9 @@ if(isset($_POST["cedula"]) && $_POST["cedula"]!=""){
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"> <!-- Denine el ancho de la pantalla a ser utilizado -->
         <meta name="robots" content="contabilidad, impuestos, facturacion electronica">
         <meta name="author" content="Jorge Fiallos">
-        <meta name="keywords" content="nearsolutions, seguridad, facturacion electronica, contabilidad">
+        <meta name="keywords" content="nearsolution, seguridad, facturacion electronica, contabilidad">
         <meta name="description" content="Puedes tener el control de tu negocio con nuestro módulos desarrollados en casos reales de los diferentes negocios en el Ecuador">
-        <title>Near Solutions | Dashboard</title>
+        <title>Near Solution | Dashboard</title>
         <meta property="og:url" content="https://near-solution.com/">
         <meta property="og:title" content="Near Soft ERP">
         <link rel="icon" type="image/jpg" href="assets/images/icon-service.png">
@@ -196,13 +196,13 @@ if(isset($_POST["cedula"]) && $_POST["cedula"]!=""){
         </div>
         <div>
           <nav class="nav">
-            <a href="https://nearsolutions.com.ec/licenses/standard" class="nav-link">Licencia</a>
-            <a href="https://nearsolutions.com.ec/help" class="nav-link">Ayuda</a>
+            <a href="https://near-solution.com/licenses/standard" class="nav-link">Licencia</a>
+            <a href="https://near-solution.com/help" class="nav-link">Ayuda</a>
           </nav>
         </div>
     </footer>
     <script>
-        document.title = "Near Solutions | Solicitud de Cotizaci&oacute;n";
+        document.title = "Near Solution | Solicitud de Cotizaci&oacute;n";
     </script>
 </body>
 </html>

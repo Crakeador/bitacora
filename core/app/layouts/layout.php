@@ -90,9 +90,9 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
 	  <meta property="og:image:height" content="1422" />
 	  <meta property="og:image:type" content="image/webp" />
     <meta name="author" content="Jorge Fiallos">
-    <meta name="keywords" content="nearsolutions, seguridad, facturacion electronica, contabilidad">
+    <meta name="keywords" content="nearsolution, seguridad, facturacion electronica, contabilidad">
     <meta name="description" content="Puedes tener el control de tu negocio con nuestro módulos desarrollados en casos reales de los diferentes negocios en el Ecuador" />
-    <title>Near Solutions | Dashboard</title>
+    <title>Near Solution | Dashboard</title>
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <?php // Seleccion de los temas del Sistema
         if(!isset($_SESSION["user_id"])){
@@ -340,7 +340,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
         setInterval(countdown, 1000); <?php 
     } ?>
 		function cerrar() {		
-			console.log('Protección para evitar cierres accidentales de la ventana'); /*
+			console.log('Cierre de la ventana'); /*
 			var allowExit = false;
 			function beforeUnloadHandler(e){
 				if(!allowExit){
@@ -419,7 +419,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                   </div> <?php
                 }else{ ?>
                     <span style="color: white;"><b><em>Bitacora El&eacute;ctonica</em></b></span>
-                    <span class="logo-lg" style="color: white;"> <?php if($_SESSION["idrol"] == 9) echo '<b>Cliente:</b> '.$_SESSION["clientes"]; else if($_SESSION['idrol'] == 8){ if($_SESSION["id_client"] == '27' || $_SESSION["id_client"] == '31') echo 'Custodias'; else echo '<b>Cliente:</b> '.$_SESSION["name"]; }else{ echo '<b>Empresa:</b> '.$_SESSION["company"].' | <b>Departamento:</b> '.$departamento->description; } ?> </span> <?php
+                    <span class="logo-lg" style="color: white;"> <?php if($_SESSION["idrol"] == 9) echo '<b>Cliente:</b> '.$_SESSION["clientes"]; else if($_SESSION['idrol'] == 8){ if($_SESSION["id_client"] == '27' || $_SESSION["id_client"] == '31') echo 'Custodias'; else echo '<b>Cliente:</b> '.$_SESSION["name"]; }else{ echo '<b>Empresa:</b> '.$_SESSION["company"].' | <b>Departamento:</b> '.$departamento->name; } ?> </span> <?php
                 } ?>
               </div>
               <!-- Navbar Right Menu -->
@@ -504,7 +504,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                       }
                   } ?>
                   <?php // Administrador
-                    if($_SESSION["rol"] == 99): ?>
+                    if($_SESSION["idrol"] == 99): ?>
                       <li>
                           <a href="./index.php?view=siscof.lista" rel="tooltip" data-toggle="tooltip" data-placement="bottom" data-original-title="Compañía">
                             <span class="meta">
@@ -642,6 +642,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                                 if($_SESSION['idrol'] == 7){ // Opcion del Guardia 
                                   if($_SERVER['dispositivo'] == 1){ // fotos - Modulo de ingreso de fotos USB 
                                     echo '<li><a href="./novedad"><i class="fa fa-book"></i> <span>Bitacora</span></a></li>'; 
+                                    echo '<li><a href="./informe"><i class="fa fa-fax"></i> <span>Parte</span></a></li>	'; 
                                   }else{
                                     echo '<li><a href="./novedad"><i class="fa fa-book"></i> <span>Bitacora</span></a></li>'; 
                                     echo '<li><a href="./camara"><i class="fa fa-recycle"></i> <span>Rondas</span></a></li>'; 
@@ -652,7 +653,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                                     }
                                   } 
                                 }else{
-                                  if($_SESSION['idrol'] == 12){
+                                  if($_SESSION['idrol'] == 12){ // Opciones de Centralistas
                                     echo '<li><a href="./despliegue"><i class="fa fa-child"></i> <span>Despliegue</span></a></li>';
                                     echo '<li><a href="./finalizar"><i class="fa fa-power-off"></i> <span>Ultimo Turno</span></a></li>';
                                     echo '<li><a href="./faltas"><i class="fa fa-suitcase"></i><span> Faltas </span></a></li>';
@@ -661,19 +662,22 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                                     echo '<li><a href="./rondas"><i class="fa fa-street-view"></i><span> Rondas </span></a></li>';
                                     echo '<li><a href="./partes"><i class="fa fa-binoculars"></i> <span>Parte</span></a></li>';
                                   }else{
-                                    if($_SESSION['idrol'] == 13){
+                                    if($_SESSION['idrol'] == 13){ //Opciones de Custodios
                                         echo '<li><a href="custodia"><i class="fa fa-car"></i> <span>Custodia </span></a></li>';
                                     }else{
                                         if($_SESSION['idrol'] == 11){
                                             //echo '<li><a href="preguntas"><i class="fa fa-calendar"></i> <span>Test Psicotecnico</span></a></li>';
                                         }else{
-                                          if($_SESSION['idrol'] == 15){
-                                            // Supervisor Interno
+                                          if($_SESSION['idrol'] == 15){ //Supervisor Interno
                                             echo '<li><a href="./supervisar"><i class="fa fa-motorcycle"></i> <span> Supervisi&oacute;n </span></a></li>';
                                           }else{
-                                            echo '<li><a href="./novedad"><i class="fa fa-clipboard"></i> <span> Novedades </span></a></li>';
-                                            echo '<li><a href="./vehiculos"><i class="fa fa-car"></i> <span> Veniculos </span></a></li>';
-                                            echo '<li><a href="./camara"><i class="fa fa-camera"></i><span> Ronda </span></a></li>';                                          
+                                            if($_SESSION['idrol'] == 18){ //Opciones de Recepcion
+                                              echo '<li><a href="./trade"><i class="fa fa-suitcase"></i> <span>Visitas</span></a></li>';
+                                            }else{
+                                              echo '<li><a href="./novedad"><i class="fa fa-clipboard"></i> <span> Novedades </span></a></li>';
+                                              echo '<li><a href="./vehiculos"><i class="fa fa-car"></i> <span> Veniculos </span></a></li>';
+                                              echo '<li><a href="./camara"><i class="fa fa-camera"></i><span> Ronda </span></a></li>';
+                                            }
                                           } 
                                         }
                                     }
@@ -849,15 +853,17 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                           // 9 Residenciales
                           if($_SESSION['depart'] == 9){
                             if($_SESSION['idrol'] == 8){				
-                              echo "<li><a href=\"./fechas\"><i class='fa fa-book'></i> <span>Bitacora</span></a></li>";
-                              echo "<li><a href=\"./residentes\"><i class='fa fa-building'></i> <span>Residentes</span></a></li>";
-                              echo "<li><a href=\"./novedades\"><i class='fa fa-binoculars'></i> <span>Novedades</span></a></li>";
-                              echo "<li><a href=\"./anuncios\"><i class='fa fa-bullhorn'></i> <span>Anuncios</span></a></li>";
+                              echo '<li><a href="fechas"><i class="fa fa-book"></i> <span>Bitacora</span></a></li>';
+                              echo '<li><a href="residentes"><i class="fa fa-building"></i> <span>Residentes</span></a></li>';
+                              echo '<li><a href="novedades"><i class="fa fa-binoculars"></i> <span>Novedades</span></a></li>';
+                              echo '<li><a href="anuncios"><i class="fa fa-bullhorn"></i> <span>Anuncios</span></a></li>';
+                              echo '<li><a href="areas"><i class="fa fa-address-card"></i> <span>Areas Comunes</span></a></li>';                                    
+                              echo '<li><a href="tareas"><i class="fa fa-bell"></i><span> Tareas </span></a></li>';
                             }							
                             if($_SESSION['idrol'] == 9){							
-                              echo "<li><a href=\"./autorizan\"><i class='fa fa-book'></i> <span>Autorizar</span></a></li>";
-                              echo "<li><a href=\"./autorizo\"><i class='fa fa-binoculars'></i> <span>Historial</span></a></li>";
-                              echo "<li><a href=\"./informo\"><i class='fa fa-university'></i> <span>Novedades</span></a></li>";
+                              echo '<li><a href="autorizan"><i class="fa fa-book"></i> <span>Autorizar</span></a></li>';
+                              echo '<li><a href="autorizo"><i class="fa fa-binoculars"></i> <span>Historial</span></a></li>';
+                              echo '<li><a href="informo"><i class="fa fa-university"></i> <span>Novedades</span></a></li>';
                             }
                           }						
                           // Pasantes
@@ -1078,28 +1084,17 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                             <img src="assets/images/logo-ameri.png" class="img-fluid" alt="AMERICAN" height="380px" width="260%">
                         </div>
                         <form id="frm" name="frm" action="./index.php?action=processlogin" method="post" autocomplete="off">
-                            <div class="form-group">
-                                <label for="username">Usuario</label>
-                                <input type="text" name="username" id="username" tabindex=1 maxlength="20" class="form-control" placeholder="Ingrese el nombre de usuario" required autocomplete="off">
+                          <div class="form-group">
+                            <label for="username">Usuario</label>
+                            <input type="text" name="username" id="username" tabindex=1 maxlength="20" class="form-control" placeholder="Ingrese el nombre de usuario" required autocomplete="off">
+                          </div>
+                          <div class="form-group">
+                            <div class="d-flex justify-content-between mg-b-5">
+                              <label for="password" class="mg-b-0-f">Password</label>
                             </div>
-                            <div class="form-group">
-                                <div class="d-flex justify-content-between mg-b-5">
-                                  <label for="password" class="mg-b-0-f">Password</label>
-                                </div>
-                                <input type="password" name="password" id="password" tabindex=2 maxlength="20" class="form-control" placeholder="Ingrese su contraseña" >
-                              </div>
-                              <input class="btn btn-brand-02 btn-block" name="btn_enviar" type="submit" id="btn_enviar" value="Iniciar sesi&oacute;n"/>
-                              </br>
-                              <div class="alert alert-danger" style="<?php if(isset($_SESSION["error"]) && $_SESSION["error"] > 0) echo ''; else echo 'display:none;'; ?>">
-                                <strong>hoops!</strong> Hay un problema con sus datos.<br><br>
-                                <ul>
-                                  <?php
-                                    if($_SESSION["error"] == 1) echo '<li> El usuario no existe</li><li> Su clave esta errada</li>';
-                                    if($_SESSION["error"] == 2) echo '<li> El guardia no tiene puesto asignado</li>';							
-                                    if($_SESSION["error"] == 3) echo '<li> El usuario no existe</li><li> Su clave esta errada</li>';
-                                  ?>
-                                </ul>
-                            </div>
+                            <input type="password" name="password" id="password" tabindex=2 maxlength="20" class="form-control" placeholder="Ingrese su contraseña" >
+                          </div>
+                          <input class="btn btn-brand-02 btn-block" name="btn_enviar" type="submit" id="btn_enviar" value="Iniciar sesi&oacute;n"/>
                         </form>
                       </div>  
                     </div>
@@ -1114,8 +1109,8 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
         </div>
         <div>
           <nav class="nav">
-            <a href="https://nearsolutions.com.ec/licenses/standard" class="nav-link">Licencia</a>
-            <a href="https://nearsolutions.com.ec/help" class="nav-link">Ayuda</a>
+            <a href="https://near-solution.com/licenses/standard" class="nav-link">Licencia</a>
+            <a href="https://near-solution.com/help" class="nav-link">Ayuda</a>
           </nav>
         </div>
       </footer>
@@ -1173,7 +1168,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
 				echo '<script type="text/javascript" src="plugins/jsqrcode/webqr.js?v=1.0.1"></script>';
 			}
 			if($_GET["view"]=="asignar" || $_GET["view"]=="novedad" || $_GET["view"]=="informe" || $_GET["view"]=="supervisar" || $_GET["view"]=="aspirantes" || 
-         $_GET["view"]=="reporte"){
+         $_GET["view"]=="reporte" || $_GET["view"]=="trade"){
           echo '<script type="text/javascript">
                   initiate_geolocation();
 
@@ -1404,9 +1399,9 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
 		      $_GET["view"]=="residentes" || $_GET["view"]=="proveedores" || $_GET["view"]=="rrhpre.lista" || $_GET["view"]=="opecor.lista" ||
           $_GET["view"]=="catrol.lista" || $_GET["view"]=="cobnom.lista" || $_GET["view"]=="sisnot.lista" || $_GET["view"]=="carnets" || $_GET["view"]=="rubros" ||
           $_GET["view"]=="rrhpre.lista" || $_GET["view"]=="rrhliq.lista" || $_GET["view"]=="rrhmac.lista" || $_GET["view"]=="usuarios" || 
-          $_GET["view"]=="rrsdoc.lista" || $_GET["view"]=="aspirantes" || $_GET["view"]=="personas" || $_GET["view"]=="rrhdoc.lista" ||
+          $_GET["view"]=="rrsdoc.lista" || $_GET["view"]=="aspirantes" || $_GET["view"]=="personas" || $_GET["view"]=="rrhdoc.lista" || $_GET["view"]=="tareas" ||
           $_GET["view"]=="sisaud.lista" || $_GET["view"]=="rrging.lista" || $_GET["view"]=="rrping.lista" || $_GET["view"]=="rrhvac.lista" ||
-          $_GET["view"]=="catdes.lista" || $_GET["view"]=="catlim.lista" || $_GET["view"]=="repent.lista" ||             
+          $_GET["view"]=="catdes.lista" || $_GET["view"]=="catlim.lista" || $_GET["view"]=="repent.lista" || $_GET["view"]=="areas" ||        
           $_GET["view"]=="catloc.lista" || $_GET["view"]=="cargos" || $_GET["view"]=="reppus.lista" || $_GET["view"]=="catofi.lista")): ?>
           <!-- DataTables $_GET["view"]=="rrsing.lista" || -->
           <script src="plugins/datatables/jquery.dataTables.min.js?v=1.0.1"></script>

@@ -340,7 +340,7 @@ if(!isset($_SESSION['mesf'])) $_SESSION['mesf'] = $_SESSION['mes'];
 </section>
 <script type="text/javascript" src="js/VentanaCentrada.js"></script>
 <script type="text/javascript">
-	document.title = "Near Solutions | Listado del personal"
+	document.title = "Near Solution | Listado del personal"
 	
 	function btn_EnviarRecibo() {
 		VentanaCentrada('documentos/res/cotizacion_html.php','Recibos de Pago','','1024','768','true');

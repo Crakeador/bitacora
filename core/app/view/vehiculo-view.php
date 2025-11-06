@@ -205,7 +205,7 @@ switch ($method) {
     var element = document.getElementById("sidai");
 
     element.classList.add("sidebar-collapse");
-    document.title = "Near Solutions | Registro de Vehiculos";
+    document.title = "Near Solution | Registro de Vehiculos";
 </script>
 <script>
   $(document).ready(function(){

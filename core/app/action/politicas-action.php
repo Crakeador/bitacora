@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"> <!-- Denine el ancho de la pantalla a ser utilizado -->
         <meta name="robots" content="contabilidad, impuestos, facturacion electronica">
         <meta name="author" content="Jorge Fiallos">
-        <meta name="keywords" content="nearsolutions, seguridad, facturacion electronica, contabilidad">
+        <meta name="keywords" content="nearsolution, seguridad, facturacion electronica, contabilidad">
         <meta name="description" content="Puedes tener el control de tu negocio con nuestro módulos desarrollados en casos reales de los diferentes negocios en el Ecuador">
         <title>Near Solution | Dashboard</title>
         <meta property="og:url" content="https://grupolatinamerica.com/">
@@ -98,12 +98,12 @@
       <footer class="footer">
         <div>
           <span>© 2020 Bitacora <span>Eléctronica</span> v3.0 </span>
-          <span>Created by <a href="https://nearsolutions.com.ec">NEAR Solutions</a></span>
+          <span>Created by <a href="https://near-solution.com/">NEAR Solution</a></span>
         </div>
         <div>
           <nav class="nav">
-            <a href="https://nearsolutions.com.ec/licenses/standard" class="nav-link">Licencia</a>
-            <a href="https://nearsolutions.com.ec/help" class="nav-link">Ayuda</a>
+            <a href="https://near-solution.com/licenses/standard" class="nav-link">Licencia</a>
+            <a href="https://near-solution.com/help" class="nav-link">Ayuda</a>
           </nav>
         </div>
       </footer>

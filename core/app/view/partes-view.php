@@ -163,7 +163,7 @@ if($_SESSION['is_admin'] == 1) {
     var element = document.getElementById("sidai");
 	
     element.classList.add("sidebar-collapse");
-    document.title = "Near Solutions | Reporte de Parte ";
+    document.title = "Near Solution | Reporte de Parte ";
 	
 	function btn_Imprimir($id) {
 		VentanaCentrada('documentos/parte_pdf.php?id='+$id,'Reporte de Bitacora','','1024','768','true');

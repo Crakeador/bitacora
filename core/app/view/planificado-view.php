@@ -224,7 +224,7 @@ $dia=date("w", strtotime($fecha));
 	var element = document.getElementById("sidai");
 
 	element.classList.add("sidebar-collapse");
-	document.title = "Near Solutions | Planificador de horarios de agentes activos";
+	document.title = "Near Solution | Planificador de horarios de agentes activos";
  	
 	function btn_NuevoOnClick(id, dia, mes, ano, agente, servicio, boton, hiden) {
 		var oculto = document.getElementById(hiden);

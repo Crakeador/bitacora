@@ -283,7 +283,7 @@ else
 														</div>
 											<?php   endif; 										
 												  endif; ?>
-											<div class="form-group">
+											<div class="form-group" style="display:none;">
 												<div class="col-xs-6">
 													<label for="final" class="control-label">Verificaci&oacute;n:</label>
 													<?php if($diff_in_days < 0) echo '<span class="btn btn-block btn-danger btn-flat">LLAMAR AL RESIDENTE '.$diff_in_days.'</span>'; else if($diff_in_days == 99) echo '<span class="btn btn-block btn-warning btn-flat">VERIFICAR INGRESO</span>'; else echo '<span class="btn btn-block btn-success btn-flat">AUTORIZADO</span>'; ?>
@@ -298,14 +298,14 @@ else
 													</div>
 												</div>
 											</div>
-											<div class="form-group">
+											<div class="form-group" style="display:none;">
 												<div class="col-sm-8">
 													<span class="text-danger">Que tipo de visita es?</span>
 													<div class="radiobutton">
-														<input type="radio" id="tipo1" name="tipo" value="1" <?php if($cargos->tipo == 'Visita') echo "checked'checked'"; ?>> Visita &nbsp;&nbsp;
-														<input type="radio" id="tipo2" name="tipo" value="2" <?php if($cargos->tipo == 'Taxi') echo "checked'checked'"; ?>> Taxi  &nbsp;&nbsp;
-														<input type="radio" id="tipo3" name="tipo" value="3" <?php if($cargos->tipo == 'Entrega') echo "checked'checked'"; ?>> Entrega &nbsp;&nbsp;
-														<input type="radio" id="tipo4" name="tipo" value="4" <?php if($cargos->tipo == 'Otros') echo "checked'checked'"; ?>> Otros
+														<input type="radio" id="tipo1" name="tipo" value="1" <?php if($cargos->tipo == 'Visita') echo "checked='checked'"; ?>> Visita &nbsp;&nbsp;
+														<input type="radio" id="tipo2" name="tipo" value="2" <?php if($cargos->tipo == 'Taxi') echo "checked='checked'"; ?>> Taxi  &nbsp;&nbsp;
+														<input type="radio" id="tipo3" name="tipo" value="3" <?php if($cargos->tipo == 'Entrega') echo "checked='checked'"; ?>> Entrega &nbsp;&nbsp;
+														<input type="radio" id="tipo4" name="tipo" value="4" <?php if($cargos->tipo == 'Otros') echo "checked='checked'"; ?> checked='checked'> Otros
 													</div>
 												</div>
 											</div>

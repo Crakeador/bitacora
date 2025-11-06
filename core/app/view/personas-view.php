@@ -201,4 +201,4 @@ if(isset($_GET['id'])){
 	</div>
   </div>
 </section>
-<script>document.title = "Near Solutions | Agentes asignados"</script> 
+<script>document.title = "Near Solution | Agentes asignados"</script> 

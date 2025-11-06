@@ -26,13 +26,13 @@ if(isset($_GET["id"])){
 		    $user = new ResidenteData();
 			$user->idclient = $_SESSION["id_client"]; // $_POST['idclient'];
 			$user->tipo = $_POST["tipo"];
-			$user->cedula = $_POST["cedula"];
+			$user->cedula = str_replace("_", "", $_POST["cedula"]);
 			$user->nombre = strtoupper($_POST["nombre"]);
 			$user->email = $_POST["email"];
 			$user->telefono1 = $_POST["telefono1"];
 			$user->telefono2 = $_POST["telefono2"];
-			$user->manzana = $_POST["manzana"];
-			$user->villa = $_POST["villa"];
+			$user->manzana = str_replace("_", "", $_POST["manzana"]);
+			$user->villa = str_replace("_", "", $_POST["villa"]);
 			$user->fecha = $_POST["fechafac"];
 			$user->observacion = $_POST["observacion"];
 			$user->is_active = $activo;
@@ -52,10 +52,10 @@ if(isset($_GET["id"])){
 
         $client = (object) [
             "tipo" => $_POST["tipo"],
-            "cedula" => $_POST["cedula"],
+            "cedula" => str_replace("_", "", $_POST["cedula"]),
             "nombre" => $_POST["nombre"],
-            "manzana" => $_POST["manzana"],
-            "villa" => $_POST["villa"],
+            "manzana" => str_replace("_", "", $_POST["manzana"]),
+            "villa" => str_replace("_", "", $_POST["villa"]),
             "email" => $_POST["email"],
             "telefono1" => $_POST["telefono1"],
             "telefono2" => $_POST["telefono2"],
@@ -108,7 +108,7 @@ if(isset($_GET["id"])){
 				- Los campos obligatorios estan marcados con asteriscos rojo <span class="text-danger">*</span>
 			</p>
 			<!-- START panel -->
-			<form class="form-horizontal" method="post" id="addtask" action="index.php?view=catres.residents" role="form">
+			<form class="form-horizontal" method="post" id="addtask" action="residente" role="form">
 				<input type="hidden" id="client_id" name="client_id" value="<?php echo $client_id; ?>">
 				<div class="panel panel-default">
 					<div class="panel-heading">
@@ -133,7 +133,7 @@ if(isset($_GET["id"])){
 							<div class="col-md-2">
 								<input type="text" class="form-control" id="cedula" name="cedula" data-inputmask='"mask": "999999999-9"' data-mask placeholder="999999999-9" placeholder="123456789-0" value="<?php echo $client->cedula; ?>" title="Solo números, debe ser una cedula valida" required>
 							</div>
-							<div class="col-md-2 col-sm-4">
+							<div class="col-md-6 col-sm-6">
 								<span class="text-danger">Que persona es:</span>
 								<div class="radiobutton">
 									<input type="radio" id="tipo" name="tipo" value="1" checked="checked"> Residente &nbsp;&nbsp;
@@ -164,11 +164,11 @@ if(isset($_GET["id"])){
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-md-2 col-sm-2 control-label">Manzana:</label>
+							<label class="col-md-2 col-sm-2 control-label"><?php if($_SESSION['residente'] == 1) echo "Manzana:"; else echo "Piso:"; ?></label>
 							<div class="col-sm-1">
 								<input class="text-field form-control input-sm" id="manzana" maxlength="3" name="manzana" type="text" data-inputmask='"mask": "999"' data-mask placeholder="999" placeholder="Numero de la manzana" value="<?php echo $client->manzana; ?>">
 							</div>
-							<label class="col-md-5 col-sm-4 control-label">Villa:</label>
+							<label class="col-md-5 col-sm-4 control-label"><?php if($_SESSION['residente'] == 1) echo "Villa:"; else echo "Apartamento:"; ?></label>
 							<div class="col-md-1 col-sm-4">
 								<input class="text-field form-control input-sm" id="villa" maxlength="3" name="villa" type="text" data-inputmask='"mask": "999"' data-mask placeholder="999" placeholder="Numero de la villa" value="<?php echo $client->villa; ?>">
 							</div>
@@ -202,6 +202,6 @@ if(isset($_GET["id"])){
 		size: 'small'
 	});	
 	
-	document.title = "Near Solutions | Entrega de dotacion";
+	document.title = "Near Solution | Entrega de dotacion";
 </script>
 

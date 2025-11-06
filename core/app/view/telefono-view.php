@@ -138,6 +138,6 @@ if(isset($_GET["id"])){
   var elem = document.querySelector('.activo'); // referred checkbox class is here
   var init = new Switchery(elem, { size: 'small' }); // put option after elem attribute    
   
-  document.title = "Near Solutions | Modificacion de los Telefonos";
+  document.title = "Near Solution | Modificacion de los Telefonos";
 </script>
 

@@ -47,6 +47,7 @@ if($_SESSION['idrol'] ==  8) Core::redir('fechas');
 if($_SESSION['idrol'] ==  9) Core::redir('autorizan');
 if($_SESSION['idrol'] == 13) Core::redir('ruta');
 if($_SESSION['idrol'] == 15) Core::redir('supervisar');
+if($_SESSION['idrol'] == 18) Core::redir('trade');
 
 if($_SESSION['idrol'] == 10) 
 	if($_SESSION['depart'] == 3)	
@@ -56,9 +57,9 @@ if($_SESSION['idrol'] == 10)
 
 if($_SESSION['idrol'] ==11) {
 	if($_SESSION['aspirante']>0) {
-		print "<script>window.location='index.php?view=aspirantes&id=".$_SESSION['aspirante']."';</script>"; 
+		print "<script>window.location='index.php?view=aspirante&id=".$_SESSION['aspirante']."';</script>"; 
 	}else{
-		Core::redir('aspirantes');
+		Core::redir('aspirante');
 	}
 }
 if($_SESSION["idrol"] == "12")
@@ -248,7 +249,7 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 							echo '<div class="small-box bg-aqua">';
 								echo '<div class="inner">';
 									echo '<h3>'.count(PersonData::getAllTipo(4, 1)).'</h3>';
-									echo '<p>Total de Aspirantes</p>';
+									echo '<p>Total de aaa Aspirantes</p>';
 								echo '</div>';
 								echo '<div class="icon">';
 									echo '<i class="fa fa-fax"></i>';
@@ -360,7 +361,7 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 							echo '<div class="small-box bg-yellow">';
 								echo '<div class="inner">';
 								echo '<h3>'.count(PersonData::getAllTipo(4, 1)).'</h3>';
-								echo '<p>Total de Aspirantes</p>';
+								echo '<p>Total de bbb Aspirantes</p>';
 							echo '</div>';
 							echo '<div class="icon">';
 								echo '<i class="fa fa-user-plus"></i>';
@@ -1335,5 +1336,5 @@ echo '</section>';
     var element = document.getElementById("sidai");
 
     element.classList.add("sidebar-collapse");
-    document.title = "Near Solutions | Panel de Control";
+    document.title = "Near Solution | Panel de Control";
 </script>

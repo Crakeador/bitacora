@@ -155,13 +155,16 @@ If(isset($_POST["sd"])){
 											}else{
 												echo '<br><small>';
 													echo '<span class="glyphicon glyphicon-Home text-success"></span>&nbsp;';
-													echo '<span class="text-success">Manzana '.$tables->manzana.' - Villa '.$tables->villa.'</span>';
+													if($_SESSION['residencial'] == 0)
+														echo '<span class="text-success">Piso '.$tables->manzana.' - Apartamento: '.$tables->villa.'</span>';
+													else
+														echo '<span class="text-success">Manzana '.$tables->manzana.' - Villa '.$tables->villa.'</span>';
 												echo '</small>';
 											}
 										echo '</td>';
 										echo '<td>';
 											  echo '<div align="center">';
-												echo '<button type="button" class="btn btn-success btn-sm'.$activo.'" onClick="btn_Imprimir('.$tables->id.')"><i class="fa fa-print"></i></button>
+												echo '<button type="button" class="btn btn-success btn-sm'.$activo.'" onClick="btn_Imprimir('.$tables->id.', '.$ruta.')"><i class="fa fa-print"></i></button>
 													  <a href="index.php?view=info&id='.$tables->id.'&ruta='.$ruta.'" class="btn btn-warning btn-sm"><i class="fa fa-eye"></i></a>';
 											  echo '</div>';
 										echo '</td>';
@@ -179,13 +182,13 @@ If(isset($_POST["sd"])){
 <script type="text/javascript" src="js/VentanaCentrada.js"></script>
 <script type='text/javascript'><!--
     var element = document.getElementById("sidai");
-
+ 
     element.classList.add("sidebar-collapse");
-    document.title = "Near Solutions | Bitacora Electronica";
+    document.title = "Near Solution | Bitacora Electronica";
     setInterval("location.reload()", 30000);
 	
-	function btn_Imprimir($id) {
-		VentanaCentrada('documentos/novedad_pdf.php?id='+$id,'Reporte de Bitacora','','1024','768','true');
+	function btn_Imprimir($id, $ruta) {
+		VentanaCentrada('documentos/novedad_pdf.php?id='+$id+'&ruta='+$ruta,'Reporte de Bitacora','','1024','768','true');
 	}
 	
 	function btn_Lista() {

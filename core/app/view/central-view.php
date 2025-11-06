@@ -242,7 +242,7 @@ $mensaje = 'ingreso de los partes del cliente';
   </div>
 </section>
 <script>
-    document.title = "Near Solutions | Registro del Parte";
+    document.title = "Near Solution | Registro del Parte";
 </script>
 <script>
     $(document).ready(function(event) {

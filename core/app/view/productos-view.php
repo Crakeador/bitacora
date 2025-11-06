@@ -523,7 +523,7 @@ MODAL EDITAR PRODUCTO
 	</div>
 </div>
 <script type='text/javascript'><!--
-	document.title = "Near Solutions | Listado de Productos"
+	document.title = "Near Solution | Listado de Productos"
 	
 	function btn_EnviarOnClick($id, $is_active) {
 		var valor = <?php echo $_SESSION['is_admin']; ?>;

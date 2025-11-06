@@ -52,9 +52,9 @@ class CargoData {
 	}
 
 	public static function getAll(){
-		$sql = "SELECT B.name departamento, C.description tipo, A.* 
-		          FROM cargo A, departamento B, tipo C 
-		         WHERE A.iddepartamento = B.id AND A.idtipo = C.id";
+		$sql = "SELECT B.name departamento, A.* 
+		          FROM cargo A, departamento B 
+		         WHERE A.iddepartamento = B.id";
 		$query = Executor::doit($sql);
 		return Model::many($query[0],new CargoData());
 	}

@@ -34,6 +34,15 @@ class PDF extends FPDF{
 	}	
 }
 
+if($_GET['ruta']==1) $ruta = 'novedad';
+if($_GET['ruta']==2) $ruta = 'ingreso';
+if($_GET['ruta']==4) $ruta = 'novedad';
+if($_GET['ruta']==3) $ruta = 'parte';
+if($_GET['ruta']==5) $ruta = 'supervicion';
+if($_GET['ruta']==6) $ruta = 'rondas';
+if($_GET['ruta']==7) $ruta = 'visitas';
+if($_GET['ruta']==8) $ruta = 'custodia';
+
 $base = new Database();
 $con = $base->connect();
 
@@ -41,8 +50,8 @@ $sql = "SELECT B.name, C.descripcion, C.codigo, A.* FROM bitacora A, person B, p
          WHERE A.idperson = B.id AND A.idpuesto = C.id AND A.id = ".$_GET["id"];
 
 $lugares = $con->query($sql);
-if (empty($lugares)){
-	echo '<script>alert(\'No hay productos agregados a la cotizacion\')</script>';
+if ($lugares->num_rows == 0){
+	echo '<script>alert(\'No hay registros asociados...!!!\')</script>';
 	echo '<script>window.close();</script>';
 	exit;
 }else{
@@ -104,12 +113,15 @@ if (empty($lugares)){
     	$pdf->Cell(92,60,'FOTO 2',1,0,'C',0); //color texto de la barra NEGRO
     	$pdf->Ln(); 
  	 	
-        $pdf->Image('../storage/novedad/'.$r['foto1'],40,150,35);
+		if($r['foto1'] == "")
+			$pdf->Image('../assets/images/american.jpg',40,150,50);
+		else
+        	$pdf->Image('../storage/'.$ruta.'/'.$r['foto1'],40,150,35);
 
         if($r['foto2'] == "")
-            $pdf->Image('../assets/images/american.jpg',124,152,50);
+            $pdf->Image('../assets/images/american.jpg',126,150,50);
         else
-            $pdf->Image('../storage/novedad/'.$r['foto2'],120,150,35);
+            $pdf->Image('../storage/'.$ruta.'/'.$r['foto2'],120,150,35);
          
         $pdf->SetFont('Arial','',10);
     	$pdf->Text( 26, 80,'LA NOVEDAD:');

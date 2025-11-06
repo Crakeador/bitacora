@@ -38,46 +38,44 @@
                             <th width="8%"><div align="center">Entregados</div></th>
                         </tr>
                         </thead>
-                        <tbody>
-                            <?php
+                        <tbody> <?php
                             $products = ProductData::getTodos();
 
-                                // Crea la tabla de Productos
-                                foreach($products as $tables) {
-                                        echo '<tr>';
-                                            echo '<td>';
-                                            echo '<div align="center">';
-                                                if($tables->image!="")
-                                                        echo '<img src="storage/products/'.$tables->image.'" style="width:64px;">';
-                                                    else
-                                                        echo '<img src="storage/products/default-50x50.gif" style="width:64px;">';
-                                                echo '</div>';
-                                            echo '</td>';
-                                            echo '<td>';
-                                                echo '<a class="text-primary" href="index.php?view=editproduct&id='.$tables->id.'">'.$tables->name.'</a>';
-                                                echo '<div class="mini-tabla">';
-                                                    echo '<small>';
-                                                        echo '<span class="glyphicon glyphicon-ok-sign text-success"></span>';
-                                                        echo '<span class="text-success">&nbsp;Activo</span>&nbsp;·&nbsp;';
-                                                        echo '<span class="glyphicon glyphicon-barcode"></span> '.$tables->barcode;
-                                                    echo '</small>';
-                                                echo '</div>';
-                                            echo '</td>';
-                                            echo '<td>'.$tables->description.'</td>';
-                                            echo '<td><div align="right">'.number_format($tables->price_in,2,'.',',').'</div></td>';
-                                            echo '<td><div align="right">'.number_format($tables->price_out,2,'.',',').'</div></td>';
-                                            echo '<td>';
-                                                if($tables->category_id!=null){
-                                                    echo utf8_encode($tables->getCategory()->name);
-                                                }else{
-                                                    echo "Sin Categoria"; }
-                                            echo '</td>';
-                                            $valor=$tables->getOperation()->q-$tables->getTotal();
-                                            echo '<td><div align="right">'.$tables->getOperation()->q.'</div></td>';
-                                            echo '<td><div align="right">'.$valor.'</div></td>';
-                                        echo '</tr>';
-                                    }
-                            ?>
+                            // Crea la tabla de Productos
+                            foreach($products as $tables) {
+                                echo '<tr>';
+                                    echo '<td>';
+                                    echo '<div align="center">';
+                                        if($tables->image!="")
+                                                echo '<img src="storage/products/'.$tables->image.'" style="width:64px;">';
+                                            else
+                                                echo '<img src="storage/products/default-50x50.gif" style="width:64px;">';
+                                        echo '</div>';
+                                    echo '</td>';
+                                    echo '<td>';
+                                        echo '<a class="text-primary" href="index.php?view=editproduct&id='.$tables->id.'">'.$tables->name.'</a>';
+                                        echo '<div class="mini-tabla">';
+                                            echo '<small>';
+                                                echo '<span class="glyphicon glyphicon-ok-sign text-success"></span>';
+                                                echo '<span class="text-success">&nbsp;Activo</span>&nbsp;·&nbsp;';
+                                                echo '<span class="glyphicon glyphicon-barcode"></span> '.$tables->barcode;
+                                            echo '</small>';
+                                        echo '</div>';
+                                    echo '</td>';
+                                    echo '<td>'.$tables->description.'</td>';
+                                    echo '<td><div align="right">'.number_format($tables->price_in,2,'.',',').'</div></td>';
+                                    echo '<td><div align="right">'.number_format($tables->price_out,2,'.',',').'</div></td>';
+                                    echo '<td>';
+                                        if($tables->category_id!=null){
+                                            echo utf8_encode($tables->getCategory()->name);
+                                        }else{
+                                            echo "Sin Categoria"; }
+                                    echo '</td>';
+                                    $valor=$tables->getOperation()->q-$tables->getTotal();
+                                    echo '<td><div align="right">'.$tables->getOperation()->q.'</div></td>';
+                                    echo '<td><div align="right">'.$valor.'</div></td>';
+                                echo '</tr>';
+                            } ?>
                         </tbody>
                     </table>
                 </form>

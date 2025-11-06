@@ -892,5 +892,5 @@ echo '</section>';
     var element = document.getElementById("sidai");
 
     element.classList.add("sidebar-collapse");
-    document.title = "Near Solutions | Panel de Control";
+    document.title = "Near Solution | Panel de Control";
 </script>

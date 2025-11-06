@@ -77,10 +77,10 @@ class UserData {
 	}
 
 	public static function getAll(){
-		$sql = "SELECT B.nombre, B.descripcion, C.name, A.* FROM user A
+		$sql = "SELECT B.nombre, B.descripcion, C.name AS departamento, A.* FROM user A
              LEFT JOIN rol B ON A.idrol = B.id
              LEFT JOIN departamento C ON A.iddepartamento = C.id
-                 WHERE A.idcompany = ".$_SESSION['id_company']; 
+                 WHERE A.idcompany = ".$_SESSION['id_company']; echo $sql;
 		$query = Executor::doit($sql);
 
 		return Model::many($query[0],new UserData());
