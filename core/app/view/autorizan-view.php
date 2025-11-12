@@ -14,18 +14,46 @@ foreach($validos as $tables){
 		$valor = $client->anular();
 	}
 }
+ 
+if(isset($_GET['clave'])){
+//set it to writable location, a place for temp generated PNG files
+    $PNG_TEMP_DIR = '/var/www/latin.near-solution.com/public_html'.DIRECTORY_SEPARATOR.'temp'.DIRECTORY_SEPARATOR;
+    
+    //html PNG location prefix
+    $PNG_WEB_DIR = 'temp/';
 
-if(isset($_GET['clave'])){	
-	echo '<script src="plugins/sweetalert/sweetalert.min.js"></script>
-		  <script type="text/javascript">
-			swal({
-				title: "Nuevo registro",
-				text: "Se genero la clave de acceso: '.$_GET['clave'].', comparta esta clave con su visita...!!!",
-				icon: "success",
+    include "plugins/phpqrcode/qrlib.php";    
+    
+    //ofcourse we need rights to create temp dir
+    if (!file_exists($PNG_TEMP_DIR)) mkdir($PNG_TEMP_DIR);    
+    
+    $filename = $PNG_TEMP_DIR.'test.png';
+    
+    //processing form input
+    //remember to sanitize user input in real-life solution !!!
+    $errorCorrectionLevel = 'L';
+
+    $matrixPointSize = 4;
+    $data = "https://latin.near-solution.com/index.php?view=novedad&codigo=".$_GET["clave"];
+    //user data
+    
+    $name = 'test'.md5($data.'|'.$errorCorrectionLevel.'|'.$matrixPointSize).'.png';
+    $filename = $PNG_TEMP_DIR.'test'.md5($data.'|'.$errorCorrectionLevel.'|'.$matrixPointSize).'.png';
+    QRcode::png($data, $filename, $errorCorrectionLevel, $matrixPointSize, 2);    
+        
+    //display generated file
+    echo "<script src=\"https://latin.near-solution.com/plugins/sweetalert/sweetalert.min.js\"></script>
+          <script type=\"text/javascript\"><!--
+              swal({                
+              	title: 'Codigo Generado',
+                text: 'Se genero la clave de acceso: ".$_GET['clave'].", comparta esta clave con su visita...!!!</br><img src=\"https://latin.near-solution.com/temp/".$name."\"/>',
+                html: true,
+                type: 'success',
+				icon: 'success',
 				buttons: true,
 				dangerMode: true
-			});	
-		  </script>';
+              });
+          </script>";  
 }
 
 if(isset($_GET['id'])){	

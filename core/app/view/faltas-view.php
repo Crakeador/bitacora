@@ -1,14 +1,14 @@
 <?php
 //Listado de las faltas de los guardias
-/*
+
 if($_SESSION["idrol"] == "12" || $_SESSION["idrol"] == "6")
     $cadena = "AND A.ano = '".date("Y")."' AND A.mes = '".date("m")."' AND A.dia = '".date("d")."'";
-else */
+else 
     $cadena = "";
-/*
+
 if($_SESSION["idrol"] == "6")
 	$users = PuestoData::getByLugar();
-else */
+else 
 	$users = PuestoData::getByFaltas($cadena);
 ?>
 <!-- Content Header (Page header) -->

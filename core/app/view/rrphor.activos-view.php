@@ -40,13 +40,13 @@ $ini="2020-01-01"; $fin=$ano."-".str_pad($mes, 2, "0", STR_PAD_LEFT)."-30"; $lug
 </section>
 <form class="form-horizontal" method="post" id="addproduct" enctype="multipart/form-data" role="form">
 	<div class="col-xs-12" style="padding: 1.5rem !important;">
-		<div class="box">Solution
+		<div class="box">
 			<div class="box-header with-border">
 				<label> Cliente: </label>
 				<select class="select-input form-control input-sm" id="idclient" name="idclient" onchange="javascript:location.href='index.php?view=rrphor.activos&cliente='+value;">
 					<option value="0" selected="selected"> Selecione... </option>
 					<?php foreach($client as $clients): ?>
-							<option value="<?php echo $clients->idclient; ?>" <?php if($clients->idclient == $cliente) echo 'selected="selected"'; ?>><?php echo $clients->nombre; //utf8_encode() ?></option> 
+							<option value="<?php echo $clients->id; ?>" <?php if($clients->id == $cliente) echo 'selected="selected"'; ?>><?php echo $clients->nombre; //utf8_encode() ?></option> 
 					<?php endforeach; ?>
 				</select>	
 			</div>

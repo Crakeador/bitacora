@@ -22,6 +22,40 @@ if(!isset($_SESSION["puesto"])){
     print "<script>window.location='index.php?view=asignar';</script>";
 }
 
+if(isset($_GET['codigo'])){
+	if($_GET['codigo'] == ""){
+		$diff_in_days = 99;
+		
+		$cargos = (object) [
+			"tipo"=>1,
+			"ini_fec"=>null,
+			"fin_fec"=>null,
+			"manzana"=>null,
+			"villa"=>null
+        ];
+	}else{
+		$cargos = ResidenteData::getLike($_POST['codigo']); 
+		
+		if($cargos == NULL){			
+			Core::alert("Error...!!!!", "El codigo no exite", "error");
+			$diff_in_days = -1;
+			$cargos = (object) [
+				"ini_fec"=>null,
+				"fin_fec"=>null,
+				"manzana"=>null,
+				"villa"=>null
+			];
+			$validador = 0;
+		}else{
+			$now = time();
+			$date = strtotime($cargos->ini_fec);
+			 
+			$diff_in_days = floor(($date - $now) / (60 * 60 * 24));
+			$validador = 1;
+		}
+	}
+}
+
 if(isset($_POST['codigo'])){
 	if($_POST['codigo'] == ""){
 		$diff_in_days = 99;

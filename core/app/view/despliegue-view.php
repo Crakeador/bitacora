@@ -42,7 +42,7 @@ $dia=date("d");
 							echo '<option value="0"> -- SELECCIONE PUESTO -- </option>';
 							foreach($puestos as $tables) {
 								if($tables->id == $lugar) $valor = 'selected'; else $valor = '';
-								echo '<option value="'.$tables->id.'" '.$valor.'>'.$tables->descripcion.'</option>';  
+								echo '<option value="'.$tables->id.'" '.$valor.'>'.$tables->codigo.' ('.$tables->descripcion.')</option>';  
 							}
 							echo '</select>';
 						?>
@@ -66,13 +66,13 @@ $dia=date("d");
 					<div class="alert alert-dismissable alert-info">
 						<strong><i class="fa fa-bullhorn"></i> Importante...!</strong>
 						<p> - Los turnos se identifican con los siguientes colores:&nbsp;</br>
-							<span class="external-event bg-green" >D</span>&nbsp;Diurno,&nbsp;
-							<span class="external-event bg-teal"  >N</span>&nbsp;Nocturno,&nbsp;
-							<span class="external-event bg-yellow">L</span>&nbsp;Libre,&nbsp;
-							<span class="external-event bg-red"   >F</span>&nbsp;Falta,&nbsp;
-							<span class="external-event bg-purple">LT</span>&nbsp;Libre trabajado,&nbsp;
-							<span class="external-event bg-blue"  >DN</span>&nbsp;
-							<span class="external-event bg-fuchsia" >ND</span>&nbsp;Dobladas y
+							<span class="external-event bg-green"  >D</span>&nbsp;Diurno,&nbsp;
+							<span class="external-event bg-teal"   >N</span>&nbsp;Nocturno,&nbsp;
+							<span class="external-event bg-yellow" >L</span>&nbsp;Libre,&nbsp;
+							<span class="external-event bg-red"    >F</span>&nbsp;Falta,&nbsp;
+							<span class="external-event bg-purple" >LT</span>&nbsp;Libre trabajado,&nbsp;
+							<span class="external-event bg-blue"   >DN</span>&nbsp;
+							<span class="external-event bg-fuchsia">ND</span>&nbsp;Dobladas y
 							<span class="external-event bg-orange" >DM</span>&nbsp;Diurno con Moto,&nbsp;
 							<span class="external-event bg-maroon" >NM</span>&nbsp;Nocturno con Moto
 						</p>
@@ -96,7 +96,8 @@ $dia=date("d");
 								
 								foreach($valores as $valor) {
 								    $i++;
-								    //Totalizar los valores
+
+									//Totalizar los valores
 									if($valor['turno']=="1") $asi++;
 									if($valor['turno']=="2") $asi++;
 									if($valor['turno']=="3") $lib++;
@@ -123,7 +124,7 @@ $dia=date("d");
 								if($turno== 8) $clase = 'btn-dropbox';
 								if($turno== 9) $clase = 'btn-foursquare';
 								if($turno==10) $clase = 'btn-flickr';
-								
+								$mensaje = 'Ingreso Diurno, modificado por: '.$valor['usuario'].' el: '.$valor['fecha'];
 								$por = (($asi+$lib)*100)/date("t"); $i = date("d");
 								
 								if($tables['phone1'] == '')
@@ -154,7 +155,7 @@ $dia=date("d");
 									    </td>
 									    <td align="center">
 									    	<input type="hidden" id="hiden_'.$tables['servicio'].'_'.$tables['id'].'_'.$i.'" name="hiden_'.$tables['servicio'].'_'.$tables['id'].'_'.$i.'" value="'.$tables['servicio'].'-'.$tables['id'].'-'.str_pad($i, 2, "0", STR_PAD_LEFT).'-'.$mes.'-'.$ano.'-0">
-											<input type="button" id="button_'.$tables['servicio'].'_'.$tables['id'].'_'.$i.'" name="button_'.$tables['servicio'].'_'.$tables['id'].'_'.$i.'" class="btn '.$clase.'" onClick="btn_NuevoOnClick('.$id.', '.str_pad($i, 2, "0", STR_PAD_LEFT).', '.$mes.', '.$ano.','.$tables['id'].','.$tables['servicio'].',\'button_'.$tables['servicio'].'_'.$tables['id'].'_'.$i.'\',\'hiden_'.$tables['servicio'].'_'.$tables['id'].'_'.$i.'\');" value="'.date("d").'"/>
+											<input type="button" id="button_'.$tables['servicio'].'_'.$tables['id'].'_'.$i.'" name="button_'.$tables['servicio'].'_'.$tables['id'].'_'.$i.'" class="btn '.$clase.'" onClick="btn_NuevoOnClick('.$id.', '.str_pad($i, 2, "0", STR_PAD_LEFT).', '.$mes.', '.$ano.','.$tables['id'].','.$tables['servicio'].',\'button_'.$tables['servicio'].'_'.$tables['id'].'_'.$i.'\',\'hiden_'.$tables['servicio'].'_'.$tables['id'].'_'.$i.'\');" value="'.str_pad(date("d"), 2, "0", STR_PAD_LEFT).'" rel="tooltip" data-toggle="tooltip" data-placement="top" data-original-title="'.$mensaje.'"/>
 										</td>
 									    <td align="center">'.$asi.'</td>
 									    <td align="center">'.$lib.'</td>

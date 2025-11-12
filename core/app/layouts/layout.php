@@ -520,9 +520,9 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                           <span class="">
                               <?php
                                 if(isset($_SESSION["id_card"])){
-                            echo trim(substr(ucwords(strtolower($_SESSION["name"])), 0, 15));
+                                  echo trim(substr(ucwords(strtolower($_SESSION["name"])), 0, 15));
                                 }else{
-                                    echo UserData::getById($_SESSION["user_id"])->name.' '.UserData::getById($_SESSION["user_id"])->lastname; // htmlentities(
+                                  echo UserData::getById($_SESSION["user_id"])->name.' '.UserData::getById($_SESSION["user_id"])->lastname; // htmlentities(
                                 }?>
                             <b class="caret"></b>
                           </span> 
@@ -654,8 +654,10 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                                   } 
                                 }else{
                                   if($_SESSION['idrol'] == 12){ // Opciones de Centralistas
+                                    echo '<li><a href="./asistencia"><i class="fa fa-sign-in"></i> <span>Asistencia</span></a></li>';
                                     echo '<li><a href="./despliegue"><i class="fa fa-child"></i> <span>Despliegue</span></a></li>';
                                     echo '<li><a href="./finalizar"><i class="fa fa-power-off"></i> <span>Ultimo Turno</span></a></li>';
+                                    echo '<li><a href="./vacaciones"><i class="fa fa-ship"></i> <span>Vacaciones</span></a></li>';
                                     echo '<li><a href="./faltas"><i class="fa fa-suitcase"></i><span> Faltas </span></a></li>';
                                     echo '<li><a href="./bitacora"><i class="fa fa-book"></i> <span>Bitacora</span></a></li>';
                                     echo '<li><a href="./central"><i class="fa fa-clipboard"></i> <span>Novedades</span></a></li>';
@@ -1396,12 +1398,12 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
 		      $_GET["view"]=="agentes" || $_GET["view"]=="conducta" || $_GET["view"]=="catdes.lista" || $_GET["view"]=="rrphor.activos" || $_GET["view"]=="puestos" || 
           $_GET["view"]=="faltas" || $_GET["view"]=="rondas" || $_GET["view"]=="vehiculos" || $_GET["view"]=="novedades" || $_GET["view"]=="clientes" ||
           $_GET["view"]=="telefonos" || $_GET["view"]=="apertura" || $_GET["view"]=="recibos" || $_GET["view"]=="entregas" || $_GET["view"]=="conducta" ||
-		      $_GET["view"]=="residentes" || $_GET["view"]=="proveedores" || $_GET["view"]=="rrhpre.lista" || $_GET["view"]=="opecor.lista" ||
+		      $_GET["view"]=="residentes" || $_GET["view"]=="proveedores" || $_GET["view"]=="rrhpre.lista" || $_GET["view"]=="opecor.lista" || $_GET["view"]=="finalizar" ||
           $_GET["view"]=="catrol.lista" || $_GET["view"]=="cobnom.lista" || $_GET["view"]=="sisnot.lista" || $_GET["view"]=="carnets" || $_GET["view"]=="rubros" ||
           $_GET["view"]=="rrhpre.lista" || $_GET["view"]=="rrhliq.lista" || $_GET["view"]=="rrhmac.lista" || $_GET["view"]=="usuarios" || 
           $_GET["view"]=="rrsdoc.lista" || $_GET["view"]=="aspirantes" || $_GET["view"]=="personas" || $_GET["view"]=="rrhdoc.lista" || $_GET["view"]=="tareas" ||
           $_GET["view"]=="sisaud.lista" || $_GET["view"]=="rrging.lista" || $_GET["view"]=="rrping.lista" || $_GET["view"]=="rrhvac.lista" ||
-          $_GET["view"]=="catdes.lista" || $_GET["view"]=="catlim.lista" || $_GET["view"]=="repent.lista" || $_GET["view"]=="areas" ||        
+          $_GET["view"]=="catdes.lista" || $_GET["view"]=="catlim.lista" || $_GET["view"]=="repent.lista" || $_GET["view"]=="areas" || $_GET["view"]=="vacaciones" ||
           $_GET["view"]=="catloc.lista" || $_GET["view"]=="cargos" || $_GET["view"]=="reppus.lista" || $_GET["view"]=="catofi.lista")): ?>
           <!-- DataTables $_GET["view"]=="rrsing.lista" || -->
           <script src="plugins/datatables/jquery.dataTables.min.js?v=1.0.1"></script>

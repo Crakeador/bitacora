@@ -59,7 +59,7 @@ if(isset($_GET["id"])){
         ];
 	}else{
         $client_id = 0;
-
+ 
         $client = (object) [
             "tipo" => "Visita",
             "cedula" => "",

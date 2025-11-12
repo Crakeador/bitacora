@@ -6,7 +6,7 @@ $hoy = date("d-m-Y H:i:s"); $fecha = date("Y-m-d H:i:s"); $errores = ''; $_SESSI
 
 $ini = new DateTime(date("Y-m-d")." 07:00:00");
 $fin = new DateTime(date("Y-m-d")." 17:00:00");
-
+var_dump($_POST);
 if(isset($_POST['id_person'])){	
     $user = new BitacoraData();
     $user->idpuesto = (int) $_POST["id_localidad"];
@@ -145,7 +145,7 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
 				<div class="panel-collapse pull out">
 					<div class="panel-body">						
 						<div class="col-md-6">
-						    <form class="form-horizontal" method="post" enctype="multipart/form-data" id="ingreso" name="ingreso" action="index.php?view=ingreso" role="form">
+						    <form class="form-horizontal" method="post" enctype="multipart/form-data" id="ingreso" name="ingreso" action="ingreso" role="form">
 								<input type="hidden" id="id_person"  name="id_person"  value="<?php echo $_SESSION['user_id']; ?>">
 								<input type="hidden" id="verifica"   name="verifica"   value="0">
 								<input type="hidden" id="timestamp"  name="timestamp"  value="">
@@ -196,7 +196,6 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
 									<label for="consigna" class="col-md-4 col-sm-4 control-label">Consigna:</label>
 									<div class="col-sm-8">
 										<textarea class="form-control" size="10" type="text" id="consigna" name="consigna" placeholder="Indique su consigna" cols="40" rows="2"><?php echo $_SESSION['consigna']; ?></textarea>
-
 									</div>
 								</div>
 								</br>
@@ -374,9 +373,22 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
 					$video.srcObject = stream;
 					$video.play();
 
+					/*Escuchar el click del botón para tomar la foto
+					$boton.addEventListener("click", function() {	
+						context.drawImage(video, 0, 0, canvas.width, canvas.height);
+						const imagen = canvas.toDataURL('image/jpeg');
+						const descripcion = document.getElementById('descripcion').value;
+
+						fetch('./ajax/subir.php', {
+							method: 'POST',
+							body: JSON.stringify({ imagen, descripcion }),
+							headers: { 'Content-Type': 'application/json' }
+						})
+						.then(res => res.text())
+						.then(msg => alert(msg));
+					}); */
 					//Escuchar el click del botón para tomar la foto
-					//Escuchar el click del botón para tomar la foto
-					$boton.addEventListener("click", function() {						
+					$boton.addEventListener("click", function() {				
 						//Pausar reproducción
 						$video.pause();
 
@@ -385,17 +397,24 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
 						$canvas.width = $video.videoWidth;
 						$canvas.height = $video.videoHeight;
 						contexto.drawImage($video, 0, 0, $canvas.width, $canvas.height);
-
-						let foto = $canvas.toDataURL(); //Esta es la foto, en base 64
+						
+						const foto = canvas.toDataURL('image/jpeg');
+						const descripcion = document.getElementById('observacion').value;
+						console.log(descripcion);
+						//let foto = $canvas.toDataURL(); //Esta es la foto, en base 64 guardar_foto.php
 						$estado.innerHTML = "Enviando foto. Por favor, espera...";
-						fetch("storage/fotos/guardar_foto.php", {
+						fetch("ajax/subir.php", {
 								method: "POST",
+								body: JSON.stringify({ foto, descripcion}),
+								headers: { 'Content-Type': 'application/json' } /*
 								body: encodeURIComponent(foto),
 								headers: {
 									"Content-type": "application/x-www-form-urlencoded",
-								}
+								} */
 							})
 							.then(resultado => {
+								res => res.text()
+								msg => alert(msg)
 								// A los datos los decodificamos como texto plano
 								return resultado.text()
 							})
@@ -408,7 +427,7 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
 
 						//Reanudar reproducción
 						$video.play();
-					});
+					}); 
 				}, (error) => {
 					console.log("Permiso denegado o error: ", error);
 					$estado.innerHTML = "No se puede acceder a la cámara, o no diste permiso.";

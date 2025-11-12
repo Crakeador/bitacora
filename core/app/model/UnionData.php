@@ -29,10 +29,15 @@ class UnionData {
 	}
 
 	public function finTurno(){
-		$sql = "UPDATE ".self::$tablename." SET is_active = 0 WHERE idservicio=$this->idservicio AND idperson=$this->idperson";
+		$sql = "UPDATE ".self::$tablename." SET is_active = 0 WHERE idperson=$this->idperson"; echo $sql;
 		return Executor::doit($sql);
 	}
-	
+		
+	public function finFecha(){
+		$sql = "UPDATE person SET usuario_log = '".$_SESSION['usuario']."', is_active=0, endwork='$this->fecha' WHERE id=$this->idperson"; 
+		return Executor::doit($sql);
+	}
+
 	public function update(){
 		$sql = "UPDATE ".self::$tablename." SET is_active=$this->is_active, idservicio=\"$this->idservicio\", ";
 		$sql .= "idperson=\"$this->idperson\", usuario_log=\"".$_SESSION['user_name']."\" WHERE id=$this->id";

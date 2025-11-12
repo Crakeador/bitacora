@@ -133,7 +133,7 @@ const llenarSelectConDispositivosDisponibles = () => {
 
                     let foto = $canvas.toDataURL(); //Esta es la foto, en base 64
                     $estado.innerHTML = "Enviando foto. Por favor, espera...";
-                    fetch("./guardar_foto.php", {
+                    fetch("./ajax/guardar_foto.php", {
                             method: "POST",
                             body: encodeURIComponent(foto),
                             headers: {

@@ -80,7 +80,7 @@ class UserData {
 		$sql = "SELECT B.nombre, B.descripcion, C.name AS departamento, A.* FROM user A
              LEFT JOIN rol B ON A.idrol = B.id
              LEFT JOIN departamento C ON A.iddepartamento = C.id
-                 WHERE A.idcompany = ".$_SESSION['id_company']; echo $sql;
+                 WHERE A.idcompany = ".$_SESSION['id_company']; 
 		$query = Executor::doit($sql);
 
 		return Model::many($query[0],new UserData());

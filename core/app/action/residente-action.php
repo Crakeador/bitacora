@@ -4,7 +4,6 @@ if(isset($_POST["cedula"]) && $_POST["cedula"]!=""){
     $base = new Database();
     $con = $base->connect();
 
-    // Codigo para el ingreso de la auditoria
     $sql = "INSERT INTO cotizacion (idcompany, tipo, cedula, contacto, cargo, celular, email, ruc, razon, telefono, correo, direccion, servicio, puntos, horas, modalidad, ciudad, fecha, observacion, status) ";
     $sql .= "value (1, 3, '".$_POST["cedula"]."', '".$_POST["contacto"]."', '".$_POST["cargo"]."', '".$_POST["celular"]."', '".$_POST["email"]."', '".$_POST["ruc"]."', '".$_POST["razon"]."', '".$_POST["telefono"]."', '".$_POST["correo"]."', '".$_POST["direccion"]."', '".$_POST["servicio"]."', '".$_POST["puntos"]."', '".$_POST["horas"]."', '".$_POST["modalidad"]."', '".$_POST["ciudad"]."', '".$_POST["fecha"]."', '".$_POST["observacion"]."', 4)";
     

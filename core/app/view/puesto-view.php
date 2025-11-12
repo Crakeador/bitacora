@@ -4,6 +4,54 @@ $client = ClientData::getAll(0);
 $lugars = LugarData::getAll();
 $hoy = date("Y-m-d H:i:s"); $error = ""; $lugar_id = 0;
 
+if(count($_POST)>0){
+	$lugar_id = $_POST["lugar_id"];
+
+	if(isset($_POST["active"])) $activo=1; else $activo=0;
+	if(isset($_POST["principal"])) $principal=1; else $principal=0;
+	if(isset($_POST["iCubre1"])) $lunes = 1; else $lunes = 0;
+	if(isset($_POST["iCubre2"])) $martes = 1; else $martes = 0;
+	if(isset($_POST["iCubre3"])) $miercoles = 1; else $miercoles = 0;
+	if(isset($_POST["iCubre4"])) $jueves = 1; else $jueves = 0;
+	if(isset($_POST["iCubre5"])) $viernes = 1; else $viernes = 0;
+	if(isset($_POST["iCubre6"])) $sabado = 1; else $sabado = 0;
+	if(isset($_POST["iCubre7"])) $domingo = 1; else $domingo = 0;
+	if(isset($_POST["iCubre8"])) $feriado = 1; else $feriado = 0;
+
+	$lugar = new PuestoData();
+
+	$lugar->grupo = 1;
+	$lugar->idclient = $_POST["idclient"];
+	$lugar->tipo = 2;
+	$lugar->descripcion = strtoupper($_POST["descripcion"]);
+	$lugar->codigo = strtoupper($_POST["valor"]);
+	$lugar->residencial = $_POST["residencial"];
+	$lugar->activado = $_POST["dtp_input"];
+	$lugar->idlugar = $_POST["idlugar"];
+	$lugar->horas = $_POST["horas"];
+	$lugar->horario = $_POST["turno"];
+	$lugar->lunes = $lunes;
+	$lugar->martes = $martes;
+	$lugar->miercoles = $miercoles;
+	$lugar->jueves = $jueves;
+	$lugar->viernes = $viernes;
+	$lugar->sabado = $sabado;
+	$lugar->domingo = $domingo;
+	$lugar->feriado = $feriado;
+	$lugar->observacion = $_POST["observacion"];
+	$lugar->principal = $principal;
+	$lugar->is_active = $activo;
+
+	if($_POST["lugar_id"] == 0){
+		$lugar->add();
+	}else{
+		$lugar->id = $_POST["lugar_id"];
+		$valor = $lugar->update();
+	}
+	
+	Core::redir('puestos');
+}
+
 if(isset($_GET["punto"])){
 	$mensaje = "modificar un puesto en el sistema";
 	$enlaces = "Modificar";
@@ -62,77 +110,28 @@ if(isset($_GET["id"])){
     $mensaje = "crear una oficina en el sistema";
     $enlaces = "Crear";
 
-    if(count($_POST)>0){
-		var_dump($_POST);
-      	$lugar_id = $_POST["lugar_id"];
-
-      	if(isset($_POST["active"])) $activo=1; else $activo=0;
-      	if(isset($_POST["principal"])) $principal=1; else $principal=0;
-      	if(isset($_POST["iCubre1"])) $lunes = 1; else $lunes = 0;
-      	if(isset($_POST["iCubre2"])) $martes = 1; else $martes = 0;
-      	if(isset($_POST["iCubre3"])) $miercoles = 1; else $miercoles = 0;
-      	if(isset($_POST["iCubre4"])) $jueves = 1; else $jueves = 0;
-      	if(isset($_POST["iCubre5"])) $viernes = 1; else $viernes = 0;
-      	if(isset($_POST["iCubre6"])) $sabado = 1; else $sabado = 0;
-      	if(isset($_POST["iCubre7"])) $domingo = 1; else $domingo = 0;
-      	if(isset($_POST["iCubre8"])) $feriado = 1; else $feriado = 0;
-
-      	$lugar = new PuestoData();
-
-      	$lugar->grupo = 1;
-      	$lugar->idclient = $_POST["idclient"];
-      	$lugar->tipo = 2;
-      	$lugar->descripcion = strtoupper($_POST["descripcion"]);
-      	$lugar->codigo = strtoupper($_POST["valor"]);
-      	$lugar->residencial = $_POST["residencial"];
-      	$lugar->activado = $_POST["dtp_input"];
-      	$lugar->idlugar = $_POST["idlugar"];
-      	$lugar->horas = $_POST["horas"];
-      	$lugar->horario = $_POST["turno"];
-      	$lugar->lunes = $lunes;
-      	$lugar->martes = $martes;
-      	$lugar->miercoles = $miercoles;
-      	$lugar->jueves = $jueves;
-      	$lugar->viernes = $viernes;
-      	$lugar->sabado = $sabado;
-      	$lugar->domingo = $domingo;
-      	$lugar->feriado = $feriado;
-      	$lugar->observacion = $_POST["observacion"];
-      	$lugar->principal = $principal;
-      	$lugar->is_active = $activo;
-
-      	if($_POST["lugar_id"] == 0){
-          	$lugar->add();
-      	}else{
-          	$lugar->id = $_POST["lugar_id"];
-          	$valor = $lugar->update();
-      	}
-      	var_dump($valor);
-      	//Core::redir('puestos');
-    }else{
-      $lugar = (object) [
-          "idclient" => 0,
-          "tipo" => 2,
-          "codigo" => "",
-          "residencial" => 0,
-          "descripcion" => "",
-          "activado" => $hoy,
-          "idlugar" => "",
-          "horas" => "",
-          "horario" => "",
-          "lunes" => "",
-          "martes" => "",
-          "miercoles" => "",
-          "jueves" => "",
-          "viernes" => "",
-          "sabado" => "",
-          "domingo" => "",
-          "feriado" => "",
-          "observacion" => "",
-          "principal" => "0",
-          "is_active" => "1"
-      ];
-    }
+	$lugar = (object) [
+		"idclient" => 0,
+		"tipo" => 2,
+		"codigo" => "",
+		"residencial" => 0,
+		"descripcion" => "",
+		"activado" => $hoy,
+		"idlugar" => "",
+		"horas" => "",
+		"horario" => "",
+		"lunes" => "",
+		"martes" => "",
+		"miercoles" => "",
+		"jueves" => "",
+		"viernes" => "",
+		"sabado" => "",
+		"domingo" => "",
+		"feriado" => "",
+		"observacion" => "",
+		"principal" => "0",
+		"is_active" => "1"
+	];
 }
 
 ?>
@@ -168,7 +167,7 @@ if(isset($_GET["id"])){
 						<select class="select-input form-control input-sm" id="idclient" name="idclient">
 							<option value="0" selected="selected"> Selecione... </option> <?php
 							foreach($client as $clients):?>
-								<option value="<?php echo $clients->idclient; ?>" <?php if($clients->idclient == $lugar->idclient) echo 'selected="selected"'; ?>><?php echo $clients->nombre;?></option> <?php 
+								<option value="<?php echo $clients->id; ?>" <?php if($clients->idclient == $lugar->idclient) echo 'selected="selected"'; ?>><?php echo $clients->nombre;?></option> <?php 
 							endforeach;	?>
 						</select>
 					</div>
@@ -181,7 +180,7 @@ if(isset($_GET["id"])){
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="valor" class="col-md-3 col-sm-3 control-label"><span class="text-danger">*</span> Codigo:</label>
+					<label for="valor" class="col-md-3 col-sm-3 control-label"><span class="text-danger">*</span> Denominativo:</label>
 					<div class="col-md-3 col-sm-4">
 						<input class="text-field form-control input-sm" id="valor" name="valor" value="<?php echo $lugar->codigo; ?>" maxlength="20" style="text-transform: uppercase;" type="text">
 					</div>

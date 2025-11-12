@@ -1,5 +1,5 @@
 <?php
-// Pantallas de ingreso y modificacion de los cargos
+//Manejo de los cargos de la empresa
 $depar = DepartamentoData::getAll();
 $tipos = UnionData::getTipo();
 

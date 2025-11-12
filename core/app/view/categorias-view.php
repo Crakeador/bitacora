@@ -84,7 +84,7 @@ switch ($method) {
 								</div>
 								<button type="submit" name="add_cat" class="btn btn-primary"><?php echo $msg; ?></button>
 							</form>
-						</div>
+						</div> 
 					</div> <?php
 					if (isset($_SESSION['sweetalert_message'])) {;
 						echo '<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js?v=1.0.1"></script>';

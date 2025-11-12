@@ -73,7 +73,7 @@ class PersonData {
 	
 	public function addVac(){
 		$sql = "INSERT INTO persond(idperson, region, cargo, tipo_contrato, hijos, sueldo, startwork, endwork, dias, observacion, tipo_pago, acumula, estado, is_active, created_at, usuario_log, ip)";
-		$sql .= " VALUES ($this->idperson, 2, 7, \"Vacaciones del Guardia\", 0, $this->sueldo, \"$this->startwork\", \"$this->endwork\", $this->dias, \"$this->observacion\", \"0\", \"0\", \"V\", \"1\", NOW(), \"".$_SESSION['user_name']."\", \"".$_SESSION['ip']."\")"; 
+		$sql .= " VALUES ($this->idperson, 2, 7, \"Vacaciones del Guardia\", 0, $this->sueldo, \"$this->startwork\", \"$this->endwork\", $this->dias, \"$this->observacion\", \"0\", \"0\", \"V\", \"1\", NOW(), \"".$_SESSION['user_name']."\", \"".$_SESSION['ip']."\")"; echo $sql;
 		Executor::doit($sql);
 	}
 
@@ -82,7 +82,7 @@ class PersonData {
 		$sql .= " VALUES (".$id.", \"$this->region\", \"$this->cargo\", \"$this->tipo_contrato\", $this->hijos, $this->sueldo, \"$this->startwork\", \"$this->endwork\", \"$this->tipo_pago\", \"$this->acumula\", \"I\", \"$this->is_active\", $this->created_at, \"".$_SESSION['user_name']."\", \"".$_SESSION['ip']."\")";
 		Executor::doit($sql);
 	}
-
+ 
 	public function addAMD(){
 		$sql = "INSERT INTO person(idcompany, idcard, name, cargo, startwork, endwork, licencia, tipo_licencia, copia_licencia, ";
 		$sql .= "tiene_carnet, fechanacimiento, copiacedula, phone1, phone2, genero, sueldo, tipo_contrato, region, ";
@@ -449,7 +449,7 @@ class PersonData {
 	public static function getAllLiquida($tipo, $activo){
 		$sql = "SELECT A.*, B.description FROM person A, cargo B
 		         WHERE A.idcargo = B.id AND B.idtipo = $tipo AND A.idcompany = ".$_SESSION['id_company']." AND A.is_active = $activo AND A.endwork != '' 
-			  ORDER BY name";
+			  ORDER BY name"; 
 		$query = Executor::doit($sql); 
 
 		return Model::many($query[0],new PersonData());

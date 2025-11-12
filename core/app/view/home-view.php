@@ -4,6 +4,12 @@
 
 $cadena = '';
 //if($_SESSION["ingreso"] == 0) print "<script>window.location='./logout.php';</script>";
+if (isset($_COOKIE['usuario'])) {
+    $usuario = $_COOKIE['usuario'];
+    echo '<script>alert("Bienvenido, $usuario");</script>';
+} else {
+    //echo '<script>alert("No se encontró la cookie \'usuario\'");</script>';
+}
 
 if($_SESSION['idrol'] ==  4){
     if($_SERVER['dispositivo'] == 1){
@@ -22,11 +28,12 @@ if($_SESSION['idrol'] ==  6){
 }
 
 if($_SESSION['idrol'] ==  7 || $_SESSION['idrol'] == 14){
+	$cadena = 'novedad'; /*
     if($_SESSION['residencial'] == 0) 
         $cadena = 'registro';
     else
         $cadena = 'novedad';
-    
+    */
 	echo '<script>
 				if(localStorage.getItem("usuario") != null){
 					var usuario = localStorage.getItem("usuario");
@@ -54,7 +61,7 @@ if($_SESSION['idrol'] == 10)
 		print "<script>window.location='index.php?view=opeasi.personal';</script>";
 	else
 		print "<script>window.location='index.php?view=rrging.persons';</script>";
-
+ 
 if($_SESSION['idrol'] ==11) {
 	if($_SESSION['aspirante']>0) {
 		print "<script>window.location='index.php?view=aspirante&id=".$_SESSION['aspirante']."';</script>"; 

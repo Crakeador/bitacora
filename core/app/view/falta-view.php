@@ -11,7 +11,7 @@ switch ($method) {
     case 'GET':
         if(isset($_GET["falta"])){
         	$user = PuestoData::getByIdPersonas($_GET["id"]);
-        	
+        
         	$vacio = false;
         }else{
         	if(isset($_GET["id"])){

@@ -67,7 +67,9 @@ class FaltaData {
 	}
 
 	public static function getByIdFalta($id){
-		$sql = "SELECT A.id, A.tipo, B.name, C.description, A.fecha_doc, A.created_at, A.idperson, A.firmo, A.motivo, A.tipo_documen FROM documento A, person B, tipo_documento C WHERE A.idperson = B.id AND A.tipo_documen = C.id AND A.idhorario=$id"; 
+		$sql = "SELECT A.id, A.tipo, B.name, A.fecha_doc, A.created_at, A.idperson, A.firmo, A.motivo, A.tipo_documen 
+		          FROM documento A, person B
+		         WHERE A.idperson = B.id AND A.idhorario=$id"; 
 		$query = Executor::doit($sql); 
 		return Model::one($query[0],new FaltaData());
 	}

@@ -4,7 +4,7 @@
 
 if(isset($_GET["id"])){
     //set it to writable location, a place for temp generated PNG files
-    $PNG_TEMP_DIR = '/var/www/html/bitacora'.DIRECTORY_SEPARATOR.'temp'.DIRECTORY_SEPARATOR;
+    $PNG_TEMP_DIR = '/var/www/latin.near-solution.com/public_html'.DIRECTORY_SEPARATOR.'temp'.DIRECTORY_SEPARATOR;
     
     //html PNG location prefix
     $PNG_WEB_DIR = 'temp/';
@@ -22,7 +22,6 @@ if(isset($_GET["id"])){
 
     $matrixPointSize = 4;
     $data = "https://latin.near-solution.com/index.php?view=supervisar&puesto=".$_GET["id"];
-    //$data = "http://bitacora/api/person/".$_GET["id"]; Generacion para la apliacion Mobil
     //user data
     
     $name = 'test'.md5($data.'|'.$errorCorrectionLevel.'|'.$matrixPointSize).'.png';
@@ -30,11 +29,11 @@ if(isset($_GET["id"])){
     QRcode::png($data, $filename, $errorCorrectionLevel, $matrixPointSize, 2);    
         
     //display generated file
-    echo "<script src=\"plugins/sweetalert/sweetalert.min.js\"></script>
+    echo "<script src=\"https://latin.near-solution.com/plugins/sweetalert/sweetalert.min.js\"></script>
           <script type=\"text/javascript\"><!--
               swal({                
               	 title: 'Codigo Generado',
-                 text: '<img src=\"https://latin.near-solution.com/bitacora/temp/".$name."\"/>',                 
+                 text: '<img src=\"https://latin.near-solution.com/temp/".$name."\"/>',
                  html: true,
                  type: 'success'
               });
@@ -80,11 +79,11 @@ if(isset($_GET["id"])){
 						<table id="viewlista" class="table table-bordered table-hover">
 							<thead>
 							<tr>
-								<th>Cientes</th>
+								<th style="width:20%;">Cientes</th>
 								<th>Lugar</th>
-								<th>Codigo</th>
-								<th><div align="center">Horario</div></th>
-								<th style="width:8%;"></th>
+								<th style="width:20%;">Codigo</th>
+								<th style="width:20%;"><div align="center">Horario</div></th>
+								<th style="width:12%;"></th>
 							</tr>
 							</thead>
 							<tbody>	<?php

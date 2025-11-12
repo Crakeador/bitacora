@@ -49,6 +49,8 @@ class HorarioData {
 			$array[$x]["mes"] = $r[4];
 			$array[$x]["ano"] = $r[5];
 			$array[$x]["turno"] = $r[6];
+			$array[$x]["fecha"] = $r[9];						
+			$array[$x]["usuario"] = $r[11];
 			$x++;
 		}
 		return $array;
