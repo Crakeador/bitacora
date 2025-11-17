@@ -1,14 +1,5 @@
 <?php
 //Novedades de Bitacora
-/*
-if($_SERVER['dispositivo'] == 1){ 
-	$usuario = $_GET['usuario'];
-	$puesto = $_GET['puesto'];
-	$ingreso = $_GET['ingreso'];
-	$turno = $_GET['turno'];
-	
-	Core::redir('fotos&usuario='.$usuario.'&puesto='.$puesto.'&ingreso='.$ingreso.'&turno='.$turno);
-} */
 $hoy = date("d-m-Y H:i:s"); $fecha = date("Y-m-d H:i:s"); $errores = ''; $observacion = ''; $estilo = ''; $validador = 99;
 
 if(isset($_GET["usuario"])){
@@ -18,7 +9,7 @@ if(isset($_GET["usuario"])){
     $_SESSION["turno"]=$_GET["turno"];
 }
 
-if(!isset($_SESSION["puesto"])){
+if(!isset($_SESSION["user_id"]) || $_SESSION["user_id"]==""){
     print "<script>window.location='index.php?view=asignar';</script>";
 }
 
@@ -33,7 +24,12 @@ if(isset($_GET['codigo'])){
 			"manzana"=>null,
 			"villa"=>null
         ];
+		
 	}else{
+		if($_SESSION['dispositivo'] == 1){
+			Core::redir('toten&codigo='.$_GET['codigo']);
+		}
+
 		$cargos = ResidenteData::getLike($_POST['codigo']); 
 		
 		if($cargos == NULL){			
@@ -332,7 +328,7 @@ else
 													</div>
 												</div>
 											</div>
-											<div class="form-group" style="display:none;">
+											<div class="form-group">
 												<div class="col-sm-8">
 													<span class="text-danger">Que tipo de visita es?</span>
 													<div class="radiobutton">

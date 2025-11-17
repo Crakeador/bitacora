@@ -111,11 +111,7 @@ if(isset($_GET["id"])){
 					</div>
 					<div class="panel-body" style="padding: 1.5rem !important;">
 						<div class="form-group">
-							<label for="cedula" class="col-md-2 col-sm-2 control-label"><span class="text-danger">*</span> C.C.</label>
-							<div class="col-md-2">
-								<input type="text" class="form-control" id="cedula" name="cedula" autocomplete="off" minlength="10" maxlength="10" data-inputmask='"mask": "9999999999"' data-mask placeholder="1234567890" value="<?php echo $client->cedula; ?>" pattern="[0-9]{10}" title="Solo números, debe ser una cedula valida" required autofocus>
-							</div>
-							<div class="col-md-6 col-sm-4">
+							<div class="col-md-8 col-sm-8">
 								<span class="text-danger">Tipo de visitante:</span>
 								<div class="radiobutton">
 									<input type="radio" id="tipo1" name="tipo" value="1" <?php if($client->tipo == "Visita") echo 'checked="checked"'; ?>> Visita&nbsp;&nbsp;
@@ -126,25 +122,35 @@ if(isset($_GET["id"])){
 							</div>
 						</div>
 						<div class="form-group">
+							<label for="cedula" class="col-md-2 col-sm-2 control-label"><span class="text-danger">*</span> C.C.</label>
+							<div class="col-md-2">
+								<input type="text" class="form-control" id="cedula" name="cedula" autocomplete="off" minlength="10" maxlength="10" data-inputmask='"mask": "9999999999"' data-mask placeholder="1234567890" value="<?php echo $client->cedula; ?>" pattern="[0-9]{10}" title="Solo números, debe ser una cedula valida" required autofocus>
+							</div>
+						</div>
+						<div class="form-group">
 							<label for="nombre" class="col-md-2 col-sm-2 control-label"><span class="text-danger">*</span> Nombre:</label>
 							<div class="col-md-4 col-sm-4">
 								<input class="text-field form-control input-sm" id="nombre" name="nombre" type="text" placeholder="Jhon Doe" value="<?php echo $client->nombre; ?>" minlength="5" maxlength="100" required title="Tamaño mínimo: 5. Tamaño máximo: 100" required>
-							</div>								
+							</div>
+						</div>
+						<div class="form-group">
 							<label for="fecha" class="col-md-2 col-sm-2 control-label">Fecha de Ingreso:</label>
-							<div class="col-md-4 col-sm-8">
-								<div class="input-group date form_date col-md-8 col-sm-8" data-date-format="yyyy-mm-dd hh:ii">
+							<div class="col-md-12 col-sm-12">
+								<div class="input-group date form_date col-md-12 col-sm-12" data-date-format="yyyy-mm-dd hh:ii">
 									<input type="text" class="form-control" id="fecha" name="fecha" value="<?php echo $client->fecha; ?>" required="required" minlength="10" title="Debe de ser una fecha valida">
 								</div>
 							</div>
 						</div>
-						<div class="form-group">						
+						<div class="form-group" style="display: none;">						
 							<label for="id_telefono1" class="col-md-2 col-sm-2 control-label"><span class="text-danger">*</span> Tel&eacute;fono celular:</label>
 							<div class="col-md-4 col-sm-4">
-								<input type="text" class="form-control" id="id_telefono1" name="telefono1" data-inputmask='"mask": "99-99999999"' data-mask placeholder="99-99999999" value="<?php echo $client->telefono1; ?>" required>
+								<input type="text" class="form-control" id="id_telefono1" name="telefono1" data-inputmask='"mask": "99-99999999"' data-mask placeholder="99-99999999" value="<?php echo $client->telefono1; ?>">
 							</div>
-							<label for="id_telefono2" class="col-md-2 col-sm-2 control-label"> Tel&eacute;fono convencial:</label>
-							<div class="col-md-4 col-sm-4">
-								<input type="text" class="form-control" id="id_telefono2" name="telefono2" data-inputmask='"mask": "(99) 999-9999"' data-mask placeholder="(99) 999-9999" value="<?php echo $client->telefono2; ?>">
+						</div>
+						<div class="form-group">
+							<label for="observacion" class="col-md-2 col-sm-2 control-label">Observaciones:</label>
+							<div class="col-md-4">
+								<textarea class="form-control input-sm" cols="50%" id="observacion" name="observacion" rows="3"><?php echo $client->observacion; ?></textarea>
 							</div>
 						</div>
 						<div class="form-group">
@@ -152,38 +158,21 @@ if(isset($_GET["id"])){
 							<div class="col-md-4 col-sm-4">
 								<input class="text-field form-control input-sm" id="manzana" name="manzana" maxlength="10" type="number" placeholder="Numero de la manzana" value="<?php echo $client->manzana; ?>" readonly>
 							</div>
-							<label for="email" class="col-md-2 col-sm-2 control-label">Correo Electronico:</label>
-							<div class="col-md-4 col-sm-4">
-								<input class="text-field form-control input-sm" id="email" name="email" minlength="5" maxlength="50" type="mail" placeholder="Correo de la persona que visita" value="<?php echo $client->email; ?>" autocomplete="email">
-							</div>
 						</div>
 						<div class="form-group">
 							<label for="villa" class="col-md-2 col-sm-3 control-label"><?php if(isset($_SESSION['residencial']) && $_SESSION['residencial'] == 0) echo 'Apartamento:'; else echo 'Villa:'; ?></label>
 							<div class="col-md-4 col-sm-4">
 								<input class="text-field form-control input-sm" id="villa" name="villa" maxlength="10" type="text" placeholder="Numero de la villa" value="<?php echo $client->villa; ?>" readonly>
 							</div>
-							<label for="observacion" class="col-md-2 col-sm-2 control-label">Observaciones:</label>
+						</div>
+						<div class="form-group">
 							<div class="col-md-4">
-								<textarea class="form-control input-sm" cols="50%" id="observacion" name="observacion" rows="3"><?php echo $client->observacion; ?></textarea>
+								<button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar </button>
 							</div>
 						</div>
-						<input type="checkbox" id="active" name="active" class="js-switch" <?php if($client->is_active == 1) echo "checked"; ?> />&nbsp;&nbsp;
-						<label for="active">&nbsp;&nbsp;Residente activo </label>
 					</div>
 				</div>
-				<button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar </button>
 			</form>
 		</div>
 	</div>	
 </section>
-<link type="text/css" rel="stylesheet" href="plugins/switchery/switchery.min.css"/>
-<script type="text/javascript" src="plugins/switchery/switchery.min.js"></script>
-<script type='text/javascript'><!--
-	var elem = document.querySelector('.js-switch');
-	var init = new Switchery(elem, {
-		color: 'green',
-		secondaryColor: 'red',
-		size: 'small'
-	});	
-</script>
-

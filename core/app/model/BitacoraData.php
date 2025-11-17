@@ -43,7 +43,8 @@ class BitacoraData {
 	public function addIMG(){
 		$sql = "INSERT INTO ".self::$tablename." (idpuesto, idperson, fecha, turno, punto, proceso, observacion, accion, foto1, timestamp, latitude, longitude, rangoerror, sentido, velocidad, mensaje, is_active, usuario_log, ip) ";
 		$sql .= "value ($this->idpuesto, $this->idperson, \"$this->fecha\", \"$this->turno\", \"$this->punto\", \"$this->proceso\", \"$this->observacion\", \"$this->accion\", \"$this->foto1\", \"$this->timestamp\", \"$this->latitude\", \"$this->longitude\", \"$this->rangoerror\", \"$this->sentido\", \"$this->velocidad\", \"$this->mensaje\", $this->is_active, \"$this->usuario_log\", \"$this->ip\")";
-		Executor::doit($sql);
+	
+		return Executor::doit($sql);
 	}
 	
 	public function add(){

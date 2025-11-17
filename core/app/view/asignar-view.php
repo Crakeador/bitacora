@@ -1,6 +1,6 @@
 <?php
 //Ingreso de Guardias
-if($_SERVER['dispositivo'] == 1) Core::redir('ingreso');
+if($_SESSION['dispositivo'] == 1) Core::redir('toten');
 $hoy = date("d-m-Y H:i:s"); $fecha = date("Y-m-d H:i:s"); $errores = ''; $_SESSION['guardar'] = 0; $observacion = ''; $estilo = ''; $mensaje = '';
 
 $ini = new DateTime(date("Y-m-d")." 07:00:00");
@@ -58,7 +58,7 @@ if(isset($_POST['id_person'])){
                         if($_SESSION['ingreso']==0){
                             $_SESSION['ingreso']=1;
 														
-							if($_SERVER['dispositivo'] == 1)
+							if($_SESSION['dispositivo'] == 1)
 								$valor = 'fotos';
 							else
 								$valor = 'novedad';

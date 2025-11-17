@@ -155,7 +155,9 @@ if(isset($_POST['id_person'])){
 
     if($errores == ''){
         //print "<script>window.location='index.php?view=home';</script>";
-    }else{
+    }else{        
+        $novedad = $_POST["novedad"];
+        $superior = $_POST["superior"];
         $Observacion = $_POST["observacion"];
         $accion = $_POST["accion"];
         Core::alert("Corrija...!!!!", $errores, "error");
@@ -206,9 +208,9 @@ if($hora<16){
                                         <div style="text-align: right;" >
                                             <span class="text-danger">Que tipo de visita es?</span>
                                             <div class="radiobutton">
-                                                <input type="radio" id="tipo1" name="tipo" value="9" <?php if($cargos->tipo == 1) echo "checked='checked'"; ?>> Entrada &nbsp;&nbsp;
-                                                <input type="radio" id="tipo2" name="tipo" value="10" <?php if($cargos->tipo == 2) echo "checked='checked'"; ?>> Salida &nbsp;&nbsp;
-                                                <input type="radio" id="tipo4" name="tipo" value="13" <?php if($cargos->tipo == 3) echo "checked='checked'"; ?> checked='checked'> Reporte
+                                                <input type="radio" id="tipo1" name="tipo" value="9"> Entrada &nbsp;&nbsp;
+                                                <input type="radio" id="tipo2" name="tipo" value="10"> Salida &nbsp;&nbsp;
+                                                <input type="radio" id="tipo4" name="tipo" value="13" checked='checked'> Reporte
                                             </div>
                                         </div>
                                     </div>

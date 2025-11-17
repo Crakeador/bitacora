@@ -54,19 +54,18 @@ if (strpos(strtolower($_SERVER['HTTP_USER_AGENT']),'opera mini') > 0) {
 }
 
 if ($tablet_browser > 0) {
-  $_SERVER['dispositivo']=3;
+  $_SESSION['dispositivo']=3;
 }
 else if ($mobile_browser > 0) {
-  $_SERVER['dispositivo']=2;
+  $_SESSION['dispositivo']=2;
 }
 else{
-  $_SERVER['dispositivo']=1;
+  $_SESSION['dispositivo']=1;
 }
 
 if(isset($_SESSION['depart'])) $departamento = DepartamentoData::getById($_SESSION['depart']);
 
 $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
-//if(isset($_SESSION['depart'])) $departamento = DepartamentoData::getById("codigo", $_SESSION['depart']);
 
 ?>
 <!DOCTYPE html>
@@ -102,7 +101,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
         }else{
             // Theme style
             echo '<link type="text/css" rel="stylesheet" href="assets/css/AdminLTE.min.css?v=1.0.1"/>';
-            echo '<link type="text/css" rel="stylesheet" href="assets/css/skins/skin-yellow.min.css?v=1.0.1"/>';
+            echo '<link type="text/css" rel="stylesheet" href="assets/css/skins/skin-black.min.css?v=1.0.1"/>';
             echo '<link type="text/css" rel="stylesheet" href="assets/css/flexslider.css?v=1.0.1"/>';
             // BootsTrap
             echo '<link type="text/css" rel="stylesheet" href="plugins/bootstrap/css/bootstrap.min.css?v=1.0.1"/>';
@@ -376,7 +375,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
 		}); */
 	</script>
   </head>
-  <body id="sidai" class="<?php if(isset($_SESSION["user_id"]) || isset($_SESSION["client_id"])){ echo "sidebar-mini skin-yellow sidebar-collapse fixed"; } else { echo ""; } ?>" onload="cerrar();">
+  <body id="sidai" class="<?php if(isset($_SESSION["user_id"]) || isset($_SESSION["client_id"])){ echo "sidebar-mini skin-black sidebar-collapse fixed"; } else { echo ""; } ?>" onload="cerrar();">
     <!-- div class="loader" style="display: flex; width: 100%; height: 100%; justify-content: center; align-items: center;"></div --> 
     <?php if(isset($_SESSION["user_id"]) || isset($_SESSION["client_id"])):
               $notificcion = TimelineData::getAllByUserId($_SESSION["user_id"], $mes, $ano, 1);
@@ -419,7 +418,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                   </div> <?php
                 }else{ ?>
                     <span style="color: white;"><b><em>Bitacora El&eacute;ctonica</em></b></span>
-                    <span class="logo-lg" style="color: white;"> <?php if($_SESSION["idrol"] == 9) echo '<b>Cliente:</b> '.$_SESSION["clientes"]; else if($_SESSION['idrol'] == 8){ if($_SESSION["id_client"] == '27' || $_SESSION["id_client"] == '31') echo 'Custodias'; else echo '<b>Cliente:</b> '.$_SESSION["name"]; }else{ echo '<b>Empresa:</b> '.$_SESSION["company"].' | <b>Departamento:</b> '.$departamento->name; } ?> </span> <?php
+                    <span class="logo-lg" style="color: white;"> <?php if($_SESSION["idrol"] == 9) echo '<b>Cliente:</b> '.$_SESSION["clientes"]; else if($_SESSION['idrol'] == 8){ if($_SESSION["id_client"] == '27' || $_SESSION["id_client"] == '31') echo 'Custodias'; else echo '<b>Cliente:</b> '.$_SESSION["name"]; }else{ echo '<b>Empresa:</b> '.$_SESSION["company"].' | <b>Departamento:</b> '.$departamento->name.'-'.$_SESSION["dispositivo"]; } ?> </span> <?php
                 } ?>
               </div>
               <!-- Navbar Right Menu -->
@@ -640,7 +639,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                                 <li><a href="./supervisar"><i class='fa fa-taxi'></i> <span>Supervici&oacute;n</span></a></li><?php
                               }else{
                                 if($_SESSION['idrol'] == 7){ // Opcion del Guardia 
-                                  if($_SERVER['dispositivo'] == 1){ // fotos - Modulo de ingreso de fotos USB 
+                                  if($_SESSION['dispositivo'] == 1){ // fotos - Modulo de ingreso de fotos USB 
                                     echo '<li><a href="./novedad"><i class="fa fa-book"></i> <span>Bitacora</span></a></li>'; 
                                     echo '<li><a href="./informe"><i class="fa fa-fax"></i> <span>Parte</span></a></li>	'; 
                                   }else{
@@ -1065,7 +1064,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
       <!-- Pantalla de Logeo -->
       <header class="navbar navbar-header navbar-header-fixed">
         <div class="navbar-brand">
-          <div class="df-logo">Bitacora&nbsp;&nbsp;<span>El&eacute;ctronico</span></div>
+          <div class="df-logo">Bitacora&nbsp;&nbsp;<span>El&eacute;ctronica</span></div>
         </div><!-- navbar-brand -->        
         <div class="navbar-right" style="display: none">
           <button id="alertButton" class="btn btn-block btn-danger" style="font-size: 14px; font-weight: bold;"><i class="fa fa-heartbeat"></i>&nbsp;&nbsp;Boton S.O.S.</button>

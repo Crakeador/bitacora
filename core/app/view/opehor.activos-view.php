@@ -1,6 +1,6 @@
 <?php
 //Modulo de Operaciones para el registro del horario de los agentes activos
-//if($_SERVER['dispositivo'] == 1) Core::redir('consola');
+//if($_SESSION['dispositivo'] == 1) Core::redir('consola');
 $_SESSION['tipo']='3';
 $puestos = PuestoData::getAll(2);
 

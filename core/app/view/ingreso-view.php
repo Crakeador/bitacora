@@ -1,18 +1,23 @@
 <?php
 //Ingreso de Guardias en la Bitacora Electronica
-if(!isset($_SESSION['ingreso'])) Core::redir('home');
+if(!isset($_SESSION['ingreso'])) 
+	Core::redir('home');
+else
+	if(isset($_SESSION['ingreso'])) 
+		Core::redir('novedad');
 
 $hoy = date("d-m-Y H:i:s"); $fecha = date("Y-m-d H:i:s"); $errores = ''; $_SESSION['guardar'] = 0; $observacion = ''; $estilo = ''; $mensaje = '';
 
 $ini = new DateTime(date("Y-m-d")." 07:00:00");
 $fin = new DateTime(date("Y-m-d")." 17:00:00");
-var_dump($_POST);
+
 if(isset($_POST['id_person'])){	
     $user = new BitacoraData();
     $user->idpuesto = (int) $_POST["id_localidad"];
     $user->idperson = (int) $_POST["id_person"];
     $user->fecha = $_POST["fecha"];
-    $user->turno = $_POST["turno"];
+    $user->turno = $_POST["turno"];	
+    $user->punto = 0;
     $user->proceso = (($_SESSION['ingreso'] == 0) ? 1: 3);
     $user->observacion = $_POST["observacion"];	
     $user->foto1 = $_POST["foto"];
@@ -48,7 +53,7 @@ if(isset($_POST['id_person'])){
 
 					$prod = $config->update();
 				}
-
+				$_SESSION['ingreso'] = 0;
 				$_SESSION['turno'] = $_POST["turno"];
 				$_SESSION['puesto'] = (int) $_POST["id_localidad"];
 				
@@ -60,8 +65,8 @@ if(isset($_POST['id_person'])){
 						localStorage.setItem("puesto", "'.$_POST["id_localidad"].'");
 						localStorage.setItem("ingreso", "'.$_SESSION['ingreso'].'");
 						localStorage.setItem("turno", "'.$_POST["turno"].'");
-
 						
+						window.location = "index.php?view=novedad";
 					 </script>';
 				}else{
 					$_SESSION['ingreso']=2; //window.location = "index.php?view=novedad";  
@@ -295,7 +300,7 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
 						dispositivosDeVideo.push(dispositivo);
 					}
 				});
-
+ 
 				// Vemos si encontramos algún dispositivo, y en caso de que si, entonces llamamos a la función
 				if (dispositivosDeVideo.length > 0) {
 					// Llenar el select

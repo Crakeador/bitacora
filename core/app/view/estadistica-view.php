@@ -36,7 +36,6 @@
 		</div>
 	</div>
 	<!-- /mini modal -->
-
 	<!-- Aqui entra el Layout, // Las vistas se cargaran aqui adentro -->
 	<div id="reload-div">
 		<!-- Basic initialization -->

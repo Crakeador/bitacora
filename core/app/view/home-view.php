@@ -1,9 +1,25 @@
 <?php
 //Vista del Panel de control
 //Modificado el: 15/05/2025 - Boton de tareas
+//Modificado el: 13/11/2025 - Ingreso desde dispositivo movil
+
+$cadena = preg_match('/Mobile|Android|iPhone|iPad|iPod/i', $_SERVER['HTTP_USER_AGENT']);
+
+if ($cadena > 0) {
+  $_SESSION['dispositivo']=2; // Estás en un dispositivo móvil
+} else {
+  $_SESSION['dispositivo']=1;
+}
+
+echo "<script>console.log('User-Agent: " . $_SERVER['HTTP_USER_AGENT'] . "'); console.log('Dispositivo: " . $cadena . "');</script>";
 
 $cadena = '';
-//if($_SESSION["ingreso"] == 0) print "<script>window.location='./logout.php';</script>";
+if($_SESSION["ingreso"] == 3)
+    if($_SESSION['dispositivo'] == 1)
+		print "<script>window.location='./toten';</script>";
+    else
+		Core::redir('novedad');
+
 if (isset($_COOKIE['usuario'])) {
     $usuario = $_COOKIE['usuario'];
     echo '<script>alert("Bienvenido, $usuario");</script>';
@@ -12,7 +28,7 @@ if (isset($_COOKIE['usuario'])) {
 }
 
 if($_SESSION['idrol'] ==  4){
-    if($_SERVER['dispositivo'] == 1){
+    if($_SESSION['dispositivo'] == 1){
         //En la PC
     }else{
         Core::redir('visito');
@@ -20,15 +36,19 @@ if($_SESSION['idrol'] ==  4){
 }
 
 if($_SESSION['idrol'] ==  6){
-    if($_SERVER['dispositivo'] == 1){
+    if($_SESSION['dispositivo'] == 1){
         //En la PC
     }else{
         Core::redir('supervisar');
     }
 }
 
-if($_SESSION['idrol'] ==  7 || $_SESSION['idrol'] == 14){
-	$cadena = 'novedad'; /*
+if($_SESSION['idrol'] ==  7 || $_SESSION['idrol'] == 14){	
+    if($_SESSION['dispositivo'] == 1){
+        $cadena = 'toten'; 
+    }else{
+		$cadena = 'novedad'; 
+	}/*
     if($_SESSION['residencial'] == 0) 
         $cadena = 'registro';
     else
@@ -44,7 +64,7 @@ if($_SESSION['idrol'] ==  7 || $_SESSION['idrol'] == 14){
 					console.log(usuario + \' Puesto: \' + puesto + \' Ingreso: \' + ingreso + \' Turno: \' + turno);
 					window.location="index.php?view='.$cadena.'&usuario="+usuario+"&puesto="+puesto+"&ingreso="+ingreso;
 				}else{
-					window.location="index.php?view=asignar";
+					window.location="index.php?view='.$cadena.'";
 				}
 			</script>'; //+"&turno="+turno
     //Core::redir('novedad');
@@ -492,8 +512,8 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 					case 9: // Uso de las residencias
 						$hoy = date("Y-m-d"); $cadena = "";
 
-						if($_SERVER['dispositivo'] == 1) $cadena = " AND A.fecha BETWEEN '".date("Y-m-d", strtotime("-30 day", strtotime($hoy)))." 00:00:00' AND '".date("Y-m-d", strtotime("+1 day", strtotime($hoy)))." 00:00:00'";
-						if($_SERVER['dispositivo'] == 2) $cadena = " AND A.fecha BETWEEN '".date("Y-m-d", strtotime("-10 day", strtotime($hoy)))." 00:00:00' AND '".date("Y-m-d", strtotime("+1 day", strtotime($hoy)))." 00:00:00'";
+						if($_SESSION['dispositivo'] == 1) $cadena = " AND A.fecha BETWEEN '".date("Y-m-d", strtotime("-30 day", strtotime($hoy)))." 00:00:00' AND '".date("Y-m-d", strtotime("+1 day", strtotime($hoy)))." 00:00:00'";
+						if($_SESSION['dispositivo'] == 2) $cadena = " AND A.fecha BETWEEN '".date("Y-m-d", strtotime("-10 day", strtotime($hoy)))." 00:00:00' AND '".date("Y-m-d", strtotime("+1 day", strtotime($hoy)))." 00:00:00'";
                         if(isset($_SESSION['id_client'])) $cliente = $_SESSION['id_client']; else $cliente = 1;
 						// Listado de las bitacoras
 						echo '<div class="col-lg-3 col-xs-6">';

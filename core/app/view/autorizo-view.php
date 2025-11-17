@@ -34,10 +34,13 @@ if(isset($_GET['id'])){
 					<thead>
 			    	 <tr>
     					<th align="center" valign="middle" width="10%">C.C.</th>
+						<th align="center" valign="middle">Cedula</th>
 						<th align="center" valign="middle">Nombres y Apellidos</th>
-						<th align="center" valign="middle" width="8%">Clave</th>
 						<th align="center" width="12%">Autorizado</th>
+						<th align="center" width="12%">Entrada</th>
+						<th align="center" width="12%">Salida</th>
 						<th align="center" valign="middle">Observaci&oacute;n</th>
+                        <th width="8%"><div align="center">Fotos</div></th>
 					 </tr>
 					</thead>
 					<tbody>
@@ -45,13 +48,26 @@ if(isset($_GET['id'])){
 							$permiso = AutorizanData::getAll(0);
 
 							// Crea tabla de Permisos autorizados
-							foreach($permiso as $tables) {
+							foreach($permiso as $tables) {					
+								if($tables->entrada == "" || $tables->entrada == null){
+									$cadena = 'storage/persons/american.png'; 
+								}else {
+									$fotos = FotosData::getByTipo($tables->idbitacora);
+									$cadena = 'storage/visitas/'.$fotos->nombre_archivo;
+								}
 								echo '<tr>';
-									echo '<td><div align="center">'.$tables->cedula.'</br></div></td>';
+									echo '<td><div align="center">'.$tables->cedula.'</br></div></td>';									
+    								echo '<td><div align="center"><img src="'.$cadena.'" style="width:64px;"></div></td>';
 									echo '<td>'.$tables->nombre.'</br>Mz. '.$tables->manzana.', Villa '.$tables->villa.'</br>'.$tables->tipo.'</td>';
-									echo '<td><div align="center">'.$tables->clave.'</div></td>';
 									echo '<td align="center">'.$tables->ini_fec.'</td>';
-									echo '<td>'.$tables->observacion.'</td>';
+									echo '<td align="center">'.$tables->entrada.'</td>';									
+									echo '<td align="center">'.$tables->salida.'</td>';
+									echo '<td>'.$tables->observacion.'</td>';									
+									echo '<td>';
+											echo '<div align="center">';
+												echo '<a href="index.php?view=visual&id='.$tables->id.'" class="btn btn-warning btn-sm"><i class="fa fa-eye"></i></a>';
+											echo '</div>';
+									echo '</td>';
 								echo '</tr>';
 							}
 						?>

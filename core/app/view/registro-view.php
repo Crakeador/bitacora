@@ -2,7 +2,7 @@
 //Novedades de Bitacora
 date_default_timezone_set('America/Guayaquil');
 /*
-if($_SERVER['dispositivo'] == 1){ 
+if($_SESSION['dispositivo'] == 1){ 
 	$usuario = $_GET['usuario'];
 	$puesto = $_GET['puesto'];
 	$ingreso = $_GET['ingreso'];

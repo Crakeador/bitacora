@@ -73,7 +73,12 @@ class ResidenteData {
 
 		return Model::many($query[0],new ResidenteData());
 	}
-
+	
+	public static function getCliente($client, $activo = 1){
+		$sql = "SELECT B.nombre AS cliente, A.* FROM ".self::$tablename." A, client B WHERE A.idclient = B.id AND A.idclient = $client AND A.is_active = $activo";
+		$query = Executor::doit($sql); 
+		return Model::many($query[0],new ResidenteData());
+	}
 	public static function getLike($q){
 		$sql = "select B.nombre AS residente, A.*, B.id AS idresidente from autorizacion A, residente B where A.idresidente = B.id AND A.clave like '%$q%'";
 		$query = Executor::doit($sql); 

@@ -1,7 +1,29 @@
+<?php
+$cadena = preg_match('/Mobile|Android|iPhone|iPad|iPod/i', $_SERVER['HTTP_USER_AGENT']);
+
+echo "<script>console.log('User-Agent: " . $_SERVER['HTTP_USER_AGENT'] . "'); 
+console.log('Dispositivo: " . $cadena . "');</script>";
+if ($cadena > 0) {
+  	$_SESSION['dispositivo']=2; // Estás en un dispositivo móvil
+} else {
+  	$_SESSION['dispositivo']=1;
+
+	if(isset($_GET['usuario']) && isset($_GET['puesto']) && isset($_GET['ingreso']) && isset($_GET['turno'])){
+		$usuario = $_GET['usuario'];
+		$puesto = $_GET['puesto'];
+		$ingreso = $_GET['ingreso'];
+		$turno = $_GET['turno'];
+	}
+	
+	//Core::redir('toten');
+	//Core::redir('fotos&usuario='.$usuario.'&puesto='.$puesto.'&ingreso='.$ingreso.'&turno='.$turno);
+}
+
+?>
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        Quienes Somos
+        Quienes Somos 
         <small>si necesitas ayuda o tienes dudas</small>
     </h1>
     <ol class="breadcrumb">

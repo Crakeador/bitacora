@@ -24,8 +24,8 @@ class AutorizanData {
 	}
 
 	public function add(){
-		$sql = "INSERT INTO ".self::$tablename." (idcompany, idclient, idresidente, clave, tipo, cedula, nombre, email, telefono1, telefono2, ini_fec, fin_fec, observacion, manzana, villa, is_active, created_at) ";
-		$sql .= "VALUES (".$_SESSION['id_company'].", ".$_SESSION['id_client'].", ".$_SESSION['user_id'].", \"$this->clave\", \"$this->tipo\", \"$this->cedula\", \"$this->nombre\", \"$this->email\", \"$this->telefono1\", \"$this->telefono2\", \"$this->ini_fec\", \"$this->fin_fec\", \"$this->observacion\", \"$this->manzana\", \"$this->villa\", 1, $this->created_at)";
+		$sql = "INSERT INTO ".self::$tablename." (idcompany, idclient, idresidente, clave, tipo, cedula, nombre, email, telefono1, telefono2, ini_fec, observacion, manzana, villa, is_active, created_at) ";
+		$sql .= "VALUES (".$_SESSION['id_company'].", ".$_SESSION['id_client'].", ".$_SESSION['user_id'].", \"$this->clave\", \"$this->tipo\", \"$this->cedula\", \"$this->nombre\", \"$this->email\", \"$this->telefono1\", \"$this->telefono2\", \"$this->ini_fec\", \"$this->observacion\", \"$this->manzana\", \"$this->villa\", 1, $this->created_at)";
 		Executor::doit($sql);
 	}
 
@@ -52,7 +52,7 @@ class AutorizanData {
 	}
 
 	public static function getById($id){
-		$sql = "SELECT * FROM ".self::$tablename." WHERE idclient=$id";
+		$sql = "SELECT * FROM ".self::$tablename." WHERE id=$id";
 		$query = Executor::doit($sql);
 		
 		return Model::one($query[0],new AutorizanData());
