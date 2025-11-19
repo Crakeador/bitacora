@@ -94,251 +94,221 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
     <title>Near Solution | Dashboard</title>
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <?php // Seleccion de los temas del Sistema
-        if(!isset($_SESSION["user_id"])){
-            // DashForge CSS
-            echo '<link type="text/css" rel="stylesheet" href="assets/css/dashforge.css?v=1.0.1"/>';
-            echo '<link type="text/css" rel="stylesheet" href="assets/css/dashforge.auth.css?v=1.0.1"/>';
-        }else{
-            // Theme style
-            echo '<link type="text/css" rel="stylesheet" href="assets/css/AdminLTE.min.css?v=1.0.1"/>';
-            echo '<link type="text/css" rel="stylesheet" href="assets/css/skins/skin-black.min.css?v=1.0.1"/>';
-            echo '<link type="text/css" rel="stylesheet" href="assets/css/flexslider.css?v=1.0.1"/>';
-            // BootsTrap
-            echo '<link type="text/css" rel="stylesheet" href="plugins/bootstrap/css/bootstrap.min.css?v=1.0.1"/>';
-            echo '<link type="text/css" rel="stylesheet" href="plugins/datepicker/datepicker3.css?v=1.0.1"/>';
-            echo '<link type="text/css" rel="stylesheet" href="plugins/datetimepicker/css/bootstrap-datetimepicker.css?v=1.0.1"/>';
-            // Data Tables
-            echo '<link type="text/css" rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css?v=1.0.1"/>';
-            echo '<link type="text/css" rel="stylesheet" href="plugins/datatables/extensions/Responsive/css/responsive.bootstrap.min.css?v=1.0.1"/>';
-            // Font Awesome Icons
-            echo '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">';
-            // Theme style
-            echo '<link type="text/css" rel="stylesheet" href="plugins/icheck/all.css?v=1.0.1">';
-            // Alertas del Sistema
-            echo '<link type="text/css" rel="stylesheet" href="plugins/sweetalert/sweetalert.css?v=1.0.1"/>';
-            // Select2
-            echo '<link type="text/css" rel="stylesheet" href="plugins/select2/css/select2.min.css?v=1.0.1"/>';
-            echo '<link type="text/css" rel="stylesheet" href="plugins/jQueryUI/jquery-ui.min.css?v=1.0.1"/>';
-            // Switchery
-            echo '<link type="text/css" rel="stylesheet" href="plugins/switchery/switchery.min.css?v=1.0.1"/>';
-        }
-    ?>
-    <style>
-      /*Flecha para hacer la pagina hacia arriba*/
-      .ir-arriba{
-        display:none;
-        background-repeat:no-repeat;
-        font-size:20px;
-        color:blue;
-        cursor:pointer;
-        position:fixed;
-        bottom:10px;
-        right:10px;
-        z-index:2;
+      if(!isset($_SESSION["user_id"])){
+          // DashForge CSS
+          echo '<link type="text/css" rel="stylesheet" href="assets/css/dashforge.css?v=1.0.1"/>';
+          echo '<link type="text/css" rel="stylesheet" href="assets/css/dashforge.auth.css?v=1.0.1"/>';
+      }else{
+          // Theme style
+          echo '<link type="text/css" rel="stylesheet" href="assets/css/AdminLTE.min.css?v=1.0.1"/>';
+          echo '<link type="text/css" rel="stylesheet" href="assets/css/skins/skin-black.min.css?v=1.0.1"/>';
+          echo '<link type="text/css" rel="stylesheet" href="assets/css/flexslider.css?v=1.0.1"/>';
+          // BootsTrap
+          echo '<link type="text/css" rel="stylesheet" href="plugins/bootstrap/css/bootstrap.min.css?v=1.0.1"/>';
+          echo '<link type="text/css" rel="stylesheet" href="plugins/datepicker/datepicker3.css?v=1.0.1"/>';
+          echo '<link type="text/css" rel="stylesheet" href="plugins/datetimepicker/css/bootstrap-datetimepicker.css?v=1.0.1"/>';
+          // Data Tables
+          echo '<link type="text/css" rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css?v=1.0.1"/>';
+          echo '<link type="text/css" rel="stylesheet" href="plugins/datatables/extensions/Responsive/css/responsive.bootstrap.min.css?v=1.0.1"/>';
+          // Font Awesome Icons
+          echo '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">';
+          // Theme style
+          echo '<link type="text/css" rel="stylesheet" href="plugins/icheck/all.css?v=1.0.1">';
+          // Alertas del Sistema
+          echo '<link type="text/css" rel="stylesheet" href="plugins/sweetalert/sweetalert.css?v=1.0.1"/>';
+          // Select2
+          echo '<link type="text/css" rel="stylesheet" href="plugins/select2/css/select2.min.css?v=1.0.1"/>';
+          echo '<link type="text/css" rel="stylesheet" href="plugins/jQueryUI/jquery-ui.min.css?v=1.0.1"/>';
+          // Switchery
+          echo '<link type="text/css" rel="stylesheet" href="plugins/switchery/switchery.min.css?v=1.0.1"/>';
       }
+  ?>
+  <style>
+    /*Flecha para hacer la pagina hacia arriba*/
+    .ir-arriba{
+      display:none;
+      background-repeat:no-repeat;
+      font-size:20px;
+      color:blue;
+      cursor:pointer;
+      position:fixed;
+      bottom:10px;
+      right:10px;
+      z-index:2;
+    }
+    
+    .loader {
+      position: fixed;
+      left: 0px;
+      top: 0px;
+      right: 0px;
+      bottom: 0px;
+      width: 100%;
+      height: 100%;
+      z-index: 9999;
       
-      .loader {
-        position: fixed;
-        left: 0px;
-        top: 0px;
-        right: 0px;
-        bottom: 0px;
-        width: 100%;
-        height: 100%;
-        z-index: 9999;
-        
-        background: gray;
-        color: white;
-        justify-content: center;
-        align-items: center;
-        font-size: 2rem;
-        background: url('assets/images/cargando.gif') 50% 50% no-repeat rgb(249,249,249);
-        opacity: .8;
-      }
-      
-      .loader--show {
-        display: flex;
-      }	
+      background: gray;
+      color: white;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      background: url('assets/images/cargando.gif') 50% 50% no-repeat rgb(249,249,249);
+      opacity: .8;
+    }
+    
+    .loader--show {
+      display: flex;
+    }	
 
-      .circu{
-        padding: 25px;
-        background: #ccc;
-        border-radius: 30px;
-      }
+    .circu{
+      padding: 25px;
+      background: #ccc;
+      border-radius: 30px;
+    }
 
-      #grupoRadio label:hover{
-        cursor: pointer;
-      }
+    #grupoRadio label:hover{
+      cursor: pointer;
+    }
 
-      #grupoRadio input[type="radio"]:checked + label {
-        border: 3px solid #ccc !important;  
-      } 
+    #grupoRadio input[type="radio"]:checked + label {
+      border: 3px solid #ccc !important;  
+    } 
 
-      .activado input[type=radio]:checked + label {
-        border: 3px solid #555 !important;  
-      }
-      
-      /* Emcabezado de la pagina */		
-      #project-context,
-      .project-context {
-        display: inline-block;
-        padding: 7px 13px 0;
-        position: relative
-      }
+    .activado input[type=radio]:checked + label {
+      border: 3px solid #555 !important;  
+    }
+    
+    /* Emcabezado de la pagina */		
+    #project-context,
+    .project-context {
+      display: inline-block;
+      padding: 7px 13px 0;
+      position: relative
+    }
 
-      #project-context>span,
-      .project-context>span {
-        display: block
-      }
+    #project-context>span,
+    .project-context>span {
+      display: block
+    }
 
-      .btn-header.pull-right {
-        margin-left: 6px
-      }
+    .btn-header.pull-right {
+      margin-left: 6px
+    }
 
-      .btn-header a>span {
-        font-size: 13px;
-        font-weight: 400;
-        line-height: 30px;
-        height: 30px;
-        display: inline-block
-      }
+    .btn-header a>span {
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 30px;
+      height: 30px;
+      display: inline-block
+    }
 
-      .btn-header>:first-child>a {
-        -moz-border-radius: 2px;
-        -webkit-border-radius: 2px;
-        border-radius: 2px;
-        cursor: default!important;
-        display: inline-block;
-        font-weight: 700;
-        height: 30px;
-        line-height: 24px;
-        min-width: 30px;
-        padding: 2px;
+    .btn-header>:first-child>a {
+      -moz-border-radius: 2px;
+      -webkit-border-radius: 2px;
+      border-radius: 2px;
+      cursor: default!important;
+      display: inline-block;
+      font-weight: 700;
+      height: 30px;
+      line-height: 24px;
+      min-width: 30px;
+      padding: 2px;
+      text-align: center;
+      text-decoration: none!important;
+      -moz-user-select: none;
+      -webkit-user-select: none;
+      background-color: #f8f8f8;
+      background-image: -webkit-gradient(linear, left top, left bottom, from(#f8f8f8), to(#f1f1f1));
+      background-image: -webkit-linear-gradient(top, #f8f8f8, #f1f1f1);
+      background-image: -moz-linear-gradient(top, #f8f8f8, #f1f1f1);
+      background-image: -ms-linear-gradient(top, #f8f8f8, #f1f1f1);
+      background-image: -o-linear-gradient(top, #f8f8f8, #f1f1f1);
+      background-image: linear-gradient(top, #f8f8f8, #f1f1f1);
+      border: 1px solid #bfbfbf;
+      color: #6D6A69;
+      font-size: 17px;
+      margin: 10px 0 0
+    }
+
+    .btn-header>:first-child>a:hover {
+      border: 1px solid #bfbfbf;
+      color: #222;
+      transition: all 0s;
+      cursor: pointer;
+      -webkit-box-shadow: inset 0 0 4px 1px rgba(0, 0, 0, .08);
+      box-shadow: inset 0 0 4px 1px rgba(0, 0, 0, .08)
+    }
+
+    .btn-header>:first-child>a:active {
+      background-color: #e8e8e8;
+      background-image: -moz-linear-gradient(top, #e8e8e8 0, #ededed 100%);
+      background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e8e8e8), color-stop(100%, #ededed));
+      background-image: -webkit-linear-gradient(top, #e8e8e8 0, #ededed 100%);
+      background-image: -o-linear-gradient(top, #e8e8e8 0, #ededed 100%);
+      background-image: -ms-linear-gradient(top, #e8e8e8 0, #ededed 100%);
+      background-image: linear-gradient(to bottom, #e8e8e8 0, #ededed 100%);
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e8e8e8', endColorstr='#ededed', GradientType=0);
+      -webkit-box-shadow: inset 0 0 3px 1px rgba(0, 0, 0, .15);
+      box-shadow: inset 0 0 3px 1px rgba(0, 0, 0, .15)
+    }
+    
+    .boton {
+      border: 1px solid #2e518b; /*anchura, estilo y color borde*/
+      padding: 10px; /*espacio alrededor texto*/
+      background-color: #2e518b; /*color botón*/
+      color: #ffffff; /*color texto*/
+      text-decoration: none; /*decoración texto*/
+      text-transform: uppercase; /*capitalización texto*/
+      font-family: 'Helvetica', sans-serif; /*tipografía texto*/
+      border-radius: 10px; /*bordes redondos*/
+    }
+    
+    .boton:hover {
+      background-color: #e8e8e8;
+      border: 1px solid #bfbfbf;
+      color: #222;
+      transition: all 0s;
+      cursor: pointer;
+    }
+  
+    /* Temporizador de cuenta regresiva */	
+    #countdown {
+      display: flex;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+      font-size: 8px;
+      padding: 0px;
+    }
+    #countdown div {
         text-align: center;
-        text-decoration: none!important;
-        -moz-user-select: none;
-        -webkit-user-select: none;
-        background-color: #f8f8f8;
-        background-image: -webkit-gradient(linear, left top, left bottom, from(#f8f8f8), to(#f1f1f1));
-        background-image: -webkit-linear-gradient(top, #f8f8f8, #f1f1f1);
-        background-image: -moz-linear-gradient(top, #f8f8f8, #f1f1f1);
-        background-image: -ms-linear-gradient(top, #f8f8f8, #f1f1f1);
-        background-image: -o-linear-gradient(top, #f8f8f8, #f1f1f1);
-        background-image: linear-gradient(top, #f8f8f8, #f1f1f1);
-        border: 1px solid #bfbfbf;
-        color: #6D6A69;
-        font-size: 17px;
-        margin: 10px 0 0
-      }
-
-      .btn-header>:first-child>a:hover {
-        border: 1px solid #bfbfbf;
-        color: #222;
-        transition: all 0s;
-        cursor: pointer;
-        -webkit-box-shadow: inset 0 0 4px 1px rgba(0, 0, 0, .08);
-        box-shadow: inset 0 0 4px 1px rgba(0, 0, 0, .08)
-      }
-
-      .btn-header>:first-child>a:active {
-        background-color: #e8e8e8;
-        background-image: -moz-linear-gradient(top, #e8e8e8 0, #ededed 100%);
-        background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e8e8e8), color-stop(100%, #ededed));
-        background-image: -webkit-linear-gradient(top, #e8e8e8 0, #ededed 100%);
-        background-image: -o-linear-gradient(top, #e8e8e8 0, #ededed 100%);
-        background-image: -ms-linear-gradient(top, #e8e8e8 0, #ededed 100%);
-        background-image: linear-gradient(to bottom, #e8e8e8 0, #ededed 100%);
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e8e8e8', endColorstr='#ededed', GradientType=0);
-        -webkit-box-shadow: inset 0 0 3px 1px rgba(0, 0, 0, .15);
-        box-shadow: inset 0 0 3px 1px rgba(0, 0, 0, .15)
-      }
+        margin: 0 5px;
+    }
+    
+    #countdown span {
+        font-size: 16px;
+        font-weight: bold;
+        color: #fff;
+    }
+    
+    .smalltext {
+        font-size: 9px;
+        color: #fff;
+    }
       
-      .boton {
-        border: 1px solid #2e518b; /*anchura, estilo y color borde*/
-        padding: 10px; /*espacio alrededor texto*/
-        background-color: #2e518b; /*color botón*/
-        color: #ffffff; /*color texto*/
-        text-decoration: none; /*decoración texto*/
-        text-transform: uppercase; /*capitalización texto*/
-        font-family: 'Helvetica', sans-serif; /*tipografía texto*/
-        border-radius: 10px; /*bordes redondos*/
-      }
-      
-      .boton:hover {
-        background-color: #e8e8e8;
-        border: 1px solid #bfbfbf;
-        color: #222;
-        transition: all 0s;
-        cursor: pointer;
-      }
-    
-      /* Temporizador de cuenta regresiva */	
-      #countdown {
-        display: flex;
-        justify-content: center;
-        font-family: Arial, sans-serif;
-        font-size: 8px;
-        padding: 0px;
-      }
-      #countdown div {
-          text-align: center;
-          margin: 0 5px;
-      }
-      
-      #countdown span {
-          font-size: 16px;
-          font-weight: bold;
-          color: #fff;
-      }
-      
-      .smalltext {
-          font-size: 9px;
-          color: #fff;
-      }
-        
-      .recortada {
-          object-fit: cover; /* O 'contain', 'fill', etc. */
-          object-position: 50% 50%; /* Posición (opcional) */
-      }
-    </style>
-    <!-- jQuery jquery-2.2.4 -->
-    <script type="text/javascript" src="plugins/jQuery/jquery.min.js?v=1.0.1"></script>     
-    <script type="text/javascript" src="plugins/jQueryUI/jquery-ui.js?v=1.0.1"></script>
-	  <script type="text/javascript" src="assets/js/jquery.flexslider.js?v=1.0.1"></script>	
-    <!-- Switchery -->
-    <script type="module" src="plugins/switchery/switchery.min.js?v=1.0.1"></script>
-	  <script type="text/javascript"> <?php 
-    if($_SESSION['idrol'] == 12){ ?>
-        function esAntesDeLas17Horas() {
-            const ahora = new Date();
-            return ahora.getHours() < 19;
-        }
-    
-        function countdown() {
-            if (esAntesDeLas17Horas()) {
-              var hora = 17;
-            } else {
-              var hora = 6;
-            }	
-    
-            const targetTime = new Date();
-            targetTime.setHours(hora, 30, 0); 
-    
-            const now = new Date().getTime();
-            const timeLeft = targetTime - now;
-    
-            const hours = Math.floor(timeLeft / (1000 * 60 * 60));
-            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-    
-            document.getElementById("hours").innerHTML = hours;
-            document.getElementById("minutes").innerHTML = minutes;
-            document.getElementById("seconds").innerHTML = seconds;
-        }
-    
-        setInterval(countdown, 1000); <?php 
-    } ?>
-		function cerrar() {		
+    .recortada {
+        object-fit: cover; /* O 'contain', 'fill', etc. */
+        object-position: 50% 50%; /* Posición (opcional) */
+    }
+  </style>
+  <!-- jQuery jquery-2.2.4 -->
+  <script type="text/javascript" src="plugins/jQuery/jquery.min.js?v=1.0.1"></script>     
+  <script type="text/javascript" src="plugins/jQueryUI/jquery-ui.js?v=1.0.1"></script>
+  <script type="text/javascript" src="assets/js/jquery.flexslider.js?v=1.0.1"></script>	
+  <!-- Switchery -->
+  <script type="module" src="plugins/switchery/switchery.min.js?v=1.0.1"></script>
+  <script type="text/javascript"> 
+		function cerrar() {
 			console.log('Cierre de la ventana'); /*
 			var allowExit = false;
 			function beforeUnloadHandler(e){
@@ -1116,7 +1086,37 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
         </div>
       </footer>
       <script type="text/javascript">
-        document.frm.username.focus();
+        document.frm.username.focus(); <?php 
+        if(isset($_GET["view"]) && $_SESSION['idrol'] == 12){ ?>
+          function esAntesDeLas17Horas() {
+            const ahora = new Date();
+            return ahora.getHours() < 19;
+          }
+        
+          function countdown() {
+            if (esAntesDeLas17Horas()) {
+              var hora = 17;
+            } else {
+              var hora = 6;
+            }	
+        
+            const targetTime = new Date();
+            targetTime.setHours(hora, 30, 0); 
+        
+            const now = new Date().getTime();
+            const timeLeft = targetTime - now;
+        
+            const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+        
+            document.getElementById("hours").innerHTML = hours;
+            document.getElementById("minutes").innerHTML = minutes;
+            document.getElementById("seconds").innerHTML = seconds;
+          }
+        
+          setInterval(countdown, 1000); <?php 
+        } ?>
       </script> <?php 
     endif;  ?>
     <!-- AdminLTE App -->

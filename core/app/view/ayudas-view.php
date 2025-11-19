@@ -14,9 +14,6 @@ if ($cadena > 0) {
 		$ingreso = $_GET['ingreso'];
 		$turno = $_GET['turno'];
 	}
-	
-	//Core::redir('toten');
-	//Core::redir('fotos&usuario='.$usuario.'&puesto='.$puesto.'&ingreso='.$ingreso.'&turno='.$turno);
 }
 
 ?>

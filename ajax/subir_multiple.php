@@ -17,7 +17,7 @@ $imagenes = $datos['imagenes'] ?? [];
 $observacion = $datos['observacion'] ?? '';
 $texto_documento = $datos['texto_documento'] ?? '';
 $is_active = 1;
-$usuario_log = $_SESSION['name'] ?? 'toten'; 
+$usuario_log = $_SESSION['name'] ?? 'Toten'; 
 $ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
 
 $conn = new mysqli('localhost', 'root', 'MyNewPass', 'bitacora');

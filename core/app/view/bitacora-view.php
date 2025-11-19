@@ -5,8 +5,8 @@ date_default_timezone_set('America/Guayaquil');
 $mes = date("m"); $ano=date("Y");
 $hoy = date("Y-m-d"); $cadena = "";
 
-if($_SESSION['dispositivo'] == 1) $cadena = " AND fecha BETWEEN '".date("Y-m-d", strtotime("-10 day", strtotime($hoy)))." 00:00:00' AND '".date("Y-m-d", strtotime("+1 day", strtotime($hoy)))." 00:00:00'";
-if($_SESSION['dispositivo'] == 2) $cadena = " AND fecha BETWEEN '".date("Y-m-d", strtotime("-10 day", strtotime($hoy)))." 00:00:00' AND '".date("Y-m-d", strtotime("+1 day", strtotime($hoy)))." 00:00:00'";
+if(isset($_SESSION['dispositivo']) && $_SESSION['dispositivo'] == 1) $cadena = " AND fecha BETWEEN '".date("Y-m-d", strtotime("-10 day", strtotime($hoy)))." 00:00:00' AND '".date("Y-m-d", strtotime("+1 day", strtotime($hoy)))." 00:00:00'";
+if(isset($_SESSION['dispositivo']) && $_SESSION['dispositivo'] == 2) $cadena = " AND fecha BETWEEN '".date("Y-m-d", strtotime("-10 day", strtotime($hoy)))." 00:00:00' AND '".date("Y-m-d", strtotime("+1 day", strtotime($hoy)))." 00:00:00'";
 
 $users = BitacoraData::getAll($cadena);
 
@@ -52,11 +52,10 @@ If(isset($_POST["sd"])){
         		    <div class="row">
                 		<div class="col-xs-3">
                 			<div class="input-group">
-                			<div class="input-group-addon">
-                				<i class="fa fa-calendar"></i>
-                			 </div>
-                			  <input type="text" class="form-control pull-right" value="01/04/2025 - 03/04/2025" id="range" readonly="">
-                			  
+								<div class="input-group-addon">
+									<i class="fa fa-calendar"></i>
+								</div>
+                			  	<input type="text" class="form-control pull-right" value="01/04/2025 - 03/04/2025" id="range" readonly="">
                 			</div><!-- /input-group -->
                 		</div>
                 		<div class="col-xs-2">
@@ -135,10 +134,16 @@ If(isset($_POST["sd"])){
 										echo '<td>'.$tables->turno.'</td>';
 										if($tables->proceso == 'Alerta' || $tables->proceso == 'Salida' || $tables->proceso == 'Ingreso'){
 											$activo = ' disabled';
-											if($tables->proceso == 'Alerta')
-										        echo '<td><span class="text-danger">'.$tables->proceso.' S.O.S.</span></td>';
-										    else
+											if($tables->proceso == 'Alerta'){
+										        echo '<td><span class="text-danger">'.$tables->proceso.' S.O.S.</span></td>'; 
+												if($tables->vistas == 0){ ?>
+													<script>
+														verificarSOS();
+													</script> <?php
+												}
+										    } else {
 										        echo '<td>'.$tables->proceso.'</td>';
+											}
 										}else{
 											$activo = '';
 										    echo '<td>'.$tables->proceso.'</td>';
@@ -177,6 +182,30 @@ If(isset($_POST["sd"])){
             </div>
         </div>
     </div>
+	<!-- Modal de alerta S.O.S. -->
+	<div class="modal fade" id="sosModal" tabindex="-1" role="dialog" aria-labelledby="sosModalLabel">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content bg-red">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+					<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="sosModalLabel">
+					<i class="fa fa-exclamation-triangle"></i> ¡Alerta S.O.S.!
+					</h4>
+				</div>
+				<div class="modal-body text-center">
+					<p>Se ha detectado una señal de emergencia.</p>
+					<i class="fa fa-bullhorn fa-3x"></i>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default btn-block" data-dismiss="modal">Cerrar alerta</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Audio -->
+	<audio id="sos-audio" src="assets/media/alarma.mp3" preload="auto"></audio>
 </section>
 <!-- Page specific script -->
 <script type="text/javascript" src="js/VentanaCentrada.js"></script>
@@ -203,6 +232,20 @@ If(isset($_POST["sd"])){
 		sm = valor4.value;
 
 		VentanaCentrada('documentos/bitacora_pdf.php?id='+puesto+'&turno='+turno+'&ini='+sd+'&fin='+sm,'Reporte de Bitacora','','1024','768','true');
+	}
+
+	function verificarSOS(data) {
+		const audio = document.getElementById('sos-audio');
+		audio.currentTime = 0;
+		audio.play();
+
+		$('#sosModal').modal('show');
+
+		// Detener sonido al cerrar modal
+		$('#sosModal').on('hidden.bs.modal', function () {
+			audio.pause();
+			audio.currentTime = 0;
+		});
 	}
 </script>
 

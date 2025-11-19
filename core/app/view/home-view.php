@@ -16,9 +16,9 @@ echo "<script>console.log('User-Agent: " . $_SERVER['HTTP_USER_AGENT'] . "'); co
 $cadena = '';
 if($_SESSION["ingreso"] == 3)
     if($_SESSION['dispositivo'] == 1)
-		print "<script>window.location='./toten';</script>";
+		print "<script>window.location='./videoip';</script>";
     else
-		Core::redir('novedad');
+		print "<script>window.location='./novedad';</script>";
 
 if (isset($_COOKIE['usuario'])) {
     $usuario = $_COOKIE['usuario'];
@@ -45,7 +45,7 @@ if($_SESSION['idrol'] ==  6){
 
 if($_SESSION['idrol'] ==  7 || $_SESSION['idrol'] == 14){	
     if($_SESSION['dispositivo'] == 1){
-        $cadena = 'toten'; 
+        $cadena = 'videoip'; 
     }else{
 		$cadena = 'novedad'; 
 	}/*

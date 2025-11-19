@@ -27,7 +27,7 @@ if(isset($_GET['codigo'])){
 		
 	}else{
 		if($_SESSION['dispositivo'] == 1){
-			Core::redir('toten&codigo='.$_GET['codigo']);
+			Core::redir('videoip&codigo='.$_GET['codigo']);
 		}
 
 		$cargos = ResidenteData::getLike($_POST['codigo']); 

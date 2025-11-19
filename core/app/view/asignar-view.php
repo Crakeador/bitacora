@@ -1,6 +1,6 @@
 <?php
 //Ingreso de Guardias
-if($_SESSION['dispositivo'] == 1) Core::redir('toten');
+if($_SESSION['dispositivo'] == 1) Core::redir('videip');
 $hoy = date("d-m-Y H:i:s"); $fecha = date("Y-m-d H:i:s"); $errores = ''; $_SESSION['guardar'] = 0; $observacion = ''; $estilo = ''; $mensaje = '';
 
 $ini = new DateTime(date("Y-m-d")." 07:00:00");
