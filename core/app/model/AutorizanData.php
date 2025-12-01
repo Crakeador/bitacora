@@ -80,9 +80,16 @@ class AutorizanData {
 	}
 
 	public static function getLike($q){
-		$sql = "select * from ".self::$tablename." where name like '%$q%'";
+		$sql = "SELECT * FROM ".self::$tablename." WHERE name like '%$q%'";
 		$query = Executor::doit($sql);
 
 		return Model::many($query[0],new AutorizanData());
+	}
+	
+	public static function getByQRCode($q){
+		$sql = "SELECT * FROM ".self::$tablename." WHERE clave LIKE '%$q%'"; echo $sql;
+		$query = Executor::doit($sql);
+
+		return Model::one($query[0],new AutorizanData());
 	}
 }

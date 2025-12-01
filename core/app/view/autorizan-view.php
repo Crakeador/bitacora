@@ -34,7 +34,7 @@ if(isset($_GET['clave'])){
     $errorCorrectionLevel = 'L';
 
     $matrixPointSize = 4;
-    $data = "https://latin.near-solution.com/index.php?view=novedad&codigo=".$_GET["clave"];
+    $data = $_GET["clave"];
     //user data
     
     $name = 'test'.md5($data.'|'.$errorCorrectionLevel.'|'.$matrixPointSize).'.png';
@@ -66,8 +66,8 @@ if(isset($_GET['id'])){
 <!-- Listado de los clientes -->
 <section class="content-header">
 	<h1>
-		Resientes
-		<small>lista de las autorizaciones</small>
+		Visitas autorizadas
+		<small>lista de las visitas autorizadas</small>
 	</h1>
 	<ol class="breadcrumb">
 		<li><a href="./home"><i class="fa fa-dashboard"></i> Panel de control </a></li>

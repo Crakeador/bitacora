@@ -11,8 +11,6 @@ if ($cadena > 0) {
   $_SESSION['dispositivo']=1;
 }
 
-echo "<script>console.log('User-Agent: " . $_SERVER['HTTP_USER_AGENT'] . "'); console.log('Dispositivo: " . $cadena . "');</script>";
-
 $cadena = '';
 if($_SESSION["ingreso"] == 3)
     if($_SESSION['dispositivo'] == 1)

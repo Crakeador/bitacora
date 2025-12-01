@@ -8,7 +8,7 @@ $category = (object) [
 
 // Manejar las solicitudes
 $method = $_SERVER['REQUEST_METHOD'];
-
+ 
 switch ($method) {
     case 'GET':
 		if(isset($_GET['id']) && isset($_GET['tipo']) && $_GET['tipo']==2){

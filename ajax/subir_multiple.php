@@ -1,7 +1,7 @@
 <?php
 session_start();
 $datos = json_decode(file_get_contents("php://input"), true);
-
+ 
 $idpuesto = 8;
 $idperson = $_SESSION['user_id'] ?? null;
 $proceso = 'Observacion';
@@ -27,14 +27,14 @@ if ($conn->connect_error) {
     exit;
 }
 //echo "Conexión exitosa. ";
-$stmt = $conn->prepare("INSERT INTO bitacora (idpuesto, idperson, idresidente, fecha, proceso, tipo, observacion, is_active, usuario_log, ip) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+$stmt = $conn->prepare("INSERT INTO visitas (idpuesto, idperson, idresidente, fecha, proceso, tipo, entrada, observacion, is_active, usuario_log, ip) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
 $desc = $observacion . ' | OCR: ' . $texto_documento;
-$stmt->bind_param("ssssssssss", $idpuesto, $idperson, $idresidente, $fecha, $proceso, $tipo, $observacion, $is_active, $usuario_log, $ip);
+$stmt->bind_param("sssssssssss", $idpuesto, $idperson, $idresidente, $fecha, $proceso, $tipo, $fecha, $observacion, $is_active, $usuario_log, $ip);
 
 $queryDebug = sprintf(
-    "INSERT INTO bitacora (idpuesto, idperson, idresidente, fecha, proceso, tipo, observacion, is_active, usuario_log, ip) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
-    $idpuesto, $idperson, $idresidente, $fecha, $proceso, $tipo, $desc, $is_active, $usuario_log, $ip
+    "INSERT INTO visitas (idpuesto, idperson, idresidente, fecha, proceso, tipo, entrada, observacion, is_active, usuario_log, ip) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+    $idpuesto, $idperson, $idresidente, $fecha, $proceso, $tipo, $fecha, $desc, $is_active, $usuario_log, $ip
 );
 //echo "Query armado: " . $queryDebug;
 
@@ -81,8 +81,16 @@ foreach ($imagenes as $img) {
     $ruta = '/var/www/latin.near-solution.com/public_html/storage/visitas/' . $nombre;
     file_put_contents($ruta, $binario);
 
+    if ($tipo == 'documento') {
+        // Ejecutar OCR con Tesseract
+        $cmd = "tesseract $ruta stdout -l eng+spa";
+        $texto = shell_exec($cmd);
+    } else {
+        $texto = '';
+    }
+    echo "Texto extraído por OCR: " . trim($texto) . ". ";
     $stmt = $conn->prepare("INSERT INTO fotos (idpadre, nombre_archivo, descripcion, tipo) VALUES (?, ?, ?, ?)");
-    $desc = $observacion . ' | OCR: ' . $texto_documento;
+    $desc = $observacion . ' | OCR: ' . $texto;
     $stmt->bind_param("ssss", $padre, $nombre, $desc, $tipo);
     $success = $stmt->execute();
     

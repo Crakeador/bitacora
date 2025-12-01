@@ -823,13 +823,19 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                           } 
                           // 9 Residenciales
                           if($_SESSION['depart'] == 9){
-                            if($_SESSION['idrol'] == 8){				
-                              echo '<li><a href="fechas"><i class="fa fa-book"></i> <span>Bitacora</span></a></li>';
-                              echo '<li><a href="residentes"><i class="fa fa-building"></i> <span>Residentes</span></a></li>';
-                              echo '<li><a href="novedades"><i class="fa fa-binoculars"></i> <span>Novedades</span></a></li>';
-                              echo '<li><a href="anuncios"><i class="fa fa-bullhorn"></i> <span>Anuncios</span></a></li>';
-                              echo '<li><a href="areas"><i class="fa fa-address-card"></i> <span>Areas Comunes</span></a></li>';                                    
-                              echo '<li><a href="tareas"><i class="fa fa-bell"></i><span> Tareas </span></a></li>';
+                            if($_SESSION['idrol'] == 8){
+                              if($_SESSION['residencial'] == 0){                                
+                                echo '<li><a href="fechas"><i class="fa fa-book"></i> <span>Bitacora</span></a></li>';
+                                echo '<li><a href="novedades"><i class="fa fa-binoculars"></i> <span>Novedades</span></a></li>';                         
+                                echo '<li><a href="tareas"><i class="fa fa-bell"></i><span> Consignas </span></a></li>';
+                              }else{
+                                echo '<li><a href="fechas"><i class="fa fa-book"></i> <span>Bitacora</span></a></li>';
+                                echo '<li><a href="residentes"><i class="fa fa-building"></i> <span>Residentes</span></a></li>';
+                                echo '<li><a href="novedades"><i class="fa fa-binoculars"></i> <span>Novedades</span></a></li>';
+                                echo '<li><a href="anuncios"><i class="fa fa-bullhorn"></i> <span>Anuncios</span></a></li>';
+                                echo '<li><a href="areas"><i class="fa fa-address-card"></i> <span>Areas Comunes</span></a></li>';                                    
+                                echo '<li><a href="tareas"><i class="fa fa-bell"></i><span> Tareas </span></a></li>';
+                              }
                             }							
                             if($_SESSION['idrol'] == 9){							
                               echo '<li><a href="autorizan"><i class="fa fa-book"></i> <span>Autorizar</span></a></li>';

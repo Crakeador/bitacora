@@ -79,7 +79,7 @@ if(isset($_GET["id"])){
 ?>
 <section class="content-header">
 	<h1>
-		Residentes
+		Autorizar visitas
 		<small><?php echo $mensaje; ?></small>
 	</h1>
 	<ol class="breadcrumb">
@@ -95,84 +95,89 @@ if(isset($_GET["id"])){
 	  </ul>
 	</div>
 	<div class="row">
-		<input type="hidden" id="ndetalles" value="2">
-		<!-- Dialogo para seleccionar una cuenta -->
+		<input type="hidden" id="ndetalles" value="2">	
 		<div class="col-md-12">
-			<p class="alert alert-info">
-				<strong><i class="fa fa-bullhorn"></i> Importante...!</strong>
-				- Los campos obligatorios estan marcados con asteriscos rojo <span class="text-danger">*</span>
-			</p>
-			<!-- START panel -->
-			<form class="form-horizontal" method="post" id="addtask" action="index.php?view=autorizar" role="form">
-				<input type="hidden" id="client_id" name="client_id" value="<?php echo $client_id; ?>">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h3 class="panel-title">Informaci&oacute;n del del cliente</h3>
-					</div>
-					<div class="panel-body" style="padding: 1.5rem !important;">
-						<div class="form-group">
-							<div class="col-md-8 col-sm-8">
-								<span class="text-danger">Tipo de visitante:</span>
-								<div class="radiobutton">
-									<input type="radio" id="tipo1" name="tipo" value="1" <?php if($client->tipo == "Visita") echo 'checked="checked"'; ?>> Visita&nbsp;&nbsp;
-									<input type="radio" id="tipo2" name="tipo" value="2" <?php if($client->tipo == "Taxi") echo 'checked="checked"'; ?>> Taxi&nbsp;&nbsp;
-									<input type="radio" id="tipo3" name="tipo" value="3" <?php if($client->tipo == "Entrega") echo 'checked="checked"'; ?>> Entrega&nbsp;&nbsp;
-									<input type="radio" id="tipo4" name="tipo" value="4" <?php if($client->tipo == "Otros") echo 'checked="checked"'; ?>> Otros
+			<!-- Dialogo para seleccionar una cuenta -->
+			<div class="col-md-7">
+				<p class="alert alert-info">
+					<strong><i class="fa fa-bullhorn"></i> Importante...!</strong>
+					- Los campos obligatorios estan marcados con asteriscos rojo <span class="text-danger">*</span>
+				</p>
+				<!-- START panel -->
+				<form class="form-horizontal" method="post" id="addtask" action="index.php?view=autorizar" role="form">
+					<input type="hidden" id="client_id" name="client_id" value="<?php echo $client_id; ?>">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">Informaci&oacute;n del del cliente</h3>
+						</div>
+						<div class="panel-body" style="padding: 1.5rem !important;">
+							<div class="form-group">
+								<div class="col-md-8 col-sm-8">
+									<span class="text-danger">Tipo de visitante:</span>
+									<div class="radiobutton">
+										<input type="radio" id="tipo1" name="tipo" value="1" <?php if($client->tipo == "Visita") echo 'checked="checked"'; ?>> Visita&nbsp;&nbsp;
+										<input type="radio" id="tipo2" name="tipo" value="2" <?php if($client->tipo == "Taxi") echo 'checked="checked"'; ?>> Taxi&nbsp;&nbsp;
+										<input type="radio" id="tipo3" name="tipo" value="3" <?php if($client->tipo == "Entrega") echo 'checked="checked"'; ?>> Entrega&nbsp;&nbsp;
+										<input type="radio" id="tipo4" name="tipo" value="4" <?php if($client->tipo == "Otros") echo 'checked="checked"'; ?>> Otros
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="cedula" class="col-md-2 col-sm-2 control-label"><span class="text-danger">*</span> C.C.</label>
+								<div class="col-md-2">
+									<input type="text" class="form-control" id="cedula" name="cedula" autocomplete="off" minlength="10" maxlength="10" data-inputmask='"mask": "9999999999"' data-mask placeholder="1234567890" value="<?php echo $client->cedula; ?>" pattern="[0-9]{10}" title="Solo números, debe ser una cedula valida" required autofocus>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="nombre" class="col-md-2 col-sm-2 control-label"><span class="text-danger">*</span> Nombre:</label>
+								<div class="col-md-4 col-sm-4">
+									<input class="text-field form-control input-sm" id="nombre" name="nombre" type="text" placeholder="Jhon Doe" value="<?php echo $client->nombre; ?>" minlength="5" maxlength="100" required title="Tamaño mínimo: 5. Tamaño máximo: 100" required>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="fecha" class="col-md-2 col-sm-2 control-label">Fecha de Ingreso:</label>
+								<div class="col-md-4 col-sm-4">
+									<div class="input-group date form_date col-md-12 col-sm-12" data-date-format="yyyy-mm-dd hh:ii">
+										<input type="text" class="form-control" id="fecha" name="fecha" value="<?php echo $client->fecha; ?>" required="required" minlength="10" title="Debe de ser una fecha valida">
+									</div>
+								</div>
+							</div>
+							<div class="form-group" style="display: none;">						
+								<label for="id_telefono1" class="col-md-2 col-sm-2 control-label"><span class="text-danger">*</span> Tel&eacute;fono celular:</label>
+								<div class="col-md-4 col-sm-4">
+									<input type="text" class="form-control" id="id_telefono1" name="telefono1" data-inputmask='"mask": "99-99999999"' data-mask placeholder="99-99999999" value="<?php echo $client->telefono1; ?>">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="observacion" class="col-md-2 col-sm-2 control-label">Observaciones:</label>
+								<div class="col-md-4">
+									<textarea class="form-control input-sm" cols="50%" id="observacion" name="observacion" rows="3"><?php echo $client->observacion; ?></textarea>
+								</div>
+							</div><?php
+							if($_SESSION['residencial'] == 1){ ?>
+							<div class="form-group">
+								<label for="manzana" class="col-md-2 col-sm-2 control-label"><?php if(isset($_SESSION['residencial']) && $_SESSION['residencial'] == 0) echo 'Piso:'; else echo 'Manzana:'; ?></label>
+								<div class="col-md-4 col-sm-4">
+									<input class="text-field form-control input-sm" id="manzana" name="manzana" maxlength="10" type="number" placeholder="Numero de la manzana" value="<?php echo $client->manzana; ?>" readonly>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="villa" class="col-md-2 col-sm-3 control-label"><?php if(isset($_SESSION['residencial']) && $_SESSION['residencial'] == 0) echo 'Apartamento:'; else echo 'Villa:'; ?></label>
+								<div class="col-md-4 col-sm-4">
+									<input class="text-field form-control input-sm" id="villa" name="villa" maxlength="10" type="text" placeholder="Numero de la villa" value="<?php echo $client->villa; ?>" readonly>
+								</div>
+							</div> <?php } ?>
+							<div class="form-group">
+								<div class="col-md-4">
+									<button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar </button>
 								</div>
 							</div>
 						</div>
-						<div class="form-group">
-							<label for="cedula" class="col-md-2 col-sm-2 control-label"><span class="text-danger">*</span> C.C.</label>
-							<div class="col-md-2">
-								<input type="text" class="form-control" id="cedula" name="cedula" autocomplete="off" minlength="10" maxlength="10" data-inputmask='"mask": "9999999999"' data-mask placeholder="1234567890" value="<?php echo $client->cedula; ?>" pattern="[0-9]{10}" title="Solo números, debe ser una cedula valida" required autofocus>
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="nombre" class="col-md-2 col-sm-2 control-label"><span class="text-danger">*</span> Nombre:</label>
-							<div class="col-md-4 col-sm-4">
-								<input class="text-field form-control input-sm" id="nombre" name="nombre" type="text" placeholder="Jhon Doe" value="<?php echo $client->nombre; ?>" minlength="5" maxlength="100" required title="Tamaño mínimo: 5. Tamaño máximo: 100" required>
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="fecha" class="col-md-2 col-sm-2 control-label">Fecha de Ingreso:</label>
-							<div class="col-md-12 col-sm-12">
-								<div class="input-group date form_date col-md-12 col-sm-12" data-date-format="yyyy-mm-dd hh:ii">
-									<input type="text" class="form-control" id="fecha" name="fecha" value="<?php echo $client->fecha; ?>" required="required" minlength="10" title="Debe de ser una fecha valida">
-								</div>
-							</div>
-						</div>
-						<div class="form-group" style="display: none;">						
-							<label for="id_telefono1" class="col-md-2 col-sm-2 control-label"><span class="text-danger">*</span> Tel&eacute;fono celular:</label>
-							<div class="col-md-4 col-sm-4">
-								<input type="text" class="form-control" id="id_telefono1" name="telefono1" data-inputmask='"mask": "99-99999999"' data-mask placeholder="99-99999999" value="<?php echo $client->telefono1; ?>">
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="observacion" class="col-md-2 col-sm-2 control-label">Observaciones:</label>
-							<div class="col-md-4">
-								<textarea class="form-control input-sm" cols="50%" id="observacion" name="observacion" rows="3"><?php echo $client->observacion; ?></textarea>
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="manzana" class="col-md-2 col-sm-2 control-label"><?php if(isset($_SESSION['residencial']) && $_SESSION['residencial'] == 0) echo 'Piso:'; else echo 'Manzana:'; ?></label>
-							<div class="col-md-4 col-sm-4">
-								<input class="text-field form-control input-sm" id="manzana" name="manzana" maxlength="10" type="number" placeholder="Numero de la manzana" value="<?php echo $client->manzana; ?>" readonly>
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="villa" class="col-md-2 col-sm-3 control-label"><?php if(isset($_SESSION['residencial']) && $_SESSION['residencial'] == 0) echo 'Apartamento:'; else echo 'Villa:'; ?></label>
-							<div class="col-md-4 col-sm-4">
-								<input class="text-field form-control input-sm" id="villa" name="villa" maxlength="10" type="text" placeholder="Numero de la villa" value="<?php echo $client->villa; ?>" readonly>
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="col-md-4">
-								<button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar </button>
-							</div>
-						</div>
 					</div>
-				</div>
-			</form>
+				</form>
+			</div>			
+			<div class="col-md-5">
+			</div>
 		</div>
 	</div>	
 </section>

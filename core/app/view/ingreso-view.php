@@ -3,7 +3,7 @@
 if(!isset($_SESSION['ingreso'])) 
 	Core::redir('home');
 else
-	if(isset($_SESSION['ingreso'])) 
+	if(isset($_SESSION['ingreso']) && $_SESSION['ingreso'] == 1) 
 		Core::redir('novedad');
 
 $hoy = date("d-m-Y H:i:s"); $fecha = date("Y-m-d H:i:s"); $errores = ''; $_SESSION['guardar'] = 0; $observacion = ''; $estilo = ''; $mensaje = '';
@@ -217,7 +217,7 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
 								</div>
 							</form>
 						</div>
-						<div class="col-md-6">							
+						<div class="col-md-6">
 							<div>
 								<select name="listaDeDispositivos" id="listaDeDispositivos"></select>
 								<button id="boton">Tomar foto</button>
@@ -258,7 +258,6 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
         });
 	});
 </script>
-
 <script>
 	/*
 		Tomar una fotografía y guardarla en un archivo v3

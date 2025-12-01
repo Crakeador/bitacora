@@ -1,6 +1,15 @@
 <?php
 require_once 'flight/Flight.php';
+// Agrega esto al inicio de tu código PHP en el servidor
+header('Access-Control-Allow-Origin: *');
+header("Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept, Origin, Authorization");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 
+// Manejo de la petición OPTIONS (Pre-flight) que hacen los navegadores
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    exit(0);
+}
+// Habilita el registro de errores
 Flight::set('flight.log_errors', true);
 // Registra la clase con parametros de constructor
 Flight::register('db', PDO::class, ['mysql:host=localhost;dbname=bitacora', 'root', 'MyNewPass']);
