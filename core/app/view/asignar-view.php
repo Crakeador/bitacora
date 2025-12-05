@@ -6,8 +6,6 @@ if(isset($_SESSION['ingreso']) && $_SESSION['ingreso'] > 1) {
 } else {
     if($_SESSION['dispositivo'] == 1) 
         Core::redir('ingreso');
-    else
-        Core::redir('logout');
 }
 $hoy = date("d-m-Y H:i:s"); $fecha = date("Y-m-d H:i:s"); $errores = ''; $_SESSION['guardar'] = 0; $observacion = ''; $estilo = ''; $mensaje = '';
 

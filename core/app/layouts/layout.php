@@ -613,14 +613,18 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                                     echo '<li><a href="./novedad"><i class="fa fa-book"></i> <span>Bitacora</span></a></li>'; 
                                     echo '<li><a href="./informe"><i class="fa fa-fax"></i> <span>Parte</span></a></li>	'; 
                                   }else{
-                                    echo '<li><a href="./novedad"><i class="fa fa-book"></i> <span>Bitacora</span></a></li>'; 
+                                    if($_SESSION['id_client'] == 8){ // Opcion para Custodias
+                                      echo '<li><a href="./registro"><i class="fa fa-book"></i> <span>Bitacora</span></a></li>'; 
+                                    }else{
+                                      echo '<li><a href="./novedad"><i class="fa fa-book"></i> <span>Bitacora</span></a></li>'; 
+                                    }
                                     echo '<li><a href="./camara"><i class="fa fa-recycle"></i> <span>Rondas</span></a></li>'; 
                                     echo '<li><a href="./informe"><i class="fa fa-fax"></i> <span>Parte</span></a></li>	'; 
                                     echo '<li><a href="./visitas"><i class="fa fa-suitcase"></i> <span>Visitas</span></a></li>'; 
                                     if($_SESSION['etapas'] == 1){ // Opcion para las Etapas 
                                       echo '<li><a href="./verificados"><i class="fa fa-binoculars"></i> <span>Verificados</span></a></li>';
                                     }
-                                  } 
+                                  }
                                 }else{
                                   if($_SESSION['idrol'] == 12){ // Opciones de Centralistas
                                     echo '<li><a href="./asistencia"><i class="fa fa-sign-in"></i> <span>Asistencia</span></a></li>';
@@ -824,9 +828,10 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                           // 9 Residenciales
                           if($_SESSION['depart'] == 9){
                             if($_SESSION['idrol'] == 8){
-                              if($_SESSION['residencial'] == 0){                                
+                              if($_SESSION['residencial'] == 0){
                                 echo '<li><a href="fechas"><i class="fa fa-book"></i> <span>Bitacora</span></a></li>';
-                                echo '<li><a href="novedades"><i class="fa fa-binoculars"></i> <span>Novedades</span></a></li>';                         
+                                echo '<li><a href="visitantes"><i class="fa fa-car"></i> <span>Visitas</span></a></li>';
+                                echo '<li><a href="novedades"><i class="fa fa-binoculars"></i> <span>Novedades</span></a></li>';                  
                                 echo '<li><a href="tareas"><i class="fa fa-bell"></i><span> Consignas </span></a></li>';
                               }else{
                                 echo '<li><a href="fechas"><i class="fa fa-book"></i> <span>Bitacora</span></a></li>';
@@ -1175,7 +1180,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
 				echo '<script type="text/javascript" src="plugins/jsqrcode/webqr.js?v=1.0.1"></script>';
 			}
 			if($_GET["view"]=="asignar" || $_GET["view"]=="novedad" || $_GET["view"]=="informe" || $_GET["view"]=="supervisar" || $_GET["view"]=="aspirantes" || 
-         $_GET["view"]=="reporte" || $_GET["view"]=="trade"){
+               $_GET["view"]=="reporte" || $_GET["view"]=="registro" ||  $_GET["view"]=="trade"){
           echo '<script type="text/javascript">
                   initiate_geolocation();
 
@@ -1405,7 +1410,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
           $_GET["view"]=="telefonos" || $_GET["view"]=="apertura" || $_GET["view"]=="recibos" || $_GET["view"]=="entregas" || $_GET["view"]=="conducta" ||
 		      $_GET["view"]=="residentes" || $_GET["view"]=="proveedores" || $_GET["view"]=="rrhpre.lista" || $_GET["view"]=="opecor.lista" || $_GET["view"]=="finalizar" ||
           $_GET["view"]=="catrol.lista" || $_GET["view"]=="cobnom.lista" || $_GET["view"]=="sisnot.lista" || $_GET["view"]=="carnets" || $_GET["view"]=="rubros" ||
-          $_GET["view"]=="rrhpre.lista" || $_GET["view"]=="rrhliq.lista" || $_GET["view"]=="rrhmac.lista" || $_GET["view"]=="usuarios" || 
+          $_GET["view"]=="rrhpre.lista" || $_GET["view"]=="rrhliq.lista" || $_GET["view"]=="rrhmac.lista" || $_GET["view"]=="usuarios" || $_GET["view"]=="visitantes" ||
           $_GET["view"]=="rrsdoc.lista" || $_GET["view"]=="aspirantes" || $_GET["view"]=="personas" || $_GET["view"]=="rrhdoc.lista" || $_GET["view"]=="tareas" ||
           $_GET["view"]=="sisaud.lista" || $_GET["view"]=="rrging.lista" || $_GET["view"]=="rrping.lista" || $_GET["view"]=="rrhvac.lista" ||
           $_GET["view"]=="catdes.lista" || $_GET["view"]=="catlim.lista" || $_GET["view"]=="repent.lista" || $_GET["view"]=="areas" || $_GET["view"]=="vacaciones" ||

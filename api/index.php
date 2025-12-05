@@ -139,6 +139,7 @@ Flight::route('GET /guardia/@cedula/@password', function ($cedula, $password) {
                         "idpuesto" => $row['idclient'],
                         "puesto" => utf8_encode($row['clientes']),
                         "residencial" => 0,
+                        "cedula" => $row['cedula'],
                         "nombre" => utf8_encode($row['nombre']),
                         "idcargo" => 15,
                         "cargo" => 'RESIDENTE',

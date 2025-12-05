@@ -241,7 +241,7 @@ if(!isset($_SESSION["user_id"])) {
 							}else{
 								$asigna = array(); $i = 0;
 								while($m = $query->fetch_array()){
-									$idclient = $m['id'];
+									$idclient = $m['idclient'];
 									$etapas = $m['etapas'];
 									$compania = $m['name'];
 									$principal = $m['principal'];

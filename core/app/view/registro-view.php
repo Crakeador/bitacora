@@ -16,17 +16,7 @@ $hoy = date("d-m-Y H:i:s"); $fecha = date("Y-m-d H:i:s");
 $errores = ''; $observacion = ''; $estilo = ''; $validador = 99;
 $today = getdate(); $hora=$today["hours"];
 
-if(isset($_GET["fase"])){
-    $user = new ResidenteData();
-	$user->id = $_GET["id"];
-	$user->idclient = $_SESSION["id_client"];
-	$user->tipo = $_GET["fase"];
-	$user->fecha = date("Y-m-d H:i:s");
-
-	$user->horario($_GET["fase"]);
-	$user->historial();
-	
-}
+if(isset($_GET["id"])) $users = VisitantesData::update($_GET["id"]);
 
 if ($hora<6) {
     //echo(" Hoy has madrugado mucho... ");
@@ -124,7 +114,7 @@ if(isset($_POST['id_person'])){
         }else{
             $image = new Upload($_FILES["foto1"]);
             if($image->uploaded){
-                $image->Process("storage/novedad/");
+                $image->Process("storage/visitantes/");
     
                 if($image->processed){
                     $user->foto1 = $image->file_dst_name;
@@ -138,7 +128,7 @@ if(isset($_POST['id_person'])){
             $image = new Upload($_FILES["foto2"]);
 
             if($image->uploaded){
-                $image->Process("storage/novedad/");
+                $image->Process("storage/visitantes/");
 
                 if($image->processed){
                     $user->foto2 = $image->file_dst_name;
@@ -152,7 +142,7 @@ if(isset($_POST['id_person'])){
             $image = new Upload($_FILES["foto3"]);
 
             if($image->uploaded){
-                $image->Process("storage/novedad/");
+                $image->Process("storage/visitantes/");
 
                 if($image->processed){
                     $user->foto3 = $image->file_dst_name;
@@ -166,7 +156,7 @@ if(isset($_POST['id_person'])){
             $image = new Upload($_FILES["foto4"]);
 
             if($image->uploaded){
-                $image->Process("storage/novedad/");
+                $image->Process("storage/visitantes/");
 
                 if($image->processed){
                     $user->foto4 = $image->file_dst_name;
@@ -180,7 +170,7 @@ if(isset($_POST['id_person'])){
             $image = new Upload($_FILES["foto5"]);
 
             if($image->uploaded){
-                $image->Process("storage/novedad/");
+                $image->Process("storage/visitantes/");
 
                 if($image->processed){
                     $user->foto5 = $image->file_dst_name;
@@ -194,7 +184,7 @@ if(isset($_POST['id_person'])){
             $image = new Upload($_FILES["foto6"]);
 
             if($image->uploaded){
-                $image->Process("storage/novedad/");
+                $image->Process("storage/visitantes/");
 
                 if($image->processed){
                     $user->foto6 = $image->file_dst_name;
@@ -204,7 +194,10 @@ if(isset($_POST['id_person'])){
     }
 
     if($errores == ''){
-        Core::alert("Exito...!!!!", "Se guardo su registro", "sucess");
+        echo '<script type="text/javascript" src="plugins/sweetalert/sweetalert.min.js"></script>
+            <script type="text/javascript">
+                swal("Excelente", "Se actualizaron los registros", "success");
+            </script>';
     }else{
         $Observacion = $_POST["observacion"];
         Core::alert("Corrija...!!!!", $errores, "error");
@@ -222,21 +215,21 @@ else
 </br>
 <section id="main" role="main">
 	<div class="container">
-		<!-- Registro de Bitacora -->
+		<!-- Registro de Visitas -->
 		<div class="box box-info">
 			<!-- panel heading/header -->
 			<div class="box-header with-border">
-				<h3 class="box-title"><i class="mr5"></i>Ingreso de novedades <?php echo $texto; ?> </h3>
+				<h3 class="box-title"><i class="mr5"></i>Ingreso de visitas</h3>
 			</div>
 			<!-- panel body with collapse capable -->
 			<div class="box-body">					
 				<!-- tabs -->
 				<ul class="nav nav-tabs">
 					<li class="active">
-						<a href="#tab_generales" data-toggle="tab" aria-expanded="false"><b>Visitas</b></a>
+						<a href="#tab_generales" data-toggle="tab" aria-expanded="false"><b>Entradas</b></a>
 					</li>
 					<li>
-						<a href="#tab_residentes" data-toggle="tab" aria-expanded="false"><b>Personal</b></a>
+						<a href="#tab_residentes" data-toggle="tab" aria-expanded="false"><b>Salidas</b></a>
 					</li>
 				</ul>
 				<div class="panel-body">				
@@ -320,22 +313,31 @@ else
 							</div>
 						</div>						
 						<div class="tab-pane" id="tab_residentes">
-							    <div class="row">
-    								<div class="form-group">
-							            <div id="content"></div>
-			                        </div>
-    								<div class="form-group">
-    									<label for="actual" class="col-sm-4 control-label">Cedula:</label>
-    									<div class="col-sm-12">
-    									    <input type="text" id="actual" name="actual" class="form-control" value="<?php echo $cargos->cedula; ?>">
-    									</div>
-    								</div>
-    						        <div class="form-group">
-    									<div class="col-sm-12">
-    									    <a href="#" id="buscar" class="btn btn-danger btn-sm button"><i class="fa fa-search"></i>&nbsp; Buscar</a>
-                                        </div>
-                                    </div>
-								</div>
+                            <div class="row">                                
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <th>Nombre</th>
+                                        <th>Cedula</th>
+                                        <th>Entrada</th>
+                                        <th>Salir</th>
+                                    </thead><?php
+                                        $users = VisitantesData::getAll($_SESSION["puesto"]);
+
+                                        // Crea tabla de personal administrativo
+                                        foreach($users as $tables) {
+                                            echo '<tr>';
+                                                echo '<td>'.$tables->nombre.'</td>';
+                                                echo '<td>'.$tables->placa.'</td>';
+                                                echo '<td><div align="center">'.$tables->created_at.'</div></td>';
+                                                echo '<td width="8%">';
+                                                    echo '<div align="center">';
+                                                        echo '<a href="index.php?view=registro&fase=2&id='.$tables->id.'" class="btn btn-danger btn-sm"><i class="fa fa-sign-out"></i> Salir</a>';
+                                                    echo '</div>';
+                                                echo '</td>';
+                                            echo '</tr>';
+                                        }  ?>
+                                </table>
+                            </div>
 						</div>
 					</div>
 				</div>
@@ -347,7 +349,7 @@ else
     var element = document.getElementById("sidai");
 
     element.classList.add("sidebar-collapse");
-    document.title = "SIDAI | Registro de Novedades";
+    document.title = "Near Solution | Registro de visitas";
 
     if (typeof(Storage) !== "undefined") {
         console.log("LocalStorage disponible");
@@ -366,36 +368,4 @@ else
     }else{
         console.log("LocalStorage no soportado en este navegador");
     }
-</script>
-<script>
-    $(document).ready(function() {    
-        $('#buscar').on('click', function(){
-			$cedula  = $('#actual').val();	
-
-            if($cedula == '')
-                $('#content').html('<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Error...!!!</h4><p>El numero de cedula no puede ser dejado en blanco...!!!</p></div>');
-            else
-                $('#content').html('<div class="loading col-lg-12"><img src="assets/images/esperar.gif"/><br/>Un momento, por favor estamos calculando...!!!</div>');
-        
-            $.ajax({
-                type: "GET",
-                url: "ajax/buscar.php?cedula="+$cedula,
-                success: function(data) {
-					valor = JSON.parse(data);
-					
-                    if (valor.iEstado === "ok") {
-            			var nombre = valor.aaData[0][1],
-            			    cedula = valor.aaData[0][0];
-            			
-                        $('#content').fadeIn(1000).html('<div class="callout callout-success"><h4>Error...!</h4><p>Bienvenido '+nombre+' la cedula '+cedula+' es correcta...!!!</p></div>'); 
-                        sweetAlert('Excelente', 'Bienevenido ' + nombre + '...!!!', 'success');
-            		}else{
-                        $('#content').fadeIn(1000).html('<div class="callout callout-danger"><h4>Error...!</h4><p>Se produjo un error grave consultando la cedula de identidad, debe de ser verificada la identidad con el administrador.</p></div>'); 
-            		    sweetAlert('Error', 'No esta registrada esta cedula', 'error');
-            		}
-                }
-            });
-            return false;
-        });
-    });
 </script>
