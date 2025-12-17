@@ -1007,13 +1007,15 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                                 <li><a href="./index.php?view=sisaud.lista"><i class="fa fa-bullseye"></i> Auditoria </a></li>
                               </ul>
                             </li>  <?php 
-                        endif; 
-                        if($_SESSION['idrol'] == 7 || $_SESSION['idrol'] == 8 || $_SESSION['idrol'] == 11){
-                            // Vigilante Residencial
-                        }elseif($_SESSION['idrol'] == 9){
-                          echo '<li><a href="./residentpass"><i class="fa fa-cube"></i> <span>Cambio de clave</span></a></li>';
-                        }else{
-                          echo '<li><a href="./password"><i class="fa fa-cube"></i> <span>Cambio de clave</span></a></li>';
+                        endif;
+                        if(isset($_SESSION['idrol'])) {
+                          if($_SESSION['idrol'] == 7 || $_SESSION['idrol'] == 8 || $_SESSION['idrol'] == 11){
+                              // Vigilante Residencial
+                          }elseif($_SESSION['idrol'] == 9){
+                            echo '<li><a href="./residentpass"><i class="fa fa-cube"></i> <span>Cambio de clave</span></a></li>';
+                          }else{
+                            echo '<li><a href="./password"><i class="fa fa-cube"></i> <span>Cambio de clave</span></a></li>';
+                          }
                         } ?>                        
                         <li><a href="./ayudas"><i class='fa fa-info-circle'></i> <span>Acerca de </span></a></li>
                   <?php endif; ?>

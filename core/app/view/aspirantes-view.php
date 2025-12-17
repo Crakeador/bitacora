@@ -10,7 +10,7 @@ $total = count($users);
 		<small>listado de los aspirantes</small>
 	</h1>
 	<ol class="breadcrumb">
-		<li><a href="./index.php?view=home"><i class="fa fa-dashboard"></i> Panel de control </a></li>
+		<li><a href="home"><i class="fa fa-dashboard"></i> Panel de control </a></li>
 	</ol>
 </section>
 <section class="content" style="padding: 1.5rem !important;">
