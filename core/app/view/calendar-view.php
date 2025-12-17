@@ -124,42 +124,105 @@ date_default_timezone_set('America/Guayaquil');
 			today: 'Hoy',
 			month: 'Mes',
 			week: 'Semana',
-			day: 'Dia'
+			day: 'Día'
+		  },
+		  eventRender: function(event, element) {
+			  // Agregar tooltip con información completa del evento
+			  var tooltipContent = '<strong>' + event.title + '</strong><br/>';
+			  if(event.persona_contacto){
+				  tooltipContent += '<strong>Contacto:</strong> ' + event.persona_contacto + '<br/>';
+			  }
+			  if(event.lugar){
+				  tooltipContent += '<strong>Lugar:</strong> ' + event.lugar + '<br/>';
+			  }
+			  if(event.descripcion){
+				  tooltipContent += '<strong>Descripción:</strong> ' + event.descripcion + '<br/>';
+			  }
+			  if(event.start){
+				  var fechaHora = '';
+				  if(event.start.format){
+					  fechaHora = event.start.format('DD/MM/YYYY HH:mm');
+				  } else if(event.start._i){
+					  fechaHora = event.start._i;
+				  } else {
+					  fechaHora = event.start;
+				  }
+				  tooltipContent += '<strong>Fecha:</strong> ' + fechaHora;
+			  }
+			  element.attr('title', tooltipContent);
+			  element.attr('data-toggle', 'tooltip');
+			  element.attr('data-html', 'true');
+			  
+			  // Agregar información adicional al título si hay lugar o contacto
+			  if(event.lugar || event.persona_contacto){
+				  var titleExtra = '';
+				  if(event.persona_contacto){
+					  titleExtra += ' 👤 ' + event.persona_contacto;
+				  }
+				  if(event.lugar){
+					  titleExtra += ' 📍 ' + event.lugar;
+				  }
+				  element.find('.fc-title').append('<br/><small style="font-size:0.85em;">' + titleExtra + '</small>');
+			  }
 		  },
 		  dayClick:function(date,jsEvent,view){
-			  $('#txtFecha').val(date.format());
+			  // Limpiar formulario para nuevo evento
+			  $('#txtID').val('');
+			  $('#txtTitulo').val('');
+			  $('#txtPersonaContacto').val('');
+			  $('#txtLugar').val('');
+			  $('#txtDescripcion').val('');
+			  $('#txtColor').val('#3c8dbc');
+			  $('#txtFecha').val(date.format('YYYY-MM-DD'));
+			  $('#txtHora').val('');
+			  $('#modificar_eventos').hide();
+			  $('#agregar_eventos').show();
 			  $("#dlg_dias").modal();			  
 		  },
-		  //Random default events
-		  events: 'https://latin.near-solution.com/ajax/eventos.php',
+		  //Cargar eventos desde el servidor
+		  events: 'index.php?action=calendar&accion=Leer',
 		  eventClick:function(calEvent,jsEvent,view){
 			  $('#tituloEvento').html(calEvent.title);
 			  //Mostrar la informacion del evento
 			  $('#txtID').val(calEvent.id);
-			  $('#txtDescripcion').val(calEvent.descripcion);
+			  $('#txtDescripcion').val(calEvent.descripcion || '');
 			  $('#txtTitulo').val(calEvent.title);
-			  $('#txtColor').val(calEvent.color);
+			  $('#txtPersonaContacto').val(calEvent.persona_contacto || '');
+			  $('#txtLugar').val(calEvent.lugar || '');
+			  $('#txtColor').val(calEvent.color || calEvent.backgroundColor || '#3c8dbc');
 			  
-			  FechaHora=calEvent.start._i.split(" ");			  
-			  $('#txtFecha').val(FechaHora[0]);
-			  $('#txtHora').val(FechaHora[1]);
+			  // Manejar diferentes formatos de fecha
+			  var fechaHora;
+			  if(calEvent.start._i){
+				  fechaHora = calEvent.start._i.split(" ");
+			  } else if(calEvent.start.format){
+				  fechaHora = calEvent.start.format().split("T");
+				  fechaHora[1] = fechaHora[1] ? fechaHora[1].substring(0,5) : '';
+			  } else {
+				  fechaHora = [moment(calEvent.start).format('YYYY-MM-DD'), moment(calEvent.start).format('HH:mm')];
+			  }
 			  
+			  $('#txtFecha').val(fechaHora[0]);
+			  $('#txtHora').val(fechaHora[1] || '');
+			  
+			  $('#agregar_eventos').hide();
+			  $('#modificar_eventos').show();
 			  $("#dlg_dias").modal();
 		  },
 		  editable: true,
 		  droppable: true, // this allows things to be dropped onto the calendar !!!
 		  locale: 'es',
 		  eventDrop:function(calEvent){
-			  $('#tituloEvento').html(calEvent.title);
-			  //Mostrar la informacion del evento
+			  // Actualizar fecha cuando se arrastra el evento
+			  var fechaHora = calEvent.start.format().split("T");
 			  $('#txtID').val(calEvent.id);
-			  $('#txtDescripcion').val(calEvent.descripcion);
+			  $('#txtFecha').val(fechaHora[0]);
+			  $('#txtHora').val(fechaHora[1] ? fechaHora[1].substring(0,5) : '');
 			  $('#txtTitulo').val(calEvent.title);
-			  $('#txtColor').val(calEvent.color);
-			  
-			  FechaHora=calEvent.start.format().split("T");			  
-			  $('#txtFecha').val(FechaHora[0]);
-			  $('#txtHora').val(FechaHora[1]);
+			  $('#txtPersonaContacto').val(calEvent.persona_contacto || '');
+			  $('#txtLugar').val(calEvent.lugar || '');
+			  $('#txtDescripcion').val(calEvent.descripcion || '');
+			  $('#txtColor').val(calEvent.color || calEvent.backgroundColor || '#3c8dbc');
 			  
 			  RecolectarDatos();
 			  EnviarInformacion('modificar', NuevoEvento, true);
@@ -189,6 +252,14 @@ date_default_timezone_set('America/Guayaquil');
 			}
 		  }
 		});
+		
+		// Inicializar tooltips de Bootstrap
+		$('[data-toggle="tooltip"]').tooltip();
+		
+		// Reinicializar tooltips después de cargar eventos
+		$('#calendar').on('eventAfterRender', function(){
+			$('[data-toggle="tooltip"]').tooltip();
+		});
 	  });
 </script>
 <!-- pop up fechas Ingreso y Salida del empleado -->
@@ -196,54 +267,66 @@ date_default_timezone_set('America/Guayaquil');
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="box-header with-border">
-				<h3 class="box-title">Valores a Cotizar</h3>
+				<h3 class="box-title">Agenda de Reuniones</h3>
 				<div class="box-tools pull-right">
 					<button type="button" class="close" data-dismiss="modal">×</button>
 				</div><!-- /.box-tools -->
 			</div><!-- /.box-header -->
 			<div class="box-body" style="display: block;">		
 				<div class="form-group">
-					<label for="txtID" class="col-md-4 col-sm-3 control-label"><span class="text-danger">*</span> ID:</label>
+					<label for="txtID" class="col-md-4 col-sm-3 control-label">ID:</label>
 					<div class="col-md-8 col-sm-2">
-						<input type="text" class="form-control" id="txtID" name="txtID" value="">
+						<input type="text" class="form-control" id="txtID" name="txtID" value="" readonly>
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="txtFecha" class="col-md-4 col-sm-3 control-label"><span class="text-danger">*</span> Fecha:</label>
 					<div class="col-md-8 col-sm-2">
-						<input type="date" class="form-control" id="txtFecha" name="txtFecha" value="">
+						<input type="date" class="form-control" id="txtFecha" name="txtFecha" value="" required>
 					</div>
 				</div>		
 				<div class="form-group">
 					<label for="txtHora" class="col-md-4 col-sm-3 control-label"><span class="text-danger">*</span> Hora:</label>
 					<div class="col-md-8 col-sm-2">
-						<input type="time" class="form-control" id="txtHora" name="txtHora" value="">
+						<input type="time" class="form-control" id="txtHora" name="txtHora" value="" required>
 					</div>
 				</div>					
 				<div class="form-group">
-					<label for="txtTitulo" class="col-md-4 col-sm-3 control-label"><span class="text-danger">*</span> Titulo:</label>
+					<label for="txtTitulo" class="col-md-4 col-sm-3 control-label"><span class="text-danger">*</span> T&iacute;tulo:</label>
 					<div class="col-md-8 col-sm-5">
-						<input type="text" class="form-control" id="txtTitulo" name="txtTitulo" value="" placeholder="Titulo del evento">
+						<input type="text" class="form-control" id="txtTitulo" name="txtTitulo" value="" placeholder="Título de la reunión" required>
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="txtDescripcion" class="col-md-4 col-sm-3 control-label"><span class="text-danger">*</span> Descripci&oacute;n:</label>
+					<label for="txtPersonaContacto" class="col-md-4 col-sm-3 control-label"><span class="text-danger">*</span> Persona de Contacto:</label>
 					<div class="col-md-8 col-sm-5">
-						<textarea class="form-control" id="txtDescripcion" name="txtDescripcion" value="" placeholder="Descripcion del rubro"></textarea>
+						<input type="text" class="form-control" id="txtPersonaContacto" name="txtPersonaContacto" value="" placeholder="Nombre de la persona de contacto" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="txtLugar" class="col-md-4 col-sm-3 control-label"><span class="text-danger">*</span> Lugar de Reuni&oacute;n:</label>
+					<div class="col-md-8 col-sm-5">
+						<input type="text" class="form-control" id="txtLugar" name="txtLugar" value="" placeholder="Dirección o lugar de la reunión" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="txtDescripcion" class="col-md-4 col-sm-3 control-label">Descripci&oacute;n:</label>
+					<div class="col-md-8 col-sm-5">
+						<textarea class="form-control" id="txtDescripcion" name="txtDescripcion" rows="3" placeholder="Descripción adicional de la reunión"></textarea>
 					</div>
 				</div>		
 				<div class="form-group">
-					<label for="txtColor" class="col-md-4 col-sm-3 control-label"><span class="text-danger">*</span> Hora:</label>
+					<label for="txtColor" class="col-md-4 col-sm-3 control-label">Color:</label>
 					<div class="col-md-3 col-sm-2">
-						<input type="color" class="form-control" id="txtColor" name="txtColor" value="">
+						<input type="color" class="form-control" id="txtColor" name="txtColor" value="#3c8dbc">
 					</div>
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button id="agregar_eventos" class="btn btn-success">
+				<button id="agregar_eventos" class="btn btn-success" style="display:none;">
 					<span class="glyphicon glyphicon-floppy-disk"></span> Grabar
 				</button>
-				<button id="modificar_eventos" class="btn btn-success">
+				<button id="modificar_eventos" class="btn btn-success" style="display:none;">
 					<span class="glyphicon glyphicon-floppy-disk"></span> Modificar
 				</button>
 				<button type="button" class="btn btn-danger" data-dismiss="modal">
@@ -275,42 +358,64 @@ date_default_timezone_set('America/Guayaquil');
     });
 	
 	function RecolectarDatos(){
-		var NuevoEvento = {
+		NuevoEvento = {
 				id:$('#txtID').val(),
 				title:$('#txtTitulo').val(),
 				start:$('#txtFecha').val()+' '+$('#txtHora').val(),
 				end:$('#txtFecha').val()+' '+$('#txtHora').val(),
 				backgroundColor:$('#txtColor').val(),
 				borderColor:$('#txtColor').val(),
-				descripcion:$('#txtDescripcion').val()
+				descripcion:$('#txtDescripcion').val(),
+				persona_contacto:$('#txtPersonaContacto').val(),
+				lugar:$('#txtLugar').val()
 			};
 	}
 
 	function EnviarInformacion(accion, objEvento, modal){
 		var id = $('#txtID').val();
-		var title = $('#txtTitulo').val();
-		var start = $('#txtFecha').val()+' '+$('#txtHora').val();
-		var end = $('#txtFecha').val()+' '+$('#txtHora').val();
-		var color = $('#txtColor').val();
-		var descripcion = $('#txtDescripcion').val();
-		var dataString = 'title='+title+'&start='+start+'&end='+end+'&color='+color+'&descripcion='+descripcion;
+		var title = encodeURIComponent($('#txtTitulo').val());
+		var start = encodeURIComponent($('#txtFecha').val()+' '+$('#txtHora').val());
+		var end = encodeURIComponent($('#txtFecha').val()+' '+$('#txtHora').val());
+		var color = encodeURIComponent($('#txtColor').val());
+		var descripcion = encodeURIComponent($('#txtDescripcion').val());
+		var persona_contacto = encodeURIComponent($('#txtPersonaContacto').val());
+		var lugar = encodeURIComponent($('#txtLugar').val());
+		
+		var dataString = 'title='+title+'&start='+start+'&end='+end+'&color='+color+'&descripcion='+descripcion+'&persona_contacto='+persona_contacto+'&lugar='+lugar;
+		
+		if(id && accion == 'modificar'){
+			dataString += '&id='+id;
+		}
 				
 		$.ajax({
 			type:'POST',
-			url:'index.php?action=calendar&accion'+accion,			
-			datatype: 'json',
+			url:'index.php?action=calendar&accion='+accion,			
+			dataType: 'json',
 			data: dataString,
-			success:function(msg){
-				console.log(JSON.stringify(msg));
-				if(msg){					
+			success:function(response){
+				console.log('Respuesta:', response);
+				if(response && response.success !== false){					
 					$('#calendar').fullCalendar('refetchEvents');
 					if(!modal){
-						$('#dlg_dias').modal('toggle');	
+						$('#dlg_dias').modal('hide');
+						// Limpiar formulario
+						$('#txtID').val('');
+						$('#txtTitulo').val('');
+						$('#txtPersonaContacto').val('');
+						$('#txtLugar').val('');
+						$('#txtDescripcion').val('');
+						$('#txtColor').val('#3c8dbc');
+						$('#txtFecha').val('');
+						$('#txtHora').val('');
 					}
+					alert('Evento guardado correctamente');
+				} else {
+					alert('Error al guardar el evento');
 				}
 			},
-			error:function(){
-				alert("Hay un error...!!!");
+			error:function(xhr, status, error){
+				console.error('Error:', error);
+				alert("Error al procesar la solicitud. Por favor, intente nuevamente.");
 			}
 		});
 	}
