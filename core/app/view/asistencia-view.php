@@ -1,7 +1,7 @@
 <?php
 //Modulo de Operaciones para el registro del horario de los agentes activos
 //if($_SERVER['dispositivo'] == 1) Core::redir('consola');
-$_SESSION['tipo']='3';
+$_SESSION['tipo']='3'; $mes=''; $ano='';
 $puestos = PuestoData::getAll(2);
 
 if(!isset($_SESSION['mes'])) $_SESSION['mes']=date("m"); else $mes=$_SESSION['mes'];

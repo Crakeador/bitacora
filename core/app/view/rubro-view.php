@@ -108,10 +108,14 @@ if(isset($_GET["id"])){
 	<button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar </button>
 	</form>
 </section>
-<script>
-  var elem1 = document.querySelector('.calcula'); // referred checkbox class is here  
-  var elem2 = document.querySelector('.activo'); // referred checkbox class is here
+<link type="text/css" rel="stylesheet" href="plugins/switchery/switchery.min.css"/>
+<script type="text/javascript" src="plugins/switchery/switchery.min.js"></script>
+<script type="text/javascript">
+  	var elem1 = document.querySelector('.calcula'); // referred checkbox class is here  
+  	var elem2 = document.querySelector('.activo'); // referred checkbox class is here
 
-  var init = new Switchery(elem1, { size: 'small' }); // put option after elem attribute
-  var init = new Switchery(elem2, { size: 'small' }); // put option after elem attribute
+  	var init = new Switchery(elem1, { size: 'small' }); // put option after elem attribute
+  	var init = new Switchery(elem2, { size: 'small' }); // put option after elem attribute
+  
+	document.title = "Near Solution | Rubros de Nomina";
 </script>

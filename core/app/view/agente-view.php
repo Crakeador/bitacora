@@ -65,7 +65,7 @@ if(isset($_GET["id"])){
 				}
 			}
 
-          	Core::redir('rrsing.lista');
+          	Core::redir('agentes');
         }else{
           	Core::alert("Error...!!!!", $error, "error");
         }
@@ -102,7 +102,7 @@ if(isset($_GET["id"])){
 		<small><?php echo $mensaje; ?></small>
 	</h1>
 	<ol class="breadcrumb">
-		<li><a href="./index.php?view=rrsing.lista"><i class="fa fa-database"></i> Agentes </a></li>
+		<li><a href="agentes"><i class="fa fa-database"></i> Agentes </a></li>
 		<li class="active"><?php echo $enlaces; ?></li>
 	</ol>
 </section>
@@ -159,49 +159,32 @@ if(isset($_GET["id"])){
 							<option value="3" <?php if($person->tipo_sangre==3) echo 'selected="selected"'; ?>>AB-</option>
 							<option value="4" <?php if($person->tipo_sangre==4) echo 'selected="selected"'; ?>>AB+</option>
 							<option value="5" <?php if($person->tipo_sangre==5) echo 'selected="selected"'; ?>>B-</option>
-
 							<option value="6" <?php if($person->tipo_sangre==6) echo 'selected="selected"'; ?>>B+</option>
-
 							<option value="7" <?php if($person->tipo_sangre==7) echo 'selected="selected"'; ?>>O-</option>
-
 							<option value="8" <?php if($person->tipo_sangre==8) echo 'selected="selected"'; ?>>O+</option>
-
 						</select>
-
 					</div>
-
 				</div>				
-
 				<div class="form-group">
-
 					<label class="col-sm-4 control-label"><span class="text-danger">*</span> Tel&eacute;fono celular:</label>
-
 					<div class="col-sm-3"><input type="text" class="form-control" id="telefono1" name="telefono1" maxlength="10" data-inputmask='"mask": "9999999999"' data-mask placeholder="9999999999" value="<?php echo $person->phone1; ?>" required minlength="10" pattern="[0-9]{10}" title="Solo números, debe ser un telefono local"></div>
-
 				</div>
-
 				<div class="form-group">
-
 					<div class="col-md-2 col-sm-2">
-
 						<label class="col-sm-1 control-label">&nbsp;</label>
-
 						<input id="active" name="active" type="checkbox" class="activo" <?php if($person->is_active == 1) echo "checked"; ?>>
-
 						<label for="id_gasto_no_deducible">&nbsp;&nbsp;Activo </label>
-
 					</div>
-
 				</div>
-
 			</div>
-
 		</div>
 		<button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar </button>
 	</form>
 </section>
 <!-- Page specific script -->
-<script type='text/javascript'>
+<link type="text/css" rel="stylesheet" href="plugins/switchery/switchery.min.css"/>
+<script type="text/javascript" src="plugins/switchery/switchery.min.js"></script>
+<script type="text/javascript">
   var elem = document.querySelector('.activo'); // referred checkbox class is here
   var init = new Switchery(elem, { size: 'small' }); // put option after elem attribute    
   

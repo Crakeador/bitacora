@@ -103,7 +103,6 @@ if(isset($_GET["id"])){
 	</form>
 </section>
 <script>
-  var elem2 = document.querySelector('.activo'); // referred checkbox class is here
-  
+  var elem2 = document.querySelector('.activo'); // referred checkbox class is here  
   var init = new Switchery(elem2, { size: 'small' }); // put option after elem attribute
 </script>

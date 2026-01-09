@@ -1,0 +1,144 @@
+/* Estilos personalizados para el calendario */
+.fc-event {
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.fc-event:hover {
+	transform: scale(1.02);
+	box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.external-event {
+	cursor: move;
+	margin: 5px 0;
+	padding: 8px 10px;
+	border-radius: 4px;
+	transition: all 0.3s ease;
+}
+
+.external-event:hover {
+	transform: translateX(5px);
+	box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.fc-color-picker {
+	list-style: none;
+	margin: 0;
+	padding: 10px 0;
+}
+
+.fc-color-picker > li {
+	display: inline-block;
+	margin: 2px;
+}
+
+.fc-color-picker > li a {
+	display: block;
+	width: 30px;
+	height: 30px;
+	border-radius: 3px;
+	text-align: center;
+	line-height: 30px;
+	transition: all 0.2s ease;
+}
+
+.fc-color-picker > li a:hover {
+	transform: scale(1.2);
+	box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.fc-color-picker > li a i {
+	font-size: 18px;
+}
+
+#calendar {
+	font-size: 14px;
+}
+
+.fc-title {
+	font-weight: bold;
+}
+
+.fc-delete-btn {
+	background: rgba(0,0,0,0.5);
+	padding: 2px 5px;
+	border-radius: 3px;
+	transition: all 0.2s ease;
+}
+
+.fc-delete-btn:hover {
+	background: rgba(255,0,0,0.8);
+}
+
+.modal-content {
+	border-radius: 8px;
+	box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+.box {
+	border-radius: 5px;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.form-group.has-error .form-control {
+	border-color: #dd4b39;
+	box-shadow: 0 0 0 0.2rem rgba(221, 75, 57, 0.25);
+}
+
+.form-group.has-error label {
+	color: #dd4b39;
+}
+
+/* Animación para los botones */
+.btn {
+	transition: all 0.3s ease;
+}
+
+.btn:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Estilos para el selector de color */
+#txtColor {
+	height: 40px;
+	cursor: pointer;
+}
+
+/* Mejoras visuales para inputs */
+.form-control:focus {
+	border-color: #3c8dbc;
+	box-shadow: 0 0 0 0.2rem rgba(60, 141, 188, 0.25);
+}
+
+/* Loading spinner personalizado */
+.fa-spinner {
+	animation: fa-spin 1s infinite linear;
+}
+
+@keyframes fa-spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}
+
+/* Estilos responsive */
+@media (max-width: 768px) {
+	.col-md-3 {
+		margin-bottom: 20px;
+	}
+	
+	#calendar {
+		font-size: 12px;
+	}
+	
+	.fc-toolbar {
+		flex-direction: column;
+	}
+	
+	.fc-toolbar .fc-left,
+	.fc-toolbar .fc-center,
+	.fc-toolbar .fc-right {
+		margin-bottom: 10px;
+	}
+}

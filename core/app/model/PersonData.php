@@ -434,12 +434,12 @@ class PersonData {
 		return Model::many($query[0],new PersonData());
 	}
 
-	public static function getAllDatos(){
+	public static function getAllDatos($activo=1){
 		$sql = "SELECT C.descripcion, A.*
 		          FROM person A 
 	         LEFT JOIN personpuestos B ON B.idperson = A.id
 	         LEFT JOIN puestos C ON C.id = B.idservicio
-	             WHERE A.idlocalidad = ".$_SESSION["id_localidad"]." OR C.idlugar = ".$_SESSION["id_localidad"]." ORDER BY C.grupo"; 
+	             WHERE A.is_active = $activo AND (A.idlocalidad = ".$_SESSION["id_localidad"]." OR C.idlugar = ".$_SESSION["id_localidad"].") ORDER BY C.grupo"; 
 
 		$query = Executor::doit($sql); 
 

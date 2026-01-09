@@ -4,9 +4,14 @@ if(isset($_POST["cedula"]) && $_POST["cedula"]!=""){
     $base = new Database();
     $con = $base->connect();
 
-    // Codigo para el ingreso de la auditoria
+    var_dump($_POST);
+    // Codigo para el ingreso de la auditoria    
     $sql = "INSERT INTO cotizacion (idcompany, tipo, cedula, contacto, cargo, celular, email, ruc, razon, telefono, correo, direccion, servicio, puntos, horas, modalidad, ciudad, fecha, observacion, status) ";
     $sql .= "value (1, 3, '".$_POST["cedula"]."', '".$_POST["contacto"]."', '".$_POST["cargo"]."', '".$_POST["celular"]."', '".$_POST["email"]."', '".$_POST["ruc"]."', '".$_POST["razon"]."', '".$_POST["telefono"]."', '".$_POST["correo"]."', '".$_POST["direccion"]."', '".$_POST["servicio"]."', '".$_POST["puntos"]."', '".$_POST["horas"]."', '".$_POST["modalidad"]."', '".$_POST["ciudad"]."', '".$_POST["fecha"]."', '".$_POST["observacion"]."', 4)";
+
+    $sql = "INSERT INTO timeline (idcompany, idperson, quien_asigna, email, celular, prioridad, status, asunto, title, type, date_event, created_at) ";
+	$sql.= "value (1, 1, '".$_POST["contacto"]."', '".$_POST["email"]."', '".$_POST["celular"]."', '".$_POST["prioridad"]."', 1, '".$_POST["asunto"]."', '".$_POST["title"]."', 2, NOW(), NOW())"; 
+
     
     $registros = $con->query($sql);
     if (!$registros){
@@ -87,6 +92,12 @@ if(isset($_POST["cedula"]) && $_POST["cedula"]!=""){
             }
             
             /* Este es nuestro diseño para los campos no válidos */
+            select:invalid {
+              border-color: #900;
+              background-color: #fdd;
+            }
+
+            /* Este es nuestro diseño para los campos no válidos */
             textarea:invalid {
               border-color: #900;
               background-color: #fdd;
@@ -119,7 +130,7 @@ if(isset($_POST["cedula"]) && $_POST["cedula"]!=""){
       <!-- Pantalla de Logeo -->
       <header class="navbar navbar-header navbar-header-fixed">
         <div class="navbar-brand">
-          <div class="df-logo">Credencial&nbsp;&nbsp;<span>Eléctronica</span></div>
+          <div class="df-logo">Solicitud&nbsp;&nbsp;<span>Eléctronica</span></div>
         </div><!-- navbar-brand -->
       </header><!-- navbar -->
       <div class="content content-fixed content-auth" style="background-image: url('assets/images/american.png'); background-repeat:no-repeat; background-size:cover; background-position:center center;">
@@ -128,37 +139,15 @@ if(isset($_POST["cedula"]) && $_POST["cedula"]!=""){
                 <div class="col-sm">
                     <div class="card">
                         <div class="form-group">
-                            <img src="assets/images/american.png" class="img-fluid" alt="Latin American" height="60%" width="20%" align="right">
+                            <img src="assets/images/american.png" class="img-fluid" alt="Latin American" height="60%" width="20%" align="right" style="margin-top: 10px; margin-right: 10px;">
                         </div>
                         <div class="card-body">
                             <form class="form-horizontal" method="post" id="cotizacion" action="index.php?action=solicitud" role="form">
                                 <fieldset class="form-fieldset">
                                     <legend>Informaci&oacute;n personal</legend>
                                     <div class="form-group">
-                                        <label for="cedula" class="d-block">Cedula:</label>
-                                        <input type="number" id="cedula" name="cedula" class="form-control" placeholder="Ingrese su cedula" value="" required minlength="10" maxlength="10">
-                                    </div>
-                                    <div class="form-group">
                                         <label for="contacto" class="d-block">Apellidos y Nombres:</label>
-                                        <input type="text" id="contacto" name="contacto" class="form-control" placeholder="Enter your firstname" value="" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <legend>Requerimiento a Solicitar</legend>
-                                        <p>
-                                            <fieldset>
-                                            <legend>¿Indique el tipo de residente?&nbsp;&nbsp;<abbr title="Este campo es obligatorio" aria-label="required">*</abbr></legend>
-                                            <input type="radio" required name="tipo" id="tipo" value="1">&nbsp;&nbsp;<label for="r1">Asesor&iacute;a-tecnolog&iacute;ca</label>
-                                            <input type="radio" required name="tipo" id="tipo" value="2">&nbsp;&nbsp;<label for="r2">Seguridad y vigilancia</label>
-                                            </fieldset>
-                                        </p>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="puntos" class="d-block">Cantidad de Puntos:</label>
-                                        <input type="number" id="puntos" name="puntos" class="form-control" placeholder="1, 2 o 3" value="1" required minlength="1" maxlength="13" step="1" pattern="\d+">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="cargo" class="d-block">Cargo:</label>
-                                        <input type="text" id="cargo" name="cargo" class="form-control" placeholder="Enter your firstname" value="" required>
+                                        <input type="text" id="contacto" name="contacto" class="form-control" placeholder="Ingrese sus apellidos y nombres" value="" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="celular" class="d-block">Celular:</label>
@@ -175,30 +164,8 @@ if(isset($_POST["cedula"]) && $_POST["cedula"]!=""){
                                     <p>
                                         <fieldset>
                                           <legend>¿Que tipo de servicio necesita?&nbsp;&nbsp;<abbr title="Este campo es obligatorio" aria-label="required">*</abbr></legend>
-                                          <input type="radio" required name="servicio" id="r1" value="1">&nbsp;&nbsp;<label for="r1">Asesor&iacute;a-tecnolog&iacute;ca</label>
+                                          <input type="radio" required name="servicio" id="r1" value="1">&nbsp;&nbsp;<label for="r1">Asesor&iacute;a-tecnolog&iacute;ca</label>&nbsp;&nbsp;
                                           <input type="radio" required name="servicio" id="r2" value="2">&nbsp;&nbsp;<label for="r2">Seguridad y vigilancia</label>
-                                        </fieldset>
-                                    </p>
-                                    <div class="form-group">
-                                        <label for="puntos" class="d-block">Cantidad de Puntos:</label>
-                                        <input type="number" id="puntos" name="puntos" class="form-control" placeholder="1, 2 o 3" value="1" required minlength="1" maxlength="13" step="1" pattern="\d+">
-                                    </div>
-                                    <p>
-                                        <fieldset>
-                                          <legend>¿Cuantas horas necesita?&nbsp;&nbsp;<abbr title="Este campo es obligatorio" aria-label="required">*</abbr></legend>
-                                          <input type="radio" required name="horas" id="h1" value="1">&nbsp;&nbsp;<label for="h1">8</label>
-                                          <input type="radio" required name="horas" id="h2" value="2">&nbsp;&nbsp;<label for="h2">9</label>
-                                          <input type="radio" required name="horas" id="h3" value="3">&nbsp;&nbsp;<label for="h3">10</label>
-                                          <input type="radio" required name="horas" id="h4" value="4">&nbsp;&nbsp;<label for="h4">12</label>
-                                          <input type="radio" required name="horas" id="h5" value="5">&nbsp;&nbsp;<label for="h5">16</label>
-                                          <input type="radio" required name="horas" id="h6" value="6">&nbsp;&nbsp;<label for="h6">24</label>
-                                        </fieldset>
-                                    </p>
-                                    <p>
-                                        <fieldset>
-                                          <legend>¿Que tipo de modalidad?&nbsp;&nbsp;<abbr title="Este campo es obligatorio" aria-label="required">*</abbr></legend>
-                                          <input type="radio" required name="modalidad" id="m1" value="1">&nbsp;&nbsp;<label for="m1">Fijo</label>
-                                          <input type="radio" required name="modalidad" id="m2" value="2">&nbsp;&nbsp;<label for="m2">Movil</label>
                                         </fieldset>
                                     </p>
                                     <div class="form-group">
@@ -206,16 +173,20 @@ if(isset($_POST["cedula"]) && $_POST["cedula"]!=""){
                                         <input type="text" id="ciudad" name="ciudad" class="form-control" placeholder="Nombre de la empresa" value="" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="telefono" class="d-block">Telefono:</label>
-                                        <input type="number" id="telefono" name="telefono" class="form-control" placeholder="Numero de telefono" value="" required>
+                                        <label for="prioridad" class="d-block">Prioridad:</label>
+                                        <select class="select-input form-control" id="prioridad" name="prioridad" class="d-block" required>
+                                            <option value="0" selected="selected"> Baja </option>
+                                            <option value="1"> Media </option>
+                                            <option value="2"> Alta </option>
+                                        </select>
                                     </div>
                                     <div class="form-group">
-                                        <label for="fecha" class="d-block">Fecha de contrataci&oacute;n:</label>
-                                        <input type="date" id="fecha" name="fecha" class="form-control" placeholder="Correo electronico para ser atendido" value="" required>
+                                        <label for="asunto" class="d-block">Asunto:</label>
+                                        <input type="text" id="asunto" name="asunto" class="form-control" placeholder="Asunto del servicio" value="" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="observacion" class="d-block">Comentario:</label>
-                                        <textarea class="form-control" id="observacion" name="observacion" rows="4" placeholder="Especifique mas informaci&oacute;n sobre el punto"></textarea>
+                                        <label for="title" class="d-block">Comentario:</label>
+                                        <textarea class="form-control" id="title" name="title" rows="4" placeholder="Especifique mas informaci&oacute;n sobre el soporte"></textarea>
                                     </div>
                                 </fieldset>
                                 </br>

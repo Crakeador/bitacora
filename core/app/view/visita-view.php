@@ -21,12 +21,6 @@ if($resCli = $mysqli->query($sqlClientes)){
     $resCli->close();
 }
 
-if($_SESSION['idrol']=='4') {
-    //Personas Permitidos
-}else{
-    print "<script>window.location='index.php?view=home&error=10';</script>";
-}
-
 if(isset($_POST['id_person'])){
     $user = new BitacoraData();
     $user->idpuesto = 174;
@@ -36,7 +30,13 @@ if(isset($_POST['id_person'])){
     $user->tipo = "Visita";
     $user->proceso = "Ventas";
     $user->nota = "Visita de clientes";
-    $user->observacion = $_POST["cliente"].'. Telefono: '.$_POST["telefono"];
+    
+    // Capturar ID del cliente y nombre desde el select
+    $idcomercial = isset($_POST["idcomercial"]) ? intval($_POST["idcomercial"]) : 0;
+    $cliente_nombre = isset($_POST["cliente_nombre"]) ? trim($_POST["cliente_nombre"]) : '';
+    
+    // Construir observación con nombre del cliente y teléfono
+    $user->observacion = $cliente_nombre . '. ID Cliente: ' . $idcomercial . '. Telefono: ' . $_POST["telefono"];
     $user->observaciono = $_POST["observacion"];
     $user->accion = $_POST["accion"];
     $user->timestamp = $_POST["timestamp"];
@@ -171,6 +171,8 @@ if($hora<16){
     <div class="container-fluid">
         <form class="form-horizontal" method="post" enctype="multipart/form-data" id="parte" name="parte" action="visito" role="form">
             <input type="hidden" id="id_person"  name="id_person"  value="<?php echo $_SESSION['user_id']; ?>">
+            <input type="hidden" id="idcomercial" name="idcomercial" value="">
+            <input type="hidden" id="cliente_nombre" name="cliente_nombre" value="">
             <input type="hidden" id="timestamp"  name="timestamp"  value="">
             <input type="hidden" id="latitude"   name="latitude"   value="">
             <input type="hidden" id="longitude"  name="longitude"  value="">
@@ -202,17 +204,18 @@ if($hora<16){
     										</div>
     									</div>
     								</div>
-                                    <div class="form-group">
+                					<div class="form-group">
                                         <label for="cliente" class="col-md-4 col-sm-4 control-label"><span class="text-danger">*</span> Clientes:</label>
                                         <div class="col-md-6 col-sm-6">
-                                            <select class="form-control" id="cliente" name="cliente" required>
+                                            <select class="form-control" id="cliente" name="cliente" required onchange="actualizarCliente(this)">
                                                 <option value="">-- Seleccione un cliente --</option>
                                                 <?php foreach($clientes as $cli): ?>
                                                     <?php 
+                                                        $cliId = intval($cli['id'] ?? 0);
                                                         $nom = htmlspecialchars($cli['nombre'] ?? '', ENT_QUOTES, 'UTF-8');
                                                         $ruc = isset($cli['ruc']) ? htmlspecialchars($cli['ruc'], ENT_QUOTES, 'UTF-8') : '';
                                                     ?>
-                                                    <option value="<?= $nom ?>"><?= $nom ?><?= $ruc ? ' (' . $ruc . ')' : '' ?></option>
+                                                    <option value="<?= $cliId ?>" data-nombre="<?= $nom ?>"><?= $nom ?><?= $ruc ? ' (' . $ruc . ')' : '' ?></option>
                                                 <?php endforeach; ?>
                                             </select>
                                         </div>
@@ -279,6 +282,16 @@ if($hora<16){
 
     element.classList.add("sidebar-collapse");
     document.title = "Registro de la Bitacora";
+    
+    // Función para actualizar campos hidden con ID y nombre del cliente seleccionado
+    function actualizarCliente(select) {
+        var selectedOption = select.options[select.selectedIndex];
+        var clienteId = select.value;
+        var clienteNombre = selectedOption.getAttribute('data-nombre') || '';
+        
+        document.getElementById('idcomercial').value = clienteId;
+        document.getElementById('cliente_nombre').value = clienteNombre;
+    }
 </script>
 <script>
   $(document).ready(function(){

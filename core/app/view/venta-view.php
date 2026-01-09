@@ -5,7 +5,7 @@ $hoy = date("Y-m-d");
 if(isset($_GET["id"])){
     $mensaje = "modificar un cliente en el sistema";
     $enlaces = "Modificar";
-    $client = ClientData::getById($_GET["id"]);
+    $client = ComercialData::getById($_GET["id"]);
     $client_id = $_GET["id"];
 }else{
     $mensaje = "crear un nuevo cliente en el sistema";
@@ -14,13 +14,13 @@ if(isset($_GET["id"])){
  	// Ingreso de clientes
 	if(count($_POST)>0){
 		if($_POST["client_id"] == 0){
-			if(is_object(ClientData::getByRuc($_POST["ruc"]))){
+			if(is_object(ComercialData::getByRuc($_POST["ruc"]))){
 			  $error = 'El RUC ya exite...!!!';
 			}
 		}
 
 		if($error == ""){
-		    $user = new ClientData();
+		    $user = new ComercialData();
 			$user->idcompany = $_SESSION['id_company'];
 			$user->tipo_empresa = 2;
 			$user->residencial = 0;
@@ -208,7 +208,7 @@ if(isset($_GET["id"])){
     					<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Agregar
     				</button></br></br>	<?php
 				}
-				$users = ClientData::getDetalle($client_id);		
+				$users = ComercialData::getDetalle($client_id);		
 				$resultado = count($users); 
 				
 				if($resultado > 0){ ?>

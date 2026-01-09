@@ -128,7 +128,7 @@ if($_SESSION['is_admin'] == 1) {
 											else
 												echo '<td>'.$tables->mensaje.'</td>';
 											echo '<td>';
-										        echo $tables->lastname.' '.$tables->name.'</br>';
+										        echo $tables->name.'</br>';
 										        echo '<small>';
 													if($tables->vistas == 0){
 														echo '<span class="text-danger glyphicon glyphicon-minus-sign"></span>&nbsp;';

@@ -1,12 +1,17 @@
 <?php 
 //Sistemas de clientes
-
 if($_SESSION['idrol'] == 11) Core::redir('aspirantes');
+$totalPros = ComercialData::getNull();
+$totalLlam = ComercialData::getTotal('Llamada');
+$totalMail = ComercialData::getTotal('Mailing');
+$totalVisi = ComercialData::getTotal('Visita');
+$totalWhat = ComercialData::getTotal('Whatsapp');
+
 if(isset($_GET['id'])){	
     $total = PuestoData::getByIdTodos($_GET['id'], 1);
 	
 	if(count($total) == 0){	
-		$client = new ClientData();	
+		$client = new ComercialData();	
 		$client->idclient = $_GET['id'];
 		//$valor = $client->del();
 	}else{
@@ -37,79 +42,220 @@ if(isset($_GET['id'])){
 		<!-- tabs -->
 		<ul class="nav nav-tabs">
 			<li class="active">
-				<a href="#tab_activos" data-toggle="tab" aria-expanded="false"><b>Activos</b></a>
+				<a href="#tab_prospecto" data-toggle="tab" aria-expanded="false"><b>Prospectos</b></a>
+			</li>			
+			<li>
+				<a href="#tab_llamadas" data-toggle="tab" aria-expanded="false"><b>Llamadas</b></a>
 			</li>
 			<li>
-				<a href="#tab_inactivos" data-toggle="tab" aria-expanded="false"><b>Inactivos</b></a>
+				<a href="#tab_mailing" data-toggle="tab" aria-expanded="false"><b>Mailing</b></a>
+			</li>
+			<li>
+				<a href="#tab_visita" data-toggle="tab" aria-expanded="false"><b>Visitas</b></a>
+			</li>
+			<li>
+				<a href="#tab_what" data-toggle="tab" aria-expanded="false"><b>Whatsapp</b></a>
 			</li>
 		</ul>
 		<div class="box-body mailbox-messages">		
 			<!-- tabs content -->
 			<div class="tab-content panel">
-              	<div class="tab-pane active" id="tab_activos">
-					<form id='frmC' name='frmC' method='post' action=''>
-						<input type='hidden' name='hid_frmEstado' id='hid_frmEstado' value='' />
-						<input type='hidden' name='hid_frmIdrol' id='hid_frmIdrol' value='<?php echo $_SESSION['idrol']; ?>'/>
-						<table id="viewlista" class="table table-bordered table-hover">
-							<thead>
-							 <tr>
+              	<div class="tab-pane active" id="tab_prospecto">
+					<table id="viewlista" class="table table-bordered table-hover">
+						<thead>
+							<tr>
 								<th width="10%">RUC</th>
 								<th>Cliente</th>
+								<th>Telefono</th>
 								<th>Contacto</th>
-								<th>Direcci&oacute;n</th>
-							 </tr>
-							</thead>
-							<tbody>
-								<?php
-									$client = ClientData::getAll(0, 1);
-
-									// Crea tabla de Ventas
-									foreach($client as $tables) {
-										echo '<tr>';
-											echo '<td>
-											        <div align="center">';									
-														echo $tables->ruc.'</br>';
-														echo '<a href="index.php?view=catcli.resumen&id='.$tables->idclient.'" class="btn btn-xs btn-warning"><i class="glyphicon glyphicon-eye-open"></i></a>';
-														echo '<a href="./index.php?view=cliente&id='.$tables->idclient.'" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-edit"></i></a>';
-														echo '<button type="button" class="btn btn-xs btn-danger btn-sm" onClick="btn_EnviarOnClick(\''.$tables->idclient.'\', \''.$tables->is_active.'\');"><i class="fa fa-trash"></i></button>';
-											   echo '</div>
-											      </td>';
-											echo '<td>'.$tables->nombre.'</td>';
-											echo '<td><b>'.$tables->contacto.'</b></td>';
-											echo '<td>'.$tables->direccion.'</td>';
-										echo '</tr>';
-									}
-								?>
-							</tbody>
-						</table>
-					</form>
-				</div>
-				<div class="tab-pane" id="tab_inactivos">
-					<table id="viewInac" class="table table-bordered table-hover">
-						<thead>
-						 <tr>
-							<th width="10%">RUC</th>
-							<th>Cliente</th>
-							<th>Contacto</th>
-							<th>Direcci&oacute;n</th>
-						 </tr>
+								<th>E-Mail</th>
+								<th>Observacion</th>
+							</tr>
 						</thead>
 						<tbody>
 							<?php
-								$client = ClientData::getAll(0, 0);
+								if($_SESSION['idrol'] == 3){ // Si es administrador ve todos los clientes
+									$client = ComercialData::getLike("");
+								}else{
+									$client = ComercialData::getAll($_SESSION['user_id'], 1, "");
+								}
+
+								// Crea tabla de Ventas
+								foreach($client as $tables) {
+									echo '<tr>';
+										echo '<td>
+												<div align="center">';									
+													echo $tables->ruc.'</br>';
+													echo '<a href="index.php?view=catcli.resumen&id='.$tables->id.'" class="btn btn-xs btn-warning"><i class="glyphicon glyphicon-eye-open"></i></a>';
+													echo '<a href="./index.php?view=cliente&id='.$tables->id.'" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-edit"></i></a>';
+													echo '<button type="button" class="btn btn-xs btn-danger btn-sm" onClick="btn_EnviarOnClick(\''.$tables->id.'\', \''.$tables->is_active.'\');"><i class="fa fa-trash"></i></button>';
+											echo '</div>
+												</td>';
+										echo '<td>'.$tables->nombre.'</td>';
+										echo '<td><div align="center">'.$tables->telefono1.'</div></td>';
+										echo '<td><b>'.$tables->contacto.'</b></td>';
+										echo '<td>'.$tables->email.'</td>';
+										echo '<td>'.$tables->observacion.'</td>';
+									echo '</tr>';
+								}
+							?>
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-pane" id="tab_llamadas">
+					<table id="viewInac" class="table table-bordered table-hover">
+						<thead>
+							<tr>
+								<th width="10%">RUC</th>
+								<th>Cliente</th>
+								<th>Telefono</th>
+								<th>Contacto</th>
+								<th>E-Mail</th>
+								<th>Observacion</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php
+								if($_SESSION['idrol'] == 3){ // Si es administrador ve todos los clientes
+									$client = ComercialData::getLike("Llamada");
+								}else{
+									$client = ComercialData::getAll($_SESSION['user_id'], 1, "");
+								}
 
 								// Crea tabla de Ventas
 								foreach($client as $tables) {
 									echo '<tr>';
 										echo '<td><div align="center">';									
 											echo $tables->ruc.'</br>';
-												echo '<a href="index.php?view=catcli.resumen&id='.$tables->idclient.'" class="btn btn-xs btn-warning"><i class="glyphicon glyphicon-eye-open"></i></a>';
-												echo '<a href="./cliente/'.$tables->idclient.'" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-edit"></i></a>';
-												echo '<button type="button" class="btn btn-xs btn-danger btn-sm" onClick="btn_EnviarOnClick(\''.$tables->idclient.'\', \''.$tables->is_active.'\');"><i class="fa fa-trash"></i></button>';
+												echo '<a href="index.php?view=catcli.resumen&id='.$tables->id.'" class="btn btn-xs btn-warning"><i class="glyphicon glyphicon-eye-open"></i></a>';
+												echo '<a href="./cliente/'.$tables->id.'" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-edit"></i></a>';
+												echo '<button type="button" class="btn btn-xs btn-danger btn-sm" onClick="btn_EnviarOnClick(\''.$tables->id.'\', \''.$tables->is_active.'\');"><i class="fa fa-trash"></i></button>';
 										echo '</div></td>';
 										echo '<td>'.$tables->nombre.'</td>';
+										echo '<td><div align="center">'.$tables->telefono1.'</div></td>';
 										echo '<td><b>'.$tables->contacto.'</b></td>';
-										echo '<td>'.$tables->direccion.'</td>';
+										echo '<td>'.$tables->email.'</td>';
+										echo '<td>'.$tables->observacion.'</td>';
+									echo '</tr>';
+								}
+							?>
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-pane" id="tab_mailing">
+					<table id="viewInac" class="table table-bordered table-hover">
+						<thead>
+							<tr>
+								<th width="10%">RUC</th>
+								<th>Cliente</th>
+								<th>Telefono</th>
+								<th>Contacto</th>
+								<th>E-Mail</th>
+								<th>Observacion</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php
+								if($_SESSION['idrol'] == 3){ // Si es administrador ve todos los clientes
+									$client = ComercialData::getLike("Mailing");
+								}else{
+									$client = ComercialData::getAll($_SESSION['user_id'], 1, "");
+								}
+
+								// Crea tabla de Ventas
+								foreach($client as $tables) {
+									echo '<tr>';
+										echo '<td><div align="center">';									
+											echo $tables->ruc.'</br>';
+												echo '<a href="index.php?view=catcli.resumen&id='.$tables->id.'" class="btn btn-xs btn-warning"><i class="glyphicon glyphicon-eye-open"></i></a>';
+												echo '<a href="./cliente/'.$tables->id.'" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-edit"></i></a>';
+												echo '<button type="button" class="btn btn-xs btn-danger btn-sm" onClick="btn_EnviarOnClick(\''.$tables->id.'\', \''.$tables->is_active.'\');"><i class="fa fa-trash"></i></button>';
+										echo '</div></td>';
+										echo '<td>'.$tables->nombre.'</td>';
+										echo '<td><div align="center">'.$tables->telefono1.'</div></td>';
+										echo '<td><b>'.$tables->contacto.'</b></td>';
+										echo '<td>'.$tables->email.'</td>';
+										echo '<td>'.$tables->observacion.'</td>';
+									echo '</tr>';
+								}
+							?>
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-pane" id="tab_visita">
+					<table id="viewInac" class="table table-bordered table-hover">
+						<thead>
+							<tr>
+								<th width="10%">RUC</th>
+								<th>Cliente</th>
+								<th>Telefono</th>
+								<th>Contacto</th>
+								<th>E-Mail</th>
+								<th>Observacion</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php
+								if($_SESSION['idrol'] == 3){ // Si es administrador ve todos los clientes
+									$client = ComercialData::getLike("Visita");
+								}else{
+									$client = ComercialData::getAll($_SESSION['user_id'], 1, "");
+								}
+
+								// Crea tabla de Ventas
+								foreach($client as $tables) {
+									echo '<tr>';
+										echo '<td><div align="center">';									
+											echo $tables->ruc.'</br>';
+												echo '<a href="index.php?view=catcli.resumen&id='.$tables->id.'" class="btn btn-xs btn-warning"><i class="glyphicon glyphicon-eye-open"></i></a>';
+												echo '<a href="./cliente/'.$tables->id.'" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-edit"></i></a>';
+												echo '<button type="button" class="btn btn-xs btn-danger btn-sm" onClick="btn_EnviarOnClick(\''.$tables->id.'\', \''.$tables->is_active.'\');"><i class="fa fa-trash"></i></button>';
+										echo '</div></td>';
+										echo '<td>'.$tables->nombre.'</td>';
+										echo '<td><div align="center">'.$tables->telefono1.'</div></td>';
+										echo '<td><b>'.$tables->contacto.'</b></td>';
+										echo '<td>'.$tables->email.'</td>';
+										echo '<td>'.$tables->observacion.'</td>';
+									echo '</tr>';
+								}
+							?>
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-pane" id="tab_what">
+					<table id="viewInac" class="table table-bordered table-hover">
+						<thead>
+							<tr>
+								<th width="10%">RUC</th>
+								<th>Cliente</th>
+								<th>Telefono</th>
+								<th>Contacto</th>
+								<th>E-Mail</th>
+								<th>Observacion</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php
+								if($_SESSION['idrol'] == 3){ // Si es administrador ve todos los clientes
+									$client = ComercialData::getLike("Whatsapp");
+								}else{
+									$client = ComercialData::getAll($_SESSION['user_id'], 1, "");
+								}
+
+								// Crea tabla de Ventas
+								foreach($client as $tables) {
+									echo '<tr>';
+										echo '<td><div align="center">';									
+											echo $tables->ruc.'</br>';
+												echo '<a href="index.php?view=catcli.resumen&id='.$tables->id.'" class="btn btn-xs btn-warning"><i class="glyphicon glyphicon-eye-open"></i></a>';
+												echo '<a href="./cliente/'.$tables->id.'" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-edit"></i></a>';
+												echo '<button type="button" class="btn btn-xs btn-danger btn-sm" onClick="btn_EnviarOnClick(\''.$tables->id.'\', \''.$tables->is_active.'\');"><i class="fa fa-trash"></i></button>';
+										echo '</div></td>';
+										echo '<td>'.$tables->nombre.'</td>';
+										echo '<td><div align="center">'.$tables->telefono1.'</div></td>';
+										echo '<td><b>'.$tables->contacto.'</b></td>';
+										echo '<td>'.$tables->email.'</td>';
+										echo '<td>'.$tables->observacion.'</td>';
 									echo '</tr>';
 								}
 							?>

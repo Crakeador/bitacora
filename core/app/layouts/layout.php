@@ -3,6 +3,11 @@
 // Modificado el: 16/01/2024
 header('Content-Type: text/html; charset=UTF-8');
 date_default_timezone_set('America/Guayaquil');
+// Cabeceras de seguridad básicas
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: SAMEORIGIN');
+header('Referrer-Policy: no-referrer-when-downgrade');
+header('Permissions-Policy: geolocation=(self)');
 
 if(!isset($_SESSION['depart'])) unset($_SESSION['user_id']);
 
@@ -21,7 +26,23 @@ if (preg_match('/(up.browser|up.link|mmp|symbian|smartphone|midp|wap|phone|andro
     $body_class = "mobile";
 }
 
-if ((strpos(strtolower($_SERVER['HTTP_ACCEPT']),'application/vnd.wap.xhtml+xml') > 0) or ((isset($_SERVER['HTTP_X_WAP_PROFILE']) or isset($_SERVER['HTTP_PROFILE'])))) {
+// Obtén el Accept de forma segura
+$accept = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : '';
+
+// Detecta si es navegador móvil según Accept o cabeceras WAP
+$isWap = false;
+
+// Buscar la cadena en Accept (correctamente maneja '1' posición 0)
+if (strpos(strtolower($accept), 'application/vnd.wap.xhtml+xml') !== false) {
+    $isWap = true;
+}
+
+// Verifica cabeceras WAP si no está redundante con Accept
+if (!$isWap && (isset($_SERVER['HTTP_X_WAP_PROFILE']) || isset($_SERVER['HTTP_PROFILE']))) {
+    $isWap = true;
+}
+
+if ($isWap) {
     $mobile_browser++;
     $body_class = "mobile";
 }
@@ -66,6 +87,39 @@ else{
 if(isset($_SESSION['depart'])) $departamento = DepartamentoData::getById($_SESSION['depart']);
 
 $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
+/*
+  Documentación:
+  - h($s): escapar HTML seguro para cualquier salida (previene XSS).
+  - load_view_assets($view): centraliza la carga condicional de assets por vista.
+    Extensión: añadir casos dentro de la función cuando se requieran nuevos plugins.
+*/
+if(!function_exists('h')){ function h($s){ return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); } }
+// Cache de usuario para evitar múltiples consultas por request
+$user = null; if(isset($_SESSION['user_id'])){ $user = UserData::getById($_SESSION['user_id']); }
+// Helper para cargar assets por vista
+if(!function_exists('load_view_assets')){
+  function load_view_assets($view){
+    // FullCalendar
+    if($view === 'calendar'){
+      echo '<script type="text/javascript" src="plugins/fullcalendar/moment.min.js?v=1.0.1"></script>';
+      echo '<link type="text/css" rel="stylesheet" href="plugins/fullcalendar/fullcalendar.min.css?v=1.0.1">';
+      echo '<link type="text/css" rel="stylesheet" href="plugins/fullcalendar/fullcalendar.print.css?v=1.0.1" media="print">';
+      echo '<script type="text/javascript" src="plugins/fullcalendar/fullcalendar.min.js?v=1.0.1"></script>';
+      echo '<script type="text/javascript" src="plugins/fullcalendar/locale-all.js?v=1.0.1"></script>';
+    }
+    // InputMask en formularios
+    if(in_array($view, ['newprovider','editprovider','residente','autorizar','novedad','cliente','corizar','recibo','venta'])){
+      echo '<script type="text/javascript" src="plugins/input-mask/jquery.inputmask.js?v=1.0.1"></script>';
+      echo '<script type="text/javascript" src="plugins/input-mask/jquery.inputmask.date.extensions.js?v=1.0.1"></script>';
+      echo '<script type="text/javascript" src="plugins/input-mask/jquery.inputmask.extensions.js?v=1.0.1"></script>';
+    }
+    // QR
+    if($view === 'sell'){
+      echo '<script type="text/javascript" src="plugins/jsqrcode/llqrcode.js?v=1.0.1"></script>';
+      echo '<script type="text/javascript" src="plugins/jsqrcode/webqr.js?v=1.0.1"></script>';
+    }
+  }
+}
 
 ?>
 <!DOCTYPE html>
@@ -95,34 +149,34 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <?php // Seleccion de los temas del Sistema
       if(!isset($_SESSION["user_id"])){
-          // DashForge CSS
-          echo '<link type="text/css" rel="stylesheet" href="assets/css/dashforge.css?v=1.0.1"/>';
-          echo '<link type="text/css" rel="stylesheet" href="assets/css/dashforge.auth.css?v=1.0.1"/>';
+        // DashForge CSS (pantalla de login)
+        echo '<link type="text/css" rel="stylesheet" href="assets/css/dashforge.css?v=1.0.1"/>';
+        echo '<link type="text/css" rel="stylesheet" href="assets/css/dashforge.auth.css?v=1.0.1"/>';
       }else{
-          // Theme style
-          echo '<link type="text/css" rel="stylesheet" href="assets/css/AdminLTE.min.css?v=1.0.1"/>';
-          echo '<link type="text/css" rel="stylesheet" href="assets/css/skins/skin-black.min.css?v=1.0.1"/>';
-          echo '<link type="text/css" rel="stylesheet" href="assets/css/flexslider.css?v=1.0.1"/>';
-          // BootsTrap
-          echo '<link type="text/css" rel="stylesheet" href="plugins/bootstrap/css/bootstrap.min.css?v=1.0.1"/>';
-          echo '<link type="text/css" rel="stylesheet" href="plugins/datepicker/datepicker3.css?v=1.0.1"/>';
-          echo '<link type="text/css" rel="stylesheet" href="plugins/datetimepicker/css/bootstrap-datetimepicker.css?v=1.0.1"/>';
-          // Data Tables
-          echo '<link type="text/css" rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css?v=1.0.1"/>';
-          echo '<link type="text/css" rel="stylesheet" href="plugins/datatables/extensions/Responsive/css/responsive.bootstrap.min.css?v=1.0.1"/>';
-          // Font Awesome Icons
-          echo '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">';
-          // Theme style
-          echo '<link type="text/css" rel="stylesheet" href="plugins/icheck/all.css?v=1.0.1">';
-          // Alertas del Sistema
-          echo '<link type="text/css" rel="stylesheet" href="plugins/sweetalert/sweetalert.css?v=1.0.1"/>';
-          // Select2
-          echo '<link type="text/css" rel="stylesheet" href="plugins/select2/css/select2.min.css?v=1.0.1"/>';
-          echo '<link type="text/css" rel="stylesheet" href="plugins/jQueryUI/jquery-ui.min.css?v=1.0.1"/>';
-          // Switchery
-          echo '<link type="text/css" rel="stylesheet" href="plugins/switchery/switchery.min.css?v=1.0.1"/>';
+        // Theme style
+        echo '<link type="text/css" rel="stylesheet" href="assets/css/AdminLTE.min.css?v=1.0.1"/>';
+        echo '<link type="text/css" rel="stylesheet" href="assets/css/skins/skin-black.min.css?v=1.0.1"/>';
+        echo '<link type="text/css" rel="stylesheet" href="assets/css/flexslider.css?v=1.0.1"/>';
+        // BootsTrap
+        echo '<link type="text/css" rel="stylesheet" href="plugins/bootstrap/css/bootstrap.min.css?v=1.0.1"/>';
+        echo '<link type="text/css" rel="stylesheet" href="plugins/datepicker/datepicker3.css?v=1.0.1"/>';
+        echo '<link type="text/css" rel="stylesheet" href="plugins/datetimepicker/css/bootstrap-datetimepicker.css?v=1.0.1"/>';
+        // Data Tables
+        echo '<link type="text/css" rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css?v=1.0.1"/>';
+        echo '<link type="text/css" rel="stylesheet" href="plugins/datatables/extensions/Responsive/css/responsive.bootstrap.min.css?v=1.0.1"/>';
+        // Font Awesome Icons
+        echo '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">';
+        // Theme style
+        echo '<link type="text/css" rel="stylesheet" href="plugins/icheck/all.css?v=1.0.1">';
+        // Alertas del Sistema
+        echo '<link type="text/css" rel="stylesheet" href="plugins/sweetalert/sweetalert.css?v=1.0.1"/>';
+        // Select2
+        echo '<link type="text/css" rel="stylesheet" href="plugins/select2/css/select2.min.css?v=1.0.1"/>';
+        echo '<link type="text/css" rel="stylesheet" href="plugins/jQueryUI/jquery-ui.min.css?v=1.0.1"/>';
+        // Switchery
+        echo '<link type="text/css" rel="stylesheet" href="plugins/switchery/switchery.min.css?v=1.0.1"/>';
       }
-  ?>
+    ?>
   <style>
     /*Flecha para hacer la pagina hacia arriba*/
     .ir-arriba{
@@ -302,43 +356,46 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
     }
   </style>
   <!-- jQuery jquery-2.2.4 -->
-  <script type="text/javascript" src="plugins/jQuery/jquery.min.js?v=1.0.1"></script>     
-  <script type="text/javascript" src="plugins/jQueryUI/jquery-ui.js?v=1.0.1"></script>
-  <script type="text/javascript" src="assets/js/jquery.flexslider.js?v=1.0.1"></script>	
+  <script type="text/javascript" defer src="plugins/jQuery/jquery.min.js?v=1.0.1"></script>     
+  <script type="text/javascript" defer src="plugins/jQueryUI/jquery-ui.js?v=1.0.1"></script>
+  <script type="text/javascript" defer src="assets/js/jquery.flexslider.js?v=1.0.1"></script>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="preconnect" href="https://adminlte.io" crossorigin>
   <!-- Switchery -->
   <script type="module" src="plugins/switchery/switchery.min.js?v=1.0.1"></script>
   <script type="text/javascript"> 
-		function cerrar() {
-			console.log('Cierre de la ventana'); /*
-			var allowExit = false;
-			function beforeUnloadHandler(e){
-				if(!allowExit){
-					e.preventDefault();
-					e.returnValue = '';
-					return '';
-				} 
-			}
-			window.addEventListener('beforeunload', beforeUnloadHandler);
-      */
-			// Si el usuario hace clic en un enlace o envía un formulario, permitimos la navegación
-			document.addEventListener('click', function(e){
-				var a = e.target && e.target.closest ? e.target.closest('a') : null;
-				if(!a) return;
-				var href = (a.getAttribute('href') || '').toLowerCase();
-				if(href.startsWith('#') || href.startsWith('javascript:')) return;
-				// Permitir salida para navegaciones iniciadas por clic
-				allowExit = true;
-				// Si es un enlace de logout/salir, removemos el handler para no mostrar aviso
-				if(href.indexOf('logout') !== -1 || href.indexOf('salir') !== -1){
-					window.removeEventListener('beforeunload', beforeUnloadHandler);
-				}
-			}, true);
+    function cerrar() {
+      console.log('Cierre de la ventana');
 
-			document.addEventListener('submit', function(e){
-				// Permitir salida para envíos de formularios
-				allowExit = true;
-			}, true);
-		}
+      let allowExit = false;
+      function beforeUnloadHandler(e){
+        if(!allowExit){
+          e.preventDefault();
+          e.returnValue = '';
+          return '';
+        }
+      }
+      window.addEventListener('beforeunload', beforeUnloadHandler);
+
+      // Si el usuario hace clic en un enlace o envía un formulario, permitimos la navegación
+      document.addEventListener('click', function(e){
+        var a = e.target && e.target.closest ? e.target.closest('a') : null;
+        if(!a) return;
+        var href = (a.getAttribute('href') || '').toLowerCase();
+        if(href.startsWith('#') || href.startsWith('javascript:')) return;
+        // Permitir salida para navegaciones iniciadas por clic
+        allowExit = true;
+        // Si es un enlace de logout/salir, removemos el handler para no mostrar aviso
+        if(href.indexOf('logout') !== -1 || href.indexOf('salir') !== -1){
+          window.removeEventListener('beforeunload', beforeUnloadHandler);
+        }
+      }, true);
+
+      document.addEventListener('submit', function(e){
+        // Permitir salida para envíos de formularios
+        allowExit = true;
+      }, true);
+    }
 		/*
 		$(window).load(function() {
 			$(".loader").fadeOut("slow");
@@ -388,7 +445,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                   </div> <?php
                 }else{ ?>
                     <span style="color: white;"><b><em>Bitacora El&eacute;ctonica</em></b></span>
-                    <span class="logo-lg" style="color: white;"> <?php if($_SESSION["idrol"] == 9) echo '<b>Cliente:</b> '.$_SESSION["clientes"]; else if($_SESSION['idrol'] == 8){ if($_SESSION["id_client"] == '27' || $_SESSION["id_client"] == '31') echo 'Custodias'; else echo '<b>Cliente:</b> '.$_SESSION["name"]; }else{ echo '<b>Empresa:</b> '.$_SESSION["company"].' | <b>Departamento:</b> '.$departamento->name.'-'.$_SESSION["dispositivo"]; } ?> </span> <?php
+                    <span class="logo-lg" style="color: white;"> <?php if($_SESSION["idrol"] == 9) echo '<b>Cliente:</b> '.h($_SESSION["clientes"]); else if($_SESSION['idrol'] == 8){ if($_SESSION["id_client"] == '27' || $_SESSION["id_client"] == '31') echo 'Custodias'; else echo '<b>Cliente:</b> '.h($_SESSION["name"]); }else{ echo '<b>Empresa:</b> '.h($_SESSION["company"]).' | <b>Departamento:</b> '.(isset($departamento) ? h($departamento->name) : '').'-'.h($_SESSION["dispositivo"]); } ?> </span> <?php
                 } ?>
               </div>
               <!-- Navbar Right Menu -->
@@ -458,7 +515,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                                                           <i class="fa fa-shopping-cart text-green"></i> Ventas listas 25 
                                                         </a>
                                                       </li>';
-                                              if($diferencia->days > 230)
+                                              if(isset($diferencia) && isset($diferencia->days) && $diferencia->days > 230)
                                                   echo '<li>
                                                         <a href="password">
                                                           <i class="fa fa-user text-red"></i>'.$diferencia->days.' dias sin cambiar tu clave
@@ -485,13 +542,13 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                   <!-- User Account: style can be found in dropdown.less -->
                   <li class="dropdown user user-menu">
                       <a href="#" class="dropdown-toggle2" data-toggle="dropdown">
-                          <img src="assets/<?php if($_SESSION["idrol"] == 7) echo "images/avatar/user13.png"; else if(isset($_SESSION["user_id"])) if(UserData::getById($_SESSION["user_id"])->image == "") echo "images/usuario.jpg"; else echo "images/avatar/".UserData::getById($_SESSION["user_id"])->image; ?>" class="user-image" alt="User Image">
+                          <img src="assets/<?php if($_SESSION["idrol"] == 7){ echo "images/avatar/user13.png"; } elseif($user){ echo ($user->image == "" ? "images/usuario.jpg" : "images/avatar/".$user->image); } else { echo "images/usuario.jpg"; } ?>" class="user-image" alt="User Image">
                           <span class="">
                               <?php
                                 if(isset($_SESSION["id_card"])){
-                                  echo trim(substr(ucwords(strtolower($_SESSION["name"])), 0, 15));
+                                  echo h(trim(substr(ucwords(strtolower($_SESSION["name"])), 0, 15)));
                                 }else{
-                                  echo UserData::getById($_SESSION["user_id"])->name.' '.UserData::getById($_SESSION["user_id"])->lastname; // htmlentities(
+                                  echo $user ? h($user->name.' '.$user->lastname) : '';
                                 }?>
                             <b class="caret"></b>
                           </span> 
@@ -499,17 +556,17 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                       <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                          <img src="assets/<?php if($_SESSION["idrol"] == 7) echo "images/avatar/user13.png"; else if(isset($_SESSION["user_id"])) if(UserData::getById($_SESSION["user_id"])->image == "") echo "images/usuario.jpg"; else echo "images/avatar/".UserData::getById($_SESSION["user_id"])->image; ?>" class="img-circle" alt="User Image">
+                          <img src="assets/<?php if($_SESSION["idrol"] == 7){ echo "images/avatar/user13.png"; } elseif($user){ echo ($user->image == "" ? "images/usuario.jpg" : "images/avatar/".$user->image); } else { echo "images/usuario.jpg"; } ?>" class="img-circle" alt="User Image">
                           <p>
                             <?php
                                 if(isset($_SESSION["id_card"])){
                                     echo substr($_SESSION["name"].' '.$_SESSION["lastname"], 0, 22);
                                 }else{
-                                    echo UserData::getById($_SESSION["user_id"])->name.' '.UserData::getById($_SESSION["user_id"])->lastname; // utf8_decode(
+                                    echo $user ? h($user->name.' '.$user->lastname) : '';
                                 }
                             ?>
-                            <small>Usted tiene el ROL: <?php echo $_SESSION["desrol"]; ?></small>
-                            <small>Ultimo ingreso el: <?php echo $_SESSION["ultima_sesion"]; ?></small>
+                            <small>Usted tiene el ROL: <?php echo h($_SESSION["desrol"]); ?></small>
+                            <small>Ultimo ingreso el: <?php echo h($_SESSION["ultima_sesion"]); ?></small>
                           </p>
                         </li>
                         <!-- Menu Footer-->
@@ -629,6 +686,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                                   if($_SESSION['idrol'] == 12){ // Opciones de Centralistas
                                     echo '<li><a href="./asistencia"><i class="fa fa-sign-in"></i> <span>Asistencia</span></a></li>';
                                     echo '<li><a href="./despliegue"><i class="fa fa-child"></i> <span>Despliegue</span></a></li>';
+                                    echo '<li><a href="./agentes"><i class="fa fa-eye"></i> <span>Agentes</span></a></li>';
                                     echo '<li><a href="./finalizar"><i class="fa fa-power-off"></i> <span>Ultimo Turno</span></a></li>';
                                     echo '<li><a href="./vacaciones"><i class="fa fa-ship"></i> <span>Vacaciones</span></a></li>';
                                     echo '<li><a href="./faltas"><i class="fa fa-suitcase"></i><span> Faltas </span></a></li>';
@@ -1065,7 +1123,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                 <div class="card-body">
                     <div class="wd-600p">
                         <div align="center" style="text-align: center;">
-                            <img src="assets/images/logo-ameri.png" class="img-fluid" alt="AMERICAN" height="380px" width="260%">
+                            <img src="assets/images/logo-ameri.png" class="img-fluid" alt="AMERICAN" height="380px" width="260%" loading="lazy" decoding="async">
                         </div>
                         <form id="frm" name="frm" action="./index.php?action=processlogin" method="post" autocomplete="off">
                           <div class="form-group">
@@ -1100,7 +1158,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
       </footer>
       <script type="text/javascript">
         document.frm.username.focus(); <?php 
-        if(isset($_GET["view"]) && $_SESSION['idrol'] == 12){ ?>
+        if(isset($_GET["view"]) && (isset($_SESSION['idrol']) && $_SESSION['idrol'] == 12)){ ?>
           function esAntesDeLas17Horas() {
             const ahora = new Date();
             return ahora.getHours() < 19;
@@ -1152,35 +1210,9 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
     <script type="text/javascript" src="./plugins/select2/js/select2.full.min.js?v=1.0.1"></script>
     <!-- Sweet Alert -->
     <script type="text/javascript" src="./plugins/sweetalert/sweetalert.min.js?v=1.0.1"></script>	<?php 
-    // Seleccion de los temas del Sistema
-		if(isset($_GET["view"]) && $_GET["view"] == "calendar"){
-			// Full Calendar
-			echo '<script type="text/javascript" src="./plugins/fullcalendar/moment.min.js?v=1.0.1"></script>';
-			echo '<link type="text/css" rel="stylesheet" href="./plugins/fullcalendar/fullcalendar.min.css?v=1.0.1">';
-    	echo '<link type="text/css" rel="stylesheet" href="./plugins/fullcalendar/fullcalendar.print.css?v=1.0.1" media="print">';
-			echo '<script type="text/javascript" src="./plugins/fullcalendar/fullcalendar.min.js?v=1.0.1"></script>';
-			echo '<script type="text/javascript" src="./plugins/fullcalendar/locale-all.js?v=1.0.1"></script>';
-    }
-    
+    // Carga de assets condicionales
     if(isset($_GET["view"])){
-			if($_GET["view"] == "calendar"){
-				// Full Calendar
-				echo '<script type="text/javascript" src="plugins/fullcalendar/moment.min.js?v=1.0.1"></script>';
-				echo '<link type="text/css" rel="stylesheet" href="plugins/fullcalendar/fullcalendar.min.css?v=1.0.1">';
-				echo '<link type="text/css" rel="stylesheet" href="plugins/fullcalendar/fullcalendar.print.css?v=1.0.1" media="print">';
-				echo '<script type="text/javascript" src="plugins/fullcalendar/fullcalendar.min.js?v=1.0.1"></script>';
-				echo '<script type="text/javascript" src="plugins/fullcalendar/locale-all.js?v=1.0.1"></script>';
-			}
-			if($_GET["view"]=="newprovider" || $_GET["view"]=="editprovider" || $_GET["view"]=="residente" || $_GET["view"]=="autorizar" || $_GET["view"]=="novedad" || 
-			   $_GET["view"]=="cliente" || $_GET["view"]=="corizar" || $_GET["view"]=="recibo" || $_GET["view"]=="venta"){
-				echo '<script type="text/javascript" src="plugins/input-mask/jquery.inputmask.js?v=1.0.1"></script>';
-				echo '<script type="text/javascript" src="plugins/input-mask/jquery.inputmask.date.extensions.js?v=1.0.1"></script>';
-				echo '<script type="text/javascript" src="plugins/input-mask/jquery.inputmask.extensions.js?v=1.0.1"></script>';
-			}
-			if($_GET["view"]=="sell"){
-				echo '<script type="text/javascript" src="plugins/jsqrcode/llqrcode.js?v=1.0.1"></script>';
-				echo '<script type="text/javascript" src="plugins/jsqrcode/webqr.js?v=1.0.1"></script>';
-			}
+        load_view_assets($_GET["view"]);
 			if($_GET["view"]=="asignar" || $_GET["view"]=="novedad" || $_GET["view"]=="informe" || $_GET["view"]=="supervisar" || $_GET["view"]=="aspirantes" || 
                $_GET["view"]=="reporte" || $_GET["view"]=="registro" ||  $_GET["view"]=="trade"){
           echo '<script type="text/javascript">
@@ -1308,7 +1340,9 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
         unset($_SESSION['sweetalert_message']); // Limpia la sesión después de usarla
     } ?>
     <script type="text/javascript">      
-        document.getElementById('alertButton').addEventListener('click', async () => {
+        const btn = document.getElementById('alertButton');
+        if(btn){
+          btn.addEventListener('click', async () => {
           try {
               const location = await getCurrentLocation();
               const formattedLocation = `${location.coords.latitude}, ${location.coords.longitude}`;
@@ -1319,7 +1353,8 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
           } catch (error) {
               console.error('Error al obtener la ubicación:', error.message);
           }
-        });
+          });
+        }
         
         async function getCurrentLocation() {
             return new Promise((resolve, reject) => {
@@ -1331,7 +1366,8 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
             });
         } 
 
-        $(function () {
+        // Ejecuta tras parseo del DOM; jQuery estará cargado por 'defer'
+        document.addEventListener('DOMContentLoaded', function(){
           <?php
           if(isset($_GET["view"])){
             if($_GET["view"]=="newprovider" || $_GET["view"]=="editprovider" || $_GET["view"]=="residente" || $_GET["view"]=="autorizar" || $_GET["view"]=="novedad" || 
@@ -1385,7 +1421,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
             autoclose: true
           });
 
-          $(document).ready(function() {
+            $(document).ready(function() {
               var toggled = false;
 
               $('.dropdown-toggle').on('click', function() {
@@ -1400,10 +1436,10 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                   }
               });
           });
-      });
+        });
     </script>
     <?php
-      if(isset($_GET["view"]) && ($_GET["view"]=="home" || $_GET["view"]=="inventary" || $_GET["view"]=="cuentas" || $_GET["view"]=="bitacora" || 
+      if(isset($_GET["view"]) && ($_GET["view"]=="home" || $_GET["view"]=="inventary" || $_GET["view"]=="cuentas" || $_GET["view"]=="bitacora" || $_GET["view"]=="agentes" || 
 	        $_GET["view"]=="autorizan" || $_GET["view"]=="autorizo" || $_GET["view"]=="verificados" || $_GET["view"]=="cotizacion" || $_GET["view"]=="cotizar" ||
           $_GET["view"]=="fechas" || $_GET["view"]=="partes" || $_GET["view"]=="prendas" || $_GET["view"]=="descuento" || $_GET["view"]=="visitas" || 
 		      $_GET["view"]=="departamentos" || $_GET["view"]=="categorias" || $_GET["view"]=="productos" || $_GET["view"]=="informes" || $_GET["view"]=="anuncios" ||
@@ -1417,7 +1453,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
           $_GET["view"]=="sisaud.lista" || $_GET["view"]=="rrging.lista" || $_GET["view"]=="rrping.lista" || $_GET["view"]=="rrhvac.lista" ||
           $_GET["view"]=="catdes.lista" || $_GET["view"]=="catlim.lista" || $_GET["view"]=="repent.lista" || $_GET["view"]=="areas" || $_GET["view"]=="vacaciones" ||
           $_GET["view"]=="catloc.lista" || $_GET["view"]=="cargos" || $_GET["view"]=="reppus.lista" || $_GET["view"]=="catofi.lista")): ?>
-          <!-- DataTables $_GET["view"]=="rrsing.lista" || -->
+          <!-- DataTables -->
           <script src="plugins/datatables/jquery.dataTables.min.js?v=1.0.1"></script>
           <script src="plugins/datatables/dataTables.bootstrap.min.js?v=1.0.1"></script>
           <script src="plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js?v=1.0.1"></script>
@@ -1426,223 +1462,137 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
           <script type="text/javascript" src="js/productos.js"></script> -->
           <script type="text/javascript">
             $(document).ready(function(){
-              $('#viewactivo').DataTable({ // Elementos activos
-                "order": [[0, 'desc']],
-                "iDisplayLength":10,
-                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
-                "language": {
-                      "lengthMenu": "Ver _MENU_ registros",
-                      "zeroRecords": "Actualmente no hay ningun registro asignado en esta consulta",
-                      "info": "_PAGE_ de _PAGES_",
-                      "infoEmpty": "No hay ningun registro disponible...!!!",
-                      "infoFiltered": "(filtrado de un total de _MAX_ registros)",
-                      "search": "Buscar",
-				              "searchPlaceholder": "Dato para buscar",
-                      "paginate": {
-                        "first": "Primero",
-                        "previous": "Anterior",
-                        "next": "Siguiente",
-                        "last": "Ultimo"
-                      }
-                  }
+              // Utilidades comunes para DataTables (idioma y menús)
+              var dtLangEs = {
+                lengthMenu: "Ver _MENU_ registros",
+                zeroRecords: "Actualmente no hay ningun registro asignado en esta consulta",
+                info: "_PAGE_ de _PAGES_",
+                infoEmpty: "No hay ningun registro disponible...!!!",
+                infoFiltered: "(filtrado de un total de _MAX_ registros)",
+                search: "Buscar",
+                searchPlaceholder: "Dato para buscar",
+                paginate: { first: "Primero", previous: "Anterior", next: "Siguiente", last: "Ultimo" }
+              };
+              var dtLenMenu = [[10, 25, 50, -1], [10, 25, 50, "Todos"]];
+
+              // Ejemplo aplicado: Elementos activos
+              $('#viewactivo').DataTable({
+                order: [[0, 'desc']],
+                iDisplayLength: 10,
+                lengthMenu: dtLenMenu,
+                language: dtLangEs
               });
 
               $('#viewEliminado').DataTable({
-                "iDisplayLength":10,
-                "lengthMenu": [[10, 25, 50, -1], [5, 10, 25, 50, "Todos"]],
-                "language": {
-                      "lengthMenu": "Ver _MENU_ registros",
-                      "zeroRecords": "Actualmente no hay ningun registro asignado en esta consulta",
-                      "info": "_PAGE_ de _PAGES_",
-                      "infoEmpty": "No hay ningun registro disponible...!!!",
-                      "infoFiltered": "(filtrado de un total de _MAX_ registros)",
-                      "search": "Buscar",
-				              "searchPlaceholder": "Dato para buscar",
-                      "paginate": {
-                        "first": "Primero",
-                        "previous": "Anterior",
-                        "next": "Siguiente",
-                        "last": "Ultimo"
-                      }
-                  }
+                iDisplayLength: 10,
+                lengthMenu: [[10, 25, 50, -1], [5, 10, 25, 50, "Todos"]],
+                language: dtLangEs
               });
 
               $('#viewBitacora').DataTable({
-                "order": [[0, 'desc']],
-                "responsive": true,
-                "paging": true,
-                "lengthChange": true,
-                "searching": true,
-                "ordering": true,
-                "info": true,
-                "stateSave": true,
-                "autoWidth": false,
-                "language": {
-                      "lengthMenu": "Ver _MENU_ registros",
-                      "zeroRecords": "Lo sentimos, no hay ninguna coincidencia...!!!",
-                      "info": "_PAGE_ de _PAGES_",
-                      "infoEmpty": "No hay ningun registro disponible...!!!",
-                      "infoFiltered": "(filtrado de un total de _MAX_ registros)",
-                      "search": "Buscar",
-                      "paginate": {
-                        "first": "Primero",
-                        "previous": "Anterior",
-                        "next": "Siguiente",
-                        "last": "Ultimo"
-                      }
-                  },
-                  "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
-                  "aria": {
-                      "SortAscending":  ": Activar para ordenar la columna de manera ascendente",
-                      "SortDescending": ": Activar para ordenar la columna de manera descendente"
-                  },
-                  "pagingType": "full_numbers"
+                order: [[0, 'desc']],
+                responsive: true,
+                paging: true,
+                lengthChange: true,
+                searching: true,
+                ordering: true,
+                info: true,
+                stateSave: true,
+                autoWidth: false,
+                lengthMenu: dtLenMenu,
+                language: $.extend({}, dtLangEs, {
+                  zeroRecords: "Lo sentimos, no hay ninguna coincidencia...!!!"
+                }),
+                aria: {
+                  SortAscending: ": Activar para ordenar la columna de manera ascendente",
+                  SortDescending: ": Activar para ordenar la columna de manera descendente"
+                },
+                pagingType: "full_numbers"
               });
 
               $('#viewnomina').DataTable({
-                "order": [[0, 'desc']],
-                "iDisplayLength":10,
-                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
-                "language": {
-                      "lengthMenu": "Ver _MENU_ registros",
-                      "zeroRecords": "Actualmente no hay ningun registro asignado en esta consulta",
-                      "info": "_PAGE_ de _PAGES_",
-                      "infoEmpty": "No hay ningun registro disponible...!!!",
-                      "infoFiltered": "(filtrado de un total de _MAX_ registros)",
-                      "search": "Buscar",
-				              "searchPlaceholder": "Dato para buscar",
-                      "paginate": {
-                        "first": "Primero",
-                        "previous": "Anterior",
-                        "next": "Siguiente",
-                        "last": "Ultimo"
-                      }
-                  }
+                order: [[0, 'desc']],
+                iDisplayLength: 10,
+                lengthMenu: dtLenMenu,
+                language: dtLangEs
               });
 
               $('#viewdates').DataTable({
-                "responsive": true,
-                "paging": true,
-                "lengthChange": true,
-                "searching": true,
-                "ordering": true,
-                "info": true,
-                "stateSave": true,
-                "autoWidth": false,
-                "language": {
-                      "lengthMenu": "Ver _MENU_ registros",
-                      "zeroRecords": "Actualmente no hay ningun registro asignado en esta consulta",
-                      "info": "_PAGE_ de _PAGES_",
-                      "infoEmpty": "No hay ningun registro disponible...!!!",
-                      "infoFiltered": "(filtrado de un total de _MAX_ registros)",
-                      "search": "Buscar",
-				              "searchPlaceholder": "Dato para buscar",
-                      "paginate": {
-                        "first": "Primero",
-                        "previous": "Anterior",
-                        "next": "Siguiente",
-                        "last": "Ultimo"
-                      }
-                  },
-                  "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
-                  "aria": {
-                      "SortAscending":  ": Activar para ordenar la columna de manera ascendente",
-                      "SortDescending": ": Activar para ordenar la columna de manera descendente"
-                  },
-                  "pagingType": "full_numbers"
+                responsive: true,
+                paging: true,
+                lengthChange: true,
+                searching: true,
+                ordering: true,
+                info: true,
+                stateSave: true,
+                autoWidth: false,
+                lengthMenu: dtLenMenu,
+                language: dtLangEs,
+                aria: {
+                  SortAscending: ": Activar para ordenar la columna de manera ascendente",
+                  SortDescending: ": Activar para ordenar la columna de manera descendente"
+                },
+                pagingType: "full_numbers"
               });
 
               $('#viewlista').DataTable({
-                "responsive": true,
-                "paging": true,
-                "lengthChange": true,
-                "searching": true,
-                "ordering": true,
-                "info": true,
-                "stateSave": true,
-                "autoWidth": false,
-                "language": {
-                      "lengthMenu": "Ver _MENU_ registros",
-                      "zeroRecords": "Lo sentimos, no hay ninguna coincidencia...!!!",
-                      "info": "_PAGE_ de _PAGES_",
-                      "infoEmpty": "No hay ningun registro disponible...!!!",
-                      "infoFiltered": "(filtrado de un total de _MAX_ registros)",
-                      "search": "Buscar",
-                      "paginate": {
-                        "first": "Primero",
-                        "previous": "Anterior",
-                        "next": "Siguiente",
-                        "last": "Ultimo"
-                      }
-                  },
-                  "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
-                  "aria": {
-                      "SortAscending":  ": Activar para ordenar la columna de manera ascendente",
-                      "SortDescending": ": Activar para ordenar la columna de manera descendente"
-                  },
-                  "pagingType": "full_numbers"
+                responsive: true,
+                paging: true,
+                lengthChange: true,
+                searching: true,
+                ordering: true,
+                info: true,
+                stateSave: true,
+                autoWidth: false,
+                lengthMenu: dtLenMenu,
+                language: $.extend({}, dtLangEs, {
+                  zeroRecords: "Lo sentimos, no hay ninguna coincidencia...!!!"
+                }),
+                aria: {
+                  SortAscending: ": Activar para ordenar la columna de manera ascendente",
+                  SortDescending: ": Activar para ordenar la columna de manera descendente"
+                },
+                pagingType: "full_numbers"
               });
 
               $('#viewInac').DataTable({
-                "responsive": true,
-                "paging": true,
-                "lengthChange": true,
-                "searching": true,
-                "ordering": true,
-                "info": true,
-                "stateSave": true,
-                "autoWidth": false,
-                "language": {
-                      "lengthMenu": "Ver _MENU_ registros",
-                      "zeroRecords": "Lo sentimos, no hay ninguna coincidencia...!!!",
-                      "info": "_PAGE_ de _PAGES_",
-                      "infoEmpty": "No hay ningun registro disponible...!!!",
-                      "infoFiltered": "(filtrado de un total de _MAX_ registros)",
-                      "search": "Buscar",
-                      "paginate": {
-                        "first": "Primero",
-                        "previous": "Anterior",
-                        "next": "Siguiente",
-                        "last": "Ultimo"
-                      }
-                  },
-                  "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
-                  "aria": {
-                      "SortAscending":  ": Activar para ordenar la columna de manera ascendente",
-                      "SortDescending": ": Activar para ordenar la columna de manera descendente"
-                  },
-                  "pagingType": "full_numbers"
+                responsive: true,
+                paging: true,
+                lengthChange: true,
+                searching: true,
+                ordering: true,
+                info: true,
+                stateSave: true,
+                autoWidth: false,
+                lengthMenu: dtLenMenu,
+                language: $.extend({}, dtLangEs, {
+                  zeroRecords: "Lo sentimos, no hay ninguna coincidencia...!!!"
+                }),
+                aria: {
+                  SortAscending: ": Activar para ordenar la columna de manera ascendente",
+                  SortDescending: ": Activar para ordenar la columna de manera descendente"
+                },
+                pagingType: "full_numbers"
               });
 
               $('#viewDotar').DataTable({
-                "responsive": true,
-                "paging": true,
-                "lengthChange": true,
-                "searching": true,
-                "ordering": true,
-                "info": true,
-                "stateSave": true,
-                "autoWidth": false,
-                "language": {
-                      "lengthMenu": "Ver _MENU_ registros",
-                      "zeroRecords": "Lo sentimos, no hay ninguna coincidencia...!!!",
-                      "info": "_PAGE_ de _PAGES_",
-                      "infoEmpty": "No hay ningun registro disponible...!!!",
-                      "infoFiltered": "(filtrado de un total de _MAX_ registros)",
-                      "search": "Buscar",
-                      "paginate": {
-                        "first": "Primero",
-                        "previous": "Anterior",
-                        "next": "Siguiente",
-                        "last": "Ultimo"
-                      }
-                  },
-                  "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
-                  "aria": {
-                      "SortAscending":  ": Activar para ordenar la columna de manera ascendente",
-                      "SortDescending": ": Activar para ordenar la columna de manera descendente"
-                  },
-                  "pagingType": "full_numbers"
+                responsive: true,
+                paging: true,
+                lengthChange: true,
+                searching: true,
+                ordering: true,
+                info: true,
+                stateSave: true,
+                autoWidth: false,
+                lengthMenu: dtLenMenu,
+                language: $.extend({}, dtLangEs, {
+                  zeroRecords: "Lo sentimos, no hay ninguna coincidencia...!!!"
+                }),
+                aria: {
+                  SortAscending: ": Activar para ordenar la columna de manera ascendente",
+                  SortDescending: ": Activar para ordenar la columna de manera descendente"
+                },
+                pagingType: "full_numbers"
               });
             });
           </script> <?php 

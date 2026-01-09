@@ -43,7 +43,7 @@ class BitacoraData {
 	public function addIMG(){
 		$sql = "INSERT INTO ".self::$tablename." (idpuesto, idperson, fecha, turno, punto, proceso, observacion, accion, foto1, timestamp, latitude, longitude, rangoerror, sentido, velocidad, mensaje, is_active, usuario_log, ip) ";
 		$sql .= "value ($this->idpuesto, $this->idperson, \"$this->fecha\", \"$this->turno\", \"$this->punto\", \"$this->proceso\", \"$this->observacion\", \"$this->accion\", \"$this->foto1\", \"$this->timestamp\", \"$this->latitude\", \"$this->longitude\", \"$this->rangoerror\", \"$this->sentido\", \"$this->velocidad\", \"$this->mensaje\", $this->is_active, \"$this->usuario_log\", \"$this->ip\")";
-	
+		
 		return Executor::doit($sql);
 	}
 	
@@ -183,9 +183,9 @@ class BitacoraData {
 	}
 	
 	public static function getByRondas($id){ 
-		$sql = "SELECT B.name, C.descripcion, C.codigo, A.* FROM bitacora A, person B, puestos C 
+	/*	$sql = "SELECT B.name, C.descripcion, C.codigo, A.* FROM bitacora A, person B, puestos C 
 		         WHERE A.idperson = B.id AND A.idpuesto = C.id AND A.idpuesto = $id AND date(A.fecha) = date('".$fecha."')";  //ORDER BY A.punto
-		         // AND A.grupo = $grupo
+		         // AND A.grupo = $grupo */
 		$sql = "SELECT A.* FROM rondas A WHERE A.id = $id";
 		$query = Executor::doit($sql); 
 		return Model::one($query[0],new BitacoraData());

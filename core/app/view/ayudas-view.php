@@ -1,8 +1,11 @@
 <?php
 $cadena = preg_match('/Mobile|Android|iPhone|iPad|iPod/i', $_SERVER['HTTP_USER_AGENT']);
 
-echo "<script>console.log('User-Agent: " . $_SERVER['HTTP_USER_AGENT'] . "'); 
-console.log('Dispositivo: " . $cadena . "');</script>";
+echo "<script>
+        console.log('User-Agent: " . $_SERVER['HTTP_USER_AGENT'] . "'); 
+        console.log('Dispositivo: " . $cadena . "');
+      </script>";
+
 if ($cadena > 0) {
   	$_SESSION['dispositivo']=2; // Estás en un dispositivo móvil
 } else {

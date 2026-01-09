@@ -2,7 +2,7 @@
 //Reportes de supervicion
 //Modificado: 21/02/2024
 date_default_timezone_set('America/Guayaquil');
-$hoy = date("d-m-Y H:i:s"); $fecha = date("Y-m-d H:i:s"); $accion = ''; $Observacion = ''; $errores = '';
+$hoy = date("d-m-Y H:i:s"); $fecha = date("Y-m-d H:i:s"); $accion = ''; $superior = ''; $novedad = ''; $Observacion = ''; $errores = '';
 
 if($_SESSION['idrol']!='6') print "<script>window.location='index.php?view=home&error=10';</script>";
 //var_dump($_SESSION);
@@ -12,32 +12,34 @@ if(isset($_GET['puesto'])){
     $puesto = 0;
 }
 
-if(isset($_POST['id_person'])){    
-    $selectedValues = $_POST['logistica']; $logistica = '';    
-    
-    foreach ($selectedValues as $selectedValue) {
-        if($selectedValue ==  "1") $logistica = $logistica.'Chaleco, ';
-        if($selectedValue ==  "2") $logistica = $logistica.'Cinto, ';
-        if($selectedValue ==  "3") $logistica = $logistica.'Placa fontal, ';
-        if($selectedValue ==  "4") $logistica = $logistica.'Placa posterior, ';
-        if($selectedValue ==  "5") $logistica = $logistica.'Porta tolete, ';
-        if($selectedValue ==  "6") $logistica = $logistica.'Tolete, ';
-        if($selectedValue ==  "7") $logistica = $logistica.'Posta Gas, ';
-        if($selectedValue ==  "8") $logistica = $logistica.'Gas, ';
-        if($selectedValue ==  "9") $logistica = $logistica.'Poncho de Agua, ';
-        if($selectedValue == "10") $logistica = $logistica.'Linterna, ';
-        if($selectedValue == "11") $logistica = $logistica.'Cargador, ';
-        if($selectedValue == "12") $logistica = $logistica.'Detector de metales, ';
-        if($selectedValue == "13") $logistica = $logistica.'Radio, ';
-        if($selectedValue == "14") $logistica = $logistica.'Cargador de Radio, ';
-        if($selectedValue == "15") $logistica = $logistica.'Bitacora, ';
-        if($selectedValue == "16") $logistica = $logistica.'Estuche, ';
-        if($selectedValue == "17") $logistica = $logistica.'Porta Arma, ';
-        if($selectedValue == "18") $logistica = $logistica.'Arma, ';
-        if($selectedValue == "19") $logistica = $logistica.'Bicicleta, ';
-        if($selectedValue == "20") $logistica = $logistica.'Telefono';
+if(isset($_POST['id_person'])){
+    $logistica = '';
+    if(count($_POST)>0){
+        $selectedValues = $_POST['logistica']; 
+        
+        foreach ($selectedValues as $selectedValue) {
+            if($selectedValue ==  "1") $logistica = $logistica.'Chaleco, ';
+            if($selectedValue ==  "2") $logistica = $logistica.'Cinto, ';
+            if($selectedValue ==  "3") $logistica = $logistica.'Placa fontal, ';
+            if($selectedValue ==  "4") $logistica = $logistica.'Placa posterior, ';
+            if($selectedValue ==  "5") $logistica = $logistica.'Porta tolete, ';
+            if($selectedValue ==  "6") $logistica = $logistica.'Tolete, ';
+            if($selectedValue ==  "7") $logistica = $logistica.'Posta Gas, ';
+            if($selectedValue ==  "8") $logistica = $logistica.'Gas, ';
+            if($selectedValue ==  "9") $logistica = $logistica.'Poncho de Agua, ';
+            if($selectedValue == "10") $logistica = $logistica.'Linterna, ';
+            if($selectedValue == "11") $logistica = $logistica.'Cargador, ';
+            if($selectedValue == "12") $logistica = $logistica.'Detector de metales, ';
+            if($selectedValue == "13") $logistica = $logistica.'Radio, ';
+            if($selectedValue == "14") $logistica = $logistica.'Cargador de Radio, ';
+            if($selectedValue == "15") $logistica = $logistica.'Bitacora, ';
+            if($selectedValue == "16") $logistica = $logistica.'Estuche, ';
+            if($selectedValue == "17") $logistica = $logistica.'Porta Arma, ';
+            if($selectedValue == "18") $logistica = $logistica.'Arma, ';
+            if($selectedValue == "19") $logistica = $logistica.'Bicicleta, ';
+            if($selectedValue == "20") $logistica = $logistica.'Telefono';
+        }
     }
-
     $user = new BitacoraData();
     $user->idpuesto = (int) $_POST["id_localidad"];
     $user->idperson = (int) $_SESSION['id_person'];

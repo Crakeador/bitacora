@@ -7,6 +7,30 @@ $fecha = date('Y-m-d'); $hora = date('H:i:s');
 $fechaActual = date('Y-m-d').' '.date('H:i:s');
 $_SESSION["name"] = ''; $_SESSION["lastname"] = ''; $_SESSION["cambio"] = '';
 
+// Registra un evento de login por usuario en storage/login/{user_id}.log
+function save_login_event($userId){
+	if(!$userId) return;
+	$dir = __DIR__ . '/../../../storage/login';
+	if(!is_dir($dir)) @mkdir($dir, 0777, true);
+	$ua = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+	$ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
+	$ts_iso = date('c');
+	$entry = json_encode([ 'ts' => $ts_iso, 'ip' => $ip, 'ua' => $ua ]);
+	@file_put_contents($dir.'/'.intval($userId).'.log', $entry.PHP_EOL, FILE_APPEND|LOCK_EX);
+
+	// También guarda en BD si existe/crea la tabla user_login
+	$ts = date('Y-m-d H:i:s');
+	try{
+		$base = new Database();
+		$con = $base->connect();
+		$uaEsc = $con->real_escape_string($ua);
+		$ipEsc = $con->real_escape_string($ip);
+		$con->query("CREATE TABLE IF NOT EXISTS user_login (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, user_id INT NOT NULL, ts DATETIME NOT NULL, ip VARCHAR(64) NULL, ua VARCHAR(255) NULL, INDEX idx_user_login_user (user_id)) ENGINE=InnoDB DEFAULT CHARSET=utf8");
+		$sql = "INSERT INTO user_login (user_id, ts, ip, ua) VALUES (".intval($userId).", '$ts', '$ipEsc', '$uaEsc')";
+		$con->query($sql);
+	}catch(Exception $e){ /* noop */ }
+}
+
 if(!isset($_SESSION["user_id"])) {
 	$user = $_POST['username'];
 	$pass = sha1(md5($_POST['password']));
@@ -71,6 +95,7 @@ if(!isset($_SESSION["user_id"])) {
 						$_SESSION['user_name']='Bitacora Electronica';
 
 						setcookie('userid', $userid);
+						save_login_event($_SESSION['user_id']);
 						Core::redir('fechas');
 					}
 				}else{					
@@ -122,6 +147,7 @@ if(!isset($_SESSION["user_id"])) {
 								$_SESSION['correos']=$correos;
 
 								setcookie('userid', $_POST['username']); 
+								save_login_event($_SESSION['user_id']);
 								echo '<script>
 										if(localStorage.getItem("usuario") != null){
 											var usuario = localStorage.getItem("usuario");
@@ -179,6 +205,7 @@ if(!isset($_SESSION["user_id"])) {
 								$_SESSION['correos']=$correos;
 
 								setcookie('userid', $userid);
+								save_login_event($_SESSION['user_id']);
 								echo '<script>window.location="noticias";</script>';
 							}
 						}else{
@@ -237,6 +264,7 @@ if(!isset($_SESSION["user_id"])) {
 								$_SESSION['consigna']=$consigna;
 								$_SESSION['correos']=$correos;
 								
+								save_login_event($_SESSION['user_id']);
 								echo '<script>window.location="index.php?view=aspirante&id='.$id.'";</script>';
 							}else{
 								$asigna = array(); $i = 0;
@@ -282,6 +310,7 @@ if(!isset($_SESSION["user_id"])) {
 								$_SESSION['correos']=$correos;
 
 								setcookie('userid', $userid); 
+								save_login_event($_SESSION['user_id']);
 								echo '<script>
 										if(localStorage.getItem("usuario") != null){
 											var usuario = localStorage.getItem("usuario");
@@ -336,6 +365,7 @@ if(!isset($_SESSION["user_id"])) {
 			setcookie('userid', $_SESSION['user_id']);
 
 			$ultimoLogin = UserData::update_user($fechaActual);
+			save_login_event($_SESSION['user_id']);
 			Core::redir('home');
 		}else{
 			$_SESSION['sweetalert_message'] = ['icon' => 'error', 'title' => '¡Error!', 'text' => 'No es un usuario del sistema, comuniquese con el administrador.'];

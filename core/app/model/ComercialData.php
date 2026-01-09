@@ -1,10 +1,10 @@
 <?php
-//Modelo de los clientes en el sistema
-class ClientData {
-	public static $tablename = "client";
- 
+//Modelo de los clientes en el sistema comercial
+class ComercialData {
+	public static $tablename = "comercial";
+
 	public function __construct(){
-		$this->idclient = "";
+		$this->id = "";
 		$this->tipo_empresa = "";
 		$this->ruc = "";
 		$this->nombre = "";
@@ -60,82 +60,63 @@ class ClientData {
 		$sql = "select * from ".self::$tablename." where ruc=\"$id\"";
 		$query = Executor::doit($sql);
 
-		return Model::one($query[0],new ClientData());
+		return Model::one($query[0],new ComercialData());
 	}
 
 	public static function getById($id){
-		$sql = "SELECT * FROM ".self::$tablename." WHERE id=$id";
+		$sql = "SELECT * FROM ".self::$tablename." WHERE idclient=$id";
 		$query = Executor::doit($sql);
 
-		return Model::one($query[0],new ClientData());
+		return Model::one($query[0],new ComercialData());
 	}
 
 	public static function getTodos(){
 		$sql = "SELECT * FROM ".self::$tablename;
 		$query = Executor::doit($sql);
 
-		return Model::many($query[0],new ClientData());
+		return Model::many($query[0],new ComercialData());
 	}
-	
-	public static function getTotal(){
-		$sql = "SELECT * FROM ".self::$tablename." WHERE is_active = 1";
+		
+	public static function getPhone($iduser, $activo = 1){
+		$sql = "SELECT * FROM ".self::$tablename." WHERE iduser = $iduser AND is_active = $activo"; 
 		$query = Executor::doit($sql);
 
-		return Model::many($query[0],new ClientData());
+		return Model::many($query[0],new ComercialData());
 	}
 
-	public static function getAll($tipo, $activo = 1){
-		$sql = "SELECT * FROM ".self::$tablename." WHERE tipo = $tipo AND is_active = $activo";
+	public static function getAll($iduser, $activo = 1, $q = ""){
+		$sql = "SELECT * FROM ".self::$tablename." WHERE gestion LIKE '%$q%' AND iduser = $iduser AND is_active = $activo";
 		$query = Executor::doit($sql);
 
-		return Model::many($query[0],new ClientData());
-	}
-
-	public static function getByIdPuestos($id){
-		$sql = "SELECT A.id, A.codigo, A.descripcion, A.activado, B.descripcion lugar, A.horas, A.horario, A.created_at FROM puestos A, localidad B WHERE A.idlugar = B.id AND A.idclient=$id";
-		$query = Executor::doit($sql);
-		$array = array();
-
-		$cnt = 0;
-		while($r = $query[0]->fetch_array()){
-			$array[$cnt] = new ClientData();
-			$array[$cnt]->id = $r['id'];
-			$array[$cnt]->codigo = $r['codigo'];
-			$array[$cnt]->descripcion = $r['descripcion'];
-			$array[$cnt]->activado = $r['activado'];
-			$array[$cnt]->lugar = $r['lugar'];
-			$array[$cnt]->horario = $r['horas'].' '.$r['horario'];
-			$array[$cnt]->created_at = $r['created_at'];
-
-			$cnt++;
-		}
-
-		return $array;
+		return Model::many($query[0],new ComercialData());
 	}
 
 	public static function getLike($q){
-		$sql = "select * from ".self::$tablename." where name like '%$q%'";
+		$sql = "SELECT * FROM ".self::$tablename." WHERE gestion LIKE '%$q%'";
 		$query = Executor::doit($sql);
 
-		$array = array();
-		$cnt = 0;
-		while($r = $query[0]->fetch_array()){
-			$array[$cnt] = new CategoryData();
-			$array[$cnt]->id = $r['id'];
-			$array[$cnt]->name = $r['name'];
-			$array[$cnt]->created_at = $r['created_at'];
-			$cnt++;
-		}
-
-		return $array;
+		return Model::many($query[0],new ComercialData());
 	}	
-	
-	//Modelo nuevo
-	public static function getDetalle($id){
-		$sql = "SELECT * FROM clientd WHERE idclient = $id AND is_active = 1";
+
+	public static function getTotal($q){
+		$sql = "SELECT count(*) total FROM ".self::$tablename." WHERE gestion LIKE '%$q%'";
 		$query = Executor::doit($sql);
 
-		return Model::many($query[0],new ClientData());
+		return Model::one($query[0],new ComercialData());
+	}	
+
+	public static function getNulo(){
+		$sql = "SELECT * FROM ".self::$tablename." WHERE gestion IS NULL";
+		$query = Executor::doit($sql);
+
+		return Model::one($query[0],new ComercialData());
+	}
+
+	public static function getNull(){
+		$sql = "SELECT count(*) total FROM ".self::$tablename." WHERE gestion IS NULL";
+		$query = Executor::doit($sql);
+
+		return Model::one($query[0],new ComercialData());
 	}
 }
 

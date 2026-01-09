@@ -4,13 +4,15 @@ $companys = CompanyData::getById($_SESSION["id_company"]);
 $users = UserData::getAll();
 
 if(count($_POST)>0){
+	var_dump($_POST);
+	echo '<br>--------------------------------<br>';
 	$client = ClientData::getById($_SESSION["user_id"]);
+	var_dump($client);
     $email = $client->email;
-	
+
     if(isset($_POST["prorroga"])) $prorroga = 1; $prorroga = 0;
- 
+
 	$user = new TimelineData();
-	$user->idperson = $_SESSION["id_person"];
 	$user->prioridad = $_POST["prioridad"];
 	$user->quien_asigna = $client->contacto;
 	$user->status = 1;
@@ -20,12 +22,12 @@ if(count($_POST)>0){
 	$user->date_event = $_POST["fecha"];
 	$user->prorroga = $prorroga;
 	$user->add_task();
- 
+
 	$hoy = date("Y-m-d H:i:s");
 
 	// Varios destinatarios
 	$para  = $email; // atención a la coma
-	$email_from = 'Gilbert Lerma <j.fiallos@grupolatinamerica.com>';
+	$email_from = 'Gilbert Lerma <glerma@cipol.ec>';
 	$título = 'Solicitud de actividades asignada por: '.$nombre;
 
     if($_POST["prioridad"]==1) 
@@ -131,8 +133,8 @@ if(count($_POST)>0){
     $headers = [
         "MIME-Version: 1.0",
         "Content-type: text/html; charset=UTF-8",
-        'From: Recordatorio <info@grupolatinamerica.com>',
-        'Cc: Jorge Fiallos <jorgefiallos@gmail.com>',
+        'From: Recordatorio <info@cipol.ec>',
+        //'Cc: Jorge Fiallos <jorgefiallos@gmail.com>',
     ];
     
 	// Enviarlo
@@ -144,7 +146,7 @@ if(count($_POST)>0){
         echo 'Error.' . PHP_EOL;
     }
 	
-	//Core::redir('tareas'); 
+	Core::redir('tareas'); 
 }
 
 ?>
@@ -181,6 +183,15 @@ if(count($_POST)>0){
 						</div>
 						<div class="col-sm-2">
 							<span class="text-danger">&nbsp;</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="consigna" class="col-md-2 control-label">Consignas:</label>
+						<div class="col-md-4">
+							<select id="consigna" name="consigna" class="form-control">
+								<option value="1" selected="selected"> Fijas </option>
+								<option value="2"> Eventuales </option>
+							</select>
 						</div>
 					</div>
 					<div class="form-group">

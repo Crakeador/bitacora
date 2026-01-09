@@ -1,13 +1,13 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
 	<h1>
-		Talento Humano
-		<small>listado de los agentes activos</small>
+		Agenda de telef&oacute;nos		
+		<small>listado de telefonos de clientes</small>
 	</h1>
 	<ol class="breadcrumb">
-		<li><a href="./index.php?view=home"><i class="fa fa-dashboard"></i> Panel de control </a></li>
+		<li><a href="home"><i class="fa fa-dashboard"></i> Panel de control </a></li>
 	</ol>
-</section> 
+</section>
 <!-- Main content -->
 <section class="content" style="padding: 1.5rem !important;">
     <div class="box">
@@ -21,50 +21,39 @@
 				<input type='hidden' name='hid_frmEstado' id='hid_frmEstado' value='' />
 				<input type='hidden' name='hid_frmIdrol' id='hid_frmIdrol' value='<?php echo $_SESSION['idrol']; ?>'/>
 				<table id="viewlista" class="table table-bordered table-hover">
-					<thead>
+					<thead> 
 						<tr>
-							<th width="8%"><div align="center">Fotos</div></th>
-							<th width="40%">Agentes</th>
+                            <th width="8%"><div align="center">Tel&eacute;fonos</div></th>
+							<th width="40%">Clientes</th>
 							<th><div align="center">Direcci&oacute;n</div></th>
 							<th width="8%"><div align="center">Estado</div></th>
+							<th width="10%"><div align="center">Acciones</div></th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php
-							$users = PersonData::getAllDatos(); //var_dump($users);
+							$users = ComercialData::getPhone($_SESSION['user_id']);
 
 							// Crea tabla de Activos
 							foreach($users as $tables) {
 								echo '<tr>';
-									if($tables->image == "")
-										$nombre_fichero = "storage/persons/1234567890.jpg";
-									else
-										$nombre_fichero = "storage/persons/".$tables->image;
-
-									echo '<td>';
-										echo '<a href="tel:'.$tables->phone1.'">'.$tables->phone1.'</a></br><a href="tel:'.$tables->phone2.'">'.$tables->phone2.'</a></br><a href="tel:'.$tables->phone3.'">'.$tables->phone3.'</a>';
-										if (file_exists($nombre_fichero)) {
-											echo '<div align="center"><img src="'.$nombre_fichero.'" style="width:64px;"></div>';
-										} else {
-											echo '<div align="center"><img src="storage/persons/1234567890.jpg" style="width:64px;"></div>';
-										}
-									echo '</td>';
+								    echo '<td>
+									        <div align="center">';
+									    echo '<a href="tel:'.$tables->telefono1.'">'.$tables->telefono1.'</a></br><a href="tel:'.$tables->telefono2.'">'.$tables->telefono2.'</a></br><a href="tel:'.$tables->telefonofac1.'">'.$tables->telefonofac1.'</a></br>';
+								    echo '</div>
+									      </td>';
 									echo '<td><div align="left">';
-										echo $tables->idcard.'</br>';
-										echo utf8_encode($tables->name).'</br>';
-										if($tables->descripcion == ''){
-											//Sin comentarios
-										}else{
-											echo '<small>';
-												echo '<span class="glyphicon glyphicon-copy text-success"></span>&nbsp;';
-												echo $tables->startwork.'&nbsp;';
-												echo '<span class="glyphicon glyphicon-paste text-success"></span>&nbsp;';
-												echo $tables->endwork;
-												echo '</br>';
-												echo '<span class="glyphicon glyphicon-home text-success"></span>&nbsp;';
-												echo $tables->descripcion;
-											echo '</small>';
-										}
+										echo '<a class="text-primary" href="./index.php?view=telefono&id='.$tables->id.'">'.$tables->nombre.'</a></br>';
+										echo $tables->contacto.'-'.$tables->email.'</br>';
+										echo '<small>';
+											echo '<span class="glyphicon glyphicon-paste text-success"></span>&nbsp;';
+											echo $tables->created_at;
+											echo '<span class="glyphicon glyphicon-copy text-success"></span>&nbsp;';
+											echo $tables->producto.'&nbsp;';
+											echo '</br>';
+											echo '<span class="glyphicon glyphicon-envelope text-success"></span>&nbsp;';
+											echo $tables->email;
+										echo '</small>';
 									echo '</div></td>';
 									echo '<td><div align="left">'.$tables->direccion.'</div></td>';
 									echo '<td width="6%">';
@@ -77,8 +66,11 @@
 											echo '<span class="text-danger">Inactivo</span>';
 										}
 										echo '</small>';
-									echo '</td>';
-								echo '</tr>';
+										echo '</td>';
+									echo '<td><div align="center">';
+										echo '<button type="button" class="btn btn-primary btn-sm" onclick="logAndDial(\''.$tables->telefono1.'\', \''.$tables->nombre.'\')">Llamar</button>';
+									echo '</div></td>';
+									echo '</tr>';
 							}
 						?>
 					</tbody>
@@ -90,6 +82,22 @@
 <!-- Page specific script -->
 <script type="text/javascript" src="js/VentanaCentrada.js"></script>
 <script type='text/javascript'><!--
+	function logAndDial(numero, cliente){
+		// Registra el evento y abre el dialer
+		var now = new Date();
+		var stamp = now.toISOString().slice(0,19).replace('T',' ');
+		var fd = new FormData();
+		fd.append('title', 'Llamada: '+cliente);
+		fd.append('descripcion', 'Telefono: '+numero);
+		fd.append('backgroundColor', '#00a65a');
+		fd.append('borderColor', '#00a65a');
+		fd.append('start', stamp);
+		fd.append('end', stamp);
+		fetch('ajax/eventos.php?accion=agregar', { method:'POST', body: fd })
+			.catch(function(err){ console.error('No se pudo registrar la llamada', err); });
+		window.location.href = 'tel:'+numero;
+	}
+
 	function btn_Contrato($id) {
 		VentanaCentrada('js/documentos/res/contrato_html.php?id='+$id,'Recibos de Pago','','1024','768','true');
 	}

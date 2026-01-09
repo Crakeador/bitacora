@@ -126,16 +126,15 @@ if(count($_POST)>0){
 	</div>
 </section>
 <script>
+  $(document).ready(function(){	
 	var element = document.getElementById("sidai");
 
 	element.classList.add("sidebar-collapse");
 	document.title = "Near Solution | Asignacion de los guardias";
-</script>
-<script>
-  $(document).ready(function(){    
+
     $('input').iCheck({
-      checkboxClass: 'icheckbox_flat-blue',
-      radioClass: 'iradio_flat-blue'
+      checkboxClass: 'icheckbox_flat-red',
+      radioClass: 'iradio_flat-red'
     });
   });
 </script>

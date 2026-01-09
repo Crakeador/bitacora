@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-$pdo=new PDO("mysql:dbname=cipol;hoslt=127.0.0.0","root","");
+$pdo=new PDO("mysql:dbname=cipol;host=127.0.0.1","root","");
 
 $accion = (isset($_GET['accion']))?$_GET['accion']:'Leer';
 

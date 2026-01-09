@@ -5,7 +5,7 @@ date_default_timezone_set('America/Guayaquil');
 class VisitantesData
 {
 	public static $tablename = "visitantes";
-
+ 
 	public $id;
 	public $idpuesto;
 	public $idperson;
@@ -103,7 +103,7 @@ class VisitantesData
 	}
 
 	public static function getAll($cadena)	{
-		$sql = "SELECT A.* FROM " . self::$tablename . " A WHERE A.is_active = 1 AND A.idpuesto = ".$cadena; 
+		$sql = "SELECT A.* FROM " . self::$tablename . " A WHERE A.is_active = 1 AND A.idpuesto = ".$cadena." ORDER BY A.nombre ASC"; 
 		$query = Executor::doit($sql);
 		return Model::many($query[0], new VisitantesData());
 	}

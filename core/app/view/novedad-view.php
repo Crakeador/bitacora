@@ -2,11 +2,23 @@
 //Novedades de Bitacora
 $hoy = date("d-m-Y H:i:s"); $fecha = date("Y-m-d H:i:s"); $errores = ''; $observacion = ''; $estilo = ''; $validador = 99;
 
+$today = getdate(); $hora=$today["hours"];
+if ($hora<6) {
+    //echo(" Hoy has madrugado mucho... ");
+}elseif($hora<16){
+	$turno = 1;
+}elseif($hora<=18){
+	$turno = 2;
+}
+
 if(isset($_GET["usuario"])){
     $_SESSION["usuario"]=$_GET["usuario"];
     $_SESSION["puesto"]=$_GET["puesto"];
     $_SESSION["ingreso"]=$_GET["ingreso"];
-    $_SESSION["turno"]=$_GET["turno"];
+	if(isset($_GET["turno"]))
+		$_SESSION["turno"]=$_GET["turno"];
+	else
+		$_SESSION["turno"]=$turno;
 }
 
 if(!isset($_SESSION["user_id"]) || $_SESSION["user_id"]==""){
@@ -108,6 +120,7 @@ if(isset($_POST['id_person'])){
     $user->idperson = (int) $_POST["id_person"];
     $user->fecha = $_POST["fecha"];
     $user->turno = $_SESSION['turno'];
+    $user->prunto = 0;
     $user->proceso = 2;
     $user->tipo = $_POST["tipo"];
     $user->manzana = $_POST["manzana"];
@@ -264,8 +277,6 @@ else
 								<div class="col-md-7">
 									<form class="form-horizontal" method="post" enctype="multipart/form-data" id="novedad" name="novedad" action="index.php?view=novedad" role="form">
 										<input type="hidden" id="id_person"   name="id_person"   value="<?php echo $_SESSION['user_id']; ?>">
-										<!-- input type="hidden" id="idresidente" name="idresidente" value="<?php echo $_POST['idresidente']; ?>" -->
-										<!-- input type="hidden" id="idautoriza"  name="idautoriza"  value="<?php echo $_POST['id']; ?>" -->
 										<input type="hidden" id="timestamp"   name="timestamp"   value="">
 										<input type="hidden" id="latitude"    name="latitude"    value="">
 										<input type="hidden" id="longitude"   name="longitude"   value="">

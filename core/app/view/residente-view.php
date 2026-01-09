@@ -194,7 +194,7 @@ if(isset($_GET["id"])){
 </section>
 <link type="text/css" rel="stylesheet" href="plugins/switchery/switchery.min.css"/>
 <script type="text/javascript" src="plugins/switchery/switchery.min.js"></script>
-<script type='text/javascript'><!--
+<script type="text/javascript"><!--
 	var elem = document.querySelector('.js-switch');
 	var init = new Switchery(elem, {
 		color: 'green',

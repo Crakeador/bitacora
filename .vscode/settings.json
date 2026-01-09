@@ -1,0 +1,14 @@
+{
+  "mcp.servers": {
+    "notion": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-notion"
+      ],
+      "env": {
+        "NOTION_API_KEY": "16ed872b-594c-81c3-8b08-0002b61b8e95"
+      }
+    }
+  }
+}

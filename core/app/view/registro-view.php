@@ -1,13 +1,14 @@
 <?php
 //Novedades de Bitacora
 date_default_timezone_set('America/Guayaquil');
+$contactos = ContactoData::getAll($_SESSION["puesto"]);
 /*
 if($_SESSION['dispositivo'] == 1){ 
 	$usuario = $_GET['usuario'];
 	$puesto = $_GET['puesto'];
 	$ingreso = $_GET['ingreso'];
 	$turno = $_GET['turno'];
-	
+
 	Core::redir('fotos&usuario='.$usuario.'&puesto='.$puesto.'&ingreso='.$ingreso.'&turno='.$turno);
 } */
 $_SESSION['actividad']=1;
@@ -17,6 +18,7 @@ $errores = ''; $observacion = ''; $estilo = ''; $validador = 99;
 $today = getdate(); $hora=$today["hours"];
 
 if(isset($_GET["id"])) $users = VisitantesData::update($_GET["id"]);
+if(isset($_GET["person"])) $cargos = ContactoData::getLike($_GET["person"]);
 
 if ($hora<6) {
     //echo(" Hoy has madrugado mucho... ");
@@ -100,12 +102,12 @@ if(isset($_POST['id_person'])){
     if($_POST["nombre"]==""){
         $errores = 'debe de ingresar una observacion del puesto';
     }else{
-        $user->foto1 = $_FILES["foto1"]["name"];            
-        $user->foto2 = $_FILES["foto2"]["name"];            
-        $user->foto3 = $_FILES["foto3"]["name"];            
-        $user->foto4 = $_FILES["foto4"]["name"];            
-        $user->foto5 = $_FILES["foto5"]["name"];            
-        $user->foto6 = $_FILES["foto6"]["name"];
+        $user->foto1 = isset($_FILES["foto1"]) ? $_FILES["foto1"]["name"] : "";
+        $user->foto2 = isset($_FILES["foto2"]) ? $_FILES["foto2"]["name"] : "";
+        $user->foto3 = isset($_FILES["foto3"]) ? $_FILES["foto3"]["name"] : "";
+        $user->foto4 = isset($_FILES["foto4"]) ? $_FILES["foto4"]["name"] : "";
+        $user->foto5 = isset($_FILES["foto5"]) ? $_FILES["foto5"]["name"] : "";
+        $user->foto6 = isset($_FILES["foto6"]) ? $_FILES["foto6"]["name"] : "";
         
         $prod = $user->add();
         
@@ -249,7 +251,12 @@ else
     									<input type="hidden" id="mensaje"     name="mensaje"     value="">                            
     									<div class="" id="fisicos">
                     						<div class="form-group">
-                                                <button type="submit" class="btn btn-success btn-sm pull-right"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar </button>
+                                                <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#modalAgregarPersona" title="Añadir nueva persona" style="margin-right: 10px;">
+                                                    <i class="fa fa-plus"></i>
+                                                </button>
+                                                <button type="submit" class="btn btn-success btn-sm pull-right" title="Guardar registro">
+                                                    <span class="glyphicon glyphicon-floppy-disk"></span> Guardar 
+                                                </button>
                                             </div>
                     						<div class="form-group">
     											<div class="col-sm-6">
@@ -263,19 +270,31 @@ else
     											</div>
     										</div>
     										<div class="form-group">
-    											<label for="nombre" class="col-sm-4 control-label">Nombre:</label>
-    											<div class="col-sm-8">
-    											    <input type="text" id="nombre" name="nombre" class="form-control" value="<?php echo $cargos->nombre; ?>">
+    											<label for="select_persona" class="col-sm-4 control-label">Seleccionar Placa:</label>
+    											<div class="col-sm-7">
+    												<select id="select_persona" name="select_persona" class="form-control select2" onchange="javascript:location.href='index.php?view=registro&person='+value;">
+    													<option value="">-- Seleccione una persona --</option>
+                                                        <?php 
+                                                            foreach($contactos as $contacto): ?>
+                                                                <option value="<?php echo $contacto->id; ?>"><?php echo $contacto->placa; ?></option>
+                                                        <?php endforeach; ?>
+    												</select>
     											</div>
     										</div>
     										<div class="form-group">
-    											<label for="cedula" class="col-sm-4 control-label">Cedula:</label>
+    											<label for="nombre" class="col-sm-4 control-label">Nombre:</label>
+    											<div class="col-sm-8">
+    											    <input type="text" id="nombre" name="nombre" class="form-control" value="<?php echo $cargos->nombre; ?>" required>
+    											</div>
+    										</div>
+    										<div class="form-group">
+    											<label for="cedula" class="col-sm-4 control-label">Cédula:</label>
     											<div class="col-sm-8">
     											    <input type="text" id="cedula" name="cedula" class="form-control" value="<?php echo $cargos->cedula; ?>">
     											</div>
     										</div>
     										<div class="form-group">
-    											<label for="cedula" class="col-sm-4 control-label">Placa:</label>
+    											<label for="placa" class="col-sm-4 control-label">Placa:</label>
     											<div class="col-sm-8">
     												<input type="text" id="placa" name="placa" class="form-control" value="<?php echo $cargos->placa; ?>">
     											</div>
@@ -317,8 +336,7 @@ else
                                 <table class="table table-bordered table-hover">
                                     <thead>
                                         <th>Nombre</th>
-                                        <th>Cedula</th>
-                                        <th>Entrada</th>
+                                        <th width="8%">Placa</th>
                                         <th>Salir</th>
                                     </thead><?php
                                         $users = VisitantesData::getAll($_SESSION["puesto"]);
@@ -326,10 +344,9 @@ else
                                         // Crea tabla de personal administrativo
                                         foreach($users as $tables) {
                                             echo '<tr>';
-                                                echo '<td>'.$tables->nombre.'</td>';
+                                                echo '<td>'.$tables->nombre.'<br><small>'.$tables->created_at.'</small></td>';
                                                 echo '<td>'.$tables->placa.'</td>';
-                                                echo '<td><div align="center">'.$tables->created_at.'</div></td>';
-                                                echo '<td width="8%">';
+                                                echo '<td>';
                                                     echo '<div align="center">';
                                                         echo '<a href="index.php?view=registro&fase=2&id='.$tables->id.'" class="btn btn-danger btn-sm"><i class="fa fa-sign-out"></i> Salir</a>';
                                                     echo '</div>';
@@ -345,6 +362,43 @@ else
 		</div>
 	</div>
 </section>
+
+<!-- Modal para Añadir Persona -->
+<div class="modal fade" id="modalAgregarPersona" tabindex="-1" role="dialog" aria-labelledby="modalAgregarPersonaLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header" style="background-color: #f4f4f4; border-bottom: 1px solid #ddd;">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -5px;">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="modalAgregarPersonaLabel" style="font-weight: 600;">Añadir persona</h4>
+			</div>
+			<div class="modal-body" style="padding: 20px;">
+				<form id="formAgregarPersona">
+					<div class="form-group">
+						<label for="modal_nombre" style="font-weight: 500;">Nombre <span class="text-danger">*</span></label>
+						<input type="text" class="form-control" id="modal_nombre" name="modal_nombre" placeholder="Ingrese el nombre" required autofocus>
+					</div>
+					<div class="form-group">
+						<label for="modal_cedula" style="font-weight: 500;">Cédula</label>
+						<input type="text" class="form-control" id="modal_cedula" name="modal_cedula" placeholder="Ingrese la cédula">
+					</div>
+					<div class="form-group">
+						<label for="modal_placa" style="font-weight: 500;">Placa</label>
+						<input type="text" class="form-control" id="modal_placa" name="modal_placa" placeholder="Ingrese la placa">
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer" style="border-top: 1px solid #ddd; padding: 15px 20px;">
+				<button type="button" class="btn btn-default" data-dismiss="modal" style="margin-right: 10px;">Cancelar</button>
+				<button type="button" class="btn btn-success" id="btnGuardarPersona">
+					<i class="fa fa-save"></i> Guardar
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script>
     var element = document.getElementById("sidai");
 
@@ -358,9 +412,6 @@ else
     		var puesto = localStorage.getItem("puesto");
     		var ingreso = localStorage.getItem("ingreso");
     		var turno = localStorage.getItem("turno");
-    		
-    		console.log('Usuario: ' + usuario + ' Puesto: ' + puesto + ' Ingreso: ' + ingreso + ' Turno: ' + turno);
-    		//window.location="index.php?view=aspirantes&usuario="+usuario+"&puesto="+puesto+"&ingreso="+ingreso+"&turno="+turno;
     	}else{
     	    console.log('Local Store no definido');
     		window.location="aspirantes";
@@ -368,4 +419,65 @@ else
     }else{
         console.log("LocalStorage no soportado en este navegador");
     }
+    
+    // Guardar nueva persona desde el modal
+    $('#btnGuardarPersona').on('click', function() {
+        var nombre = $('#modal_nombre').val();
+        var cedula = $('#modal_cedula').val();
+        var placa = $('#modal_placa').val();
+        
+        if(!nombre || nombre.trim() == '') {
+            alert('El nombre es obligatorio');
+            $('#modal_nombre').focus();
+            return;
+        }
+        
+        // Deshabilitar botón mientras se procesa
+        var btnGuardar = $('#btnGuardarPersona');
+        var textoOriginal = btnGuardar.html();
+        btnGuardar.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Guardando...');
+        
+        $.ajax({
+            url: 'index.php?action=contacto&accion=agregar',
+            type: 'POST',
+            data: {
+                nombre: nombre.trim(),
+                cedula: cedula.trim(),
+                placa: placa.trim()
+            },
+            dataType: 'json',
+            success: function(response) {
+                btnGuardar.prop('disabled', false).html(textoOriginal);
+                
+                if(response.success) {
+                    // Limpiar formulario
+                    $('#formAgregarPersona')[0].reset();
+                    // Cerrar modal
+                    $('#modalAgregarPersona').modal('hide');
+                    // Seleccionar la persona recién agregada
+                    setTimeout(function() {
+                        $('#select_persona').val(response.id).trigger('change');
+                    }, 500);
+                    // Mostrar mensaje de éxito
+                    if(typeof swal !== 'undefined') {
+                        swal("Excelente", "Persona agregada correctamente", "success");
+                    } else {
+                        alert('Persona agregada correctamente');
+                    }
+                } else {
+                    alert('Error: ' + (response.message || 'No se pudo guardar la persona'));
+                }
+            },
+            error: function(xhr, status, error) {
+                btnGuardar.prop('disabled', false).html(textoOriginal);
+                console.error('Error:', error);
+                alert('Error al guardar la persona. Por favor, intente nuevamente.');
+            }
+        });
+    });
+    
+    // Limpiar formulario cuando se cierra el modal
+    $('#modalAgregarPersona').on('hidden.bs.modal', function() {
+        $('#formAgregarPersona')[0].reset();
+    });
 </script>
