@@ -13,7 +13,7 @@ class DepartamentoData {
 		$sql .= "value (".$_SESSION['id_company'].", \"$this->name\", $this->created_at)";
 		Executor::doit($sql);
 	}
-
+ 
 	public static function delById($id){
 		$sql = "update ".self::$tablename." set is_active = 0 where id=$id";
 		Executor::doit($sql);

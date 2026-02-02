@@ -125,12 +125,12 @@ $fechaFin = new DateTime(date('Y-m-d'));
 // Calcular la diferencia entre las fechas
 $diferencia = $fechaIni->diff($fechaFin);
 
-/* Acceder a los componentes de tiempo deseados
+/* Acceder a los componentes de tiempo deseados 
 echo "Diferencia de días: " . $diferencia->days . " días<br>";
 echo "Diferencia de meses: " . $diferencia->m . " meses<br>";
 echo "Diferencia de años: " . $diferencia->y . " años<br>";
-echo "Diferencia total en días: " . $diferencia->format('%R%a') . " días<br>"; */
-
+echo "Diferencia total en días: " . $diferencia->format('%R%a') . " días<br>";
+echo '</br>Rol:'.$_SESSION["idrol"]; */
 echo '<section class="content-header">';
 	echo '<h1>';
 		echo 'Panel de Control';
@@ -143,19 +143,7 @@ echo '</section>';
 echo '<section class="content" style="padding: 1.5rem !important;">';
 	echo '<div class="row">';
 		if($_SESSION["idrol"] == "1"){
-		    //Administradores
-			$rubro = NominaData::getAllMonto($ano, strval($mes)-1, 3);
-
-			$ingreso=0; $egresos=0; $monto=0;
-			foreach($rubro as $rubros) {
-				if($rubros->tipo_cuenta == 'I'){
-					$ingreso = $ingreso + $rubros->monto;
-				}else{
-					$egresos = $egresos + $rubros->monto;
-				}
-			}
-			
-			$monto = $ingreso-$egresos;
+		    //Administradores			
 			echo '<div class="col-lg-3 col-xs-6">';
 				echo '<div class="small-box bg-aqua">';
 					echo '<div class="inner">';
@@ -165,7 +153,7 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 					echo '<div class="icon">';
 						echo '<i class="fa fa-shopping-cart"></i>';
 					echo '</div>';
-					echo '<a href="index.php?view=clientes" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
+					echo '<a href="clientes" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
 				echo '</div>';
 			echo '</div>';
 			echo '<div class="col-lg-3 col-xs-6">';
@@ -323,13 +311,13 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 						echo '<div class="col-lg-3 col-xs-6">';
 							echo '<div class="small-box bg-purple">';
 								echo '<div class="inner">';
-									echo '<h3>'.count(PersonData::getClients()).'</h3>';
+									echo '<h3>'.count(ComercialData::getPhone($_SESSION['user_id'])).'</h3>';
 									echo '<p>Clientes registrados</p>';
 								echo '</div>';
 								echo '<div class="icon">';
 									echo '<i class="ion ion-person-add"></i>';
 								echo '</div>';
-								echo '<a href="index.php?view=agentes" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
+								echo '<a href="ventas" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
 							echo '</div>';
 						echo '</div>';
 						echo '<div class="col-lg-3 col-xs-6">';

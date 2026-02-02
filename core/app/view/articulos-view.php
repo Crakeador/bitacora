@@ -21,7 +21,7 @@
         </div>
         <div class="box-body">
             <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
-                <form id='frmC' name='frmC' method='post' action=''>
+                <form id='frmC' name='frmC' method='post'>
                     <input type='hidden' name='hid_frmEstado' id='hid_frmEstado' value='' />
                     <input type='hidden' name='hid_frmIsAmd' id='hid_frmIsAmd' value='<?php echo $_SESSION['is_admin']; ?>'/>
                     <input type='hidden' name='hid_frmIdrol' id='hid_frmIdrol' value='<?php echo $_SESSION['idrol']; ?>'/>

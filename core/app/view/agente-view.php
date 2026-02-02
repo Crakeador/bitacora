@@ -1,29 +1,18 @@
 <?php
-
-// Pantallas de ingreso y modificacion de las localidades
-
+// Pantallas de ingreso los efectivos 
+$puestos = PuestoData::getAll(2);
 $hoy = date("Y-m-d H:i:s"); $error = ""; $person_id = 0;
 
-
-
 if(isset($_GET["id"])){
-
     $mensaje = "modificar un agente del sistema";
-
     $enlaces = "Modificar";
-
     $person = LugarData::getById($_GET["id"]);
-
     $person_id = $_GET["id"];
-
 }else{
-
     $mensaje = "crear un agente en el sistema";
-
     $enlaces = "Crear";
 
     if(count($_POST)>0){
-
        	if(isset($_POST["active"])) $activo=1; else $activo=0; // var_dump($_POST); echo '</br>';
 
         if($_POST["person_id"] == 0){
@@ -64,7 +53,15 @@ if(isset($_GET["id"])){
 					}
 				}
 			}
+			$id = $user->getByCedula($_POST["idcard"]);
+			$lugar = new UnionData();
 
+			$lugar->id = $_POST["servicio"]; 
+			$lugar->idservicio = $_POST["idservicio"];
+			$lugar->idperson = $id->id;
+			$lugar->is_active = $activo;
+
+			$valor = $lugar->add();
           	Core::redir('agentes');
         }else{
           	Core::alert("Error...!!!!", $error, "error");
@@ -94,7 +91,6 @@ if(isset($_GET["id"])){
 }
 
 ?>
-
 <!-- Content Header (Page header) -->
 <section class="content-header">
 	<h1>
@@ -108,16 +104,11 @@ if(isset($_GET["id"])){
 </section>
 <section id="main" role="main" style="padding: 1.5rem !important;">
 	<p class="alert alert-info">
-
 		<strong><i class="fa fa-bullhorn"></i> Importante...!</strong>
-
 		- Los campos obligatorios estan marcados con asteriscos rojo <span class="text-danger">*</span>
-
 	</p>
-
 	<!-- START panel -->
-
-	<form class="form-horizontal" method="post" enctype="multipart/form-data" id="addproduct" action="index.php?view=rrsing.persons" role="form">
+	<form class="form-horizontal" method="post" enctype="multipart/form-data" id="addproduct" action="agente" role="form">
 		<input type="hidden" id="person_id" name="person_id" value="<?php echo $person_id; ?>">
 		<div class="panel panel-default">
 			<div class="panel-heading">
@@ -133,8 +124,22 @@ if(isset($_GET["id"])){
 					</div>
 				</div>
 				<div class="form-group">
+					<label for="idservicio" class="col-md-4 col-sm-4 control-label"><span class="text-danger">*</span> Puesto: </label>
+					<div class="col-md-3 col-sm-3">
+						<?php
+							echo '<select id="idservicio" name="idservicio" class="form-control">';
+							echo '<option value="0"> -- SELECCIONE -- </option>';
+							foreach($puestos as $tables) {
+								if($tables->id == $lugar->idservicio) $valor = 'selected'; else $valor = '';
+								echo '<option value="'.$tables->id.'" '.$valor.'>'.$tables->codigo.' ('.$tables->descripcion.')</option>';
+							}
+							echo '</select>';
+						?>
+					</div>
+				</div>
+				<div class="form-group">
 					<label class="col-sm-4 control-label"><span class="text-danger">*</span> C&eacute;dula:</label>
-					<div class="col-sm-3"><input type="text" class="form-control" id="idcard" name="idcard" maxlength="10" value="<?php echo $person->idcard; ?>" required title="Solo números. Tamaño obligatorio: 10"></div>
+					<div class="col-md-3 col-sm-3"><input type="text" class="form-control" id="idcard" name="idcard" maxlength="10" value="<?php echo $person->idcard; ?>" required title="Solo números. Tamaño obligatorio: 10"></div>
 				</div>
 				<div class="form-group">
 					<label class="col-sm-4 control-label"><span class="text-danger">*</span> Apellidos Nombres:</label>
@@ -142,7 +147,7 @@ if(isset($_GET["id"])){
 				</div>
 				<div class="form-group">
 					<label class="col-sm-4 control-label"><span class="text-danger">*</span> G&eacute;nero:</label>
-					<div class="col-sm-3">
+					<div class="col-md-3 col-sm-3">
 						<select class="select-input form-control input-sm" id="genero" name="genero">
 							<option value="1" <?php if($person->genero==1) echo 'selected="selected"'; ?>>Masculino</option>
 							<option value="2" <?php if($person->genero==2) echo 'selected="selected"'; ?>>Femenino</option>
@@ -164,7 +169,7 @@ if(isset($_GET["id"])){
 							<option value="8" <?php if($person->tipo_sangre==8) echo 'selected="selected"'; ?>>O+</option>
 						</select>
 					</div>
-				</div>				
+				</div>
 				<div class="form-group">
 					<label class="col-sm-4 control-label"><span class="text-danger">*</span> Tel&eacute;fono celular:</label>
 					<div class="col-sm-3"><input type="text" class="form-control" id="telefono1" name="telefono1" maxlength="10" data-inputmask='"mask": "9999999999"' data-mask placeholder="9999999999" value="<?php echo $person->phone1; ?>" required minlength="10" pattern="[0-9]{10}" title="Solo números, debe ser un telefono local"></div>

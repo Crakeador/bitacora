@@ -166,7 +166,7 @@ if(count($_POST)>0){
 								echo '<td><div align="right">'.number_format($tables->price_in,2,'.',',').'</div></td>';
 								echo '<td><div align="right">'.number_format($tables->price_out,2,'.',',').'</div></td>';								
 								echo '<td><div align="right">'.$tables->getTotal().'</div></td>';
-								$valor=$tables->getOperation()->q+$tables->getTotal();
+								//$valor=$tables->getOperation()->q+$tables->getTotal();
 								echo '<td>
 										<div align="center">								
 											<div class="btn-group">											

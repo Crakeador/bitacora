@@ -97,7 +97,7 @@ if($_SESSION['is_admin'] == 1) {
         		</div>					
             	<!-- Main content -->
                 <div class="box-body mailbox-messages">
-					<form id='frmC' name='frmC' method='post' action=''>
+					<form id='frmC' name='frmC' method='post'>
                         <table id="viewBitacora" class="table table-bordered table-hover">
                             <thead>
                                 <tr>

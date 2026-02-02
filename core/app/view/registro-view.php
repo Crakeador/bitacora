@@ -18,7 +18,14 @@ $errores = ''; $observacion = ''; $estilo = ''; $validador = 99;
 $today = getdate(); $hora=$today["hours"];
 
 if(isset($_GET["id"])) $users = VisitantesData::update($_GET["id"]);
-if(isset($_GET["person"])) $cargos = ContactoData::getLike($_GET["person"]);
+if(isset($_GET["person"])) 
+    $cargos = ContactoData::getLike($_GET["person"]);
+else
+    $cargos = (object) [
+        "nombre" => "",
+        "cedula" => "",
+        "placa" => ""
+    ];
 
 if ($hora<6) {
     //echo(" Hoy has madrugado mucho... ");
@@ -239,7 +246,7 @@ else
 					<div class="tab-content panel">
 						<div class="tab-pane active" id="tab_generales">
 							<div class="row">
-                                <form class="form-horizontal" method="post" enctype="multipart/form-data" id="registro" name="registro" action="registro" role="form">
+                                <form class="form-horizontal" method="post" enctype="multipart/form-data" id="registro" name="registro" action="index.php?view=registro" role="form">
     								<div class="col-md-7">
     									<input type="hidden" id="id_person"   name="id_person"   value="<?php echo $_SESSION['user_id']; ?>">
     									<input type="hidden" id="timestamp"   name="timestamp"   value="">

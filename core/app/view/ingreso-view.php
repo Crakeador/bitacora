@@ -150,7 +150,7 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
 				<div class="panel-collapse pull out">
 					<div class="panel-body">						
 						<div class="col-md-6">
-						    <form class="form-horizontal" method="post" enctype="multipart/form-data" id="ingreso" name="ingreso" action="ingreso" role="form">
+						    <form class="form-horizontal" method="post" enctype="multipart/form-data" id="ingreso" name="ingreso" action="index.php?view=ingreso" role="form">
 								<input type="hidden" id="id_person"  name="id_person"  value="<?php echo $_SESSION['user_id']; ?>">
 								<input type="hidden" id="verifica"   name="verifica"   value="0">
 								<input type="hidden" id="timestamp"  name="timestamp"  value="">

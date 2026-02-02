@@ -42,7 +42,7 @@ if(isset($_GET['id'])){
 		<small>lista de las autorizaciones</small>
 	</h1>
 	<ol class="breadcrumb">
-		<li><a href="./index.php?view=home"><i class="fa fa-dashboard"></i> Panel de control </a></li>
+		<li><a href="./home"><i class="fa fa-dashboard"></i> Panel de control </a></li>
 	</ol>
 </section>
 <!-- Main content -->
@@ -56,7 +56,7 @@ if(isset($_GET['id'])){
 			</div>
 		</div>
 		<div class="box-body mailbox-messages">
-			<form id='frmC' name='frmC' method='post'>
+			<form id='frmC' name='frmC' method='post' action=''>
 				<input type='hidden' name='hid_frmEstado' id='hid_frmEstado' value='' />
 				<input type='hidden' name='hid_frmIdrol' id='hid_frmIdrol' value='<?php echo $_SESSION['idrol']; ?>'/>
 				<table id="viewlista" class="table table-bordered table-hover">
@@ -92,7 +92,7 @@ if(isset($_GET['id'])){
 									echo '<td><div align="center">'.$tables->clave.'</div></td>';
 									echo '<td>'.$tables->observacion.'</td>';									
 									echo '<td><div align="center">';
-											echo '<button type="button" class="btn btn-xs btn-danger btn-sm" onClick="btn_EnviarOnClick(\''.$tables->id.'\', \''.$tables->is_active.'\');"><i class="fa fa-trash"></i></button>';
+											echo '<button type="button" class="btn btn-xs btn-danger btn-sm" onClick="btn_EnviarOnClick(\''.$tables->id.'\', \''.$tables->is_active.'\');"><i class="fa fa-trash-o"></i></button>';
 									echo '</div></td>';									
 								echo '</tr>';
 							}

@@ -48,19 +48,19 @@ class PersonData {
 	}
 
 	public function addDatos($idperson, $despido, $cargo, $tipo_contrato, $hijos, $sueldo, $startwork, $endwork){
-		$sql = "INSERT INTO persond(idperson, tipo_despido, cargo, tipo_contrato, hijos, sueldo, startwork, endwork, estado, is_active, created_at, usuario_log, ip)";
+		$sql = "INSERT INTO persond(idperson, tipo_despido, idcargo, tipo_contrato, hijos, sueldo, startwork, endwork, estado, is_active, created_at, usuario_log, ip)";
 		$sql .= " VALUES ($idperson, $despido, \"$cargo\", \"$tipo_contrato\", $hijos, $sueldo, \"$startwork\", \"$endwork\", \"E\", 1, NOW(), \"".$_SESSION['user_name']."\", \"".$_SESSION['ip']."\")"; 
 		Executor::doit($sql);
 	}
 
 	public function addFinal($idperson, $despido, $cargo, $tipo_contrato, $hijos, $sueldo, $startwork, $endwork, $observacion){
-		$sql = "INSERT INTO persond(idperson, tipo_despido, cargo, tipo_contrato, hijos, sueldo, startwork, endwork, estado, observacion, is_active, created_at, usuario_log, ip)";
+		$sql = "INSERT INTO persond(idperson, tipo_despido, idcargo, tipo_contrato, hijos, sueldo, startwork, endwork, estado, observacion, is_active, created_at, usuario_log, ip)";
 		$sql .= " VALUES ($idperson, $despido, \"$cargo\", \"$tipo_contrato\", $hijos, $sueldo, \"$startwork\", \"$endwork\", \"L\", \"$observacion\", 1, NOW(), \"".$_SESSION['user_name']."\", \"".$_SESSION['ip']."\")"; 
 		Executor::doit($sql);
 	}
 	
 	public function addPersonas(){
-		$sql = "INSERT INTO persond(idperson, persona, ocupacion, tiempo_conocido, conocido, familia, relaciones, describa, empresa, laboral, cargo, 
+		$sql = "INSERT INTO persond(idperson, persona, ocupacion, tiempo_conocido, conocido, familia, relaciones, describa, empresa, laboral, idcargo, 
 		telefono, desde, hasta, desempeno, tiempo, jefe, relacion, motivo, penales, judicial, demanda, fiscalia, verificado, is_active, created_at, 
 		usuario_log, ip)";
 		$sql .= " VALUES ($idperson, \"$this->persona\", \"$this->ocupacion\", \"$this->tiempo_conocido\", \"$this->conocido\", \"$this->familia\", 
@@ -72,19 +72,19 @@ class PersonData {
 	}
 	
 	public function addVac(){
-		$sql = "INSERT INTO persond(idperson, region, cargo, tipo_contrato, hijos, sueldo, startwork, endwork, dias, observacion, tipo_pago, acumula, estado, is_active, created_at, usuario_log, ip)";
+		$sql = "INSERT INTO persond(idperson, region, idcargo, tipo_contrato, hijos, sueldo, startwork, endwork, dias, observacion, tipo_pago, acumula, estado, is_active, created_at, usuario_log, ip)";
 		$sql .= " VALUES ($this->idperson, 2, 7, \"Vacaciones del Guardia\", 0, $this->sueldo, \"$this->startwork\", \"$this->endwork\", $this->dias, \"$this->observacion\", \"0\", \"0\", \"V\", \"1\", NOW(), \"".$_SESSION['user_name']."\", \"".$_SESSION['ip']."\")"; echo $sql;
 		Executor::doit($sql);
 	}
 
 	public function addLiq($id){ 
-		$sql = "INSERT INTO persond(idperson, region, cargo, tipo_contrato, hijos, sueldo, startwork, endwork, tipo_pago, acumula, estado, is_active, created_at, usuario_log, ip)";
+		$sql = "INSERT INTO persond(idperson, region, idcargo, tipo_contrato, hijos, sueldo, startwork, endwork, tipo_pago, acumula, estado, is_active, created_at, usuario_log, ip)";
 		$sql .= " VALUES (".$id.", \"$this->region\", \"$this->cargo\", \"$this->tipo_contrato\", $this->hijos, $this->sueldo, \"$this->startwork\", \"$this->endwork\", \"$this->tipo_pago\", \"$this->acumula\", \"I\", \"$this->is_active\", $this->created_at, \"".$_SESSION['user_name']."\", \"".$_SESSION['ip']."\")";
 		Executor::doit($sql);
 	}
  
 	public function addAMD(){
-		$sql = "INSERT INTO person(idcompany, idcard, name, cargo, startwork, endwork, licencia, tipo_licencia, copia_licencia, ";
+		$sql = "INSERT INTO person(idcompany, idcard, name, idcargo, startwork, endwork, licencia, tipo_licencia, copia_licencia, ";
 		$sql .= "tiene_carnet, fechanacimiento, copiacedula, phone1, phone2, genero, sueldo, tipo_contrato, region, ";
 		$sql .= "bachiller, especializacion1, esc_tecnico, especializacion2, computadora, celulartactil, curso_realizado, certificados, ";
 		$sql .= "tipo_sangre, altura, certificadosangre, recibe, direccion, sector, referencia, croquis, planilla, contrato, banco, tipo, cuenta, tipo_pago, recibo, is_active, created_at, usuario_log, ip)";
@@ -99,7 +99,7 @@ class PersonData {
 	}
 
 	public function addIMG(){
-		$sql = "INSERT INTO person(idcompany, image, idcard, name, cargo, startwork, endwork, licencia, tipo_licencia, copia_licencia, ";
+		$sql = "INSERT INTO person(idcompany, image, idcard, name, idcargo, startwork, endwork, licencia, tipo_licencia, copia_licencia, ";
 		$sql .= "tiene_carnet, fechanacimiento, copiacedula, phone1, phone2, genero, sueldo, tipo_contrato, ";
 		$sql .= "bachiller, especializacion1, esc_tecnico, especializacion2, computadora, celulartactil, curso_realizado, certificados, ";
 		$sql .= "tipo_sangre, altura, certificadosangre, recibe, direccion, sector, referencia, croquis, planilla, contrato, banco, tipo, cuenta, tipo_pago, recibo, is_active, created_at, usuario_log, ip)";
@@ -114,7 +114,7 @@ class PersonData {
 	}
 
 	public function add(){
-		$sql = "INSERT INTO person(idcompany, idcard, name, cargo, startwork, endwork, licencia, tipo_licencia, copia_licencia, ";
+		$sql = "INSERT INTO person(idcompany, idcard, name, idcargo, startwork, endwork, licencia, tipo_licencia, copia_licencia, ";
 		$sql .= "inscrito_curso, tiene_carnet, copia_ministerio, premilitar, militar, carrera_militar, ";
 		$sql .= "copia_militar, uso_arma, nombre_curso, copia_curso, fechanacimiento, copiacedula, phone1, phone2, genero, sueldo, tipo_contrato, ";
 		$sql .= "bachiller, especializacion1, esc_tecnico, especializacion2, computadora, celulartactil, curso_realizado, certificados, ";
@@ -132,7 +132,7 @@ class PersonData {
 	}
 
 	public function addFisico(){
-		$sql = "INSERT INTO person(idcompany, idcard, name, cargo, startwork, endwork, licencia, tipo_licencia, copia_licencia, ";
+		$sql = "INSERT INTO person(idcompany, idcard, name, idcargo, startwork, endwork, licencia, tipo_licencia, copia_licencia, ";
 		$sql .= "inscrito_curso, tiene_carnet, copia_ministerio, premilitar, militar, carrera_militar, ";
 		$sql .= "copia_militar, uso_arma, nombre_curso, copia_curso, fechanacimiento, copiacedula, phone1, phone2, genero, sueldo, tipo_contrato, ";
 		$sql .= "bachiller, especializacion1, esc_tecnico, especializacion2, computadora, celulartactil, curso_realizado, certificados, ";
@@ -150,7 +150,7 @@ class PersonData {
 	}
 	
 	public function add_aspirante(){
-		$sql = "INSERT INTO person(idcompany, idcard, name, latitude, longitude, mensaje, cargo, email, carnet, conyuge, embarazada, estado_civil, ";
+		$sql = "INSERT INTO person(idcompany, idcard, name, latitude, longitude, mensaje, idcargo, email, carnet, conyuge, embarazada, estado_civil, ";
 		$sql .= "fechanacimiento, phone1, phone2, phone3, genero, image, cedula1, cedula2, votacion, tipo_sangre, ";
 		$sql .= "bachiller, computadora, celulartactil, curso_realizado, certificados, altura, ";
 		$sql .= "idlugar, archivo, direccion, sector, referencia, tiene_carnet, reentrenamiento, vivienda, referencia1, referencia2, referencia3, is_active, usuario_log, ip, created_at)";
@@ -163,7 +163,7 @@ class PersonData {
 	}
 	
 	public function upd_aspirante(){
-		$sql = "UPDATE person SET name=\"$this->name\", conyuge=\"$this->conyuge\", embarazada=\"$this->embarazada\", tipo_sangre=\"$this->tipo_sangre\", email=\"$this->email\", cargo=\"$this->cargo\", sector=\"$this->sector\", referencia=\"$this->referencia\", estado_civil=\"$this->estado_civil\", ";
+		$sql = "UPDATE person SET name=\"$this->name\", conyuge=\"$this->conyuge\", embarazada=\"$this->embarazada\", tipo_sangre=\"$this->tipo_sangre\", email=\"$this->email\", idcargo=\"$this->cargo\", sector=\"$this->sector\", referencia=\"$this->referencia\", estado_civil=\"$this->estado_civil\", ";
 		                 $sql .= "tiene_carnet=\"$this->tiene_carnet\", reentrenamiento=\"$this->reentrenamiento\", monto=\"$this->monto\", hijos=\"$this->hijos\", fechanacimiento=\"$this->fechanacimiento\", altura=\"$this->altura\", ";
 		                 $sql .= "copiacedula=\"$this->copiacedula\", phone1=\"$this->phone1\", phone2=\"$this->phone2\", phone3=\"$this->phone3\", genero=\"$this->genero\", bachiller=\"$this->bachiller\", esc_tecnico=\"$this->esc_tecnico\", ";
 	                  	 $sql .= "computadora=\"$this->computadora\", celulartactil=\"$this->celulartactil\", curso_realizado=\"$this->curso_realizado\", certificados=\"$this->certificados\", idlugar=\"$this->idlugar\", direccion=\"$this->direccion\", ";
@@ -179,7 +179,7 @@ class PersonData {
 	}
 	
 	public function add_backup(){
-		$sql = "INSERT INTO person(idcompany, idcard, name, cargo, hijos, monto, ";
+		$sql = "INSERT INTO person(idcompany, idcard, name, idcargo, hijos, monto, ";
 		$sql .= "fechanacimiento, phone1, phone2, genero, firma, ";
 		$sql .= "bachiller, especializacion1, esc_tecnico, especializacion2, computadora, celulartactil, curso_realizado, certificados, ";
 		$sql .= "direccion, sector, referencia, tiene_carnet, is_active, usuario_log, ip, created_at)";
@@ -191,7 +191,7 @@ class PersonData {
 	}
 
 	public function add_IMGAge(){
-		$sql = "insert into person (idcompany, idlocalidad, image, idcard, name, phone1, cargo, genero, tipo_sangre, is_active, usuario_log, ip, created_at) ";
+		$sql = "insert into person (idcompany, idlocalidad, image, idcard, name, phone1, idcargo, genero, tipo_sangre, is_active, usuario_log, ip, created_at) ";
 		$sql .= "value (".$_SESSION['id_company'].", ".$_SESSION['id_localidad'].", \"$this->image\", \"$this->idcard\", \"$this->name\", \"$this->phone1\", ";
 		$sql .= "$this->cargo, $this->genero, $this->tipo_sangre, 1, \"".$_SESSION['user_name']."\", \"".$_SESSION['ip']."\", $this->created_at)"; 
 
@@ -199,10 +199,10 @@ class PersonData {
 	}
 
 	public function add_agente(){
-		$sql = "insert into person (idcompany, idlocalidad, idcard, name, phone1, cargo, genero, tipo_sangre, is_active, usuario_log, ip, created_at) ";
+		$sql = "insert into person (idcompany, idlocalidad, idcard, name, phone1, idcargo, genero, tipo_sangre, startwork, is_active, usuario_log, ip, created_at) ";
 		$sql .= "value (".$_SESSION['id_company'].", ".$_SESSION['id_localidad'].", \"$this->idcard\", \"$this->name\", \"$this->phone1\", ";
-		$sql .= "$this->cargo, $this->genero, $this->tipo_sangre, 1, \"".$_SESSION['user_name']."\", \"".$_SESSION['ip']."\", $this->created_at)"; 
-
+		$sql .= "$this->cargo, $this->genero, $this->tipo_sangre, CURDATE(), 1, \"".$_SESSION['user_name']."\", \"".$_SESSION['ip']."\", $this->created_at)"; 
+		
 		Executor::doit($sql);
 	}
 

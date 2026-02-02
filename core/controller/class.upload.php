@@ -2657,16 +2657,22 @@ class upload {
      * @return integer Size in bytes
      */
     function getsize($size) {
-        $last = strtolower($size[strlen($size)-1]);
+        if (is_null($size)) {
+            return 0;
+        }
+        // Convertir a string para evitar errores de offset
+        $size_str = (string)$size;
+        $last = strtolower(substr($size_str, -1));
+        $num = (float)$size;
         switch($last) {
             case 'g':
-                $size *= 1024;
+                $num *= 1024;
             case 'm':
-                $size *= 1024;
+                $num *= 1024;
             case 'k':
-                $size *= 1024;
+                $num *= 1024;
         }
-        return $size;
+        return (int)$num;
     }
 
     /**

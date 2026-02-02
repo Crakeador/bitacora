@@ -41,15 +41,15 @@ class BitacoraData {
 	}
     
 	public function addIMG(){
-		$sql = "INSERT INTO ".self::$tablename." (idpuesto, idperson, fecha, turno, punto, proceso, observacion, accion, foto1, timestamp, latitude, longitude, rangoerror, sentido, velocidad, mensaje, is_active, usuario_log, ip) ";
-		$sql .= "value ($this->idpuesto, $this->idperson, \"$this->fecha\", \"$this->turno\", \"$this->punto\", \"$this->proceso\", \"$this->observacion\", \"$this->accion\", \"$this->foto1\", \"$this->timestamp\", \"$this->latitude\", \"$this->longitude\", \"$this->rangoerror\", \"$this->sentido\", \"$this->velocidad\", \"$this->mensaje\", $this->is_active, \"$this->usuario_log\", \"$this->ip\")";
-		
+		$sql = "INSERT INTO ".self::$tablename." (idpuesto, idperson, fecha, turno, proceso, observacion, accion, foto1, timestamp, latitude, longitude, rangoerror, sentido, velocidad, mensaje, is_active, usuario_log, ip) ";
+		$sql .= "value ($this->idpuesto, $this->idperson, \"$this->fecha\", \"$this->turno\", \"$this->proceso\", \"$this->observacion\", \"$this->accion\", \"$this->foto1\", \"$this->timestamp\", \"$this->latitude\", \"$this->longitude\", \"$this->rangoerror\", \"$this->sentido\", \"$this->velocidad\", \"$this->mensaje\", $this->is_active, \"$this->usuario_log\", \"$this->ip\")";
+	
 		return Executor::doit($sql);
 	}
 	
 	public function add(){
-		$sql = "INSERT INTO ".self::$tablename." (idpuesto, idperson, idresidente, fecha, punto, proceso, tipo, manzana, villa, observacion, accion, observaciono, foto1, foto2, foto3, foto4, foto5, foto6, timestamp, latitude, longitude, rangoerror, sentido, velocidad, mensaje, is_active, usuario_log, ip) ";
-		$sql .= "value ($this->idpuesto, $this->idperson, $this->idresidente, \"$this->fecha\", \"$this->punto\", \"$this->proceso\", \"$this->tipo\", \"$this->manzana\", \"$this->villa\", \"$this->observacion\", \"$this->accion\", \"$this->observaciono\", \"$this->foto1\", \"$this->foto2\", \"$this->foto3\", \"$this->foto4\", \"$this->foto5\", \"$this->foto6\", \"$this->timestamp\", \"$this->latitude\", \"$this->longitude\", \"$this->rangoerror\", \"$this->sentido\", \"$this->velocidad\", \"$this->mensaje\", $this->is_active, \"$this->usuario_log\", \"$this->ip\")";
+		$sql = "INSERT INTO ".self::$tablename." (idpuesto, idperson, idresidente, fecha, proceso, tipo, manzana, villa, observacion, accion, observaciono, foto1, foto2, foto3, foto4, foto5, foto6, timestamp, latitude, longitude, rangoerror, sentido, velocidad, mensaje, is_active, usuario_log, ip) ";
+		$sql .= "value ($this->idpuesto, $this->idperson, $this->idresidente, \"$this->fecha\", \"$this->proceso\", \"$this->tipo\", \"$this->manzana\", \"$this->villa\", \"$this->observacion\", \"$this->accion\", \"$this->observaciono\", \"$this->foto1\", \"$this->foto2\", \"$this->foto3\", \"$this->foto4\", \"$this->foto5\", \"$this->foto6\", \"$this->timestamp\", \"$this->latitude\", \"$this->longitude\", \"$this->rangoerror\", \"$this->sentido\", \"$this->velocidad\", \"$this->mensaje\", $this->is_active, \"$this->usuario_log\", \"$this->ip\")";
         $res = Executor::doit($sql);
 		return $res;
 	}

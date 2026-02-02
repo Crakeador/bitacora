@@ -73,7 +73,7 @@ class VisitantesData
 	}
 
 	public function update($id){
-		$sql = "UPDATE ".self::$tablename." SET is_active=2 WHERE id=$id"; echo $sql;
+		$sql = "UPDATE ".self::$tablename." SET is_active=2 WHERE id=$id"; 
 		Executor::doit($sql);
 	}
 

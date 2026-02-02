@@ -158,7 +158,7 @@ if(isset($_GET["id"])){
 					- Los campos obligatorios estan marcados con asteriscos rojo <span class="text-danger">*</span>
 				</p>
 				<!-- START panel -->
-				<form class="form-horizontal" method="post" id="addtask" action="index.php?view=cliente" role="form">
+				<form class="form-horizontal" method="post" id="addtask" action="cliente" role="form">
 					<input type="hidden" id="client_id" name="client_id" value="<?php echo $client_id; ?>">
 					<div class="panel panel-default">
 						<div class="panel-heading">

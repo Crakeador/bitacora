@@ -2,7 +2,7 @@
 //Modelo de los clientes en el sistema
 class ClientData {
 	public static $tablename = "client";
- 
+  
 	public function __construct(){
 		$this->idclient = "";
 		$this->tipo_empresa = "";
@@ -138,5 +138,3 @@ class ClientData {
 		return Model::many($query[0],new ClientData());
 	}
 }
-
-

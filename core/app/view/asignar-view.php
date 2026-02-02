@@ -1,5 +1,5 @@
 <?php
-//Ingreso de Guardias
+//Ingreso de Guardias de Seguridad
 if(isset($_SESSION['ingreso']) && $_SESSION['ingreso'] > 1) {
     if($_SESSION['dispositivo'] == 1) 
         Core::redir('videoip');
@@ -253,12 +253,4 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
     }else{
         alert("No hay ningun turno abierto...!!!");
     }
-</script>
-<script>
-    $(document).ready(function(event) {
-        $('input').iCheck({
-            checkboxClass: 'icheckbox_flat-red',
-            radioClass: 'iradio_flat-red'
-        });
-	});
 </script>

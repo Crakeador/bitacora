@@ -1,3 +1,3 @@
 <?php
-  echo "<meta http-equiv='Refresh' content='0;URL=../index.php?view=home'/>";
+  echo "<meta http-equiv='Refresh' content='0;URL=../home'/>";
 ?>

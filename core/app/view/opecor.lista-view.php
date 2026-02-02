@@ -9,7 +9,7 @@
 	</ol>
 </section>
 <!-- Main content -->
-<form id='frmC' name='frmC' method='post' action=''>
+<form id='frmC' name='frmC' method='post'>
 	<input type='hidden' name='hid_frmEstado' id='hid_frmEstado' value='' />
 	<input type='hidden' name='hid_frmIdrol'  id='hid_frmIdrol'  value='<?php echo $_SESSION['idrol']; ?>'/>
 	<section class="content" style="padding: 1.5rem !important;">

@@ -158,7 +158,7 @@ if(isset($_POST['id_person'])){
                 }
             }
 
-            if($_FILES["foto2"]["name"]==""){
+            if(!isset($_FILES["foto2"]["name"])){
                 $user->foto2 = "";
             }else{
                 $image = new Upload($_FILES["foto2"]);
@@ -172,7 +172,7 @@ if(isset($_POST['id_person'])){
                 }
             }
 
-            if($_FILES["foto3"]["name"]==""){
+            if(!isset($_FILES["foto3"]["name"])){
                 $user->foto3 = "";
             }else{
                 $image = new Upload($_FILES["foto3"]);
@@ -186,7 +186,7 @@ if(isset($_POST['id_person'])){
                 }
             }
 
-            if($_FILES["foto4"]["name"]==""){
+            if(!isset($_FILES["foto4"]["name"])){
                 $user->foto4 = "";
             }else{
                 $image = new Upload($_FILES["foto4"]);
@@ -200,7 +200,7 @@ if(isset($_POST['id_person'])){
                 }
             }
 
-            if($_FILES["foto5"]["name"]==""){
+            if(!isset($_FILES["foto5"]["name"])){
                 $user->foto5 = "";
             }else{
                 $image = new Upload($_FILES["foto5"]);
@@ -214,7 +214,7 @@ if(isset($_POST['id_person'])){
                 }
             }
 
-            if($_FILES["foto6"]["name"]==""){
+            if(!isset($_FILES["foto6"]["name"])){
                 $user->foto6 = "";
             }else{
                 $image = new Upload($_FILES["foto6"]);
@@ -434,12 +434,4 @@ else
 </section>
 <script>
     document.title = "Near Solution | Registro de la Bitacora";
-</script>
-<script>
-  $(document).ready(function(){
-    $('input').iCheck({
-      checkboxClass: 'icheckbox_flat-red',
-      radioClass: 'iradio_flat-red'
-    });
-  });
 </script>

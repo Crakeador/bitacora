@@ -320,7 +320,7 @@ if(!isset($_SESSION["user_id"])) {
 												
 											window.location="index.php?view=novedad&usuario="+usuario+"&puesto="+puesto+"&ingreso="+ingreso+"&turno="+turno;
 										}else{
-											window.location="index.php?view=asignar";
+											window.location="asignar";
 										}
 									  </script>'; 
 							}

@@ -70,16 +70,15 @@ switch ($method) {
 	    		</div>
             	<!-- Main content -->
                 <div class="box-body mailbox-messages">
-					<form id='frmC' name='frmC' method='post' action=''>
+					<form id='frmC' name='frmC' method='post'>
 					    <input type='hidden' name='hid_frmEstado' id='hid_frmEstado' value='' />
 					    <input type='hidden' name='hid_frmIdrol' id='hid_frmIdrol' value='<?php echo $_SESSION['idrol']; ?>'/>
                         <table id="viewBitacora" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th><div align="center">Asignado el</div></th>
-                                    <th><div align="center">Entregar el</div></th>
+                                    <th width="8%"><div align="center">Asignado el</div></th>
+                                    <th width="8%"><div align="center">Entregado el</div></th>
                                     <th width="20%"><div align="center">Asignado por</div></th>
-                                    <th width="14%"><div align="center">Asignado a</div></th>
                                     <th>Entregado por</th>
                                     <th width="8%"><div align="center">Acci&oacute;n</div></th>
                                 </tr>
@@ -91,16 +90,30 @@ switch ($method) {
 
 									// Crea tabla de memos
 									foreach($users as $tables) {
-                                    	$nombre = UserData::getById($tables->idperson)->name.' '.UserData::getById($tables->idperson)->lastname;
-                                        $email = UserData::getById($tables->idperson)->email;
 									    //var_dump($tables);
 										echo '<tr>';
-									        echo '<td><div align="center">'.$tables->created_at.'</div></td>';
 									        echo '<td><div align="center">'.$tables->date_event.'</div></td>';
-									        echo '<td>'.$tables->quien_asigna.'<br>';
-									        if($tables->date_pass == "" || $tables->date_pass == "0000-00-00 00:00:00"){
+									        if($tables->date_pass != "" && $tables->date_pass != NULL) echo '<td><div align="center">'.$tables->date_pass.'</div></td>'; else echo '<td><div align="center">EN ESPERA</div></td>';
+									        echo '<td>'.strtoupper($tables->quien_asigna).'&nbsp;&nbsp;<i class="fa fa-phone"></i>&nbsp;&nbsp;'.$tables->celular.'<br>';
+											echo '<i class="fa fa-envelope"></i>&nbsp;&nbsp;'.$tables->email.'</br>';
+									        if($tables->date_pass == "" || $tables->date_pass == NULL){
 									            $boton = '';
 									            
+												$ini = explode(" ", $tables->date_event);
+												$fin = date("Y-m-d");
+												
+												$fecha1 = new DateTime($ini[0]);
+                                                $fecha2 = new DateTime($fin);
+                                                
+                                                $intervalo = $fecha1->diff($fecha2);
+                                                $dias = $intervalo->format('%R%a');
+                                                
+                                                if($dias > 0){
+                                                    echo " Se Solicito hace: ".abs($intervalo->format('%R%a'))." días\n";
+                                                }else{
+                                                    echo " Se vence en: ".abs($intervalo->format('%R%a'))." días\n";
+                                                }
+												echo '</br>';												
 									            if($tables->status == 4){
     												echo '<span class="label label-success">TERMINADA</span>';
 									            }else{
@@ -114,39 +127,20 @@ switch ($method) {
         												}
     												}
 									            }
-												$ini = explode(" ", $tables->date_event);
-												$fin = date("Y-m-d");
-												
-												$fecha1 = new DateTime($ini[0]);
-                                                $fecha2 = new DateTime($fin);
-                                                
-                                                $intervalo = $fecha1->diff($fecha2);
-                                                $dias = $intervalo->format('%R%a');
-                                                
-                                                if($dias > 0){
-                                                    echo " Se vencio hace: ".abs($intervalo->format('%R%a'))." días\n";
-                                                }else{
-                                                    echo " Se vence en: ".abs($intervalo->format('%R%a'))." días\n";
-                                                }
 									        }else{
 									            //$boton = ' disabled';
 									            echo '<span class="label label-success">TERMINADA</span><br>';
 									            echo ' Reportada: '.$tables->date_pass;
 									        }
-									        echo '</td>';
-									        echo '<td>'.$nombre.'<br>'.$email.'</td>';
+									        echo '</td>';									        
 									        echo '<td>'.$tables->title.'</br><small><span class="glyphicon glyphicon-ok-sign text-success"></span>&nbsp;Elaborado el:&nbsp;'.$tables->created_at.'</small></td>';
 											echo '<td>';
 									 		  echo '<div align="center">';
-									 		    if($_SESSION["usuario"] == $tables->quien_asigna){
-    									 		    if($dias > 0)
-    									 		        echo '<a class="btn btn-success btn-sm'.$boton.'" href="labor/'.$tables->id.'"><i class="fa fa-edit"></i></a>';
-    									 		    else
-    									 		        echo '<a class="btn btn-success btn-sm'.$boton.'" href="tarea/'.$tables->id.'"><i class="fa fa-edit"></i></a>';
-									 		    }else{
-									 		        echo '<button type="button" class="btn btn-success btn-sm'.$boton.'" onClick="btn_EnviarPermiso(\''.$tables->id.'\');"><i class="fa fa-edit"></i></button>';
-									 		    }
-											    echo '<button type="button" class="btn btn-danger btn-sm'.$boton.'" onClick="btn_EnviarOnClick(\''.$tables->id.'\');"><i class="fa fa-trash-o"></i></button>';
+												if($dias > 0)
+													echo '<a class="btn btn-success btn-sm'.$boton.'" href="index.php?view=labor&id='.$tables->id.'"><i class="fa fa-edit"></i></a>';
+												else
+													echo '<a class="btn btn-success btn-sm'.$boton.'" href="index.php?view=tarea&id='.$tables->id.'"><i class="fa fa-edit"></i></a>';
+											    echo '<button type="button" class="btn btn-warning btn-sm'.$boton.'" onClick="btn_EnviarOnClick(\''.$tables->id.'\');"><i class="fa fa-eyesearch"></i></button>';
 											  echo '</div>';
 											echo '</td>';
 										echo '</tr>';
@@ -215,14 +209,7 @@ switch ($method) {
     </div>
 </section>
 <!-- Page specific script -->
-<script type='text/javascript'><!--
-	function btn_EnviarPermiso(valor) {
-		 var f = document.frmC;
-		 var idrol = f.hid_frmIdrol;
-
-		 sweetAlert('No autorizado...!!!', 'Usted no tiene permisos para modificar los registros', 'error');
-	}
-	
+<script type='text/javascript'><!--	
 	function btn_EnviarOnClick(valor) {
 		 var f = document.frmC;
 		 var idrol = f.hid_frmIdrol;
@@ -248,7 +235,7 @@ switch ($method) {
 						confirmButtonText:"Aceptar"
 						},
 						function(){
-							location.href="./?view=delpersonal&id="+valor;
+							location.href="./index.php?view=tareas&id="+valor;
 					});
 				 }else{
 					sweetAlert('No autrizado...!!!', 'Usted no tiene permisos para activar agentes', 'error');
@@ -259,7 +246,7 @@ switch ($method) {
 						confirmButtonText:"Aceptar"
 						},
 						function(){
-							location.href="./?view=delpersonal&id="+valor;
+							location.href="./index.php?view=tareas&id="+valor;
 					});
 				 }
 			 });

@@ -44,7 +44,7 @@ if(isset($_GET['id'])){
 			</li>
 		</ul>
 		<div class="box-body mailbox-messages">
-			<form id='frmC' name='frmC' method='post' action=''>
+			<form id='frmC' name='frmC' method='post'>
 				<!-- tabs content -->
 				<div class="tab-content panel">
 					<div class="tab-pane active" id="tab_activos"> 

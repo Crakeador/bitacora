@@ -16,7 +16,7 @@
 			</a>
 		</div>
 		<div class="box-body mailbox-messages">
-			<form id='frmC' name='frmC' method='post' action=''>
+			<form id='frmC' name='frmC' method='post'>
 				<table id="viewlista" class="table table-bordered table-hover">
 					<thead>
 					<tr>

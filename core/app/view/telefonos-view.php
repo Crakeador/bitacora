@@ -17,7 +17,7 @@
 			</a>
 		</div>
         <div class="box-body mailbox-messages">
-			<form id='frmC' name='frmC' method='post' action=''>
+			<form id='frmC' name='frmC' method='post'>
 				<input type='hidden' name='hid_frmEstado' id='hid_frmEstado' value='' />
 				<input type='hidden' name='hid_frmIdrol' id='hid_frmIdrol' value='<?php echo $_SESSION['idrol']; ?>'/>
 				<table id="viewlista" class="table table-bordered table-hover">

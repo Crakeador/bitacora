@@ -6,6 +6,7 @@ if(isset($_GET["id"])){
     $mensaje = "modificar un cliente en el sistema";
     $enlaces = "Modificar";
     $client = ComercialData::getById($_GET["id"]);
+
     $client_id = $_GET["id"];
 }else{
     $mensaje = "crear un nuevo cliente en el sistema";
@@ -14,15 +15,41 @@ if(isset($_GET["id"])){
  	// Ingreso de clientes
 	if(count($_POST)>0){
 		if($_POST["client_id"] == 0){
-			if(is_object(ComercialData::getByRuc($_POST["ruc"]))){
-			  $error = 'El RUC ya exite...!!!';
+		  	$error = '';
+			$user = ComercialData::getByName($_POST["nombre"]);
+			if(is_object($user)){
+				if(intval($user->iduser) > 0){
+				  	$error = 'El nombre de la empresa ya exite, verifique para continuar...!!!';
+				  	$client_id = 0;
+				}else{
+					$error = 'El nombre de la empresa ya exite, modifique los datos para continuar...!!!';
+					$client_id = $user->id;
+
+					$client = (object) [
+						"tipo" => $user->tipo,
+						"ruc" => $user->ruc,
+						"residencial" => $user->residencial,
+						"nombre" => $user->nombre,
+						"contacto" => $user->contacto,
+						"cargo" => $user->cargo,
+						"email" => $user->email,
+						"telefono1" => $user->telefono1,
+						"telefono2" => $user->telefono2,
+						"factura" => $user->factura,
+						"telefonofac1" => $user->telefonofac1,
+						"telefonofac2" => $user->telefonofac2,
+						"direccion" => $user->direccion,
+						"observacion" => $user->observacion,
+						"is_active" => "1"
+					];
+				}
 			}
 		}
 
 		if($error == ""){
 		    $user = new ComercialData();
 			$user->idcompany = $_SESSION['id_company'];
-			$user->tipo_empresa = 2;
+			$user->tipo = $_POST["tipo"];
 			$user->residencial = 0;
 			$user->ruc = $_POST["ruc"];
 			$user->nombre = strtoupper($_POST["nombre"]);
@@ -34,19 +61,9 @@ if(isset($_GET["id"])){
 			$user->telefonofac1 = $_POST["telefonofac1"];
 			$user->telefono2 = $_POST["telefono2"];
 			$user->telefonofac2 = $_POST["telefonofac2"];
-			$user->fechafac = $fechafac;
-			$user->fechaini = $fechaini;
-			$user->fechafin = $fechafin;
-
-			$user->ini_fac = $hoy;
-			$user->fin_fac = $hoy;
-			  
 			$user->direccion = $_POST["direccion"];
 			$user->observacion = $_POST["observacion"];
 			$user->monto = 0;
-			$user->etapas = 0;
-			$user->hadicional = 0;
-			$user->hnocturna = 0;
 			$user->is_active = 1;
 
 			if($_POST["client_id"] == 0){
@@ -56,43 +73,37 @@ if(isset($_GET["id"])){
 				$user->update();
 			}
 
-			Core::redir("clientes");
+			Core::redir("ventas");
         }else{
 			Core::alert("Error...!!!!", $error, "error");
-        }
 
-        $client_id = $_POST["client_id"];
+			if($client_id == 0){
+				$client_id = $_POST["client_id"];
 
-        $client = (object) [
-            "tipo_empresa" => $_POST["tipo_empresa"],
-            "ruc" => $_POST["ruc"],
-            "residencial" => $_POST["residencial"],
-            "nombre" => $_POST["nombre"],
-            "contacto" => $_POST["contacto"],
-            "cargo" => $_POST["cargo"],
-            "email" => $_POST["email"],
-            "telefono1" => $_POST["telefono1"],
-            "telefono2" => $_POST["telefono2"],
-            "factura" => $_POST["factura"],
-            "telefonofac1" => $_POST["telefonofac1"],
-            "telefonofac2" => $_POST["telefonofac2"],
-            "fechafac" => $fechafac,
-            "fechaini" => $fechaini,
-            "fechafin" => $fechafin,
-            "ini_fac" => $_POST["ini_fac"],
-            "fin_fac" => $_POST["fin_fac"],
-            "direccion" => $_POST["direccion"],
-            "observacion" => $_POST["observacion"],
-            "etapas" => $etapas,
-            "hadicional" => $hadicional,
-            "hnocturna" => $hnocturna,
-            "is_active" => $activo
-        ];
+				$client = (object) [
+					"tipo" => $_POST["tipo"],
+					"ruc" => $_POST["ruc"],
+					"residencial" => $_POST["residencial"],
+					"nombre" => $_POST["nombre"],
+					"contacto" => $_POST["contacto"],
+					"cargo" => $_POST["cargo"],
+					"email" => $_POST["email"],
+					"telefono1" => $_POST["telefono1"],
+					"telefono2" => $_POST["telefono2"],
+					"factura" => $_POST["factura"],
+					"telefonofac1" => $_POST["telefonofac1"],
+					"telefonofac2" => $_POST["telefonofac2"],
+					"direccion" => $_POST["direccion"],
+					"observacion" => $_POST["observacion"],
+					"is_active" => $activo
+				];
+			}
+		}
 	}else{
         $client_id = 0;
 
         $client = (object) [
-            "tipo_empresa" => "Privado",
+            "tipo" => 0,
             "ruc" => "",
             "residencial" => "",
             "nombre" => "",
@@ -104,17 +115,8 @@ if(isset($_GET["id"])){
             "factura" => "",
             "telefonofac1" => "",
             "telefonofac2" => "",
-            "fechafac" => date("Y-m-d"),
-            "fechaini" => date("Y-m-d"),
-            "fechafin" => date("Y-m-d"),
-            "ini_fac" => 0,
-            "fin_fac" => 0,
             "direccion" => "",
             "observacion" => "",
-            "monto" => 0,
-            "etapas" => "0",
-            "hadicional" => "0",
-            "hnocturna" => "0",
             "is_active" => "1"
         ];
     }
@@ -127,7 +129,7 @@ if(isset($_GET["id"])){
 		<small><?php echo $mensaje; ?></small>
 	</h1>
 	<ol class="breadcrumb">
-		<li><a href="<?php echo $_SESSION['url']; ?>clientes"><i class="fa fa-database"></i> Clientes </a></li>
+		<li><a href="<?php echo $_SESSION['url']; ?>ventas"><i class="fa fa-database"></i> Clientes </a></li>
 		<li class="active"><?php echo $enlaces; ?></li>
 	</ol>
 </section>
@@ -145,39 +147,61 @@ if(isset($_GET["id"])){
 		- Los campos obligatorios estan marcados con asteriscos rojo <span class="text-danger">*</span>
 	</p>
 	<!-- START panel -->
-	<form class="form-horizontal" method="post" id="addCliente" action="<?php echo $_SESSION['url']; ?>cliente" role="form">
-		<input type="hidden" id="client_id" name="client_id" value="<?php echo $client_id; ?>">
+	<form class="form-horizontal" method="post" id="addCliente" action="<?php echo $_SESSION['url']; ?>venta" role="form">
+		<input type="hidden" id="client_id" name="client_id" value="<?php echo $client_id; ?>">		
+		<input type="hidden" id="modifica" name="modifica" value="<?php echo $modifica; ?>">
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h3 class="panel-title">Informaci&oacute;n del cliente</h3>
 			</div>
 			<div class="panel-body">
 				<div class="form-group">
-					<label for="ruc" class="col-md-2 control-label"><span class="text-danger">*</span> RUC:</label>
+					<label for="ruc" class="col-md-2 control-label"> RUC:</label>
 					<div class="col-md-2">
-						<input type="text" class="form-control" id="ruc" name="ruc" minlength="13" maxlength="13" data-inputmask='"mask": "9999999999999"' data-mask placeholder="1234567890123" value="<?php echo $client->ruc; ?>" pattern="[0-9]{13}" title="Solo números, debe ser un RUC de empresa minimo 13" required autofocus>
+						<input type="text" class="form-control" id="ruc" name="ruc" minlength="13" maxlength="13" data-inputmask='"mask": "9999999999999"' data-mask placeholder="1234567890123" value="<?php echo $client->ruc; ?>" pattern="[0-9]{13}" title="Solo números, debe ser un RUC de empresa minimo 13" autofocus>
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="nombre" class="col-md-2 col-sm-2 control-label"><span class="text-danger">*</span> Nombre Comercial:</label>
+					<label for="nombre" class="col-md-2 col-sm-2 control-label"> Nombre Comercial:</label>
 					<div class="col-md-4 col-sm-4">
-						<input class="text-field form-control input-sm" id="nombre" name="nombre" type="text" placeholder="Empresa XYZ s.a." value="<?php echo $client->nombre; ?>" minlength="5" maxlength="80" required title="Tamaño mínimo: 5. Tamaño máximo: 80" required>
+						<input class="text-field form-control input-sm" id="nombre" name="nombre" type="text" placeholder="Empresa XYZ s.a." value="<?php echo $client->nombre; ?>" minlength="3" maxlength="80" title="Tamaño mínimo: 3. Tamaño máximo: 80" required>
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="nombre" class="col-md-2 col-sm-2 control-label"><span class="text-danger">*</span> Nombre Empresa:</label>
+					<label for="nombre" class="col-md-2 col-sm-2 control-label"> Nombre Empresa:</label>
 					<div class="col-md-4 col-sm-4">
-						<input class="text-field form-control input-sm" id="empresa" name="empresa" type="text" placeholder="Empresa XYZ s.a." value="<?php echo $client->empresa; ?>" minlength="5" maxlength="80" required title="Tamaño mínimo: 5. Tamaño máximo: 80" required>
+						<input class="text-field form-control input-sm" id="empresa" name="empresa" type="text" placeholder="Empresa XYZ s.a." value="<?php echo $client->empresa; ?>" minlength="5" maxlength="80" title="Tamaño mínimo: 5. Tamaño máximo: 80">					
+					</div>
+					<label for="tipo" class="col-md-2 col-sm-2 control-label">Tipo de empresa:</label>
+					<div class="col-md-4 col-sm-4">
+						<select id="tipo" name="tipo" class="form-control" required>
+                  			<option value="0" <?php echo $client->tipo == 0 ? "selected" : ""; ?>> -- SELECCIONE -- </option>
+                      		<option value="1" <?php echo $client->tipo == 1 ? "selected" : ""; ?>>Urbanizacion</option>
+                      		<option value="2" <?php echo $client->tipo == 2 ? "selected" : ""; ?>>Industria</option>
+                      		<option value="3" <?php echo $client->tipo == 3 ? "selected" : ""; ?>>Centro Comercial</option>
+                      		<option value="4" <?php echo $client->tipo == 4 ? "selected" : ""; ?>>Automotriz</option>
+                      		<option value="5" <?php echo $client->tipo == 5 ? "selected" : ""; ?>>Bancaria</option>
+                      		<option value="6" <?php echo $client->tipo == 6 ? "selected" : ""; ?>>Alimenticio</option>
+                      		<option value="7" <?php echo $client->tipo == 7 ? "selected" : ""; ?>>Bananero</option>
+                      		<option value="8" <?php echo $client->tipo == 8 ? "selected" : ""; ?>>Camaronero</option>
+                      		<option value="9" <?php echo $client->tipo == 9 ? "selected" : ""; ?>>Hotelero</option>
+                      		<option value="10" <?php echo $client->tipo == 10 ? "selected" : ""; ?>>Edificio</option>
+                      		<option value="11" <?php echo $client->tipo == 11 ? "selected" : ""; ?>>Hospitalario</option>
+                      		<option value="12" <?php echo $client->tipo == 12 ? "selected" : ""; ?>>Clinica</option>
+                      		<option value="13" <?php echo $client->tipo == 13 ? "selected" : ""; ?>>Educacion</option>
+                      		<option value="14" <?php echo $client->tipo == 14 ? "selected" : ""; ?>>Administradora</option>
+                      		<option value="15" <?php echo $client->tipo == 15 ? "selected" : ""; ?>>Gastronomico</option>
+                  		</select>
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="contacto" class="col-md-2 col-sm-2 control-label"><span class="text-danger">*</span> Contacto Jefe Operativo:</label>
+					<label for="contacto" class="col-md-2 col-sm-2 control-label"> Contacto Operativo:</label>
 					<div class="col-md-4 col-sm-4">
-						<input class="text-field form-control input-sm" id="contacto" maxlength="50" name="contacto" type="text" placeholder="Nombres y Apellidos del contacto" value="<?php echo $client->contacto; ?>" title="Solo Letras. Tamaño mínimo: 5. Tamaño máximo: 50" required>
+						<input class="text-field form-control input-sm" id="contacto" maxlength="50" name="contacto" type="text" placeholder="Nombres y Apellidos del contacto" value="<?php echo $client->contacto; ?>" title="Solo Letras. Tamaño mínimo: 5. Tamaño máximo: 50">
 					</div>
-					<label for="email" class="col-md-2 col-sm-2 control-label">Correo del Jefe:</label>
+					<label for="email" class="col-md-2 col-sm-2 control-label">Correo Operativo:</label>
 					<div class="col-md-4 col-sm-4">
-						<input class="text-field form-control input-sm" id="email" minlength="5" maxlength="50" name="email" type="email" placeholder="Correo de la persona a facturar" value="<?php echo $client->email; ?>">
+						<input class="text-field form-control input-sm" id="email" minlength="5" maxlength="50" name="email" type="email" placeholder="Correo de la persona a facturar" value="<?php echo $client->email; ?>" required>
 					</div>
 				</div>
 				<div class="form-group">
@@ -210,7 +234,7 @@ if(isset($_GET["id"])){
 				}
 				$users = ComercialData::getDetalle($client_id);		
 				$resultado = count($users); 
-				
+				 
 				if($resultado > 0){ ?>
     				<div id="contratos" class="tab-pane active">
     					<div class="panel panel-default">
@@ -291,8 +315,12 @@ if(isset($_GET["id"])){
         			</div> <!-- /.modal-dialog -->
         		</div> <!--/ END modal -->
 			</div>
-			<div class="panel-footer">
-			    <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar </button>  
+			<div class="panel-footer"><?php
+				if($client_id > 0) { ?>
+					<a href="<?php echo $_SESSION['url']; ?>ventas" class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span> Regresar </a><?php
+				}else{ ?>
+				    <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar </button>  <?php 
+				} ?>				
 			</div>
 		</div>
 	</form>
@@ -314,7 +342,7 @@ if(isset($_GET["id"])){
 			}else{
 				$.ajax({
 					type: "POST",
-					url: "ajax/cliente.php?cliente="+$cliente+"&rubro="+$rubro+"&monto="+$monto+"&cantidad="+$cantidad,
+					url: "ajax/comercial.php?cliente="+$cliente+"&rubro="+$rubro+"&monto="+$monto+"&cantidad="+$cantidad,
 					success: function(data) {
 					    sweetAlert('aaaaa', data, 'error');
 						/* Cargamos finalmente el contenido deseado */

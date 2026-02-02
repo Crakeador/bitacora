@@ -9,7 +9,7 @@
 	</ol>
 </section>
 <!-- Main content -->
-<form id='frmC' name='frmC' method='post' action=''>
+<form id='frmC' name='frmC' method='post'>
 	<section class="content" style="padding: 1.5rem !important;">
 		<div class="row">
 			<div class="col-xs-12">

@@ -1,0 +1,156 @@
+<?php
+$mes = 9; $ano = 2023;
+
+$ini="2020-01-01"; $fin=$ano."-".$mes."-30";
+
+$fecha=$_SESSION['ano']."-".$_SESSION['mes']."-01";
+$total=date("t", strtotime($fecha));
+$dia = 30;
+?>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Control de Cartera</title>
+	<link rel="stylesheet" href="./bootstrap.css">
+  	<link rel="stylesheet" href="./animate.css">
+  	<link rel="stylesheet" href="./selectize.css">
+  	<link rel="stylesheet" href="./flot.css">
+	<script type="text/javascript" src="./modernizr.js"></script>
+	<style type="text/css">
+		table.table thead{
+		    background-color: #f5f5f5;
+		    background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
+		    background-image: -ms-linear-gradient(top, #ffffff, #e6e6e6);
+		    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
+		    background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
+		    background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
+		    background-image: linear-gradient(top, #ffffff, #e6e6e6);
+		    background-repeat: repeat-x;
+		    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#e6e6e6', GradientType=0);
+		}
+		#ctas::-webkit-scrollbar {
+			width: 8px;
+			height: 8px;
+		}
+		#ctas::-webkit-scrollbar-button:start:decrement, #ctas::-webkit-scrollbar-button:end:increment  {
+			display: none;
+		}	
+		#ctas::-webkit-scrollbar-track-piece  {
+			background-color: #fafafa;
+			-webkit-border-radius: 5px;
+		}	
+		#ctas::-webkit-scrollbar-thumb:vertical {
+			-webkit-border-radius: 6px;
+			background-color: gray;
+			border: 1px solid #fafafa;
+		}
+		.text-black{
+			color: black;
+		}
+	</style>
+	<style type="text/css">
+		.jqstooltip { 
+			position: absolute;left: 0px;top: 0px;visibility: hidden;background: rgb(0, 0, 0) transparent;
+			background-color: rgba(0,0,0,0.6);
+			filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
+			-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";color: white;
+			font: 10px arial, san serif;text-align: left;white-space: nowrap;
+			padding: 5px;border: 1px solid white;
+			box-sizing: content-box;
+			z-index: 10000;
+		}
+		.jqsfield { color: white;font: 10px arial, san serif;text-align: left;}
+	</style>
+</head>
+<body style="margin:0;padding:0;">
+  <div id="ctas" style="overflow-y:scroll;height:100%;">
+	<table id="horario" class="table table-bordered table-hover">
+		<thead>
+		<tr>
+			<th><div align="center">Asistencia de los Agentes</div></th>
+		</tr>
+		</thead>
+		<tbody>
+			<?php			
+				$users = PuestoData::getByIdHorario(2, 3, 1);
+
+				// Crea tabla de Ventas
+				foreach($users as $tables) {
+					echo '<tr>';
+						echo '<td>';
+							echo '<small>';
+								echo utf8_encode($tables['nombre']);
+								echo '</br>'.$tables['cargo'].'-'.$tables['descripcion'];
+							echo '</small></br>';
+							
+							$valor=HorarioData::getByIdHorario($tables['servicio'], $tables['id'], $mes, $ano, 2);
+							$resultado = count($valor);
+							$dias=$dia;
+							for ($i = 1; $i <= $total; $i++) {
+								if($i == 5) echo '&nbsp;'; else echo '';
+								if($i == 7) echo '&nbsp;&nbsp;'; else echo '';
+								if($i == 10) echo '&nbsp;&nbsp;'; else echo '';
+								if($i == 12) echo '&nbsp;&nbsp;'; else echo '';
+								if($i == 14) echo '&nbsp;&nbsp;'; else echo '';
+								if($i == 17) echo '&nbsp;&nbsp;'; else echo '';
+								if($i == 21) echo '&nbsp;'; else echo '';
+								if($i == 23) echo '&nbsp;&nbsp;'; else echo '';
+								if($i == 25) echo '&nbsp;'; else echo '';
+								if($i == 26) echo '&nbsp;'; else echo '';
+								if($i == 28) echo '&nbsp;'; else echo '';
+								if($i == 30) echo '&nbsp;'; else echo '';
+								if($i == 31) echo '&nbsp;'; else echo '';
+								if($dias == 1)	echo '<span class="text-green">&nbsp;&nbsp;LUN&nbsp;&nbsp;</span>';
+								if($dias == 2)	echo '<span class="text-green">&nbsp;&nbsp;&nbsp;MAR&nbsp;</span>';
+								if($dias == 3)	echo '<span class="text-green">&nbsp;&nbsp;&nbsp;MIE&nbsp;&nbsp;</span>';
+								if($dias == 4)	echo '<span class="text-green">&nbsp;&nbsp;&nbsp;&nbsp;JUE&nbsp;&nbsp;</span>';
+								if($dias == 5)	echo '<span class="text-green">&nbsp;&nbsp;&nbsp;&nbsp;VIE&nbsp;</span>';
+								if($dias == 6)	echo '<span class="text-red">&nbsp;&nbsp;&nbsp;&nbsp;SAB&nbsp;</span>';
+								if($dias == 7)	echo '<span class="text-red">&nbsp;&nbsp;&nbsp;&nbsp;DOM&nbsp;</span>';
+
+								if($dias == 7) $dias = 1; else $dias++;
+							}
+							echo '</br>';
+							echo '<small>';
+								$iddia=0;
+								for ($i = 1; $i <= $total; $i++) {
+									if($resultado > 0) {
+										echo '<input type="hidden" id="hiden_'.$tables['id'].'_'.$i.'" name="hiden_'.$tables['id'].'_'.$i.'" value="'.$valor[$i-1]['id'].'-'.$tables['id'].'-'.$i.'-'.$mes.'-'.$ano.'-'.$valor[$i-1]['turno'].'">';
+										$iddia=$valor[$i-1]['id'];
+										if($valor[$i-1]['turno']==1)
+											$clase = 'btn-success';
+										else
+											if($valor[$i-1]['turno']==2)
+												$clase = 'btn-primary';
+											else
+												if($valor[$i-1]['turno']==3)
+													$clase = 'btn-warning';
+												else
+												if($valor[$i-1]['turno']==4)
+													$clase = 'btn-danger';
+												else
+													$clase = 'btn-default';
+									} else {
+										echo '<input type="hidden" id="hiden_'.$tables['id'].'_'.$i.'" name="hiden_'.$tables['id'].'_'.$i.'" value="'.$iddia.'-'.$tables['id'].'-'.$i.'-'.$mes.'-'.$ano.'-0">';
+										$clase = 'btn-default';
+									}
+
+									if($i < 10) {
+										echo '<button type="button" id="button_'.$tables['id'].'_'.$i.'" name="button_'.$tables['id'].'_'.$i.'" class="btn '.$clase.'" onClick="btn_NuevoOnClick('.$iddia.', '.$i.', '.$mes.', '.$ano.','.$tables['id'].',\'button_'.$tables['id'].'_'.$i.'\',\'hiden_'.$tables['id'].'_'.$i.'\');">0'.$i.'</button>';
+									} else {
+										echo '<button type="button" id="button_'.$tables['id'].'_'.$i.'" name="button_'.$tables['id'].'_'.$i.'" class="btn '.$clase.'" onClick="btn_NuevoOnClick('.$iddia.', '.$i.', '.$mes.', '.$ano.','.$tables['id'].',\'button_'.$tables['id'].'_'.$i.'\',\'hiden_'.$tables['id'].'_'.$i.'\');">'.$i.'</button>';
+									}
+								}
+							echo '</small>';
+						echo '</td>';
+					echo '</tr>';
+				}
+			?>
+            </tbody>
+        </table>
+  	</div>
+	<script type="text/javascript" src="./vendor.js"></script>
+    <script type="text/javascript" src="./default.js"></script>
+</body>
+</html>

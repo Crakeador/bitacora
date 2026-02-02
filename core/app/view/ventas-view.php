@@ -6,7 +6,7 @@ $totalLlam = ComercialData::getTotal('Llamada');
 $totalMail = ComercialData::getTotal('Mailing');
 $totalVisi = ComercialData::getTotal('Visita');
 $totalWhat = ComercialData::getTotal('Whatsapp');
-
+ 
 if(isset($_GET['id'])){	
     $total = PuestoData::getByIdTodos($_GET['id'], 1);
 	
@@ -87,7 +87,7 @@ if(isset($_GET['id'])){
 												<div align="center">';									
 													echo $tables->ruc.'</br>';
 													echo '<a href="index.php?view=catcli.resumen&id='.$tables->id.'" class="btn btn-xs btn-warning"><i class="glyphicon glyphicon-eye-open"></i></a>';
-													echo '<a href="./index.php?view=cliente&id='.$tables->id.'" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-edit"></i></a>';
+													echo '<a href="./index.php?view=venta&id='.$tables->id.'" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-edit"></i></a>';
 													echo '<button type="button" class="btn btn-xs btn-danger btn-sm" onClick="btn_EnviarOnClick(\''.$tables->id.'\', \''.$tables->is_active.'\');"><i class="fa fa-trash"></i></button>';
 											echo '</div>
 												</td>';
@@ -272,7 +272,7 @@ if(isset($_GET['id'])){
     document.title = "Near Solution | Listado de los Clientes";
 
 	function btn_EnviarOnClick($id, $is_active) {
-		 var valor = <?php echo $_SESSION['is_admin']; ?>;
+		 var valor = <?php echo $_SESSION['idrol']; ?>;
 
 		 if(valor == "0"){
 			 sweetAlert('No autorizado...!!!', 'Usted no tiene permisos para eliminar registros', 'error');

@@ -21,11 +21,11 @@ switch($accion){
 				VALUES ($puesto, $user_id, '$nombre', '$cedula', '$placa', NOW())";
 		
 		// Log para debugging
-		error_log("SQL EJECUTADO: " . $sql);
+		//error_log("SQL EJECUTADO: " . $sql);
 		
 		if($query = $con->query($sql)){
 			$lastId = mysqli_insert_id($con);
-			error_log("Registro insertado con ID: " . $lastId);
+			//error_log("Registro insertado con ID: " . $lastId);
 			$response = array('success' => true, 'message' => 'Persona agregada correctamente', 'id' => $lastId);
 		}else{
 			error_log("ERROR SQL: " . mysqli_error($con));

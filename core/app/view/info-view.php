@@ -25,7 +25,7 @@ if(isset($_GET['id'])){
     if($_GET['ruta']==2) $ruta = 'ingreso';
     if($_GET['ruta']==4) $ruta = 'novedad';
     if($_GET['ruta']==3) $ruta = 'parte';
-    if($_GET['ruta']==5) $ruta = 'supervicion';
+    if($_GET['ruta']==5) $ruta = 'supervision';
     if($_GET['ruta']==6) $ruta = 'rondas';
     if($_GET['ruta']==7) $ruta = 'visitas';
     if($_GET['ruta']==8) $ruta = 'custodia';

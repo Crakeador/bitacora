@@ -1,8 +1,21 @@
-<?phpif($_SESSION["idrol"] == "6")	$users = PuestoData::getByLugar();else	$users = PuestoData::getByFaltas();?><!-- Content Header (Page header) --><section class="content-header">	<h1>		Faltas		<small>lista de las faltas reportadas</small>	</h1>	<ol class="breadcrumb">
-		<li><a href="./index.php?view=home"><i class="fa fa-dashboard"></i> Panel de control </a></li>	</ol>
+<?php
+if($_SESSION["idrol"] == "6")
+	$users = PuestoData::getByLugar();
+else
+	$users = PuestoData::getByFaltas();
+?>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+	<h1>
+		Faltas
+		<small>lista de las faltas reportadas</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="./index.php?view=home"><i class="fa fa-dashboard"></i> Panel de control </a></li>
+	</ol>
 </section>
 <!-- Main content -->
-<form id='frmC' name='frmC' method='post' action=''>
+<form id='frmC' name='frmC' method='post'>
 	<input type='hidden' name='hid_frmEstado' id='hid_frmEstado' value='' />
 	<input type='hidden' name='hid_frmIdrol'  id='hid_frmIdrol'  value='<?php echo $_SESSION['idrol']; ?>'/>
 	<section class="content" style="padding: 1.5rem !important;">
@@ -23,7 +36,9 @@
 							<tbody>
 								<?php
 									//Listado de Faltas
-									foreach($users as $sell) {																				$operations = FaltaData::getByIdFalta($sell["idhorario"]);										
+									foreach($users as $sell) {										
+										$operations = FaltaData::getByIdFalta($sell["idhorario"]);
+										
 										echo '<tr>';
 											echo '<td>'.$sell["descripcion"];
 												echo '<div class="mini-tabla">';
@@ -50,8 +65,24 @@
 																$valor = 'Sin definir';
 											}else{
 												$operations = 0;
-											}
+											}
+
 											echo $operations == 0 ? '<td>No registrado</td>' : '<td>'.$valor.'</td>';
 											echo '<td style="width:180px;">';
 												if($operations == 0)
-													echo '<div align="center"><a href="index.php?view=opefal.edit&id='.$sell["idhorario"].'" class="btn btn-app btn-warnig"><i class="glyphicon glyphicon-plus"></i>Ingresar</a></div>';												else													echo '<div align="center"><a href="index.php?view=opefal.edit&id='.$sell["idhorario"].'&falta='.$operations->id.'" class="btn btn-app btn-danger"><i class="glyphicon glyphicon-eye-open"></i>Verificar</a></div>';											echo '</td>';										echo '</tr>';									}								?>							</tbody>						</table>					</div>	<!-- /.box-body -->				</div>	<!-- /.box -->			</div>	<!-- /.col -->		</div>	<!-- /.row -->	</section>	<!-- /.content --></form>
+													echo '<div align="center"><a href="index.php?view=opefal.edit&id='.$sell["idhorario"].'" class="btn btn-app btn-warnig"><i class="glyphicon glyphicon-plus"></i>Ingresar</a></div>';
+												else
+													echo '<div align="center"><a href="index.php?view=opefal.edit&id='.$sell["idhorario"].'&falta='.$operations->id.'" class="btn btn-app btn-danger"><i class="glyphicon glyphicon-eye-open"></i>Verificar</a></div>';
+											echo '</td>';
+										echo '</tr>';
+									}
+								?>
+							</tbody>
+						</table>
+					</div>	<!-- /.box-body -->
+				</div>	<!-- /.box -->
+			</div>	<!-- /.col -->
+		</div>	<!-- /.row -->
+	</section>	<!-- /.content -->
+</form>
+
