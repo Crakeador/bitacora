@@ -379,7 +379,7 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
 						console.log("Enviando petición a ajax/guardar_foto.php...");
 						fetch("ajax/guardar_foto.php", {
 							method: "POST",
-								body: "foto=" + encodeURIComponent(foto),
+							body: encodeURIComponent(foto),
 							headers: {
 								"Content-type": "application/x-www-form-urlencoded",
 							}
@@ -407,7 +407,7 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
 									if (respuesta.success) {
 										let nombreDeLaFoto = respuesta.filename;
 										console.log("Nombre procesado:", nombreDeLaFoto);
-										$estado.innerHTML = `Foto guardada con éxito. Puedes verla <a target='_blank' href='./storage/captura/${nombreDeLaFoto}'> aquí</a>`;
+										$estado.innerHTML = `Foto guardada con éxito. Puedes verla <a target='_blank' href='./storage/fotos/${nombreDeLaFoto}'> aquí</a>`;
 										$foto.value = nombreDeLaFoto;
 									} else {
 										console.error("Error reportado por servidor:", respuesta.error);

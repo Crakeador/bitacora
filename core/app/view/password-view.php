@@ -44,20 +44,20 @@ if(isset($_POST['btn_update'])){
         </div>
         <!-- /.box-header -->
         <!-- form start -->
-        <form class="form-horizontal" id="changepasswd" method="post" action="index.php?view=password" role="form" autocomplete="off">
+        <form class="form-horizontal" id="changepasswd" method="post" action="password" role="form" autocomplete="off">
           <div class="box-body">
             <div class="col-lg-12">
               <div class="form-group">
-                  <label for="oldpassword">Contraseña anterior</label>
-                  <input type="text" class="form-control" id="password" name="password" placeholder="Contraseña Actual">
+                  <label for="password">Contraseña anterior</label>
+                  <input type="text" class="form-control" id="password" name="password" placeholder="Contraseña Actual" autocomplete="off" required>
               </div>
               <div class="form-group">
                 <label for="newpassword">Nueva contraseña</label>
-                <input type="password" class="form-control" id="newpassword" name="newpassword" placeholder="Nueva Contraseña">
+                <input type="password" class="form-control" id="newpassword" name="newpassword" placeholder="Nueva Contraseña" autocomplete="off" required>
               </div>
               <div class="form-group">
-                <label for="confirmpassword">Confirmar contraseña</label>
-                <input type="password" class="form-control" id="confirmnewpassword" name="confirmnewpassword" placeholder="Confirmar Nueva Contraseña">
+                <label for="confirmnewpassword">Confirmar contraseña</label>
+                <input type="password" class="form-control" id="confirmnewpassword" name="confirmnewpassword" placeholder="Confirmar Nueva Contraseña" autocomplete="off" required>
               </div>
             </div>
           </div>
@@ -76,14 +76,14 @@ if(isset($_POST['btn_update'])){
           <!-- /.box-header -->
           <div class="box-body">
             <div class='detail-text'>
-                <label for="name"><strong>Nombre de usuario:</strong></label>
-                <span class='text-data'> <?php echo $_SESSION['user_name']; ?></span><br>
-                <label for="name"><strong>Nombre completo:</strong></label>
-                <span class='text-data'> <?php echo utf8_decode(UserData::getById($_SESSION["user_id"])->name).' '.htmlentities(UserData::getById($_SESSION["user_id"])->lastname); ?></span><br>
-                <label for="name"><strong>Correo:</strong></label>
-                <span class='text-data'> <?php echo $_SESSION['email']; ?></span><br>
-                <label for="name"><strong>Ultimo ingreso:</strong></label>
-                <span class='text-data'> <?php echo $_SESSION['ultima_sesion']; ?></span>
+                <strong>Nombre de usuario:</strong>
+                <span class='text-data'> <?php echo $_SESSION['user_name']; ?></span><br><br>
+                <strong>Nombre completo:</strong>
+                <span class='text-data'> <?php echo utf8_decode(UserData::getById($_SESSION["user_id"])->name).' '.htmlentities(UserData::getById($_SESSION["user_id"])->lastname); ?></span><br><br>
+                <strong>Correo:</strong>
+                <span class='text-data'> <?php echo $_SESSION['email']; ?></span><br><br>
+                <strong>Ultimo ingreso:</strong>
+                <span class='text-data'> <?php echo $_SESSION['ultima_sesion']; ?></span><br>
             </div>
           </div>
         </div>

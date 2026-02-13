@@ -7,6 +7,7 @@ class ComercialData {
 		$this->id = "";
 		$this->tipo = "";
 		$this->ruc = "";
+		$this->empresa = "";
 		$this->nombre = "";
 		$this->contacto = "";
 		$this->cargo = "";
@@ -27,8 +28,8 @@ class ComercialData {
 	}
 
 	public function add(){
-		$sql = "INSERT INTO ".self::$tablename." (idcompany, iduser, tipo, ruc, nombre, contacto, cargo, email, telefono1, telefono2, telefonofac1, telefonofac2, direccion, observacion, is_active, created_at) 
-		             VALUES (".$_SESSION['id_company'].", ".$_SESSION['user_id'].",	 \"$this->tipo\", \"$this->ruc\", \"$this->nombre\", \"$this->contacto\", \"$this->cargo\", \"$this->email\", \"$this->telefono1\", \"$this->telefono2\", \"$this->telefonofac1\", \"$this->telefonofac2\", \"$this->direccion\", \"$this->observacion\", 1, $this->created_at)";		
+		$sql = "INSERT INTO ".self::$tablename." (idcompany, iduser, tipo, ruc, empresa, nombre, contacto, email, telefono1, telefono2, telefonofac1, telefonofac2, observacion, is_active, created_at) 
+		             VALUES (".$_SESSION['id_company'].", ".$_SESSION['user_id'].",	 \"$this->tipo\", \"$this->ruc\", \"$this->empresa\", \"$this->nombre\", \"$this->contacto\", \"$this->email\", \"$this->telefono1\", \"$this->telefono2\", \"$this->telefonofac1\", \"$this->telefonofac2\", \"$this->observacion\", 1, $this->created_at)";		
 		Executor::doit($sql);
 	}
 
@@ -41,6 +42,12 @@ class ComercialData {
 	public function del(){
 		$sql = "delete from ".self::$tablename." where id=$this->id";
 		$valor = Executor::doit($sql);
+		return $valor;
+	}
+
+	public function estado(){
+		$sql = "UPDATE ".self::$tablename." SET observacion=\"$this->observacion\", gestion=\"$this->gestion\" WHERE id=$this->id";
+		$valor = Executor::doit($sql); 
 		return $valor;
 	}
 
@@ -69,37 +76,45 @@ class ComercialData {
 	}
 		
 	public static function getPhone($iduser, $activo = 1){
-		$sql = "SELECT * FROM ".self::$tablename." WHERE iduser = $iduser AND is_active = $activo"; 
+		$sql = "SELECT * FROM ".self::$tablename." WHERE iduser = $iduser AND is_active = $activo";
 		$query = Executor::doit($sql);
 		return Model::many($query[0],new ComercialData());
 	}
 
-	public static function getAll($iduser, $activo = 1, $q = ""){
-		$sql = "SELECT * FROM ".self::$tablename." WHERE gestion LIKE '%$q%' AND iduser = $iduser AND is_active = $activo";
+	public static function getAll($activo=1, $q = ""){
+		$sql = "SELECT * FROM ".self::$tablename." WHERE gestion LIKE '%$q%' AND is_active = $activo"; 
 		$query = Executor::doit($sql);
 		return Model::many($query[0],new ComercialData());
 	}
 
-	public static function getLike($q){
-		$sql = "SELECT * FROM ".self::$tablename." WHERE gestion LIKE '%$q%'";
+	public static function getLike($q, $iduser=NULL){
+		if($iduser == NULL) $cadena = ''; else $cadena = 'iduser = '.$iduser.' AND ';
+
+		$sql = "SELECT * FROM ".self::$tablename." WHERE ".$cadena." gestion LIKE '%$q%'"; 
 		$query = Executor::doit($sql);
 		return Model::many($query[0],new ComercialData());
 	}	
 
-	public static function getTotal($q){
-		$sql = "SELECT count(*) total FROM ".self::$tablename." WHERE gestion LIKE '%$q%'";
+	public static function getTotal($q, $iduser=NULL){
+		if($iduser == NULL) $cadena = ''; else $cadena = 'iduser = '.$iduser.' AND ';
+
+		$sql = "SELECT count(*) total FROM ".self::$tablename." WHERE ".$cadena." gestion LIKE '%$q%'"; 
 		$query = Executor::doit($sql);
 		return Model::one($query[0],new ComercialData());
 	}	
 
-	public static function getNulo(){
-		$sql = "SELECT * FROM ".self::$tablename." WHERE gestion IS NULL";
+	public static function getNulo($iduser=NULL){
+		if($iduser == NULL) $cadena = ''; else $cadena = 'iduser = '.$iduser.' AND ';
+
+		$sql = "SELECT * FROM ".self::$tablename." WHERE ".$cadena." gestion IS NULL"; 
 		$query = Executor::doit($sql);
-		return Model::one($query[0],new ComercialData());
+		return Model::many($query[0],new ComercialData());
 	}
 
-	public static function getNull(){
-		$sql = "SELECT count(*) total FROM ".self::$tablename." WHERE gestion IS NULL";
+	public static function getNull($iduser=NULL){
+		if($iduser == NULL) $cadena = ''; else $cadena = 'iduser = '.$iduser.' AND ';
+
+		$sql = "SELECT count(*) total FROM ".self::$tablename." WHERE ".$cadena." gestion IS NULL"; 
 		$query = Executor::doit($sql);
 		return Model::one($query[0],new ComercialData());
 	}

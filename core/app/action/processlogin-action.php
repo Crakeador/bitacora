@@ -105,7 +105,7 @@ if(!isset($_SESSION["user_id"])) {
 			}
 		}else{
 			if(strlen($_POST['username']) == 10){
-				$sql = "SELECT * FROM person WHERE idcard = '".$user."' AND is_active=1"; 
+				$sql = "SELECT * FROM person WHERE idcard = '".$user."' AND password = '".$_POST['password']."' AND is_active=1"; 
 
 				if($query = $con->query($sql)){
 					$total = mysqli_num_rows($query);

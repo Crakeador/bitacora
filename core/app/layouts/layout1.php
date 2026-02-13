@@ -118,6 +118,10 @@ if(!function_exists('load_view_assets')){
       echo '<script type="text/javascript" src="plugins/jsqrcode/llqrcode.js?v=1.0.1"></script>';
       echo '<script type="text/javascript" src="plugins/jsqrcode/webqr.js?v=1.0.1"></script>';
     }
+        // Lector QR
+        if($view === 'lectorqr' || $view === 'lector-qr'){
+          echo '<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>';
+        }
   }
 }
 
@@ -1603,4 +1607,3 @@ if(!function_exists('load_view_assets')){
       endif;?>
   </body>
 </html>
-

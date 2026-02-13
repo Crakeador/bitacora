@@ -2,7 +2,7 @@
 // Clases utilizadas en la tabla de Personal 
 class PersonData {
 	public static $tablename = "person";
-
+ 
 	public function __construct(){
 		$this->id = "";
 		$this->idlugar = "";
@@ -308,7 +308,6 @@ class PersonData {
 		$sql = "SELECT E.descripcion, A.id, A.idcard, A.name, A.idcargo, B.description, A.startwork, A.endwork, A.sueldo 
 		          FROM person A, cargo B, personpuestos D, puestos E
 				 WHERE A.idcargo = B.id AND D.idperson=A.id AND D.idservicio=E.id AND A.id=$id AND D.is_active=0";
-
 		$query = Executor::doit($sql); 
 		return Model::one($query[0],new PersonData());
 	}

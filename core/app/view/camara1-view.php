@@ -3,7 +3,7 @@
 		<div class="row">
 			<div class="col">
 				<script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
-				<h1>Rondas de CIPOL</h1>
+				<h1>&nbsp;&nbsp;Camara del Sistema</h1>
 				<div class="col-sm-12">
 					<video id="preview" class="p-1 border" style="width:100%;"></video>
 				</div>
@@ -12,10 +12,10 @@
 					scanner.addListener('scan',function(content){
 						alert('Verificado: ' + content);
 						window.location.href=content;
-					});
+					}); 
 					Instascan.Camera.getCameras().then(function (cameras){
 						if(cameras.length>0){
-							scanner.start(cameras[0]);
+							scanner.start(cameras[1]);
 							$('[name="options"]').on('change',function(){
 								if($(this).val()==1){
 									if(cameras[0]!=""){
@@ -32,7 +32,7 @@
 								}
 							});
 						}else{
-							console.error('No hay ninguna camara.');
+							console.error('No hay ninguna camara...!!!');
 							alert('No hay ninguna camara.');
 						}
 					}).catch(function(e){
@@ -40,14 +40,14 @@
 						alert(e);
 					});
 				</script>
-				<div class="btn-group btn-group-toggle mb-5" data-toggle="buttons">
-				  <label class="btn btn-primary active">
-					<input type="radio" name="options" value="1" autocomplete="off" checked> Camera Principal
+				<!-- div class="btn-group btn-group-toggle mb-5" data-toggle="buttons">
+				  <label class="btn btn-primary">
+					<input type="radio" name="options" value="1" autocomplete="off"> Camera Principal
 				  </label>
-				  <label class="btn btn-secondary">
-					<input type="radio" name="options" value="2" autocomplete="off"> Camera Auxiliar
+				  <label class="btn btn-secondary active">
+					<input type="radio" name="options" value="2" autocomplete="off" checked> Camera Auxiliar
 				  </label>
-				</div>
+				</div -->
 			</div>		
 		</div>
 	</div>	

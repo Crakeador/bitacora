@@ -1,4 +1,8 @@
 <?php 
+if(!isset($_GET["id"]) || $_GET["id"]=="") {
+	Core::redir("home");
+}
+
 $valores = PersonData::getByIdDatos($_GET["id"]);
 $liquida = $_GET["id"];
 

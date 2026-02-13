@@ -1,8 +1,7 @@
 <?php
-// storage/fotos/guardar_foto.php
 // Asegura permisos adecuados en el servidor para este directorio
 
-$targetDir = __DIR__ . "/public_html/storage/trade/"; // Ruta donde guardarás las fotos
+$targetDir = __DIR__ . "/../storage/captura/"; // Ruta donde guardarás las fotos
 if (!is_dir($targetDir)) {
     if (!mkdir($targetDir, 0777, true)) {
         http_response_code(500);
@@ -17,33 +16,40 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-// Validar que exista el archivo
-if (!isset($_FILES['foto']) || $_FILES['foto']['error'] != UPLOAD_ERR_OK) {
-    echo json_encode(['success' => false, 'error' => 'No se recibio la foto']);
-    exit;
-}
+// Verificar si se recibe la foto por POST (Base64)
+if (isset($_POST['foto'])) {
+    $data = $_POST['foto'];
+    
+    // Procesar la cadena Base64 (quitar el encabezado "data:image/png;base64,")
+    if (preg_match('/^data:image\/(\w+);base64,/', $data, $type)) {
+        $data = substr($data, strpos($data, ',') + 1);
+        $type = strtolower($type[1]); // jpg, png, gif
+        
+        if (!in_array($type, ['jpg', 'jpeg', 'gif', 'png'])) {
+            echo json_encode(['success' => false, 'error' => 'Tipo de archivo no válido']);
+            exit;
+        }
 
-// Validar tipo MIME permitido
-$allowed = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp', 'image/gif'];
-$mime = mime_content_type($_FILES['foto']['tmp_name']);
-if (!in_array($mime, $allowed)) {
-    echo json_encode(['success' => false, 'error' => 'Tipo de archivo no permitido']);
-    exit;
-}
+        $data = base64_decode($data);
 
-// Generar nombre único
-$ext = pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION);
-$ext = strtolower($ext ?: 'jpg');
-$filename = uniqid('foto_', true) . "." . $ext;
+        if ($data === false) {
+            echo json_encode(['success' => false, 'error' => 'Fallo al decodificar base64']);
+            exit;
+        }
+    } else {
+        echo json_encode(['success' => false, 'error' => 'Formato de datos no válido']);
+        exit;
+    }
 
-// Mover archivo
-$tmpPath = $_FILES['foto']['tmp_name'];
-$destPath = rtrim($targetDir, '/') . '/' . $filename;
+    // Generar nombre único y guardar
+    $filename = 'captura_' . date('Ymd_His') . '_' . uniqid() . '.' . $type;
+    $filepath = $targetDir . $filename;
 
-if (move_uploaded_file($tmpPath, $destPath)) {
-    echo json_encode(['success' => true, 'filename' => $filename]);
-    exit;
+    if (file_put_contents($filepath, $data)) {
+        echo json_encode(['success' => true, 'filename' => $filename]);
+    } else {
+        echo json_encode(['success' => false, 'error' => 'No se pudo escribir el archivo en el servidor']);
+    }
 } else {
-    echo json_encode(['success' => false, 'error' => 'No se pudo mover el archivo']);
-    exit;
+    echo json_encode(['success' => false, 'error' => 'No se recibió la variable foto por POST']);
 }

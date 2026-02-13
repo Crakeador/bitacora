@@ -52,17 +52,14 @@ if(isset($_GET["id"])){
 			$user->tipo = $_POST["tipo"];
 			$user->residencial = 0;
 			$user->ruc = $_POST["ruc"];
+			$user->empresa = strtoupper($_POST["empresa"]);
 			$user->nombre = strtoupper($_POST["nombre"]);
 			$user->contacto = strtoupper($_POST["contacto"]);
-			$user->cargo = strtoupper($_POST["cargo"]);
-			$user->factura = strtoupper($_POST["factura"]);
 			$user->email = $_POST["email"];
 			$user->telefono1 = $_POST["telefono1"];
 			$user->telefonofac1 = $_POST["telefonofac1"];
 			$user->telefono2 = $_POST["telefono2"];
 			$user->telefonofac2 = $_POST["telefonofac2"];
-			$user->direccion = $_POST["direccion"];
-			$user->observacion = $_POST["observacion"];
 			$user->monto = 0;
 			$user->is_active = 1;
 
@@ -73,7 +70,7 @@ if(isset($_GET["id"])){
 				$user->update();
 			}
 
-			Core::redir("ventas");
+			//Core::redir("ventas");
         }else{
 			Core::alert("Error...!!!!", $error, "error");
 
@@ -106,6 +103,7 @@ if(isset($_GET["id"])){
             "tipo" => 0,
             "ruc" => "",
             "residencial" => "",
+            "empresa" => "",
             "nombre" => "",
             "contacto" => "",
             "cargo" => "",
@@ -170,7 +168,7 @@ if(isset($_GET["id"])){
 				<div class="form-group">
 					<label for="nombre" class="col-md-2 col-sm-2 control-label"> Nombre Empresa:</label>
 					<div class="col-md-4 col-sm-4">
-						<input class="text-field form-control input-sm" id="empresa" name="empresa" type="text" placeholder="Empresa XYZ s.a." value="<?php echo $client->empresa; ?>" minlength="5" maxlength="80" title="Tamaño mínimo: 5. Tamaño máximo: 80">					
+						<input class="text-field form-control input-sm" id="empresa" name="empresa" type="text" placeholder="Empresa XYZ s.a." value="<?php echo $client->empresa; ?>" minlength="5" maxlength="80" title="Tamaño mínimo: 5. Tamaño máximo: 80">
 					</div>
 					<label for="tipo" class="col-md-2 col-sm-2 control-label">Tipo de empresa:</label>
 					<div class="col-md-4 col-sm-4">
@@ -191,6 +189,8 @@ if(isset($_GET["id"])){
                       		<option value="13" <?php echo $client->tipo == 13 ? "selected" : ""; ?>>Educacion</option>
                       		<option value="14" <?php echo $client->tipo == 14 ? "selected" : ""; ?>>Administradora</option>
                       		<option value="15" <?php echo $client->tipo == 15 ? "selected" : ""; ?>>Gastronomico</option>
+                      		<option value="16" <?php echo $client->tipo == 16 ? "selected" : ""; ?>>Sector Publico</option>
+                      		<option value="17" <?php echo $client->tipo == 17 ? "selected" : ""; ?>>Otros</option>
                   		</select>
 					</div>
 				</div>
@@ -224,96 +224,6 @@ if(isset($_GET["id"])){
 						<input type="text" class="form-control" id="telefonofac2" name="telefonofac2" minlength="5" maxlength="10" data-inputmask='"mask": "9999999999"' data-mask placeholder="9999999999" value="<?php echo $client->telefonofac2; ?>">
 					</div>
 				</div>
-				<?php
-				// Listado de contratos
-				if($client_id > 0) { ?>
-    				</br>
-    				<button id="btn_cargar_fechas_empresa" type="button" data-toggle="modal" data-target="#dlg_fechas_empresa" class="btn btn-sm btn-primary mb5" aria-label="">
-    					<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Agregar
-    				</button></br></br>	<?php
-				}
-				$users = ComercialData::getDetalle($client_id);		
-				$resultado = count($users); 
-				 
-				if($resultado > 0){ ?>
-    				<div id="contratos" class="tab-pane active">
-    					<div class="panel panel-default">
-    						<div class="panel-heading">
-    							<h3 class="panel-title">Historial de Contactos</h3>
-    						</div>
-    						<div class="table-responsive panel-collapse pull out">     
-    							<!--- Datos de Liquidacion --->
-    							<table id="viewBitacora" class="table table-bordered table-hover">
-    								<thead>
-    									<tr>
-    										<!-- th width="70px;"></th --> 
-    										<th><b>Contacto Operativo</b></th>            
-    										<th><b>Telefono Operativo</b></th>            
-    										<th><b>Correo Operativo</b></th>   
-    									</tr>
-    								</thead>
-    								<tbody>
-    									<?php
-											foreach($users as $tables) {
-												echo '<tr>';
-													/* echo '<td> 
-                											<a data-toggle="tooltip" data-placement="top" data-original-title="Modificar" class="btn btn-primary btn-xs" rel="tooltip" href="#"><i class="glyphicon glyphicon-eye-open"></i></a>
-                											<a data-toggle="tooltip" data-placement="top" data-original-title="Eliminar" class="btn btn-danger btn-xs" rel="tooltip" href="#"><i class="glyphicon glyphicon-pencil"></i></a>
-                										  </td>'; */
-													echo '<td>'.$tables->nombre.'</td>';
-													echo '<td>'.$tables->telefono.'</td>';
-													echo '<td>'.$tables->correo.'</td>';
-												echo '</tr>';
-											}
-    									?>
-    								</tbody>
-    							</table>
-    						</div>
-    					</div>
-    				</div><?php
-    			} ?>
-	            <!-- pop up de los contactos de las ventas -->
-        		<div id="dlg_fechas_empresa" class="modal">
-        			<div class="modal-dialog">
-        				<div class="modal-content">
-        					<div class="box-header with-border">
-        						<h3 class="box-title">Datos del Contacto Operativo</h3>
-        						<div class="box-tools pull-right">
-        							<button type="button" class="close" data-dismiss="modal">×</button>
-        						</div><!-- /.box-tools -->
-        					</div><!-- /.box-header -->
-        					<div class="box-body" style="display: block;">
-        						<div class="form-group">
-        							<label for="rubro" class="col-md-3 col-sm-3 control-label"><span class="text-danger">*</span> Nombre:</label>
-        							<div class="col-md-8 col-sm-5">
-        							    <input type="text" class="form-control" id="rubro" name="rubro" value="" placeholder="Descripcion Operativo">
-        							</div>
-        						</div>														
-        						<div class="form-group">
-        							<label for="cantidad" class="col-md-3 col-sm-3 control-label"><span class="text-danger">*</span> Telefono:</label>
-        							<div class="col-md-4 col-sm-2">
-        							    <input type="number" class="form-control" id="cantidad" name="cantidad" data-inputmask='"mask": "9999999999"' data-mask placeholder="9999999999" value="">
-        							</div>
-        						</div>
-        						<div class="form-group">
-        							<label for="monto" class="col-md-3 col-sm-3 control-label"><span class="text-danger">*</span> Correo:</label>
-        							<div class="col-md-8 col-sm-5">
-        							    <input class="text-field form-control input-sm" id="monto" minlength="5" maxlength="50" name="monto" type="email" placeholder="Correo de la persona a facturar" value="">
-        							</div>
-        						</div>
-        					</div>
-        					<div class="modal-footer">
-        						<button id="agregar_fechas_empresa" class="btn btn-success">
-        							<span class="glyphicon glyphicon-floppy-disk"></span> Grabar
-        						</button>
-        						<button type="button" class="btn btn-danger" data-dismiss="modal">
-        							<span class="glyphicon glyphicon-remove"> </span> Cancelar
-        						</button>
-        						<div id="finiquito"></div>
-        					</div>
-        				</div> <!-- /.modal-content -->
-        			</div> <!-- /.modal-dialog -->
-        		</div> <!--/ END modal -->
 			</div>
 			<div class="panel-footer"><?php
 				if($client_id > 0) { ?>

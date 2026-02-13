@@ -47,6 +47,21 @@ if(isset($_POST['id_person'])){
                     if($image->processed){
                         $user->foto1 = $image->file_dst_name;
                         if($_POST["verifica"]==0) $prod = $user->addIMG();
+                        
+                        if(!isset($_FILES["foto2"]["name"])){
+                            $user->foto2 = "";
+                        }else{
+                            $image = new Upload($_FILES["foto2"]);
+
+                            if($image->uploaded){
+                                $image->Process("storage/ingreso/");
+
+                                if($image->processed){
+                                    $user->foto2 = $image->file_dst_name;
+                                }
+                            }
+                        }
+
 
                         if(isset($_POST["short"])){
                             $_SESSION["consigna"]=$_POST["consigna"];
@@ -112,6 +127,7 @@ if ($hora<6) {
             $estilo = 'style="margin-bottom: 0!important;"';
             $mensaje = "<span class=\"text-danger\">*</span>Buenos días, tiene un atrazo de: ".$total." hora</br>";
         }else{
+            printf("Buenos días...!!!");
             $estilo = 'style="display: none;"';
         }
     }else{
@@ -137,11 +153,9 @@ if ($hora<6) {
 // Listado de los puesto de servicio de los guardias 
 $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
 
-?>
+?> 
 <!-- Content Header (Page header) -->
-</br>
 <section id="main" role="main">
-  <div class="container-fluid">
     <form class="form-horizontal" method="post" enctype="multipart/form-data" id="bitacora" name="asignar" action="index.php?view=asignar" role="form">
         <input type="hidden" id="id_person"  name="id_person"  value="<?php echo $_SESSION['user_id']; ?>">
         <input type="hidden" id="verifica"   name="verifica"   value="0">
@@ -151,13 +165,14 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
         <input type="hidden" id="rangoerror" name="rangoerror" value="">
         <input type="hidden" id="sentido"    name="sentido"    value="">
         <input type="hidden" id="velocidad"  name="velocidad"  value="">
-        <input type="hidden" id="mensaje"    name="mensaje"    value="">
-        <div class="callout callout-danger" <?php echo $estilo; ?>>
-            <h4><strong><i class="fa fa-bullhorn"></i> Importante...!</strong></h4>
-            <?php echo $mensaje; ?>
-            <span class="text-danger">*</span><?php echo $_SESSION['consigna']; ?>
+        <input type="hidden" id="mensaje"    name="mensaje"    value="">        
+        <div class="col-md-10" <?php echo $estilo; ?>>
+            <div class="callout callout-danger">
+                <h4><strong><i class="fa fa-bullhorn"></i> Importante...!</strong></h4>
+                <?php echo $mensaje; ?>
+                <span class="text-danger">*</span><?php echo $_SESSION['consigna']; ?>
+            </div>
         </div>
-        </br>
         <!-- Registro de Bitacora -->
         <div class="row">
             <div class="col-md-10">
@@ -223,6 +238,7 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
                                 <label class="col-sm-4 control-label"> Verifique su identidad:</label>
                                 <div class="col-sm-6">
                                     <input type="file" name="image" id="image" class="SubirFoto" accept="image/*" capture="camera" /></br>
+                                    <input type="file" name="foto2" id="foto2" class="SubirFoto" accept="image/*" capture="camera" /></br>                                
                                 </div>
                             </div>
                             <div class="form-group">
@@ -236,7 +252,6 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
             </div>
         </div>
   	</form>
-  </div>
 </section>
 <script>
     document.title = "Near Solucions | Ingreso del Personal";

@@ -1,20 +1,11 @@
 <?php
-
 //Ingreso de Parte Informativo
-
 date_default_timezone_set('America/Guayaquil');
-
 $hoy = date("d-m-Y H:i:s"); $fecha = date("Y-m-d H:i:s"); $Observacion = ''; $errores = '';
 
-
-
 if(!isset($_SESSION["puesto"])){
-
-    print "<script>window.location='index.php?view=asignar';</script>";
-
+    print "<script>window.location='".$_SESSION["url"]."asignar';</script>";
 }
-
-
 
 if(isset($_POST['id_person'])){
     $user = new BitacoraData();

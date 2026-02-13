@@ -36,6 +36,7 @@ Core::$debug_sql = false;
 $lb = new Lb();
 $lb->start();
 $_SESSION['error'] = 0;
+$_SESSION['produccion'] = 0;
 
 function ipCheck() {
 	if (getenv('HTTP_CLIENT_IP')) {$ip = getenv('HTTP_CLIENT_IP');}

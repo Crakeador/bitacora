@@ -54,21 +54,20 @@ if (strpos(strtolower($_SERVER['HTTP_USER_AGENT']),'opera mini') > 0) {
 }
 
 if ($tablet_browser > 0) {
-  $_SESSION['dispositivo']=3;
+  $_SERVER['dispositivo']=3;
 }
 else if ($mobile_browser > 0) {
-  $_SESSION['dispositivo']=2;
+  $_SERVER['dispositivo']=2;
 }
 else{
-  $_SESSION['dispositivo']=1;
+  $_SERVER['dispositivo']=1;
 }
 
 if(isset($_SESSION['depart'])) $departamento = DepartamentoData::getById($_SESSION['depart']);
 
 $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
 //if(isset($_SESSION['depart'])) $departamento = DepartamentoData::getById("codigo", $_SESSION['depart']);
-$_SESSION["url"] = "https://latin.near-solution.com/"; // "http://localhost/bitacora/"; // 
-
+$_SESSION["url"] = "https://latin.near-solution.com/";
 ?>
 <!DOCTYPE html>
 <html lang="es-EC">
@@ -80,7 +79,7 @@ $_SESSION["url"] = "https://latin.near-solution.com/"; // "http://localhost/bita
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"> <!-- Denine el ancho de la pantalla a ser utilizado -->
     <meta name="robots" content="seguridad, inteligencia artificial, camaras de seguridad, drones, control de acceso">
     <link rel="alternate" href="https://near-solution.com" hreflang="es" />
-    <link rel="manifest" href="<?php echo $_SESSION["url"]; ?>manifest.json">
+    <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#3367D6">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- This site is optimized with the Yoast SEO plugin v25.2 - https://yoast.com/wordpress/plugins/seo/ -->
@@ -106,32 +105,19 @@ $_SESSION["url"] = "https://latin.near-solution.com/"; // "http://localhost/bita
           echo '<link type="text/css" rel="stylesheet" href="'.$_SESSION["url"].'assets/css/dashforge.css"/>';
           echo '<link type="text/css" rel="stylesheet" href="'.$_SESSION["url"].'assets/css/dashforge.auth.css"/>';
       }else{
-          if($_SESSION["produccion"] == 1){
-            // BootsTrap
-            echo '<link type="text/css" rel="stylesheet" href="https://adminlte.io/themes/AdminLTE/bower_components/bootstrap/dist/css/bootstrap.min.css?v=1.0.1"/>';
-            // Font Awesome Icons
-            echo '<link type="text/css" rel="stylesheet" href="https://adminlte.io/themes/AdminLTE/bower_components/font-awesome/css/font-awesome.min.css?v=1.0.1"/>';
-            // Ionicons
-            echo '<link type="text/css" rel="stylesheet" href="https://adminlte.io/themes/AdminLTE/bower_components/Ionicons/css/ionicons.min.css?v=1.0.1"/>';
-            // Theme style
-            echo '<link type="text/css" rel="stylesheet" href="https://adminlte.io/themes/AdminLTE/dist/css/AdminLTE.min.css?v=1.0.1"/>';
-            echo '<link type="text/css" rel="stylesheet" href="https://adminlte.io/themes/AdminLTE/dist/css/skins/skin-black.min.css?v=1.0.1"/>';
-          }else{
-            // BootsTrap
-            echo '<link type="text/css" rel="stylesheet" href="'.$_SESSION["url"].'plugins/bootstrap/css/bootstrap.min.css?v=1.0.1"/>';            
-            // Font Awesome Icons
-            echo '<link type="text/css" rel="stylesheet" href="'.$_SESSION["url"].'plugins/font-awesome/css/font-awesome.min.css?v=1.0.1">';
-            // Theme style
-            echo '<link type="text/css" rel="stylesheet" href="'.$_SESSION["url"].'assets/css/AdminLTE.min.css?v=1.0.1"/>';
-            echo '<link type="text/css" rel="stylesheet" href="'.$_SESSION["url"].'assets/css/skins/skin-black.min.css?v=1.0.1"/>';
-          }
-              
+          // Theme style
+          echo '<link type="text/css" rel="stylesheet" href="'.$_SESSION["url"].'assets/css/AdminLTE.min.css?v=1.0.1"/>';
+          echo '<link type="text/css" rel="stylesheet" href="'.$_SESSION["url"].'assets/css/skins/skin-black.min.css?v=1.0.1"/>';
           echo '<link type="text/css" rel="stylesheet" href="'.$_SESSION["url"].'assets/css/flexslider.css?v=1.0.1"/>';
+          // BootsTrap
+          echo '<link type="text/css" rel="stylesheet" href="'.$_SESSION["url"].'plugins/bootstrap/css/bootstrap.min.css?v=1.0.1"/>';
           echo '<link type="text/css" rel="stylesheet" href="'.$_SESSION["url"].'plugins/datepicker/datepicker3.css?v=1.0.1"/>';
           echo '<link type="text/css" rel="stylesheet" href="'.$_SESSION["url"].'plugins/datetimepicker/css/bootstrap-datetimepicker.css?v=1.0.1"/>';
           // Data Tables
           echo '<link type="text/css" rel="stylesheet" href="'.$_SESSION["url"].'plugins/datatables/dataTables.bootstrap.css?v=1.0.1"/>';
           echo '<link type="text/css" rel="stylesheet" href="'.$_SESSION["url"].'plugins/datatables/extensions/Responsive/css/responsive.bootstrap.min.css?v=1.0.1"/>';
+          // Font Awesome Icons
+          echo '<link type="text/css" rel="stylesheet" href="'.$_SESSION["url"].'plugins/fontawesome/css/font-awesome.min.css?v=1.0.1"/>';
           // Theme style
           echo '<link type="text/css" rel="stylesheet" href="'.$_SESSION["url"].'plugins/icheck/all.css?v=1.0.1"/>';
           // Alertas del Sistema
@@ -143,6 +129,10 @@ $_SESSION["url"] = "https://latin.near-solution.com/"; // "http://localhost/bita
           echo '<link type="text/css" rel="stylesheet" href="'.$_SESSION["url"].'plugins/switchery/switchery.min.css?v=1.0.1"/>';
           // Estilos del calendario -->
           echo '<link type="text/css" rel="stylesheet" href="'.$_SESSION["url"].'assets/css/calendar.css?v=20260106"/>';
+          // JVectorMap
+          echo '<link type="text/css" rel="stylesheet" href="'.$_SESSION["url"].'plugins/jvectormap/jquery-jvectormap-1.2.2.css?v=20260209"/>';
+          // jQuery
+          echo '<link type="text/css" rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>';
       } ?>
     <style>
       /*Flecha para hacer la pagina hacia arriba*/
@@ -321,26 +311,14 @@ $_SESSION["url"] = "https://latin.near-solution.com/"; // "http://localhost/bita
           object-fit: cover; /* O 'contain', 'fill', etc. */
           object-position: 50% 50%; /* Posición (opcional) */
       }
-    </style><?php
-    if($_SESSION["produccion"] == 1){ ?>
-      <!-- jQuery 3 -->
-      <script type="text/javascript" src="https://adminlte.io/themes/AdminLTE/bower_components/jquery/dist/jquery.min.js?v=1.0.1"></script><?php
-    }else{ ?>
-      <script type="text/javascript" src="<?php echo $_SESSION["url"]; ?>assets/js/jquery.min.js"></script> <?php
-    } ?>
-    <!-- jquery-2.2.4 -->
+    </style>
+    <script type="text/javascript" src="<?php echo $_SESSION["url"]; ?>plugins/jQuery/jquery.min.js"></script> <!-- jquery-2.2.4 -->
     <script type="text/javascript" src="<?php echo $_SESSION["url"]; ?>plugins/jQueryUI/jquery-ui.js"></script>
-	  <script type="text/javascript" src="<?php echo $_SESSION["url"]; ?>assets/js/jquery.flexslider.js"></script>
+	  <script type="text/javascript" src="<?php echo $_SESSION["url"]; ?>assets/js/jquery.flexslider.js"></script>	
     <!-- SlimScroll -->
     <script src="https://adminlte.io/themes/AdminLTE/bower_components/jquery-slimscroll/jquery.slimscroll.min.js?v=1.0.1"></script>
     <!-- Switchery -->
     <script type="module" src="<?php echo $_SESSION["url"]; ?>plugins/switchery/switchery.min.js"></script>
-    <?php
-    if(isset($_GET["view"])){
-			if($_GET["view"]=="lectorqr"){
-				echo '<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>';
-			}
-    } ?>
 	  <script type="text/javascript"> <?php 
     if(isset($_SESSION['idrol']) && $_SESSION['idrol'] == 12){ ?>
         function esAntesDeLas17Horas() {
@@ -383,8 +361,8 @@ $_SESSION["url"] = "https://latin.near-solution.com/"; // "http://localhost/bita
 		}); */ 
 	</script>
   </head>
-  <body id="sidai" class="<?php if(isset($_SESSION["user_id"]) || isset($_SESSION["client_id"])){ echo "sidebar-mini skin-black sidebar-collapse"; } else { echo ""; } ?>" onload="cerrar();">
-    <!-- div class="loader" style="display: flex; width: 100%; height: 100%; justify-content: center; align-items: center;"></div -->
+  <body id="sidai" class="<?php if(isset($_SESSION["user_id"]) || isset($_SESSION["client_id"])){ echo "sidebar-mini skin-black sidebar-collapse fixed"; } else { echo ""; } ?>" onload="cerrar();">
+    <div class="loader" style="display: flex; width: 100%; height: 100%; justify-content: center; align-items: center;"></div>
     <?php if(isset($_SESSION["user_id"]) || isset($_SESSION["client_id"])):
               $notificcion = TimelineData::getAllByUserId($_SESSION["user_id"], $mes, $ano, 1);
               $notificacion = count($notificcion);
@@ -434,7 +412,7 @@ $_SESSION["url"] = "https://latin.near-solution.com/"; // "http://localhost/bita
                 <ul class="nav navbar-nav">
                   <li>
                     <div style="display: flex; justify-content: center; align-items: center; margin-top: 6%;">
-                      <button id="alertButton" class="btn btn-block btn-danger" style="font-size: 14px; font-weight: bold;"><i class="fa fa-heartbeat"></i>&nbsp;S.O.S.&nbsp;</button>
+                      <button id="alertButton" class="btn btn-block btn-danger" style="font-size: 14px; font-weight: bold;"><i class="fa fa-heartbeat"></i>&nbsp;&nbsp;Boton S.O.S.</button>
                     </div>
                   </li><?php
                   if(isset($_SESSION["idrol"]) && ($_SESSION["idrol"]=='8' || $_SESSION["idrol"]=='11')){
@@ -510,7 +488,7 @@ $_SESSION["url"] = "https://latin.near-solution.com/"; // "http://localhost/bita
                   <!-- User Account: style can be found in dropdown.less -->
                   <li class="dropdown user user-menu">
                       <a href="#" class="dropdown-toggle2" data-toggle="dropdown">
-                          <img src="<?php echo $_SESSION["url"]; ?>assets/<?php if($_SESSION["idrol"] == 7) echo "images/avatar/user13.png"; else if(isset($_SESSION["user_id"])) if(UserData::getById($_SESSION["user_id"])->image == "") echo "images/usuario.jpg"; else echo "images/avatar/".UserData::getById($_SESSION["user_id"])->image; ?>" class="user-image" alt="User Image">
+                          <img src="assets/<?php if($_SESSION["idrol"] == 7) echo "images/avatar/user13.png"; else if(isset($_SESSION["user_id"])) if(UserData::getById($_SESSION["user_id"])->image == "") echo "images/usuario.jpg"; else echo "images/avatar/".UserData::getById($_SESSION["user_id"])->image; ?>" class="user-image" alt="User Image">
                           <span class="">
                               <?php
                                 if(isset($_SESSION["id_card"])){
@@ -524,7 +502,7 @@ $_SESSION["url"] = "https://latin.near-solution.com/"; // "http://localhost/bita
                       <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                          <img src="<?php echo $_SESSION["url"]; ?>assets/<?php if($_SESSION["idrol"] == 7) echo "images/avatar/user13.png"; else if(isset($_SESSION["user_id"])) if(UserData::getById($_SESSION["user_id"])->image == "") echo "images/usuario.jpg"; else echo "images/avatar/".UserData::getById($_SESSION["user_id"])->image; ?>" class="img-circle" alt="User Image">
+                          <img src="assets/<?php if($_SESSION["idrol"] == 7) echo "images/avatar/user13.png"; else if(isset($_SESSION["user_id"])) if(UserData::getById($_SESSION["user_id"])->image == "") echo "images/usuario.jpg"; else echo "images/avatar/".UserData::getById($_SESSION["user_id"])->image; ?>" class="img-circle" alt="User Image">
                           <p>
                             <?php
                                 if(isset($_SESSION["id_card"])){
@@ -557,7 +535,7 @@ $_SESSION["url"] = "https://latin.near-solution.com/"; // "http://localhost/bita
             <!-- sidebar: style can be found in sidebar.less -->
             <section class="sidebar">
               <ul class="sidebar-menu">
-                <li><a href="<?php if($_SESSION["idrol"] == 7) echo "./asignar"; else echo $_SESSION["url"]."home"; ?>"><i class='fa fa-home'></i> <span>Panel de Control</span></a></li>
+                <li><a href="<?php if($_SESSION["idrol"] == 7) echo "./asignar"; else echo "./home"; ?>"><i class='fa fa-home'></i> <span>Panel de Control</span></a></li>
                 <?php
                   if(isset($_SESSION["user_id"])): ?>                  
                       <?php // 1 Gerencia
@@ -566,17 +544,17 @@ $_SESSION["url"] = "https://latin.near-solution.com/"; // "http://localhost/bita
                         } ?>
                       <?php // 2 Administracion
                         if($_SESSION['depart'] == 2): ?>
-                          <li><a href="<?php echo $_SESSION['url']; ?>tareas"><i class='fa fa-bell'></i> <span>Tareas</span></a></li>
-                          <li><a href="<?php echo $_SESSION['url']; ?>tareas"><i class='fa fa-bell'></i> <span>Tareas</span></a></li>
-                          <li><a href="<?php echo $_SESSION['url']; ?>calendarie"><i class='fa fa-calendar'></i> <span>Calendario</span></a></li>
+                          <li><a href="./tareas"><i class='fa fa-bell'></i> <span>Tareas</span></a></li>
+                          <li><a href="./tareas"><i class='fa fa-bell'></i> <span>Tareas</span></a></li>
+                          <li><a href="./calendarie"><i class='fa fa-calendar'></i> <span>Calendario</span></a></li>
                           <?php if($_SESSION['idrol'] == 3): ?>
-                            <li><a href="<?php echo $_SESSION['url']; ?>caja"><i class='fa fa-cube'></i> <span>Caja Chica</span></a></li>
+                            <li><a href="./caja"><i class='fa fa-cube'></i> <span>Caja Chica</span></a></li>
                           <?php endif; ?>
                           <li class="treeview">
                             <a href="#"><i class='fa fa-file-text-o'></i> <span>Reportes</span> <i class="fa fa-angle-left pull-right"></i></a>
                             <ul class="treeview-menu">
-                              <li><a href="<?php echo $_SESSION['url']; ?>reports"><i class="fa fa-circle-o"></i>Inventario</a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>sellreports"><i class="fa fa-circle-o"></i>Entregas</a></li>
+                              <li><a href="./reports"><i class="fa fa-circle-o"></i>Inventario</a></li>
+                              <li><a href="./sellreports"><i class="fa fa-circle-o"></i>Entregas</a></li>
                             </ul>
                           </li><?php 
                         endif; ?>
@@ -587,102 +565,103 @@ $_SESSION["url"] = "https://latin.near-solution.com/"; // "http://localhost/bita
                             echo '<li class="treeview">
                                     <a href="#"><i class="fa fa-random"></i> <span>Vehiculos</span> <i class="fa fa-angle-left pull-right"></i></a>
                                     <ul class="treeview-menu">
-                                      <li><a href="'.$_SESSION['url'].'recibos"><i class="fa fa-bullseye"></i>Entregas</a></li>
-                                      <li><a href="'.$_SESSION['url'].'entregas"><i class="fa fa-bullseye"></i>Recepcion</a></li>
+                                      <li><a href="recibos"><i class="fa fa-bullseye"></i>Entregas</a></li>
+                                      <li><a href="entregas"><i class="fa fa-bullseye"></i>Recepcion</a></li>
                                     </ul>
                                   </li>';
-                            echo '<li><a href="'.$_SESSION['url'].'puestos"><i class="fa fa-hotel"></i><span> Puestos </span></a></li>';
-                            echo '<li><a href="'.$_SESSION['url'].'personas"><i class="fa fa-sign-in"></i><span> Asignar Efectivo</span></a></li>';
-                            echo '<li><a href="'.$_SESSION['url'].'descuento"><i class="fa fa-credit-card"></i><span>Liquidaci&oacute;n</span></a></li>';
-                            echo '<li><a href="'.$_SESSION['url'].'agentes"><i class="fa fa-building"></i> <span>Agentes Dotados</span></a></li>'; 
-                            echo '<li><a href="'.$_SESSION['url'].'bitacora"><i class="fa fa-book"></i> <span>Bitacora</span></a></li>'; 
-                            echo '<li><a href="'.$_SESSION['url'].'rondas"><i class="fa fa-bicycle"></i> <span>Rondas</span></a></li>'; 
-                            echo '<li><a href="'.$_SESSION['url'].'partes"><i class="fa fa-binoculars"></i> <span>Novedades</span></a></li>'; 
+                            echo '<li><a href="./puestos"><i class="fa fa-hotel"></i><span> Puestos </span></a></li>';
+                            echo '<li><a href="./personas"><i class="fa fa-sign-in"></i><span> Asignar Efectivo</span></a></li>';
+                            echo '<li><a href="./descuento"><i class="fa fa-credit-card"></i><span>Liquidaci&oacute;n</span></a></li>';
+                            echo '<li><a href="./agentes"><i class="fa fa-building"></i> <span>Agentes Dotados</span></a></li>'; 
+                            echo '<li><a href="./bitacora"><i class="fa fa-book"></i> <span>Bitacora</span></a></li>'; 
+                            echo '<li><a href="./rondas"><i class="fa fa-bicycle"></i> <span>Rondas</span></a></li>'; 
+                            echo '<li><a href="./partes"><i class="fa fa-binoculars"></i> <span>Parte</span></a></li>'; 
                             echo '<li class="treeview">'; 
                               echo '<a href="#"><i class="fa fa-calendar"></i> <span>Horario</span><i class="fa fa-angle-left pull-right"></i></a>'; 
                               echo '<ul class="treeview-menu">'; 
-                                echo '<li><a href="'.$_SESSION['url'].'planificado"><i class="fa fa-bullseye"></i> Planificado </a> </li>'; 
+                                echo '<li><a href="./planificado"><i class="fa fa-bullseye"></i> Planificado </a> </li>'; 
                                 echo '<li>'; 
                                   echo '<a href="#"><i class="fa fa-bullseye"></i> Asistencia <i class="fa fa-angle-left pull-right"></i></a>'; 
                                   echo '<ul class="treeview-menu">'; 
-                                    echo '<li><a href="'.$_SESSION['url'].'activos"><i class="fa fa-bullseye"></i><span> Activos </span></a></li>'; 
-                                    echo '<li><a href="'.$_SESSION['url'].'eventual"><i class="fa fa-bullseye"></i><span> Eventuales </span></a></li>'; 
-                                    echo '<li><a href="'.$_SESSION['url'].'inactivos"><i class="fa fa-bullseye"></i><span> Inactivos </span></a></li>'; 
-                                    echo '<li><a href="'.$_SESSION['url'].'clientes"><i class="fa fa-bullseye"></i><span> Clientes </span></a></li>'; 
+                                    echo '<li><a href="./index.php?view=opehor.activos"><i class="fa fa-bullseye"></i><span> Activos </span></a></li>'; 
+                                    echo '<li><a href="./index.php?view=opehor.eventual"><i class="fa fa-bullseye"></i><span> Eventuales </span></a></li>'; 
+                                    echo '<li><a href="./index.php?view=opehor.inactivos"><i class="fa fa-bullseye"></i><span> Inactivos </span></a></li>'; 
+                                    echo '<li><a href="./index.php?view=opehor.clientes"><i class="fa fa-bullseye"></i><span> Clientes </span></a></li>'; 
                                   echo '</ul>'; 
                                 echo '</li>'; 
-                                echo '<li><a href="'.$_SESSION['url'].'faltas"><i class="fa fa-bullseye"></i><span> Faltas </span></a></li>'; 
+                                echo '<li><a href="./faltas"><i class="fa fa-bullseye"></i><span> Faltas </span></a></li>'; 
                               echo '</ul>'; 
                             echo '</li>'; 
                             echo '<li class="treeview">'; 
                               echo '<a href="#"><i class="fa fa-print"></i> <span>Reportes</span> <i class="fa fa-angle-left pull-right"></i></a>'; 
                               echo '<ul class="treeview-menu">'; 
-                                echo '<li><a href="'.$_SESSION['url'].'repent.lista"><i class="fa fa-bullseye"></i><span>Dotaci&oacute;n de Agentes </span></a></li>'; 
-                                echo '<li><a href="'.$_SESSION['url'].'reppus.lista"><i class="fa fa-bullseye"></i><span>Dotaci&oacute;n de Puestos </span></a></li>'; 
+                                echo '<li><a href="./index.php?view=repent.lista"><i class="fa fa-bullseye"></i><span>Dotaci&oacute;n de Agentes </span></a></li>'; 
+                                echo '<li><a href="./index.php?view=reppus.lista"><i class="fa fa-bullseye"></i><span>Dotaci&oacute;n de Puestos </span></a></li>'; 
                               echo '</ul>'; 
                             echo '</li> '; 
-                            echo '<li><a href="'.$_SESSION['url'].'novedades"><i class="fa fa-clipboard"></i> <span> Novedades </span></a></li>';
-                            echo '<li><a href="'.$_SESSION['url'].'vehiculos"><i class="fa fa-car"></i> <span> Veniculos </span></a></li>';
+                            echo '<li><a href="./novedades"><i class="fa fa-clipboard"></i> <span> Novedades </span></a></li>';
+                            echo '<li><a href="./vehiculos"><i class="fa fa-car"></i> <span> Veniculos </span></a></li>';
                           }else{
                             if($_SESSION['idrol'] == 6){ // Opcion del Supervisor ?>
                               <li class="treeview">
                                 <a href="#"><i class="fa fa-calendar"></i> <span>Horario</span><i class="fa fa-angle-left pull-right"></i></a>
                                 <ul class="treeview-menu">
-                                <li><a href="<?php echo $_SESSION['url']; ?>planificado"><i class="fa fa-bullseye"></i> Planificado </a></li>
-                                <li><a href="<?php echo $_SESSION['url']; ?>opecor.lista"><i class="fa fa-bullseye"></i><span> Coordinaci&oacute;n </span></a></li>
-                                <li><a href="<?php echo $_SESSION['url']; ?>faltas"><i class="fa fa-bullseye"></i><span> Faltas </span></a></li>
+                                <li><a href="./planificado"><i class="fa fa-bullseye"></i> Planificado </a></li>
+                                <li><a href="./index.php?view=opecor.lista"><i class="fa fa-bullseye"></i><span> Coordinaci&oacute;n </span></a></li>
+                                <li><a href="./faltas"><i class="fa fa-bullseye"></i><span> Faltas </span></a></li>
                                 </ul>
                               </li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>lectorqr"><i class="fa fa-camera"></i><span> Ronda </span></a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>rrsdoc.lista"><i class="fa fa-barcode"></i><span> Sanciones </span></a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>telefonos"><i class="fa fa-users"></i><span> Telefonos </span></a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>reporte"><i class="fa fa-fax"></i> <span>Novedades</span></a></li>	
-                              <li><a href="<?php echo $_SESSION['url']; ?>supervisar"><i class='fa fa-taxi'></i> <span>Supervici&oacute;n</span></a></li><?php
+                              <li><a href="./camara"><i class="fa fa-camera"></i><span> Camara </span></a></li>
+                              <li><a href="./index.php?view=rrsdoc.lista"><i class="fa fa-barcode"></i><span> Sanciones </span></a></li>
+                              <li><a href="./telefonos"><i class="fa fa-users"></i><span> Telefonos </span></a></li>
+                              <li><a href="./reporte"><i class="fa fa-fax"></i> <span>Parte</span></a></li>	
+                              <li><a href="./supervisar"><i class='fa fa-taxi'></i> <span>Supervici&oacute;n</span></a></li><?php
                             }else{
                               if($_SESSION['idrol'] == 7){ // Opcion del Guardia 
                                 if($_SESSION['dispositivo'] == 1){ // fotos - Modulo de ingreso de fotos USB 
-                                  echo '<li><a href="'.$_SESSION['url'].'novedad"><i class="fa fa-book"></i> <span>Bitacora</span></a></li>'; 
-                                  echo '<li><a href="'.$_SESSION['url'].'informe"><i class="fa fa-fax"></i> <span>Novedades</span></a></li>	'; 
+                                  echo '<li><a href="./novedad"><i class="fa fa-book"></i> <span>Bitacora</span></a></li>'; 
+                                  echo '<li><a href="./informe"><i class="fa fa-fax"></i> <span>Parte</span></a></li>	'; 
                                 }else{
                                   if($_SESSION['id_client'] == 8){ // Opcion para Custodias
-                                    echo '<li><a href="'.$_SESSION['url'].'registro"><i class="fa fa-book"></i> <span>Bitacora</span></a></li>'; 
+                                    echo '<li><a href="./registro"><i class="fa fa-book"></i> <span>Bitacora</span></a></li>'; 
                                   }else{
-                                    echo '<li><a href="'.$_SESSION['url'].'novedad"><i class="fa fa-book"></i> <span>Bitacora</span></a></li>'; 
+                                    echo '<li><a href="./novedad"><i class="fa fa-book"></i> <span>Bitacora</span></a></li>'; 
                                   }
-                                  echo '<li><a href="'.$_SESSION['url'].'lectorqr"><i class="fa fa-recycle"></i> <span>Rondas</span></a></li>'; 
-                                  echo '<li><a href="'.$_SESSION['url'].'informe"><i class="fa fa-fax"></i> <span>Novedades</span></a></li>	'; 
-                                  echo '<li><a href="'.$_SESSION['url'].'visitas"><i class="fa fa-suitcase"></i> <span>Visitas</span></a></li>'; 
+                                  echo '<li><a href="./camara"><i class="fa fa-recycle"></i> <span>Rondas</span></a></li>'; 
+                                  echo '<li><a href="./informe"><i class="fa fa-fax"></i> <span>Parte</span></a></li>	'; 
+                                  echo '<li><a href="./visitas"><i class="fa fa-suitcase"></i> <span>Visitas</span></a></li>'; 
                                   if($_SESSION['etapas'] == 1){ // Opcion para las Etapas 
-                                    echo '<li><a href="'.$_SESSION['url'].'verificados"><i class="fa fa-binoculars"></i> <span>Verificados</span></a></li>';
+                                    echo '<li><a href="./verificados"><i class="fa fa-binoculars"></i> <span>Verificados</span></a></li>';
                                   }
                                 }
                               }else{
                                 if($_SESSION['idrol'] == 12){ // Opciones de Centralistas
-                                  echo '<li><a href="'.$_SESSION['url'].'despliegue"><i class="fa fa-child"></i> <span>Despliegue</span></a></li>';
-                                  echo '<li><a href="'.$_SESSION['url'].'agentes"><i class="fa fa-eye"></i> <span>Agentes</span></a></li>';
-                                  echo '<li><a href="'.$_SESSION['url'].'finalizar"><i class="fa fa-power-off"></i> <span>Ultimo Turno</span></a></li>';
-                                  echo '<li><a href="'.$_SESSION['url'].'vacaciones"><i class="fa fa-ship"></i> <span>Vacaciones</span></a></li>';
-                                  echo '<li><a href="'.$_SESSION['url'].'faltas"><i class="fa fa-suitcase"></i><span> Faltas </span></a></li>';
-                                  echo '<li><a href="'.$_SESSION['url'].'bitacora"><i class="fa fa-book"></i> <span>Bitacora</span></a></li>';
-                                  echo '<li><a href="'.$_SESSION['url'].'central"><i class="fa fa-clipboard"></i> <span>Novedades</span></a></li>';
-                                  echo '<li><a href="'.$_SESSION['url'].'rondas"><i class="fa fa-street-view"></i><span> Rondas </span></a></li>';
-                                  echo '<li><a href="'.$_SESSION['url'].'partes"><i class="fa fa-binoculars"></i> <span>Novedades</span></a></li>';
+                                  echo '<li><a href="./asistencia"><i class="fa fa-sign-in"></i> <span>Asistencia</span></a></li>';
+                                  echo '<li><a href="./despliegue"><i class="fa fa-child"></i> <span>Despliegue</span></a></li>';
+                                  echo '<li><a href="./agentes"><i class="fa fa-eye"></i> <span>Agentes</span></a></li>';
+                                  echo '<li><a href="./finalizar"><i class="fa fa-power-off"></i> <span>Ultimo Turno</span></a></li>';
+                                  echo '<li><a href="./vacaciones"><i class="fa fa-ship"></i> <span>Vacaciones</span></a></li>';
+                                  echo '<li><a href="./faltas"><i class="fa fa-suitcase"></i><span> Faltas </span></a></li>';
+                                  echo '<li><a href="./bitacora"><i class="fa fa-book"></i> <span>Bitacora</span></a></li>';
+                                  echo '<li><a href="./central"><i class="fa fa-clipboard"></i> <span>Novedades</span></a></li>';
+                                  echo '<li><a href="./rondas"><i class="fa fa-street-view"></i><span> Rondas </span></a></li>';
+                                  echo '<li><a href="./partes"><i class="fa fa-binoculars"></i> <span>Parte</span></a></li>';
                                 }else{
                                   if($_SESSION['idrol'] == 13){ //Opciones de Custodios
-                                      echo '<li><a href="'.$_SESSION['url'].'custodia"><i class="fa fa-car"></i> <span>Custodia </span></a></li>';
+                                      echo '<li><a href="custodia"><i class="fa fa-car"></i> <span>Custodia </span></a></li>';
                                   }else{
                                       if($_SESSION['idrol'] == 11){
                                           //echo '<li><a href="preguntas"><i class="fa fa-calendar"></i> <span>Test Psicotecnico</span></a></li>';
                                       }else{
                                         if($_SESSION['idrol'] == 15){ //Supervisor Interno
-                                          echo '<li><a href="'.$_SESSION['url'].'supervisar"><i class="fa fa-motorcycle"></i> <span> Supervisi&oacute;n </span></a></li>';
+                                          echo '<li><a href="./supervisar"><i class="fa fa-motorcycle"></i> <span> Supervisi&oacute;n </span></a></li>';
                                         }else{
                                           if($_SESSION['idrol'] == 18){ //Opciones de Recepcion
-                                            echo '<li><a href="'.$_SESSION['url'].'trade"><i class="fa fa-suitcase"></i> <span>Visitas</span></a></li>';
+                                            echo '<li><a href="./trade"><i class="fa fa-suitcase"></i> <span>Visitas</span></a></li>';
                                           }else{
-                                            echo '<li><a href="'.$_SESSION['url'].'novedad"><i class="fa fa-clipboard"></i> <span> Novedades </span></a></li>';
-                                            echo '<li><a href="'.$_SESSION['url'].'vehiculos"><i class="fa fa-car"></i> <span> Veniculos </span></a></li>';
-                                            echo '<li><a href="'.$_SESSION['url'].'lectorqr"><i class="fa fa-camera"></i><span> Rondas </span></a></li>';
+                                            echo '<li><a href="./novedad"><i class="fa fa-clipboard"></i> <span> Novedades </span></a></li>';
+                                            echo '<li><a href="./vehiculos"><i class="fa fa-car"></i> <span> Veniculos </span></a></li>';
+                                            echo '<li><a href="./camara"><i class="fa fa-camera"></i><span> Ronda </span></a></li>';
                                           }
                                         } 
                                       }
@@ -695,11 +674,22 @@ $_SESSION["url"] = "https://latin.near-solution.com/"; // "http://localhost/bita
                       <?php // 4 Comercial
                         if($_SESSION['depart'] == 4){ 
                           if($_SESSION['idrol'] == 3) $valor = 'calendar'; else $valor = 'calendario'; ?>
-                          <li><a href="<?php echo $_SESSION["url"]; ?>ventas"><i class='fa fa-database'></i> <span>Clientes</span></a></li><?php 
+                          <li><a href="acciones"><i class='fa fa-envelope'></i> <span>E-Gestiones</span></a></li>                          
+                          <li><a href="<?php echo $valor; ?>"><i class='fa fa-calendar'></i> <span>Calendario</span></a></li>
+                          <li><a href="visito"><i class='fa fa-tags'></i> <span>Visitas</span></a></li>
+                          <li><a href="cotizacion"><i class='fa fa-diamond'></i><span> Cotizaciones </span></a></li>
+                          <li><a href="ventas"><i class='fa fa-database'></i> <span>Clientes</span></a></li>
+                          <li class="treeview">
+                            <a href="#"><i class='fa fa-file-text-o'></i> <span>Reportes</span> <i class="fa fa-angle-left pull-right"></i></a>
+                            <ul class="treeview-menu">
+                              <li><a href="reports"><i class="fa fa-circle-o"></i>Inventario</a></li>
+                              <li><a href="sellreports"><i class="fa fa-circle-o"></i>Entregas</a></li>
+                            </ul>
+                          </li><?php 
                         } ?>
                       <?php // 5 Contabilidad
                         if($_SESSION['depart'] == 5){ ?>
-                          <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=catlim.lista"><i class='fa fa-glass'></i> <span>Productos</span></a></li>
+                          <li><a href="./catlim.lista"><i class='fa fa-glass'></i> <span>Productos</span></a></li>
                           <li class="treeview">
                             <a href="#"><i class="fa fa-book"></i> <span> Contabilidad</span><i class="fa fa-angle-left pull-right"></i></a>
                             <ul class="treeview-menu">
@@ -710,59 +700,59 @@ $_SESSION["url"] = "https://latin.near-solution.com/"; // "http://localhost/bita
                                   <li><a href="#"><i class="fa fa-circle-o"></i> Libro diario </a></li>
                                 </ul>
                               </li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=ejercicio"><i class="fa fa-circle-o"></i> Ejercicio Contable </a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=cuentas"><i class="fa fa-circle-o"></i> Plan de Cuentas </a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=cuentas"><i class="fa fa-circle-o"></i> Centros de Costo </a></li>
+                              <li><a href="./index.php?view=ejercicio"><i class="fa fa-circle-o"></i> Ejercicio Contable </a></li>
+                              <li><a href="./index.php?view=cuentas"><i class="fa fa-circle-o"></i> Plan de Cuentas </a></li>
+                              <li><a href="./index.php?view=cuentas"><i class="fa fa-circle-o"></i> Centros de Costo </a></li>
                             </ul>
                           </li>
                           <li class="treeview">
                             <a href="#"><i class="fa fa-archive"></i> <span>Financiero</span><i class="fa fa-angle-left pull-right"></i></a>
                             <ul class="treeview-menu">
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=factura"><i class="fa fa-circle-o"></i> Facturaci&oacute;n</a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=caja"><i class="fa fa-circle-o"></i> Administrar caja </a></li>
+                              <li><a href="./index.php?view=factura"><i class="fa fa-circle-o"></i> Facturaci&oacute;n</a></li>
+                              <li><a href="./index.php?view=caja"><i class="fa fa-circle-o"></i> Administrar caja </a></li>
                             </ul>
                           </li>
                           <li class="treeview">
                             <a href="#"><i class='fa fa-database'></i> <span>Catalogos</span> <i class="fa fa-angle-left pull-right"></i></a>
                             <ul class="treeview-menu">
-                              <li><a href="<?php echo $_SESSION['url']; ?>clientes"><i class="fa fa-circle-o"></i> Clientes </a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>puestos"><i class="fa fa-circle-o"></i> Servicios </a></li>
+                              <li><a href="./clientes"><i class="fa fa-circle-o"></i> Clientes </a></li>
+                              <li><a href="./puestos"><i class="fa fa-circle-o"></i> Servicios </a></li>
                             </ul>
                           </li><?php 
                         } ?>
                       <?php // 6 RRHH
                         if($_SESSION['depart'] == 6 && $_SESSION['idrol'] < 10): ?>
-                            <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=rrping.lista"><i class='fa fa-fax'></i> <span> Personal Oficina </span></a></li>
-                            <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=rrging.lista"><i class='fa fa-bullhorn'></i> <span> Personal Operativo </span></a></li>							
-                            <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=opeasp.lista"><i class='fa fa-fax'></i> <span>Aspirantes</span></a></li>
+                            <li><a href="./index.php?view=rrping.lista"><i class='fa fa-fax'></i> <span> Personal Oficina </span></a></li>
+                            <li><a href="./index.php?view=rrging.lista"><i class='fa fa-bullhorn'></i> <span> Personal Operativo </span></a></li>							
+                            <li><a href="./index.php?view=opeasp.lista"><i class='fa fa-fax'></i> <span>Aspirantes</span></a></li>
                             <?php if($_SESSION['idrol'] == 3): ?>
-                                <li><a href="<?php echo $_SESSION['url']; ?>caja"><i class='fa fa-cube'></i> <span>Caja Chica</span></a></li>
+                                <li><a href="./index.php?view=caja"><i class='fa fa-cube'></i> <span>Caja Chica</span></a></li>
                             <?php endif; ?>
                             <li class="treeview">
                               <a href="#"><i class="fa fa-archive"></i> <span>Nomina</span><i class="fa fa-angle-left pull-right"></i></a>
                               <ul class="treeview-menu">
-                                <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=rrhpre.lista"><i class="fa fa-circle-o"></i> Descuentos </a></li>
-                                <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=rrhliq.lista"><i class="fa fa-circle-o"></i> Liquidaci&oacute;n </a></li>
-                                <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=rrhmac.lista"><i class="fa fa-circle-o"></i> Asignaci&oacute;n </a></li>
+                                <li><a href="./index.php?view=rrhpre.lista"><i class="fa fa-circle-o"></i> Descuentos </a></li>
+                                <li><a href="./index.php?view=rrhliq.lista"><i class="fa fa-circle-o"></i> Liquidaci&oacute;n </a></li>
+                                <li><a href="./index.php?view=rrhmac.lista"><i class="fa fa-circle-o"></i> Asignaci&oacute;n </a></li>
                               </ul>
                             </li>
-                            <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=rrhvac.lista"><i class="fa fa-calendar"></i><span> Vacaciones </span></a></li>
-                            <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=rrhdoc.lista"><i class="fa fa-barcode"></i><span> Sanciones </span></a></li>
+                            <li><a href="./index.php?view=rrhvac.lista"><i class="fa fa-calendar"></i><span> Vacaciones </span></a></li>
+                            <li><a href="./index.php?view=rrhdoc.lista"><i class="fa fa-barcode"></i><span> Sanciones </span></a></li>
                             <li class="treeview">
                               <a href="#"><i class="fa fa-table"></i> <span>Asistencia</span><i class="fa fa-angle-left pull-right"></i></a>
                               <ul class="treeview-menu">
                                 <li>
                                   <a href="#"><i class="fa fa-folder-open-o"></i> Agentes <i class="fa fa-angle-left pull-right"></i></a>
                                   <ul class="treeview-menu">
-                                  <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=rrphor.activos"><i class="fa fa-circle-o"></i> Activos </a></li>
-                                  <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=rrphor.inactivos"><i class="fa fa-circle-o"></i> Inactivos </a></li>
+                                  <li><a href="./index.php?view=rrphor.activos"><i class="fa fa-circle-o"></i> Activos </a></li>
+                                  <li><a href="./index.php?view=rrphor.inactivos"><i class="fa fa-circle-o"></i> Inactivos </a></li>
                                   </ul>
                                 </li>
                                 <li>
                                   <a href="#"><i class="fa fa-folder-open-o"></i> Administrativo <i class="fa fa-angle-left pull-right"></i></a>
                                   <ul class="treeview-menu">
-                                    <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=rrphor.registro"><i class="fa fa-circle-o"></i> Asistencias </a></li>
-                                    <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=rrphor.resumen"><i class="fa fa-circle-o"></i> Resumen  </a></li>
+                                    <li><a href="./index.php?view=rrphor.registro"><i class="fa fa-circle-o"></i> Asistencias </a></li>
+                                    <li><a href="./index.php?view=rrphor.resumen"><i class="fa fa-circle-o"></i> Resumen  </a></li>
                                   </ul>
                                 </li>
                               </ul>
@@ -770,29 +760,29 @@ $_SESSION["url"] = "https://latin.near-solution.com/"; // "http://localhost/bita
                             <li class="treeview">
                               <a href="#"><i class='fa fa-database'></i> <span>Catalogos</span> <i class="fa fa-angle-left pull-right"></i></a>
                               <ul class="treeview-menu">
-                                <li><a href="<?php echo $_SESSION['url']; ?>departamento"><i class="fa fa-circle-o"></i><span> Departamentos </span></a></li>
-                                <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=catcar.lista"><i class="fa fa-circle-o"></i><span> Cargos </span></a></li>
-                                <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=catrub.lista"><i class="fa fa-circle-o"></i><span> Rubros </span></a></li>
+                                <li><a href="departamento"><i class="fa fa-circle-o"></i><span> Departamentos </span></a></li>
+                                <li><a href="./index.php?view=catcar.lista"><i class="fa fa-circle-o"></i><span> Cargos </span></a></li>
+                                <li><a href="./index.php?view=catrub.lista"><i class="fa fa-circle-o"></i><span> Rubros </span></a></li>
                               </ul>
                             </li>
                       <?php endif; ?>
                       <?php // 7 Logistica
                         if($_SESSION['depart'] == 7): ?>
-                          <li><a href="<?php echo $_SESSION['url']; ?>carnets"><i class='fa fa-image'></i> <span>Carnets</span></a></li>
-                          <li><a href="<?php echo $_SESSION['url']; ?>conducta"><i class='fa fa-key'></i> <span>Salvo Conducto</span></a></li>
-                          <li><a href="<?php echo $_SESSION['url']; ?>productos"><i class='fa fa-glass'></i> <span>Productos</span></a></li>
-                          <li><a href="<?php echo $_SESSION['url']; ?>prendas"><i class='fa fa-group'></i> <span>Entregar dotaci&oacute;n</span></a></li>
-                          <li><a href="<?php echo $_SESSION['url']; ?>puestos"><i class='fa fa-briefcase'></i><span>Dotar Puesto</span></a></li>
-                          <li><a href="<?php echo $_SESSION['url']; ?>descuento"><i class='fa fa-credit-card'></i><span>Liquidaci&oacute;n</span></a></li>
+                          <li><a href="carnets"><i class='fa fa-image'></i> <span>Carnets</span></a></li>
+                          <li><a href="conducta"><i class='fa fa-key'></i> <span>Salvo Conducto</span></a></li>
+                          <li><a href="productos"><i class='fa fa-glass'></i> <span>Productos</span></a></li>
+                          <li><a href="prendas"><i class='fa fa-group'></i> <span>Entregar dotaci&oacute;n</span></a></li>
+                          <li><a href="puestos"><i class='fa fa-briefcase'></i><span>Dotar Puesto</span></a></li>
+                          <li><a href="descuento"><i class='fa fa-credit-card'></i><span>Liquidaci&oacute;n</span></a></li>
                           <?php if($_SESSION['idrol'] == 3): ?>
                             <!--- <li><a href="./index.php?view=caja"><i class='fa fa-cube'></i> <span>Caja Chica</span></a></li> --->
                           <?php endif; ?>
                           <li class="treeview">
                             <a href="#"><i class='fa fa-area-chart'></i> <span>Inventario</span> <i class="fa fa-angle-left pull-right"></i></a>
                             <ul class="treeview-menu">
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=inventary"><i class="fa fa-circle-o"></i>Inventario</a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=re"><i class="fa fa-circle-o"></i>Abastecer</a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=res"><i class="fa fa-circle-o"></i>Abastecimientos</a></li>
+                              <li><a href="./index.php?view=inventary"><i class="fa fa-circle-o"></i>Inventario</a></li>
+                              <li><a href="./index.php?view=re"><i class="fa fa-circle-o"></i>Abastecer</a></li>
+                              <li><a href="./index.php?view=res"><i class="fa fa-circle-o"></i>Abastecimientos</a></li>
                             </ul>
                           </li>
                           <li class="treeview">
@@ -800,43 +790,43 @@ $_SESSION["url"] = "https://latin.near-solution.com/"; // "http://localhost/bita
                             <ul class="treeview-menu">
                               <?php
                                 if($_SESSION["actividad"] == 1){
-                                  echo '<li><a href="'.$_SESSION['url'].'index.php?view=repent.lista"><span>Dotaci&oacute;n de Agentes</span></a></li>';
-                                  echo '<li><a href="'.$_SESSION['url'].'index.php?view=reppus.lista"><span>Dotaci&oacute;n de Puestos</span></a></li>';
+                                  echo '<li><a href="./index.php?view=repent.lista"><span>Dotaci&oacute;n de Agentes</span></a></li>';
+                                  echo '<li><a href="./index.php?view=reppus.lista"><span>Dotaci&oacute;n de Puestos</span></a></li>';
                                 }
                               ?>
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=reports"><i class="fa fa-circle-o"></i>Inventario</a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=sellreports"><i class="fa fa-circle-o"></i>Entregas</a></li>
+                              <li><a href="./index.php?view=reports"><i class="fa fa-circle-o"></i>Inventario</a></li>
+                              <li><a href="./index.php?view=sellreports"><i class="fa fa-circle-o"></i>Entregas</a></li>
                             </ul>
                           </li>
                           <li class="treeview">
                             <a href="#"><i class='fa fa-database'></i> <span>Catalogos</span> <i class="fa fa-angle-left pull-right"></i></a>
                             <ul class="treeview-menu">
-                              <li><a href="<?php echo $_SESSION['url']; ?>categorias"><i class="fa fa-circle-o"></i>Categorias</a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=catpro.lista"><i class="fa fa-circle-o"></i>Proveedores</a></li>
+                              <li><a href="./index.php?view=categorias"><i class="fa fa-circle-o"></i>Categorias</a></li>
+                              <li><a href="./index.php?view=catpro.lista"><i class="fa fa-circle-o"></i>Proveedores</a></li>
                             </ul>
                           </li>
                       <?php endif; ?>
                       <?php 
                         // 8 Financiero
                         if($_SESSION['depart'] == 8){ ?>
-                              <li><a href="<?php echo $_SESSION['url']; ?>bodega"><i class='fa fa-cart-plus'></i> <span>Bodegas</span></a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=repent.lista"><i class='fa fa-edit'></i> <span>Entrega de dotaci&oacute;n</span></a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>productos"><i class='fa fa-book'></i> <span>Listado de Productos</span></a></li>
+                              <li><a href="./bodega"><i class='fa fa-home'></i> <span>Bodegas</span></a></li>
+                              <li><a href="./index.php?view=repent.lista"><i class='fa fa-edit'></i> <span>Entrega de dotaci&oacute;n</span></a></li>
+                              <li><a href="./productos"><i class='fa fa-book'></i> <span>Listado de Productos</span></a></li>
                               <li class='treeview'>
                               <a href="#"><i class='fa fa-area-chart'></i> <span>Catalogos</span> <i class='fa fa-angle-left pull-right'></i></a>
                               <ul class='treeview-menu'>
-                                <li><a href="<?php echo $_SESSION['url']; ?>clientes"><i class='fa fa-circle-o'></i> Clientes </a></li>
-                                <li><a href="<?php echo $_SESSION['url']; ?>puestos"><i class='fa fa-circle-o'></i> Puestos </a></li>
-                                <li><a href="<?php echo $_SESSION['url']; ?>res"><i class='fa fa-circle-o'></i> Abastecimientos</a></li>
+                                <li><a href="./clientes"><i class='fa fa-circle-o'></i> Clientes </a></li>
+                                <li><a href="./puestos"><i class='fa fa-circle-o'></i> Puestos </a></li>
+                                <li><a href="./res"><i class='fa fa-circle-o'></i> Abastecimientos</a></li>
                               </ul>
                               </li>
                               <li class='treeview'>
                               <a href="#"><i class='fa fa-file-text-o'></i> <span>Reportes</span> <i class='fa fa-angle-left pull-right'></i></a>
                               <ul class='treeview-menu'>
-                                <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=repent.lista"> <span>Dotación de Agentes</span></a></li>
-                                <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=reppus.lista"> <span>Dotación de Puestos</span></a></li>
-                                <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=reports"><i class='fa fa-circle-o'></i>Inventario</a></li>
-                                <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=sellreports"><i class='fa fa-circle-o'></i>Entregas</a></li>
+                                <li><a href="./index.php?view=repent.lista"> <span>Dotación de Agentes</span></a></li>
+                                <li><a href="./index.php?view=reppus.lista"> <span>Dotación de Puestos</span></a></li>
+                                <li><a href="./index.php?view=reports"><i class='fa fa-circle-o'></i>Inventario</a></li>
+                                <li><a href="./index.php?view=sellreports"><i class='fa fa-circle-o'></i>Entregas</a></li>
                               </ul>
                               </li><?php
                         } ?>
@@ -844,54 +834,54 @@ $_SESSION["url"] = "https://latin.near-solution.com/"; // "http://localhost/bita
                         // 9 Residenciales
                         if($_SESSION['depart'] == 9){
                           if($_SESSION['idrol'] == 8){				
-                            echo "<li><a href='".$_SESSION['url']."fechas'><i class='fa fa-book'></i> <span>Bitacora</span></a></li>";
-                            echo "<li><a href='".$_SESSION['url']."reporte'><i class='fa fa-binoculars'></i> <span>Novedades</span></a></li>";
-                            echo "<li><a href='".$_SESSION['url']."index.php?view=catres.lista'><i class='fa fa-building'></i> <span>Residentes</span></a></li>";
+                            echo "<li><a href=\"./index.php?view=fechas\"><i class='fa fa-book'></i> <span>Bitacora</span></a></li>";
+                            echo "<li><a href=\"./index.php?view=reporte\"><i class='fa fa-binoculars'></i> <span>Parte</span></a></li>";
+                            echo "<li><a href=\"./index.php?view=catres.lista\"><i class='fa fa-building'></i> <span>Residentes</span></a></li>";
                           }							
                           if($_SESSION['idrol'] == 9){							
-                            echo "<li><a href='".$_SESSION['url']."autorizan'><i class='fa fa-book'></i> <span>Autorizar</span></a></li>";
-                            echo "<li><a href='".$_SESSION['url']."autorizo'><i class='fa fa-binoculars'></i> <span>Historial</span></a></li>";
+                            echo "<li><a href=\"./index.php?view=autorizan\"><i class='fa fa-book'></i> <span>Autorizar</span></a></li>";
+                            echo "<li><a href=\"./index.php?view=autorizo\"><i class='fa fa-binoculars'></i> <span>Historial</span></a></li>";
                           }
                         }						
                         // Pasantes
                         if($_SESSION['idrol'] == 10){								
                           if($_SESSION['depart'] == 3){								
-                            echo "<li><a href='".$_SESSION['url']."personas'><i class='fa fa-sign-in'></i><span> Asignar Efectivo</span></a></li>";
+                            echo "<li><a href=\"./personas\"><i class='fa fa-sign-in'></i><span> Asignar Efectivo</span></a></li>";
                           }else{
-                            echo "<li><a href='".$_SESSION['url']."index.php?view=rrging.persons'><i class='fa fa-bullhorn'></i> <span> Personal Operativo </span></a></li>";
+                            echo "<li><a href=\"./index.php?view=rrging.persons\"><i class='fa fa-bullhorn'></i> <span> Personal Operativo </span></a></li>";
                           }
                         }
                       ?>
                       <?php 
                         // 11 Sistemas
                         if($_SESSION['depart'] == 11){ ?>
-                              <li><a href="<?php echo $_SESSION['url']; ?>pendientes"><i class='fa fa-home'></i> <span>Pendientes</span></a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=repent.lista"><i class='fa fa-edit'></i> <span>Entrega de dotaci&oacute;n</span></a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>productos"><i class='fa fa-book'></i> <span>Listado de Productos</span></a></li>
+                              <li><a href="./pendientes"><i class='fa fa-home'></i> <span>Pendientes</span></a></li>
+                              <li><a href="./index.php?view=repent.lista"><i class='fa fa-edit'></i> <span>Entrega de dotaci&oacute;n</span></a></li>
+                              <li><a href="./productos"><i class='fa fa-book'></i> <span>Listado de Productos</span></a></li>
                               <li class='treeview'>
                               <a href="#"><i class='fa fa-area-chart'></i> <span>Catalogos</span> <i class='fa fa-angle-left pull-right'></i></a>
                               <ul class='treeview-menu'>
-                                <li><a href="<?php echo $_SESSION['url']; ?>clientes"><i class='fa fa-circle-o'></i> Clientes </a></li>
-                                <li><a href="<?php echo $_SESSION['url']; ?>puestos"><i class='fa fa-circle-o'></i> Puestos </a></li>
-                                <li><a href="<?php echo $_SESSION['url']; ?>res"><i class='fa fa-circle-o'></i> Abastecimientos</a></li>
+                                <li><a href="./clientes"><i class='fa fa-circle-o'></i> Clientes </a></li>
+                                <li><a href="./puestos"><i class='fa fa-circle-o'></i> Puestos </a></li>
+                                <li><a href="./res"><i class='fa fa-circle-o'></i> Abastecimientos</a></li>
                               </ul>
                               </li>
                               <li class='treeview'>
                               <a href="#"><i class='fa fa-file-text-o'></i> <span>Reportes</span> <i class='fa fa-angle-left pull-right'></i></a>
                               <ul class='treeview-menu'>
-                                <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=repent.lista"> <span>Dotación de Agentes</span></a></li>
-                                <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=reppus.lista"> <span>Dotación de Puestos</span></a></li>
-                                <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=reports"><i class='fa fa-circle-o'></i>Inventario</a></li>
-                                <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=sellreports"><i class='fa fa-circle-o'></i>Entregas</a></li>
+                                <li><a href="./index.php?view=repent.lista"> <span>Dotación de Agentes</span></a></li>
+                                <li><a href="./index.php?view=reppus.lista"> <span>Dotación de Puestos</span></a></li>
+                                <li><a href="./index.php?view=reports"><i class='fa fa-circle-o'></i>Inventario</a></li>
+                                <li><a href="./index.php?view=sellreports"><i class='fa fa-circle-o'></i>Entregas</a></li>
                               </ul>
                               </li><?php
                         } ?>
                       <?php // Administrador
                         if($_SESSION["is_admin"] == 1): ?>
                           <li class="header">Comercial</li>
-                          <li><a href="<?php echo $_SESSION['url']; ?>informes"><i class='fa fa-envelope'></i><span> Informes </span></a></li>
-                          <li><a href="<?php echo $_SESSION['url']; ?>ventas"><i class='fa fa-diamond'></i><span> Ventas </span></a></li>
-                          <li><a href="<?php echo $_SESSION['url']; ?>estadistica"><i class='fa fa-line-chart'></i><span> Estadisticas </span></a></li>
+                          <li><a href="informes"><i class='fa fa-envelope'></i><span> Informes </span></a></li>
+                          <li><a href="cotizacion"><i class='fa fa-diamond'></i><span> Cotizaciones </span></a></li>
+                          <li><a href="estadistica"><i class='fa fa-line-chart'></i><span> Estadisticas </span></a></li>
                           <!-- li class="header">Contabilidad</li>
                           <li class="treeview">
                             <a href="#"><i class="fa fa-tasks"></i> <span> Registro</span><i class="fa fa-angle-left pull-right"></i></a>
@@ -912,50 +902,50 @@ $_SESSION["url"] = "https://latin.near-solution.com/"; // "http://localhost/bita
                           <li class="treeview">
                             <a href="#"><i class="fa fa-archive"></i> <span>Financiero</span><i class="fa fa-angle-left pull-right"></i></a>
                             <ul class="treeview-menu">
-                              <li><a href="<?php echo $_SESSION['url']; ?>clientes"><i class="fa fa-circle-o"></i> Clientes </a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>factura"><i class="fa fa-circle-o"></i> Facturaci&oacute;n</a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>caja"><i class="fa fa-circle-o"></i> Administrar caja </a></li>
+                              <li><a href="./clientes"><i class="fa fa-circle-o"></i> Clientes </a></li>
+                              <li><a href="./factura"><i class="fa fa-circle-o"></i> Facturaci&oacute;n</a></li>
+                              <li><a href="./caja"><i class="fa fa-circle-o"></i> Administrar caja </a></li>
                             </ul>
                           </li>
                           <li class="header">Talento Humano</li>
                           <li class="treeview">
                             <a href="#"><i class="fa fa-table"></i> <span>Talento Humano</span><i class="fa fa-angle-left pull-right"></i></a>
                             <ul class="treeview-menu">
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=rrging.lista">Registro de guardias </a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=rrping.lista">Registro de personal </a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=rrhliq.lista"><i class="fa fa-circle-o"></i> Liquidaci&oacute;n </a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=rrhvac.lista"><i class="fa fa-circle-o"></i> Vacaciones </a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=rrhdoc.lista"><i class="fa fa-circle-o"></i> Sansiones </a></li>
+                              <li><a href="./index.php?view=rrging.lista">Registro de guardias </a></li>
+                              <li><a href="./index.php?view=rrping.lista">Registro de personal </a></li>
+                              <li><a href="./index.php?view=rrhliq.lista"><i class="fa fa-circle-o"></i> Liquidaci&oacute;n </a></li>
+                              <li><a href="./index.php?view=rrhvac.lista"><i class="fa fa-circle-o"></i> Vacaciones </a></li>
+                              <li><a href="./index.php?view=rrhdoc.lista"><i class="fa fa-circle-o"></i> Sansiones </a></li>
                               <li>
                                 <a href="#"><i class="fa fa-circle-o"></i> Nomina <i class="fa fa-angle-left pull-right"></i></a>
                                 <ul class="treeview-menu">
-                                  <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=rrhpre.lista"><i class="fa fa-circle-o"></i> Adicionales </a></li>
-                                  <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=rrhliq.lista"><i class="fa fa-circle-o"></i> Liquidaci&oacute;n </a></li>
-                                  <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=rrhmac.lista"><i class="fa fa-circle-o"></i> Asignaci&oacute;n </a></li>
+                                  <li><a href="./index.php?view=rrhpre.lista"><i class="fa fa-circle-o"></i> Adicionales </a></li>
+                                  <li><a href="./index.php?view=rrhliq.lista"><i class="fa fa-circle-o"></i> Liquidaci&oacute;n </a></li>
+                                  <li><a href="./index.php?view=rrhmac.lista"><i class="fa fa-circle-o"></i> Asignaci&oacute;n </a></li>
                                 </ul>
                               </li>
                               <li>
                                 <a href="#"><i class="fa fa-circle-o"></i> Operaciones <i class="fa fa-angle-left pull-right"></i></a>
                                 <ul class="treeview-menu">
-                                  <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=opeasp.lista"><i class='fa fa-circle-o'></i> Aspirantes </a></li>
-                                  <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=opegur.lista"><i class='fa fa-circle-o'></i> Guardias </a></li>
-                                  <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=rrphor.activos"><i class="fa fa-circle-o"></i> Resumen Activo</a></li>
-                                  <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=rrphor.inactivos"><i class="fa fa-circle-o"></i> Resumen Inactivo</a></li>
+                                  <li><a href="./index.php?view=opeasp.lista"><i class='fa fa-circle-o'></i> Aspirantes </a></li>
+                                  <li><a href="./index.php?view=opegur.lista"><i class='fa fa-circle-o'></i> Guardias </a></li>
+                                  <li><a href="./index.php?view=rrphor.activos"><i class="fa fa-circle-o"></i> Resumen Activo</a></li>
+                                  <li><a href="./index.php?view=rrphor.inactivos"><i class="fa fa-circle-o"></i> Resumen Inactivo</a></li>
                                 </ul>
                               </li>
                               <li>
                                 <a href="#"><i class="fa fa-circle-o"></i> Asistencia <i class="fa fa-angle-left pull-right"></i></a>
                                 <ul class="treeview-menu">
-                                  <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=opehor.activos"><i class="fa fa-circle-o"></i><span> Activos </span></a></li>
-                                  <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=opehor.eventual"><i class="fa fa-circle-o"></i><span> Eventuales </span></a></li>
-                                  <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=opehor.inactivos"><i class="fa fa-circle-o"></i><span> Inactivos </span></a></li>
+                                  <li><a href="./index.php?view=opehor.activos"><i class="fa fa-circle-o"></i><span> Activos </span></a></li>
+                                  <li><a href="./index.php?view=opehor.eventual"><i class="fa fa-circle-o"></i><span> Eventuales </span></a></li>
+                                  <li><a href="./index.php?view=opehor.inactivos"><i class="fa fa-circle-o"></i><span> Inactivos </span></a></li>
                                 </ul>
                               </li>
                               <li>
                                 <a href="#"><i class="fa fa-circle-o"></i> Administrativo <i class="fa fa-angle-left pull-right"></i></a>
                                 <ul class="treeview-menu">
-                                  <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=rrphor.registro"><i class="fa fa-circle-o"></i><span> Asistencias </span></a></li>
-                                  <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=rrphor.resumen"><i class="fa fa-circle-o"></i><span> Resumen </span></a></li>
+                                  <li><a href="./index.php?view=rrphor.registro"><i class="fa fa-circle-o"></i><span> Asistencias </span></a></li>
+                                  <li><a href="./index.php?view=rrphor.resumen"><i class="fa fa-circle-o"></i><span> Resumen </span></a></li>
                                 </ul>
                               </li>
                             </ul>
@@ -964,52 +954,52 @@ $_SESSION["url"] = "https://latin.near-solution.com/"; // "http://localhost/bita
                           <li class="treeview">
                             <a href="#"><i class="fa fa-calendar"></i> <span>Operaciones</span><i class="fa fa-angle-left pull-right"></i></a>
                             <ul class="treeview-menu">
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=opeasp.lista"><i class='fa fa-circle-o'></i> <span>Aspirantes</span></a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=planificado"><i class="fa fa-circle-o"></i> Planificado </a></li>
+                              <li><a href="./index.php?view=opeasp.lista"><i class='fa fa-circle-o'></i> <span>Aspirantes</span></a></li>
+                              <li><a href="./index.php?view=planificado"><i class="fa fa-circle-o"></i> Planificado </a></li>
                               <li>
                                 <a href="#"><i class="fa fa-circle-o"></i> Asistencia <i class="fa fa-angle-left pull-right"></i></a>
                                 <ul class="treeview-menu">
-                                  <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=opehor.activos"><i class="fa fa-circle-o"></i><span> Activos </span></a></li>
-                                  <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=opehor.eventual"><i class="fa fa-circle-o"></i><span> Eventuales </span></a></li>
-                                  <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=opehor.inactivos"><i class="fa fa-circle-o"></i><span> Inactivos </span></a></li>
+                                  <li><a href="./index.php?view=opehor.activos"><i class="fa fa-circle-o"></i><span> Activos </span></a></li>
+                                  <li><a href="./index.php?view=opehor.eventual"><i class="fa fa-circle-o"></i><span> Eventuales </span></a></li>
+                                  <li><a href="./index.php?view=opehor.inactivos"><i class="fa fa-circle-o"></i><span> Inactivos </span></a></li>
                                 </ul>
                               </li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=faltas"><i class="fa fa-circle-o"></i><span> Faltas </span></a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=puestos"><i class="fa fa-circle-o"></i><span> Servicios </span></a></li>
+                              <li><a href="./index.php?view=faltas"><i class="fa fa-circle-o"></i><span> Faltas </span></a></li>
+                              <li><a href="./index.php?view=puestos"><i class="fa fa-circle-o"></i><span> Servicios </span></a></li>
                             </ul>
                           </li>
-                          <li><a href="<?php echo $_SESSION['url']; ?>bitacora"><i class='fa fa-book'></i> <span>Bitacora</span></a></li>
-                          <li><a href="<?php echo $_SESSION['url']; ?>parte"><i class='fa fa-binoculars'></i> <span>Parte</span></a></li>
-                          <li><a href="<?php echo $_SESSION['url']; ?>personas"><i class='fa fa-sign-in'></i><span> Asignar Efectivo</span></a></li>
-                          <li><a href="<?php echo $_SESSION['url']; ?>prendas"><i class='fa fa-group'></i><span> Entregar dotaci&oacute;n </span></a></li>
-                          <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=opedot.puestos"><i class='fa fa-briefcase'></i><span> Dotar Puesto </span></a></li>
-						              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=catres.lista"><i class='fa fa-building'></i> <span>Residentes</span></a></li>
+                          <li><a href="./index.php?view=bitacora"><i class='fa fa-book'></i> <span>Bitacora</span></a></li>
+                          <li><a href="./index.php?view=parte"><i class='fa fa-binoculars'></i> <span>Parte</span></a></li>
+                          <li><a href="./personas"><i class='fa fa-sign-in'></i><span> Asignar Efectivo</span></a></li>
+                          <li><a href="./index.php?view=prendas"><i class='fa fa-group'></i><span> Entregar dotaci&oacute;n </span></a></li>
+                          <li><a href="./index.php?view=opedot.puestos"><i class='fa fa-briefcase'></i><span> Dotar Puesto </span></a></li>
+						              <li><a href="./index.php?view=catres.lista"><i class='fa fa-building'></i> <span>Residentes</span></a></li>
                           <li class="header">Logistica</li>
                           <li class="treeview">
                             <a href="#"><i class='fa fa-area-chart'></i> <span>Inventario</span> <i class="fa fa-angle-left pull-right"></i></a>
                             <ul class="treeview-menu">
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=inventary"><i class="fa fa-circle-o"></i><span> Resumen </span></a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=dotacion"><i class="fa fa-circle-o"></i><span> Asignados </span></a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=re"><i class="fa fa-circle-o"></i><span> Abastecer </span></a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=res"><i class="fa fa-circle-o"></i><span> Abastecimientos </span></a></li>
+                              <li><a href="./index.php?view=inventary"><i class="fa fa-circle-o"></i><span> Resumen </span></a></li>
+                              <li><a href="./index.php?view=dotacion"><i class="fa fa-circle-o"></i><span> Asignados </span></a></li>
+                              <li><a href="./index.php?view=re"><i class="fa fa-circle-o"></i><span> Abastecer </span></a></li>
+                              <li><a href="./index.php?view=res"><i class="fa fa-circle-o"></i><span> Abastecimientos </span></a></li>
                             </ul>
                           </li>
                           <!--- Administracion del Sistema --->
                           <li class="header">Administraci&oacute;n</li>
-                          <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=siscof.lista"><i class='fa fa-spinner'></i><span>Configuraci&oacute;n</span></a></li>
+                          <li><a href="./index.php?view=siscof.lista"><i class='fa fa-spinner'></i><span>Configuraci&oacute;n</span></a></li>
                           <li class="header">Sistemas</li>
                           <li class="treeview">
                             <a href="#"><i class='fa fa-database'></i> <span>Catalogos</span> <i class="fa fa-angle-left pull-right"></i></a>
                             <ul class="treeview-menu">
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=catloc.lista"><i class="fa fa-circle-o"></i><span> Localidades </span></a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=catofi.lista"><i class="fa fa-circle-o"></i><span> Oficinas </span></a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=departamento"><i class="fa fa-circle-o"></i><span> Departamentos </span></a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=catcar.lista"><i class="fa fa-circle-o"></i><span> Cargos </span></a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=catrub.lista"><i class="fa fa-circle-o"></i><span> Rubros </span></a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=catdes.lista"><i class="fa fa-circle-o"></i><span> Descuentos </span></a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=categorias"><i class="fa fa-circle-o"></i><span> Categorias </span></a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=productos"><i class="fa fa-circle-o"></i><span> Productos </span></a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=catpro.lista"><i class="fa fa-circle-o"></i><span> Proveedores </span></a></li>
+                              <li><a href="./index.php?view=catloc.lista"><i class="fa fa-circle-o"></i><span> Localidades </span></a></li>
+                              <li><a href="./index.php?view=catofi.lista"><i class="fa fa-circle-o"></i><span> Oficinas </span></a></li>
+                              <li><a href="./index.php?view=departamento"><i class="fa fa-circle-o"></i><span> Departamentos </span></a></li>
+                              <li><a href="./index.php?view=catcar.lista"><i class="fa fa-circle-o"></i><span> Cargos </span></a></li>
+                              <li><a href="./index.php?view=catrub.lista"><i class="fa fa-circle-o"></i><span> Rubros </span></a></li>
+                              <li><a href="./index.php?view=catdes.lista"><i class="fa fa-circle-o"></i><span> Descuentos </span></a></li>
+                              <li><a href="./index.php?view=categorias"><i class="fa fa-circle-o"></i><span> Categorias </span></a></li>
+                              <li><a href="./index.php?view=productos"><i class="fa fa-circle-o"></i><span> Productos </span></a></li>
+                              <li><a href="./index.php?view=catpro.lista"><i class="fa fa-circle-o"></i><span> Proveedores </span></a></li>
                             </ul>
                           </li>
                           <li class="treeview">
@@ -1017,31 +1007,29 @@ $_SESSION["url"] = "https://latin.near-solution.com/"; // "http://localhost/bita
                             <ul class="treeview-menu">
                               <?php
                                 if($_SESSION["actividad"] == 1){
-                                   echo '<li><a href="'.$_SESSION['url'].'index.php?view=repent.lista"><span>Dotaci&oacute;n de Agentes</span></a></li>';
-                                   echo '<li><a href="'.$_SESSION['url'].'index.php?view=reppus.lista"><span>Dotaci&oacute;n de Puestos</span></a></li>';
+                                   echo '<li><a href="./index.php?view=repent.lista"><span>Dotaci&oacute;n de Agentes</span></a></li>';
+                                   echo '<li><a href="./index.php?view=reppus.lista"><span>Dotaci&oacute;n de Puestos</span></a></li>';
                                 }
                               ?>
-                              <li><a href="<?php echo $_SESSION['url']; ?>reports"><i class="fa fa-circle-o"></i><span> Inventario </span></a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>sellreports"><i class="fa fa-circle-o"></i><span> Entregas </span></a></li>
+                              <li><a href="reports"><i class="fa fa-circle-o"></i><span> Inventario </span></a></li>
+                              <li><a href="sellreports"><i class="fa fa-circle-o"></i><span> Entregas </span></a></li>
                             </ul>
                           </li>
                           <li class="treeview">
                             <a href="#"><i class="fa fa-cog"></i> <span>Administraci&oacute;n</span> <i class="fa fa-angle-left pull-right"></i></a>
                             <ul class="treeview-menu">
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=sisusu.lista"><i class="fa fa-circle-o"></i><span> Usuarios </span></a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=settings"><i class="fa fa-circle-o"></i><span> Configuracion </span></a></li>
-                              <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=sisaud.lista"><i class="fa fa-circle-o"></i> Auditoria </a></li>
+                              <li><a href="./index.php?view=sisusu.lista"><i class="fa fa-circle-o"></i><span> Usuarios </span></a></li>
+                              <li><a href="./index.php?view=settings"><i class="fa fa-circle-o"></i><span> Configuracion </span></a></li>
+                              <li><a href="./index.php?view=sisaud.lista"><i class="fa fa-circle-o"></i> Auditoria </a></li>
                             </ul>
                           </li>
                       <?php endif; 
-                      if($_SESSION["idrol"] == 7){ 
-                        // Sin Tareas asignadas
-                      }else{ ?>
-                        <li><a href="<?php echo $_SESSION['url']; ?>pendientes"><i class='fa fa-wrench'></i> <span>Tareas</span></a></li>
-                        <li><a href="<?php echo $_SESSION['url']; ?>agenda"><i class='fa fa-table'></i> <span>Agenda Semanal</span></a></li><?php 
+                      if($_SESSION["idrol"] > 2){ ?>
+                        <li><a href="./pendientes"><i class='fa fa-wrench'></i> <span>Tareas</span></a></li>
+                        <li><a href="./agenda"><i class='fa fa-table'></i> <span>Agenda Semanal</span></a></li><?php 
                       } ?>
-                      <li><a href="<?php echo $_SESSION['url']; ?>password"><i class='fa fa-cube'></i> <span>Cambio de clave</span></a></li>
-                      <li><a href="<?php echo $_SESSION['url']; ?>ayudas"><i class='fa fa-info-circle'></i> <span>Acerca de </span></a></li>
+                      <li><a href="./password"><i class='fa fa-cube'></i> <span>Cambio de clave</span></a></li>
+                      <li><a href="./ayudas"><i class='fa fa-info-circle'></i> <span>Acerca de </span></a></li>
                 <?php endif; ?>
               </ul><!-- /.sidebar-menu -->
             </section>
@@ -1074,7 +1062,7 @@ $_SESSION["url"] = "https://latin.near-solution.com/"; // "http://localhost/bita
           <button id="alertButton" class="btn btn-block btn-danger" style="font-size: 14px; font-weight: bold;"><i class="fa fa-heartbeat"></i>&nbsp;&nbsp;Boton S.O.S.</button>
         </div>
       </header><!-- navbar -->
-      <div class="content content-fixed content-auth" style="background-image: url('<?php echo $_SESSION['url']; ?>assets/images/bg-close-scaled.webp'); background-repeat:no-repeat; background-size:cover; background-position:center center;">
+      <div class="content content-fixed content-auth" style="background-image: url('assets/images/bg-close-scaled.webp'); background-repeat:no-repeat; background-size:cover; background-position:center center;">
         <div class="containerDg">
           <div class="media align-items-stretch justify-content-center ht-100p pos-relative" style="color=white;">
             <div class="media-body align-items-center d-none d-lg-flex">
@@ -1086,9 +1074,9 @@ $_SESSION["url"] = "https://latin.near-solution.com/"; // "http://localhost/bita
                 <div class="card-body">
                     <div class="wd-600p">
                         <div align="center" style="text-align: center;">
-                            <img src="<?php echo $_SESSION['url']; ?>assets/images/logo-ameri.png" class="img-fluid" alt="AMERICAN" height="380px" width="260%" loading="lazy" decoding="async">
+                            <img src="assets/images/logo-ameri.png" class="img-fluid" alt="AMERICAN" height="380px" width="260%" loading="lazy" decoding="async">
                         </div>
-                        <form id="frm" name="frm" action="<?php echo $_SESSION['url']; ?>index.php?action=processlogin" method="post" autocomplete="off">
+                        <form id="frm" name="frm" action="./index.php?action=processlogin" method="post" autocomplete="off">
                           <div class="form-group">
                             <label for="username">Usuario</label>
                             <input type="text" name="username" id="username" tabindex=1 maxlength="20" class="form-control" placeholder="Ingrese el nombre de usuario" required autocomplete="off">
@@ -1121,35 +1109,16 @@ $_SESSION["url"] = "https://latin.near-solution.com/"; // "http://localhost/bita
       </footer>
       <script type="text/javascript">
         document.frm.username.focus();
-        console.log("Verificando usuario: <?php echo $_SESSION['user_id'].'- Cliente'.$_SESSION["client_id"]?>");
-        if(localStorage.getItem("usuario") != null){
-          console.log("Usuario encontrado en localStorage desde el Layount...");
-          var usuario = localStorage.getItem("usuario");
-          var puesto = localStorage.getItem("puesto");
-          var ingreso = localStorage.getItem("ingreso");
-          var turno = localStorage.getItem("turno");
-            
-          window.location="index.php?view=novedad&usuario="+usuario+"&puesto="+puesto+"&ingreso="+ingreso+"&turno="+turno;
-        }else{
-          console.log("No se encontró usuario en localStorage desde el Layount...");
-        }
       </script>
-    <?php endif;
-    if($_SESSION["produccion"] == 1){ ?>
-      <!-- Bootstrap 3.3.2 JS -->
-      <script type="text/javascript" src="https://adminlte.io/themes/AdminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js?v=1.0.1"></script>
-      <!-- AdminLTE App -->
-      <script type="text/javascript" src="https://adminlte.io/themes/AdminLTE/dist/js/adminlte.min.js?v=1.0.1"></script><?php
-    }else{ ?>
-      <!-- Bootstrap 3.3.2 JS -->
-      <script type="text/javascript" src="<?php echo $_SESSION['url']; ?>plugins/bootstrap/js/bootstrap.min.js"></script>
-      <!-- AdminLTE App -->
-      <script type="text/javascript" src="<?php echo $_SESSION['url']; ?>assets/js/app.min.js"></script><?php
-    } ?>
+    <?php endif;?>
+    <!-- AdminLTE App -->
+    <script type="text/javascript" src="<?php echo $_SESSION['url']; ?>assets/js/app.min.js"></script>
     <script type="text/javascript" src="<?php echo $_SESSION['url']; ?>assets/js/bootstrap-select.min.js"></script>
     <!-- JS PDF -->
     <script type="text/javascript" src="<?php echo $_SESSION['url']; ?>plugins/jspdf/jspdf.min.js"></script>
     <script type="text/javascript" src="<?php echo $_SESSION['url']; ?>plugins/jspdf/jspdf.plugin.autotable.js"></script>
+    <!-- Bootstrap 3.3.2 JS -->
+    <script type="text/javascript" src="<?php echo $_SESSION['url']; ?>plugins/bootstrap/js/bootstrap.min.js"></script>
     <!-- bootstrap datepicker -->
     <script type="text/javascript" src="<?php echo $_SESSION['url']; ?>plugins/datetimepicker/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
     <script type="text/javascript" src="<?php echo $_SESSION['url']; ?>plugins/datetimepicker/js/locales/bootstrap-datetimepicker.es.js" charset="UTF-8"></script>
@@ -1160,6 +1129,8 @@ $_SESSION["url"] = "https://latin.near-solution.com/"; // "http://localhost/bita
     <script type="text/javascript" src="<?php echo $_SESSION['url']; ?>plugins/select2/js/select2.full.min.js"></script>
     <!-- Sweet Alert -->
     <script type="text/javascript" src="<?php echo $_SESSION['url']; ?>plugins/sweetalert/sweetalert.min.js"></script>
+    <script src="<?php echo $_SESSION['url']; ?>plugins/jvectormap/jquery-jvectormap-1.2.2.min.js?v=20260209"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <?php
     if(isset($_GET["view"])){
 			if($_GET["view"] == "calendar" || $_GET["view"] == "agendas" || $_GET["view"] == "calendarie"){
@@ -1382,16 +1353,55 @@ $_SESSION["url"] = "https://latin.near-solution.com/"; // "http://localhost/bita
             calendarWeeks: true,
             autoclose: true
           });
+
+          $(document).ready(function() {
+              var toggled = false;              
+              var visitorsData = {
+                'CO': 10,
+                'BR': 5,
+                'AR': 8,
+                'MX': 3,
+                'US': 12
+              };
+              
+              // World map by jvectormap
+              $('#world-map').vectorMap({
+                map              : 'world_mill_en',
+                backgroundColor  : 'transparent',
+                regionStyle      : {
+                  initial: {
+                    fill            : '#e4e4e4',
+                    'fill-opacity'  : 1,
+                    stroke          : 'none',
+                    'stroke-width'  : 0,
+                    'stroke-opacity': 1
+                  }
+                },
+                series           : {
+                  regions: [
+                    {
+                      values           : visitorsData,
+                      scale            : ['#92c1dc', '#ebf4f9'],
+                      normalizeFunction: 'polynomial'
+                    }
+                  ]
+                },
+                onRegionLabelShow: function (e, el, code) {
+                  if (typeof visitorsData[code] != 'undefined')
+                    el.html(el.html() + ': ' + visitorsData[code] + ' visitas');
+                }
+              });
+          });
       });
     </script>
     <?php
-      if(isset($_GET["view"]) && ($_GET["view"]=="home" || $_GET["view"]=="inventary" || $_GET["view"]=="cuentas" || $_GET["view"]=="bitacora" ||
-	        $_GET["view"]=="autorizan" || $_GET["view"]=="autorizo" || $_GET["view"]=="verificados" ||  $_GET["view"]=="carnets" ||
-          $_GET["view"]=="fechas" || $_GET["view"]=="parte" || $_GET["view"]=="prendas" || $_GET["view"]=="descuento" || $_GET["view"]=="visitas" || 
-		      $_GET["view"]=="opehor.clientes" || $_GET["view"]=="departamento" || $_GET["view"]=="categorias" || $_GET["view"]=="productos" || 
-		      $_GET["view"]=="agentes" || $_GET["view"]=="conducta" || $_GET["view"]=="catdes.lista" || $_GET["view"]=="rrphor.activos" || 
+      if(isset($_GET["view"]) && ($_GET["view"]=="home" || $_GET["view"]=="inventary" || $_GET["view"]=="cuentas" || $_GET["view"]=="bitacora" || $_GET["view"]=="carnets" ||
+	        $_GET["view"]=="autorizan" || $_GET["view"]=="autorizo" || $_GET["view"]=="verificados" || $_GET["view"]=="cotizacion" || $_GET["view"]=="cotizar" ||
+          $_GET["view"]=="fechas" || $_GET["view"]=="parte" || $_GET["view"]=="prendas" || $_GET["view"]=="descuento" || $_GET["view"]=="visitas" || $_GET["view"]=="partes" || 
+		      $_GET["view"]=="opehor.clientes" || $_GET["view"]=="departamento" || $_GET["view"]=="categorias" || $_GET["view"]=="productos" || $_GET["view"]=="informes" || 
+		      $_GET["view"]=="agentes" || $_GET["view"]=="conducta" || $_GET["view"]=="catdes.lista" || $_GET["view"]=="rrphor.activos" || $_GET["view"]=="puestos" || 
           $_GET["view"]=="faltas" || $_GET["view"]=="rondas" || $_GET["view"]=="vehiculos" || $_GET["view"]=="novedades" || $_GET["view"]=="clientes" || 
-          $_GET["view"]=="telefonos" || $_GET["view"]=="ventas" || $_GET["view"]=="partes" || $_GET["view"]=="informes" || $_GET["view"]=="puestos" || 
+          $_GET["view"]=="telefonos" || $_GET["view"]=="ventas" ||
 		      $_GET["view"]=="catres.lista" || $_GET["view"]=="catpro.lista" || $_GET["view"]=="rrhpre.lista" || $_GET["view"]=="opecor.lista" ||
           $_GET["view"]=="catrol.lista" || $_GET["view"]=="sisnot.lista" || $_GET["view"]=="catres.lista" || 
           $_GET["view"]=="rrhpre.lista" || $_GET["view"]=="rrhliq.lista" || $_GET["view"]=="rrhmac.lista" || $_GET["view"]=="sisusu.lista" || 
@@ -1461,7 +1471,7 @@ $_SESSION["url"] = "https://latin.near-solution.com/"; // "http://localhost/bita
                 "autoWidth": false,
                 "language": {
                       "lengthMenu": "Ver _MENU_ registros",
-                      "zeroRecords": "Actualmente no hay ningun registro asignado en esta consulta",
+                      "zeroRecords": "Lo sentimos, no hay ninguna coincidencia...!!!",
                       "info": "_PAGE_ de _PAGES_",
                       "infoEmpty": "No hay ningun registro disponible...!!!",
                       "infoFiltered": "(filtrado de un total de _MAX_ registros)",
@@ -1545,7 +1555,7 @@ $_SESSION["url"] = "https://latin.near-solution.com/"; // "http://localhost/bita
                 "autoWidth": false,
                 "language": {
                       "lengthMenu": "Ver _MENU_ registros",
-                      "zeroRecords": "Actualmente no hay ningun registro asignado en esta consulta",
+                      "zeroRecords": "Lo sentimos, no hay ninguna coincidencia...!!!",
                       "info": "_PAGE_ de _PAGES_",
                       "infoEmpty": "No hay ningun registro disponible...!!!",
                       "infoFiltered": "(filtrado de un total de _MAX_ registros)",
@@ -1576,7 +1586,7 @@ $_SESSION["url"] = "https://latin.near-solution.com/"; // "http://localhost/bita
                 "autoWidth": false,
                 "language": {
                       "lengthMenu": "Ver _MENU_ registros",
-                      "zeroRecords": "Actualmente no hay ningun registro asignado en esta consulta",
+                      "zeroRecords": "Lo sentimos, no hay ninguna coincidencia...!!!",
                       "info": "_PAGE_ de _PAGES_",
                       "infoEmpty": "No hay ningun registro disponible...!!!",
                       "infoFiltered": "(filtrado de un total de _MAX_ registros)",
@@ -1607,7 +1617,7 @@ $_SESSION["url"] = "https://latin.near-solution.com/"; // "http://localhost/bita
                 "autoWidth": false,
                 "language": {
                       "lengthMenu": "Ver _MENU_ registros",
-                      "zeroRecords": "Actualmente no hay ningun registro asignado en esta consulta",
+                      "zeroRecords": "Lo sentimos, no hay ninguna coincidencia...!!!",
                       "info": "_PAGE_ de _PAGES_",
                       "infoEmpty": "No hay ningun registro disponible...!!!",
                       "infoFiltered": "(filtrado de un total de _MAX_ registros)",

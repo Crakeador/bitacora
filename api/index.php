@@ -649,4 +649,73 @@ Flight::route('GET /person/@id', function ($id) {
     ]);
 });
 
+Flight::route('GET /tareas', function () {
+    include "../core/app/model/TareaData.php";
+    session_start();
+    $tareas = TareaData::getAllByUserId($_SESSION["user_id"]);
+    $array = [];
+    foreach($tareas as $tarea){
+        $array[] = [
+            "id" => $tarea->id,
+            "title" => $tarea->title,
+            "description" => $tarea->description,
+            "due_date" => $tarea->due_date,
+        ];
+    }
+    Flight::json($array);
+});
+
+Flight::route('GET /tareas/@id', function ($id) {
+    include "../core/app/model/TareaData.php";
+    $tarea = TareaData::getById($id);
+    $array = [
+        "id" => $tarea->id,
+        "title" => $tarea->title,
+        "description" => $tarea->description,
+        "due_date" => $tarea->due_date,
+    ];
+    Flight::json($array);
+});
+
+Flight::route('POST /tareas', function () {
+    include "../core/app/model/TareaData.php";
+    session_start();
+    $tarea = new TareaData();
+    $tarea->title = Flight::request()->data->title;
+    $tarea->description = Flight::request()->data->description;
+    $tarea->due_date = Flight::request()->data->due_date;
+    $tarea->user_id = $_SESSION["user_id"];
+    $tarea->add();
+    $array = [
+        "message" => "Tarea creada con exito",
+        "status" => "success"
+    ];
+    Flight::json($array);
+});
+
+Flight::route('PUT /tareas/@id', function ($id) {
+    include "../core/app/model/TareaData.php";
+    $tarea = TareaData::getById($id);
+    $tarea->title = Flight::request()->data->title;
+    $tarea->description = Flight::request()->data->description;
+    $tarea->due_date = Flight::request()->data->due_date;
+    $tarea->update();
+    $array = [
+        "message" => "Tarea actualizada con exito",
+        "status" => "success"
+    ];
+    Flight::json($array);
+});
+
+Flight::route('DELETE /tareas/@id', function ($id) {
+    include "../core/app/model/TareaData.php";
+    $tarea = TareaData::getById($id);
+    $tarea->del();
+    $array = [
+        "message" => "Tarea eliminada con exito",
+        "status" => "success"
+    ];
+    Flight::json($array);
+});
+
 Flight::start();

@@ -1,5 +1,5 @@
 <?php
-
+//Modelo de las tareas asignadas a los comerciales
 class TimelineData {
 	public static $tablename = "timeline";
 
@@ -24,6 +24,12 @@ class TimelineData {
 	public function add_task(){
 		$sql = "insert into timeline (idcompany, idperson, quien_asigna, prioridad, status, asunto, title, type, date_event, date_pass, porcentaje, created_at) ";
 		$sql .= "value (".$_SESSION['id_company'].", \"$this->idperson\", \"$this->quien_asigna\", \"$this->prioridad\", 1, \"$this->asunto\", \"$this->title\", \"$this->type\", \"$this->date_event\", \"$this->date_pass\", \"$this->porcentaje\", $this->created_at)"; 
+		Executor::doit($sql);
+	}
+
+	public function add_acci(){
+		$sql = "insert into timeline (idcompany, idperson, idclient, quien_asigna, prioridad, status, asunto, title, type, date_event, porcentaje, created_at) ";
+		$sql .= "value (".$_SESSION['id_company'].", \"$this->idperson\", \"$this->idclient\", \"$this->quien_asigna\", \"$this->prioridad\", 1, \"$this->asunto\", \"$this->title\", \"$this->type\", \"$this->date_event\", \"$this->porcentaje\", $this->created_at)"; 
 		Executor::doit($sql);
 	}
 
@@ -93,7 +99,14 @@ class TimelineData {
 		return Model::many($query[0],new TimelineData());
 	}
 	
-	public static function getTime($id, $ano){	    
+	public static function getClient($id, $ano){
+		$sql = "select * from ".self::$tablename." where idcompany = ".$_SESSION['id_company']." AND type=3 AND idclient=$id AND YEAR(date_event)='$ano' order by date_event DESC"; 
+		$query = Executor::doit($sql);
+
+		return Model::many($query[0],new TimelineData());
+	}
+	
+	public static function getTime($id, $ano){
 		$sql = "select * from ".self::$tablename." where idcompany = ".$_SESSION['id_company']." AND idperson=$id AND YEAR(date_event)='$ano' order by date_event DESC"; 
 		$query = Executor::doit($sql);
 
@@ -142,6 +155,13 @@ class TimelineData {
 		}
 
 		return $array;
+	}
+
+	public static function getByTipo($id, $tipo){
+		$sql = "select count(*) as total from ".self::$tablename." where idclient=$id AND prioridad=$tipo";
+		$query = Executor::doit($sql);
+
+		return Model::one($query[0], new TimelineData());
 	}
 
 	public static function getLike($q){

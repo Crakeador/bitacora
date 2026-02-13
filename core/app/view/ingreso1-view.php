@@ -1,6 +1,10 @@
 <?php
 //Ingreso de Guardias en la Bitacora Electronica
-if(!isset($_SESSION['ingreso'])) Core::redir('home');
+if(!isset($_SESSION['ingreso'])) 
+	Core::redir('home');
+else
+	if(isset($_SESSION['ingreso']) && $_SESSION['ingreso'] == 1) 
+		Core::redir('novedad');
 
 $hoy = date("d-m-Y H:i:s"); $fecha = date("Y-m-d H:i:s"); $errores = ''; $_SESSION['guardar'] = 0; $observacion = ''; $estilo = ''; $mensaje = '';
 
@@ -12,7 +16,8 @@ if(isset($_POST['id_person'])){
     $user->idpuesto = (int) $_POST["id_localidad"];
     $user->idperson = (int) $_POST["id_person"];
     $user->fecha = $_POST["fecha"];
-    $user->turno = $_SESSION['turno'];
+    $user->turno = $_POST["turno"];	
+    $user->punto = 0;
     $user->proceso = (($_SESSION['ingreso'] == 0) ? 1: 3);
     $user->observacion = $_POST["observacion"];	
     $user->foto1 = $_POST["foto"];
@@ -28,48 +33,54 @@ if(isset($_POST['id_person'])){
     $user->ip = $_SESSION["ip"];
 
 	$observacion = $_POST["observacion"];
-	if($_POST["observacion"]==""){
-		$errores = 'debe de ingresar una observacion del puesto';
-	}else{
-		if($_POST["foto"]==""){
-			$errores = 'debe de tomarse una foto para verificar su identidad';
-		}else{
-			if($_POST["verifica"]==0) $prod = $user->addIMG();
+    if(!isset($_POST["turno"])){
+        $errores = 'debe de seleccionar el turno';
+    }else{
+        if($_POST["observacion"]==""){
+            $errores = 'debe de ingresar una observacion del puesto';
+        }else{
+            if($_POST["foto"]==""){
+                $errores = 'debe de tomarse una foto para verificar su identidad';
+            }else{
+				if($_POST["verifica"]==0) $prod = $user->addIMG();
 
-			if(isset($_POST["short"])){
-				$_SESSION["consigna"]=$_POST["consigna"];
+				if(isset($_POST["short"])){
+					$_SESSION["consigna"]=$_POST["consigna"];
 
-				$config = new ConfigurationData();
-				$config->id = 9;
-				$config->val = $_POST["consigna"];
+					$config = new ConfigurationData();
+					$config->id = 9;
+					$config->val = $_POST["consigna"];
 
-				$prod = $config->update();
-			}
-			$_SESSION['puesto'] = (int) $_POST["id_localidad"];
-			
-			if($_SESSION['ingreso']==0){
-				$_SESSION['ingreso']=1;
-				// Fotos
-				echo '<script>
-					localStorage.setItem("usuario", "'.$_POST["id_person"].'");
-					localStorage.setItem("puesto", "'.$_POST["id_localidad"].'");
-					localStorage.setItem("ingreso", "'.$_SESSION['ingreso'].'");
-					localStorage.setItem("turno", "'.$_SESSION["turno"].'");
+					$prod = $config->update();
+				}
+				$_SESSION['ingreso'] = 0;
+				$_SESSION['turno'] = $_POST["turno"];
+				$_SESSION['puesto'] = (int) $_POST["id_localidad"];
+				
+				if($_SESSION['ingreso']==0){
+					$_SESSION['ingreso']=1;
+					// Fotos
+					echo '<script>
+						localStorage.setItem("usuario", "'.$_POST["id_person"].'");
+						localStorage.setItem("puesto", "'.$_POST["id_localidad"].'");
+						localStorage.setItem("ingreso", "'.$_SESSION['ingreso'].'");
+						localStorage.setItem("turno", "'.$_POST["turno"].'");
+						
+						window.location = "index.php?view=novedad";
+					 </script>';
+				}else{
+					$_SESSION['ingreso']=2; //window.location = "index.php?view=novedad";  
 
-					
+					echo '<script>
+						localStorage.removeItem("usuario");
+						localStorage.clear();
+						
+						window.location = "index.php?view=logout";
 					</script>';
-			}else{
-				$_SESSION['ingreso']=2; //window.location = "index.php?view=novedad";  
-
-				echo '<script>
-					localStorage.removeItem("usuario");
-					localStorage.clear();
-					
-					window.location = "'.$_SESSION["url"].'logout";
-				</script>';
-			}
-		}
-	}
+				}
+            }
+        }
+    }
 
     if($errores == ''){
       // Sin errores
@@ -88,7 +99,7 @@ if ($hora<6) {
 		$_SESSION['turno'] = 1;
         if($total > 0){
             $estilo = 'style="margin-bottom: 0!important;"';
-            $mensaje = "<span class=\"text-danger\">*</span>Buenos días, tiene un atrazo de: ".$total." horas</br>";
+            $mensaje = "<span class=\"text-danger\">*</span>Buenos días, tiene un atrazo de: ".$total." hora</br>";
         }else{
             $estilo = 'style="display: none;"';
         }
@@ -101,7 +112,7 @@ if ($hora<6) {
 		$_SESSION['turno'] = 2;
         if($total > 0){
             $estilo = 'style="margin-bottom: 0!important;"';
-            $mensaje = "<span class=\"text-danger\">*</span>Buenos tardes, tiene un atrazo de: ".$total." horas</br>";
+            $mensaje = "<span class=\"text-danger\">*</span>Buenos tardes, tiene un atrazo de: ".$total." hora</br>";
         }else{
             $estilo = 'style="display: none;"';
         }
@@ -125,8 +136,9 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
 		<?php echo $mensaje; ?>
 		<span class="text-danger">*</span><?php echo $_SESSION['consigna']; ?>
 	</div>
+	</br>
 	<!-- Registro de Bitacora -->
-	<div class="row" style="padding: 1.5rem !important;">
+	<div class="row">
 		<div class="col-md-12">
 			<div class="panel panel-default">
 				<!-- panel heading/header -->
@@ -173,7 +185,14 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
 									</div>
 								</div>
 								<div class="form-group">
-									<div class="col-md-8 col-sm-8">
+									<div class="col-xs-6">
+										<span class="text-danger">Que turno esta cubriendo?</span>
+										<div class="radiobutton">
+											<input type="radio" id="turno1" name="turno" value="1" <?php if($_SESSION['turno']==1) echo "checked"; ?>> Diurno &nbsp;&nbsp;
+											<input type="radio" id="turno2" name="turno" value="2" <?php if($_SESSION['turno']==2) echo "checked"; ?>> Nocturno
+										</div>
+									</div>
+									<div class="col-xs-6">
 										<span class="text-danger">Pasar la siguiente consigna:</span>
 										<input type="checkbox" name="short">
 									</div>
@@ -182,7 +201,6 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
 									<label for="consigna" class="col-md-4 col-sm-4 control-label">Consigna:</label>
 									<div class="col-sm-8">
 										<textarea class="form-control" size="10" type="text" id="consigna" name="consigna" placeholder="Indique su consigna" cols="40" rows="2"><?php echo $_SESSION['consigna']; ?></textarea>
-
 									</div>
 								</div>
 								</br>
@@ -199,7 +217,7 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
 								</div>
 							</form>
 						</div>
-						<div class="col-md-6">							
+						<div class="col-md-6">
 							<div>
 								<select name="listaDeDispositivos" id="listaDeDispositivos"></select>
 								<button id="boton">Tomar foto</button>
@@ -217,7 +235,7 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
   </div>
 </section>
 <script>
-    document.title = "Near Solutions | Ingreso del Personal en PC";
+    document.title = "Near Solucions | Ingreso del Personal en PC";
 
     if(localStorage.getItem("usuario") != null){
         var usuario = localStorage.getItem("usuario");
@@ -227,7 +245,7 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
         var verifica = document.getElementById("verifica");
 
         verifica.value = 1;
-        window.location="index.php?view=novedad&usuario="+usuario+"&puesto="+puesto+"&ingreso="+ingreso+"&turno="+turno;
+        //window.location="index.php?view=novedad&usuario="+usuario+"&puesto="+puesto+"&ingreso="+ingreso+"&turno="+turno;
     }else{
         alert("No hay ningun turno abierto...!!!");
     }
@@ -240,7 +258,6 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
         });
 	});
 </script>
-
 <script>
 	/*
 		Tomar una fotografía y guardarla en un archivo v3
@@ -255,11 +272,11 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
 
 	// Declaramos elementos del DOM
 	const $video = document.querySelector("#video"),
-		  $canvas = document.querySelector("#canvas"),
-		  $estado = document.querySelector("#estado"),		
-		  $foto = document.querySelector("#foto"),
-		  $boton = document.querySelector("#boton"),
-		  $listaDeDispositivos = document.querySelector("#listaDeDispositivos");
+		$canvas = document.querySelector("#canvas"),
+		$estado = document.querySelector("#estado"),		
+		$foto = document.querySelector("#foto"),
+		$boton = document.querySelector("#boton"),
+		$listaDeDispositivos = document.querySelector("#listaDeDispositivos");
 
 	const limpiarSelect = () => {
 		for (let x = $listaDeDispositivos.options.length - 1; x >= 0; x--)
@@ -282,7 +299,7 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
 						dispositivosDeVideo.push(dispositivo);
 					}
 				});
-
+ 
 				// Vemos si encontramos algún dispositivo, y en caso de que si, entonces llamamos a la función
 				if (dispositivosDeVideo.length > 0) {
 					// Llenar el select
@@ -360,9 +377,22 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
 					$video.srcObject = stream;
 					$video.play();
 
+					/*Escuchar el click del botón para tomar la foto
+					$boton.addEventListener("click", function() {	
+						context.drawImage(video, 0, 0, canvas.width, canvas.height);
+						const imagen = canvas.toDataURL('image/jpeg');
+						const descripcion = document.getElementById('descripcion').value;
+
+						fetch('./ajax/subir.php', {
+							method: 'POST',
+							body: JSON.stringify({ imagen, descripcion }),
+							headers: { 'Content-Type': 'application/json' }
+						})
+						.then(res => res.text())
+						.then(msg => alert(msg));
+					}); */
 					//Escuchar el click del botón para tomar la foto
-					$boton.addEventListener("click", function() {
-						console.log("Botón presionado. Iniciando captura...");
+					$boton.addEventListener("click", function() {				
 						//Pausar reproducción
 						$video.pause();
 
@@ -371,61 +401,37 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
 						$canvas.width = $video.videoWidth;
 						$canvas.height = $video.videoHeight;
 						contexto.drawImage($video, 0, 0, $canvas.width, $canvas.height);
-
-						let foto = $canvas.toDataURL(); //Esta es la foto, en base 64
-						console.log("Foto capturada. Longitud de datos: " + foto.length);
+					
+						const foto = canvas.toDataURL('image/jpeg');
+						const descripcion = document.getElementById('observacion').value;
+						console.log(descripcion);
+						//let foto = $canvas.toDataURL(); //Esta es la foto, en base 64 guardar_foto.php
 						$estado.innerHTML = "Enviando foto. Por favor, espera...";
-						
-						console.log("Enviando petición a ajax/guardar_foto.php...");
-						fetch("ajax/guardar_foto.php", {
-							method: "POST",
-								body: "foto=" + encodeURIComponent(foto),
-							headers: {
-								"Content-type": "application/x-www-form-urlencoded",
-							}
-						})
-						.then(resultado => {
-								console.log("Respuesta del servidor recibida. Status:", resultado.status);
-							// A los datos los decodificamos como texto plano
-							return resultado.text()
-						})
-							.then(respuestaRaw => {
-								console.log("Respuesta cruda del servidor:", respuestaRaw);
-								try {
-									const respuesta = JSON.parse(respuestaRaw);
-									
-									// Mostrar variables de depuración que llegan al servidor
-									if (respuesta.debug_server) {
-										console.group("--- DATOS RECIBIDOS EN EL SERVIDOR ---");
-										console.log("$_POST:", respuesta.debug_server.POST);
-										console.log("$_FILES:", respuesta.debug_server.FILES);
-										console.log("Content-Type:", respuesta.debug_server.CONTENT_TYPE);
-										console.log("php://input (Raw):", respuesta.debug_server.RAW_INPUT_PREVIEW);
-										console.groupEnd();
-									}
-
-									if (respuesta.success) {
-										let nombreDeLaFoto = respuesta.filename;
-										console.log("Nombre procesado:", nombreDeLaFoto);
-										$estado.innerHTML = `Foto guardada con éxito. Puedes verla <a target='_blank' href='./storage/captura/${nombreDeLaFoto}'> aquí</a>`;
-										$foto.value = nombreDeLaFoto;
-									} else {
-										console.error("Error reportado por servidor:", respuesta.error);
-										$estado.innerHTML = "Error al guardar: " + respuesta.error;
-									}
-								} catch (e) {
-									console.error("La respuesta no es un JSON válido:", e);
-									$estado.innerHTML = "Error inesperado en la respuesta del servidor.";
-								}
-						})
-							.catch(error => {
-								console.error("Error en la petición fetch:", error);
-								$estado.innerHTML = "Error al enviar la foto. Ver consola.";
-							});
+						fetch("ajax/subir.php", {
+								method: "POST",
+								body: JSON.stringify({ foto, descripcion}),
+								headers: { 'Content-Type': 'application/json' } /*
+								body: encodeURIComponent(foto),
+								headers: {
+									"Content-type": "application/x-www-form-urlencoded",
+								} */
+							})
+							.then(resultado => {
+								res => res.text()
+								msg => alert(msg)
+								// A los datos los decodificamos como texto plano
+								return resultado.text()
+							})
+							.then(nombreDeLaFoto => {
+								// nombreDeLaFoto trae el nombre de la imagen que le dio PHP
+								console.log(nombreDeLaFoto);
+								$estado.innerHTML = `Foto guardada con éxito. Puedes verla <a target='_blank' href='./storage/ingreso/${nombreDeLaFoto}'> aquí</a>`;
+								$foto.value = nombreDeLaFoto;
+							})
 
 						//Reanudar reproducción
 						$video.play();
-					});
+					}); 
 				}, (error) => {
 					console.log("Permiso denegado o error: ", error);
 					$estado.innerHTML = "No se puede acceder a la cámara, o no diste permiso.";

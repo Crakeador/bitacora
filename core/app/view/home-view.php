@@ -80,14 +80,14 @@ if($_SESSION['idrol'] == 10)
 	else
 		print "<script>window.location='index.php?view=rrging.persons';</script>";
  
-if($_SESSION['idrol'] ==11) {
+if($_SESSION['idrol'] == 11) {
 	if($_SESSION['aspirante']>0) {
 		print "<script>window.location='index.php?view=aspirante&id=".$_SESSION['aspirante']."';</script>"; 
 	}else{
 		Core::redir('aspirante');
 	}
 }
-if($_SESSION["idrol"] == "12")
+if($_SESSION["idrol"] == 12)
     $filtro = "AND A.ano = '".date("Y")."' AND A.mes = '".date("m")."' AND A.dia = '".date("d")."'";
 else
     $filtro = "";
@@ -113,11 +113,6 @@ $ini=$ano."-".$mes."-01";
 $total=date("t", strtotime($ini));
 $fin=$ano."-".$mes."-".$total;
 $fechas = PersonData::getByDate($mes);
-
-if($_SESSION['is_admin']=='1')
-	$events = TimelineData::getAll(10); // Listado de administradores
-else
-	$events = TimelineData::getTime($_SESSION['user_id'], $ano); //getById
 
 $fechaIni = new DateTime($_SESSION["cambio"]);
 // Fecha de finalización (puede ser la fecha actual)
@@ -183,7 +178,7 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 			echo '<div class="col-lg-3 col-xs-6">';
 				echo '<div class="small-box bg-red">';
 				echo '<div class="inner">';
-					echo '<h3> $ '.number_format($monto, 2, ',', '.').'</h3>';
+					echo '<h3> $ '.number_format(12000, 2, ',', '.').'</h3>';
 					echo '<p>Total de Nomina</p>';
 				echo '</div>';
 				echo '<div class="icon">';
@@ -305,7 +300,7 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 								echo '<div class="icon">';
 									echo '<i class="fa fa-shopping-cart"></i>';
 								echo '</div>';
-								echo '<a href="index.php?view=products" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
+								echo '<a href="ventas" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
 							echo '</div>';
 						echo '</div>';
 						echo '<div class="col-lg-3 col-xs-6">';
@@ -329,7 +324,7 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 								echo '<div class="icon">';
 									echo '<i class="fa fa-user-friends"></i>';
 								echo '</div>';
-									echo '<a href="index.php?view=puestos" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
+									echo '<a href="ventas" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
 							echo '</div>';
 						echo '</div>';
 						echo '<div class="col-lg-3 col-xs-6">';
@@ -341,7 +336,7 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 								echo '<div class="icon">';
 									echo '<i class="fa fa-dolly"></i>';
 								echo '</div>';
-								echo '<a href="index.php?view=departamento" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
+								echo '<a href="ventas" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
 							echo '</div>';
 						echo '</div>';
 						break;
@@ -445,7 +440,7 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 							echo '</div>';
 						echo '</div>';
 					    break;
-					case 8: // Area Comercial
+					case 8: // Financiero
 						echo '<div class="col-lg-3 col-xs-6">';
 							echo '<div class="small-box bg-aqua">';
 								echo '<div class="inner">';
@@ -707,86 +702,23 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 	<?php } */
 	
 	// Centralistas
-    if($_SESSION['idrol'] == '1299'){ ?>
+    if($_SESSION['idrol'] == '1'){ ?>
         <div class="row">
             <section class="col-lg-7 connectedSortable ui-sortable">
-                <div class="box box-success">
-                    <div class="box-header ui-sortable-handle" style="cursor: move;">
-                    <i class="fa fa-comments-o"></i>
-                    <h3 class="box-title">Chat</h3>
-                    <div class="box-tools pull-right" data-toggle="tooltip" title="" data-original-title="Status">
-                        <div class="btn-group" data-toggle="btn-toggle">
-                            <button type="button" class="btn btn-default btn-sm active"><i class="fa fa-square text-green"></i></button>
-                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-square text-red"></i></button>
-                        </div>
-                    </div>
-                    </div>
-                    <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 346px;">
-                        <div class="box-body chat" id="chat-box" style="overflow: hidden; width: auto; height: 346px;">
-                        
-                        <div class="item">
-                        <img src="dist/img/user4-128x128.jpg" alt="user image" class="online">
-                        <p class="message">
-                        <a href="#" class="name">
-                        <small class="text-muted pull-right"><i class="fa fa-clock"></i> 2:15</small>
-                        Mike Doe
-                        </a>
-                        I would like to meet you to discuss the latest news about
-                        the arrival of the new theme. They say it is going to be one the
-                        best themes on the market
-                        </p>
-                        <div class="attachment">
-                        <h4>Attachments:</h4>
-                        <p class="filename">
-                        Theme-thumbnail-image.jpg
-                        </p>
-                        <div class="pull-right">
-                        <button type="button" class="btn btn-primary btn-sm btn-flat">Open</button>
-                        </div>
-                        </div>
-                        
-                        </div>
-                        
-                        
-                        <div class="item">
-                        <img src="dist/img/user3-128x128.jpg" alt="user image" class="offline">
-                        <p class="message">
-                        <a href="#" class="name">
-                        <small class="text-muted pull-right"><i class="fa fa-clock"></i> 5:15</small>
-                        Alexander Pierce
-                        </a>
-                        I would like to meet you to discuss the latest news about
-                        the arrival of the new theme. They say it is going to be one the
-                        best themes on the market
-                        </p>
-                        </div>
-                        
-                        
-                        <div class="item">
-                        <img src="dist/img/user2-160x160.jpg" alt="user image" class="offline">
-                        <p class="message">
-                        <a href="#" class="name">
-                        <small class="text-muted pull-right"><i class="fa fa-clock"></i> 5:30</small>
-                        Susan Doe
-                        </a>
-                        I would like to meet you to discuss the latest news about
-                        the arrival of the new theme. They say it is going to be one the
-                        best themes on the market
-                        </p>
-                        </div>
-                        
-                        </div>
-                    <div class="slimScrollBar" style="background: rgb(0, 0, 0); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 184.366px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
-                    
-                    <div class="box-footer">
-                    <div class="input-group">
-                    <input class="form-control" placeholder="Type message...">
-                    <div class="input-group-btn">
-                    <button type="button" class="btn btn-success"><i class="fa fa-plus"></i></button>
-                    </div>
-                        </div>
-                    </div>
-                </div>                
+			<div class="box box-success">
+    <div class="box-header with-border">
+        <h3 class="box-title">Mapa de Visitas</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body" style="padding:0;">
+        <!-- Contenedor del mapa -->
+        <div id="map_visitas" style="width: 100%; height: 400px;"></div>
+    </div>
+</div>
             </section>
             <section class="col-lg-5 connectedSortable ui-sortable">
                 <div class="box box-solid bg-green-gradient">
@@ -1204,8 +1136,13 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 			} 
 		}
 	}
+	
+    if(isset($_SESSION['idrol'])){
+		if($_SESSION['idrol']=='1' || $_SESSION['idrol']=='2')
+			$events = TimelineData::getAll(10); // Listado de administradores
+		else
+			$events = TimelineData::getTime($_SESSION['user_id'], $ano); //getById
 
-    if(!isset($_SESSION["client_id"])){
         $valor = count($events);
         
         if(count($events) > 0){
@@ -1235,7 +1172,7 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
                 			}
             				
             				if($product->date_event == $fecha){
-            				    
+								//Error
             				}else{
             				    $fecha=$product->date_event;
                                 echo '<li class="time-label">';
@@ -1287,7 +1224,7 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
                                         if($product->type == 'image') {
                                             //Sin Acciones
                                         }else{
-                                            if($product->proroga == 0)
+                                            if($product->prorroga == 0)
                                                 echo 'Esta tarea no tiene opcion a prorroga, fecha maxima de entrega: '.$product->date_event.'.</br>';
                                             else
                                                 echo 'Esta tarea tiene opcion a prorroga, consulte con el administrador</br>';

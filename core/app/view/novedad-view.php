@@ -2,6 +2,10 @@
 //Novedades de Bitacora
 $hoy = date("d-m-Y H:i:s"); $fecha = date("Y-m-d H:i:s"); $errores = ''; $observacion = ''; $estilo = ''; $validador = 99;
 
+if(!isset($_SESSION["puesto"])){
+    print "<script>window.location='".$_SESSION["url"]."asignar';</script>";
+}
+
 $today = getdate(); $hora=$today["hours"];
 if ($hora<6) {
     //echo(" Hoy has madrugado mucho... ");
@@ -255,7 +259,7 @@ else
 		<div class="panel panel-default">
 			<!-- panel heading/header -->
 			<div class="panel-heading">
-				<h3 class="panel-title"><i class="mr5"></i>Ingreso de novedades </h3>
+				<h3 class="panel-title"><i class="mr5"></i>Parte Diario </h3>
 			</div>
 			<!--/ panel heading/header -->
 			<!-- panel body with collapse capable -->
@@ -346,7 +350,7 @@ else
 														<input type="radio" id="tipo1" name="tipo" value="1" <?php if($cargos->tipo == 'Visita') echo "checked='checked'"; ?>> Visita &nbsp;&nbsp;
 														<input type="radio" id="tipo2" name="tipo" value="2" <?php if($cargos->tipo == 'Taxi') echo "checked='checked'"; ?>> Taxi  &nbsp;&nbsp;
 														<input type="radio" id="tipo3" name="tipo" value="3" <?php if($cargos->tipo == 'Entrega') echo "checked='checked'"; ?>> Entrega &nbsp;&nbsp;
-														<input type="radio" id="tipo4" name="tipo" value="4" <?php if($cargos->tipo == 'Otros') echo "checked='checked'"; ?> checked='checked'> Otros
+														<input type="radio" id="tipo4" name="tipo" value="4" <?php if($cargos->tipo == 'Otros') echo "checked='checked'"; ?> checked='checked'> Ingreso Peatonal
 													</div>
 												</div>
 											</div>
@@ -367,7 +371,7 @@ else
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-sm-4 control-label"> Ingrese las fotos:</label>
+												<label for="foto1" class="col-sm-4 control-label"> Ingrese las fotos:</label>
 												<div class="col-sm-6">
 													<input type="file" name="foto1" id="foto1" class="SubirFoto" accept="image/*" capture="camera" /></br>
 													<input type="file" name="foto2" id="foto2" class="SubirFoto" accept="image/*" capture="camera" /></br>
@@ -410,7 +414,7 @@ else
 													</div>
 													<form class="form-horizontal" method="post" id="residente" name="residente" action="index.php?view=novedad" role="form">
 														<div class="form-group" style="padding: 1.5rem !important;">
-															<label class="col-sm-4 control-label"><span class="text-danger">*</span> Codigo de ingreso:</label>
+															<label for="codigo" class="col-sm-4 control-label"><span class="text-danger">*</span> Codigo de ingreso:</label>
 															<div class="input-group margin">
 																<input type="text" class="form-control" id="codigo" name="codigo" autocomplete="off" minlength="6" maxlength="6" data-inputmask='"mask": "999999"' data-mask placeholder="123456" value="" pattern="[0-9]{6}" title="Solo números, debe ser una cable valida" autofocus>
 																<span class="input-group-btn">
