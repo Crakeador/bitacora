@@ -1,45 +1,13 @@
+
 <?php
-// Verificar si el usuario ha iniciado sesión
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
+// Listado de los memos
+if(isset($_SESSION["idrol"]) && $_SESSION["idrol"] <= 2){
+	$users = TimelineData::getTipe(2);
+}else{
+	$users = TimelineData::getTime($_SESSION["user_id"], $_SESSION["ano"]);
 }
+$_SESSION["idtarea"] = 0;
 
-// Manejar las solicitudes
-$method = $_SERVER['REQUEST_METHOD'];
-
-switch ($method) {
-    case 'GET':
-        // Mostrar la lista de anuncios
-    break;
-    case 'POST': 
-        // Manejar la creación de un nuevo anuncio
-		var_dump($_POST);
-		
-		$client = ClientData::getById($_SESSION["user_id"]);
-		var_dump($client);
-		$email = $client->email;
-
-		$user = new TimelineData();
-		$user->consigna = $_POST["consigna"];
-		$user->prioridad = $_POST["prioridad"];
-		$user->quien_asigna = $client->contacto;
-		$user->status = 1;
-		$user->type = 3;
-		$user->asunto = $_POST["titulo"];
-		$user->title = $_POST["cuerpo"];
-		$user->date_event = $_POST["fecha"];
-
-		$errors = $user->add_tarea();
-			
-		if(!empty($errors)){	
-			$_SESSION['sweetalert_message'] = ['icon' => 'success', 'title' => '¡Éxito!', 'text' => 'Categoría agregada exitosamente.'];
-		}else{
-			$_SESSION['sweetalert_message'] = ['icon' => 'error', 'title' => '¡Error!', 'text' => 'Lo siento el registro falló.'];
-		}
-		$hoy = date("Y-m-d H:i:s");
-    break;
-}	
 ?>
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -52,51 +20,68 @@ switch ($method) {
 	</ol>
 </section>
 <section class="content" style="padding: 1.5rem !important;">
-    <div class="row"><?php
-		if (isset($_SESSION['sweetalert_message'])) {;
-			echo '<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js?v=1.0.1"></script>';
-			$alert = $_SESSION['sweetalert_message'];
-			echo "<script>
-					document.addEventListener('DOMContentLoaded', function() {
-					swal('".$alert['title']."', '".$alert['text']."', '".$alert['icon']."');
-					});
-				</script>";
-			unset($_SESSION['sweetalert_message']); // Limpia la sesión después de usarla
-		} ?>
+    <!-- include toastr and jQuery UI assets if not already loaded -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="plugins/jQueryUI/jquery-ui.min.js"></script>
+    <!-- subtasks modal -->
+    <div class="modal fade" id="modalSubtasks" tabindex="-1" role="dialog" aria-labelledby="modalSubtasksLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="modalSubtasksLabel">Subtareas</h4>
+          </div>
+          <div class="modal-body">
+            <table class="table table-striped" id="subtasksTable">
+              <thead><tr><th>Nombre</th><th>Fecha</th><th>Estado</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
         <div class="col-xs-12">
             <div class="box">
 	    		<div class="box-header with-border">
-					<button class="btn btn-primary" data-toggle="modal" data-target="#modalNuevo"><i class="fa fa-plus"></i> Nuevo</button>
+    				<a id="btn_productos" class="btn btn-success btn-sm" href="tarea">
+    					<span class="glyphicon glyphicon-floppy-disk"></span> Asignar tarea
+    				</a>
 	    		</div>
             	<!-- Main content -->
                 <div class="box-body mailbox-messages">
-					<form id='frmC' name='frmC' method='post'>
+					<form id='frmC' name='frmC' method='post' action=''>
 					    <input type='hidden' name='hid_frmEstado' id='hid_frmEstado' value='' />
 					    <input type='hidden' name='hid_frmIdrol' id='hid_frmIdrol' value='<?php echo $_SESSION['idrol']; ?>'/>
                         <table id="viewBitacora" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th width="8%"><div align="center">Asignado el</div></th>
-                                    <th width="8%"><div align="center">Entregado el</div></th>
-                                    <th width="20%"><div align="center">Asignado por</div></th>
-                                    <th>Entregado por</th>
+                                    <th><div align="center">Asignado el</div></th>
+                                    <th><div align="center">Entregar el</div></th>
+                                    <th width="16%"><div align="center">Asignado por</div></th>
+                                    <th width="10%"><div align="center">Asignado a</div></th>
+                                    <th width="10%">Tarea definida</th>
+                                    <th width="20%">Descripci&oacute;n</th>
+                                    <th width="20%">Avances</th>
                                     <th width="8%"><div align="center">Acci&oacute;n</div></th>
                                 </tr>
                             </thead>
                             <tbody>
   								<?php
-  								    // Listado de los memos
-                                    $users = TimelineData::getTipe(2);
-
 									// Crea tabla de memos
 									foreach($users as $tables) {
+                                    	$nombre = UserData::getById($tables->idperson)->name.' '.UserData::getById($tables->idperson)->lastname;
+                                        $email = UserData::getById($tables->idperson)->email; $dias = 0; $boton = '';
 									    //var_dump($tables);
 										echo '<tr>';
+									        echo '<td><div align="center">'.$tables->created_at.'</div></td>';
 									        echo '<td><div align="center">'.$tables->date_event.'</div></td>';
-									        if($tables->date_pass != "" && $tables->date_pass != NULL) echo '<td><div align="center">'.$tables->date_pass.'</div></td>'; else echo '<td><div align="center">EN ESPERA</div></td>';
-									        echo '<td>'.strtoupper($tables->quien_asigna).'&nbsp;&nbsp;<i class="fa fa-phone"></i>&nbsp;&nbsp;'.$tables->celular.'<br>';
-											echo '<i class="fa fa-envelope"></i>&nbsp;&nbsp;'.$tables->email.'</br>';
-									        if($tables->date_pass == "" || $tables->date_pass == NULL){
+									        echo '<td>'.$tables->quien_asigna.'<br>';
+									        if($tables->date_pass == "" || $tables->date_pass == "0000-00-00 00:00:00"){
 									            $boton = '';
 									            
 												$ini = explode(" ", $tables->date_event);
@@ -109,38 +94,54 @@ switch ($method) {
                                                 $dias = $intervalo->format('%R%a');
                                                 
                                                 if($dias > 0){
-                                                    echo " Se Solicito hace: ".abs($intervalo->format('%R%a'))." días\n";
+													echo '<span class="label label-danger">&nbsp;&nbsp; VENCIDA &nbsp;&nbsp;</span>';
+                                                    echo " Se vencio hace: ".abs($intervalo->format('%R%a'))." días\n";
                                                 }else{
+													echo '<span class="label label-warning">&nbsp;&nbsp;A TIEMPO&nbsp;&nbsp;</span>';
                                                     echo " Se vence en: ".abs($intervalo->format('%R%a'))." días\n";
                                                 }
-												echo '</br>';												
-									            if($tables->status == 4){
-    												echo '<span class="label label-success">TERMINADA</span>';
-									            }else{
-    												if($tables->prioridad == 0){
-    													echo '<span class="label label-success">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BAJA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>';
-    												}else{
-        												if($tables->prioridad == 1){
-        												    echo '<span class="label label-warning">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MEDIA&nbsp;&nbsp;&nbsp;&nbsp;</span>';
-        												}else{
-        													echo '<span class="label label-danger">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ALTA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>';
-        												}
-    												}
-									            }
 									        }else{
 									            //$boton = ' disabled';
 									            echo '<span class="label label-success">TERMINADA</span><br>';
 									            echo ' Reportada: '.$tables->date_pass;
 									        }
-									        echo '</td>';									        
-									        echo '<td>'.$tables->title.'</br><small><span class="glyphicon glyphicon-ok-sign text-success"></span>&nbsp;Elaborado el:&nbsp;'.$tables->created_at.'</small></td>';
+									        echo '</td>';
+									        echo '<td>'.$nombre.'<br>'.$email.'</td>';
+									        echo '<td>'.$tables->asunto.'</br>';
+											echo '<small>';
+									            if($tables->status == 4){
+    												echo '<span class="glyphicon glyphicon-ok-sign text-success"></span>&nbsp;&nbsp;<span class="label label-success">TERMINADA</span>';
+									            }else{
+    												if($tables->prioridad == 0){
+    													echo '<span class="glyphicon glyphicon-remove-sign text-danger"></span>&nbsp;&nbsp;<span>PRIORIDAD BAJA</span>';
+    												}else{
+        												if($tables->prioridad == 1){
+        												    echo '<span class="glyphicon glyphicon-minus-sign text-warning"></span>&nbsp;&nbsp;<span>PRIORIDAD MEDIA</span>';
+        												}else{
+        													echo '<span class="glyphicon glyphicon-remove-sign text-danger"></span>&nbsp;&nbsp;<span>PRIORIDAD ALTA</span>';
+        												}
+    												}
+									            }
+											echo '</small></td>';
+											echo '<td>'.$tables->title.'</td>';
+											if($tables->body != ""){
+											    echo '<td>'.$tables->body.'</td>';
+											}else{
+											    echo '<td>No hay avances registrados en la tarea&nbsp;</td>';
+											}
 											echo '<td>';
 									 		  echo '<div align="center">';
-												if($dias > 0)
-													echo '<a class="btn btn-success btn-sm'.$boton.'" href="index.php?view=labor&id='.$tables->id.'"><i class="fa fa-edit"></i></a>';
-												else
-													echo '<a class="btn btn-success btn-sm'.$boton.'" href="index.php?view=tarea&id='.$tables->id.'"><i class="fa fa-edit"></i></a>';
-											    echo '<button type="button" class="btn btn-warning btn-sm'.$boton.'" onClick="btn_EnviarOnClick(\''.$tables->id.'\');"><i class="fa fa-eyesearch"></i></button>';
+		                                        if($_SESSION["usuario"] == $tables->quien_asigna || $_SESSION["idrol"] == 2 || $_SESSION["idrol"] == 1){
+													if($dias > 0)
+														echo '<a class="btn btn-success btn-sm'.$boton.'" href="labor/'.$tables->id.'"><i class="fa fa-edit"></i></a>';
+													else
+														echo '<a class="btn btn-success btn-sm'.$boton.'" href="tarea/'.$tables->id.'"><i class="fa fa-edit"></i></a>';
+												}else{
+													echo '<button type="button" class="btn btn-success btn-sm'.$boton.'" onClick="btn_EnviarPermiso(\''.$tables->id.'\');"><i class="fa fa-edit"></i></button>';
+												}
+		                                        // Botón para ver subtareas (modal)
+		                                        echo '<button type="button" class="btn btn-info btn-sm'.$boton.'" onClick="openSubtasksModal(\''.$tables->id.'\');"><i class="fa fa-eye"></i></button>';
+		    			    					echo '<button type="button" class="btn btn-danger btn-sm'.$boton.'" onClick="btn_EnviarOnClick(\''.$tables->id.'\');"><i class="fa fa-trash-o"></i></button>';
 											  echo '</div>';
 											echo '</td>';
 										echo '</tr>';
@@ -152,64 +153,74 @@ switch ($method) {
                 </div>
             </div>
         </div>
-		<!-- Modal Nuevo -->
-		<div class="modal fade" id="modalNuevo">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<form method="post" action="./tareas" enctype="multipart/form-data">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-							<h4 class="modal-title">Ingreso de tareas</h4>
-						</div>
-						<div class="modal-body">
-							<div class="form-group">
-								<label for="consigna">Consigna:</label>
-								<select id="consigna" name="consigna" class="form-control">
-									<option value="1" selected="selected"> Fija </option>
-									<option value="2"> Eventual </option>
-								</select>
-							</div>
-							<div class="form-group">
-								<label for="titulo">Título</label>
-								<input type="text" id="titulo" name="titulo" class="form-control" required>
-							</div>
-							<div class="form-group">
-								<label for="prioridad">Prioridad:</label>
-								<select id="prioridad" name="prioridad" class="form-control">
-									<option value="0" selected="selected"> Baja </option>
-									<option value="1"> Media </option>
-									<option value="2"> Alta </option>
-								</select>
-							</div>
-							<div class="form-group">
-								<label for="cuerpo">Contenido</label>
-								<textarea id="cuerpo" name="cuerpo" class="form-control" rows="5" required></textarea>
-							</div>
-							<div class="form-group">
-								<label for="id_fecha"><span class="text-danger">*</span> Fecha Maxima:</label>
-								<div class="input-group date" id="datetimepicker1">
-									<input type="text" class="form-control" id="id_fecha" name="fecha" required/>
-									<span class="input-group-addon">
-										<span class="glyphicon glyphicon-remove"></span>
-									</span>
-									<span class="input-group-addon">
-										<span class="glyphicon glyphicon-calendar"></span>
-									</span>
-								</div>
-							</div>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-							<button type="submit" class="btn btn-primary">Guardar</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
     </div>
 </section>
 <!-- Page specific script -->
-<script type='text/javascript'><!--	
+<script type='text/javascript'><!--
+	var element = document.getElementById("sidai");
+
+	element.classList.add("sidebar-collapse");
+	document.title = "Near Solution | Listado de las tareas";
+
+	function openSubtasksModal(id) {
+        var id = id;
+
+		$.post('ajax/getSubtasks.php',{id:id},function(resp){
+			if(resp.success){
+				resp.data.forEach(function(r){
+					$('#subtasksTable tbody').append('<tr><td>'+r.name+'</td><td>'+r.date+'</td><td>'+r.status+'</td></tr>');
+				});
+				$('#modalSubtasks').modal('show');
+			} else {
+				toastr.error('No se pudieron cargar subtareas');
+			}
+		},'json').fail(function(e){
+			toastr.error('Error cargando subtareas');
+			console.error(e);
+		});
+	}
+
+	$(function(){
+        // manejar clic en ojo para ver subtareas
+        $(document).on('click', '.view-subtasks', function(e){
+            e.stopPropagation();
+            var card = $(this).closest('.task-card');
+            var id = card.data('task-id');
+            $('#subtasksTable tbody').empty();
+            $.post('ajax/getSubtasks.php',{id:id},function(resp){
+                if(resp.success){
+                    resp.data.forEach(function(r){
+                        $('#subtasksTable tbody').append('<tr><td>'+r.name+'</td><td>'+r.date+'</td><td>'+r.status+'</td></tr>');
+                    });
+                    $('#modalSubtasks').modal('show');
+                } else {
+                    toastr.error('No se pudieron cargar subtareas');
+                }
+            },'json').fail(function(e){
+                toastr.error('Error cargando subtareas');
+                console.error(e);
+            });
+        });
+	});
+
+	function btn_EnviarPermiso(valor) {		
+        var id = valor;
+
+		$.post('ajax/getSubtasks.php',{id:id},function(resp){
+			if(resp.success){
+				resp.data.forEach(function(r){
+					$('#subtasksTable tbody').append('<tr><td>'+r.name+'</td><td>'+r.date+'</td><td>'+r.status+'</td></tr>');
+				});
+				$('#modalSubtasks').modal('show');
+			} else {
+				toastr.error('No se pudieron cargar subtareas');
+			}
+		},'json').fail(function(e){
+			toastr.error('Error cargando subtareas');
+			console.error(e);
+		});
+	}
+	
 	function btn_EnviarOnClick(valor) {
 		 var f = document.frmC;
 		 var idrol = f.hid_frmIdrol;
@@ -235,7 +246,7 @@ switch ($method) {
 						confirmButtonText:"Aceptar"
 						},
 						function(){
-							location.href="./index.php?view=tareas&id="+valor;
+							location.href="./?view=delpersonal&id="+valor;
 					});
 				 }else{
 					sweetAlert('No autrizado...!!!', 'Usted no tiene permisos para activar agentes', 'error');
@@ -246,7 +257,7 @@ switch ($method) {
 						confirmButtonText:"Aceptar"
 						},
 						function(){
-							location.href="./index.php?view=tareas&id="+valor;
+							location.href="./?view=delpersonal&id="+valor;
 					});
 				 }
 			 });

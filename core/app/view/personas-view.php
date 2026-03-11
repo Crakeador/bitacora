@@ -42,7 +42,7 @@ if(isset($_GET['id'])){
 		<small>listado de los agentes asignados</small>
 	</h1>
 	<ol class="breadcrumb">
-		<li><a href="./index.php?view=home"><i class="fa fa-dashboard"></i> Panel de control </a></li>
+		<li><a href="./home"><i class="fa fa-dashboard"></i> Panel de control </a></li>
 	</ol>
 </section>
 <!-- Main content -->
@@ -52,17 +52,17 @@ if(isset($_GET['id'])){
 		Oficina:&nbsp;&nbsp;
 		<label>
 			<?php
-				echo '<select id="localidad_id" name="localidad_id" class="form-control" onchange="javascript:location.href=\'index.php?view=personas&id=\'+value;">';
+				echo '<select id="localidad_id" name="localidad_id" class="form-control" onchange="javascript:location.href=\''.$_SESSION['url'].'personas/\'+value;">';
 				echo '<option value="0"> -- SELECCIONE PUESTO -- </option>';
 				echo '<option value="99"> -- TODOS LOS AGENTES -- </option>';
 				foreach($puestos as $tables) {
 					if($tables->id == $lugar) $valor = 'selected'; else $valor = '';
-					echo '<option value="'.$tables->id.'" '.$valor.'>'.$tables->descripcion.'</option>';
+					echo '<option value="'.$tables->id.'" '.$valor.'>'.$tables->codigo.' ('.$tables->descripcion.')</option>';
 				}
 				echo '</select>';
 			?>
 		</label>  
-		<a href="persona" class="btn btn-success btn-sm">
+		<a href="<?php echo $_SESSION['url']; ?>persona" class="btn btn-success btn-sm">
 			<i class="fa fa-plus"></i> Ingresar un efectivo
 		</a>
 	</div>
@@ -117,7 +117,7 @@ if(isset($_GET['id'])){
 									echo $users[$i]->descripcion;
 									echo '</br>';
 									echo '<small>';
-									  echo '<a href="index.php?view=persona&id='.$users[$i]->servicio.'" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-edit"></i></a>&nbsp;';
+									  echo '<a href="'.$_SESSION['url'].'persona/'.$users[$i]->servicio.'" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-edit"></i></a>&nbsp;';
 									  echo '<a href="index.php?view=personas&status='.$users[$i]->servicio.'" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i></a>&nbsp;';
 									  echo $users[$i]->lugar;
 									echo '</small>';

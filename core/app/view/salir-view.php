@@ -27,17 +27,30 @@ if(isset($_POST['id_person'])){
         if($_POST["observacion"]==""){
             $errores = 'debe de ingresar una observacion del puesto';
         }else{
-            if($_FILES["image"]["name"]==""){
+            if($_FILES["image1"]["name"]==""){
                 $errores = 'debe de tomarse una foto para verificar su identidad';
             }else{
-                $image = new Upload($_FILES["image"]);
+                $image = new Upload($_FILES["image1"]);
 
                 if($image->uploaded){
-                    $image->Process("storage/fotos/"); 
+                    $image->Process("storage/salida/"); 
                     
                     if($image->processed){
                         $user->foto1 = $image->file_dst_name; 
                         
+                        if(!isset($_FILES["image2"]["name"])){
+                            $user->foto2 = "";
+                        }else{
+                            $image = new Upload($_FILES["image2"]);
+                            echo "La foto se ha subido correctamente 2.";
+                            if($image->uploaded){
+                                $image->Process("storage/salida/");
+                                echo "La foto se ha subido correctamente 3.";
+                                if($image->processed){
+                                    $user->foto2 = $image->file_dst_name;
+                                }
+                            }
+                        }
                         if($_POST["verifica"] == "0") $prod = $user->addIMG();
 
                         if(isset($_POST["short"])){
@@ -53,32 +66,16 @@ if(isset($_POST['id_person'])){
                         $_SESSION['turno'] = $_POST["turno"];
                         $_SESSION['puesto'] = (int) $_POST["id_localidad"];
 						
-                        if($_SESSION['ingreso']==0){
-                            $_SESSION['ingreso']=1;
-                            
-                            echo '<script>
-									 localStorage.setItem("usuario", "'.$_POST["id_person"].'");
-									 localStorage.setItem("puesto", "'.$_POST["id_localidad"].'");
-									 localStorage.setItem("ingreso", "'.$_SESSION['ingreso'].'");
-									 localStorage.setItem("turno", "'.$_POST["turno"].'");
-									 localStorage.setItem("verifica", "'.$_POST["verifica"].'");
-
-									 window.location = "index.php?view=novedad";
-								  </script>';
-                        }else{
-                            $_SESSION['ingreso']=2;
-                            
-                            echo '<script>
-									 localStorage.removeItem("usuario");
-									 localStorage.removeItem("puesto");
-									 localStorage.removeItem("ingreso");
-									 localStorage.removeItem("turno");
-									 localStorage.removeItem("verifica");
-									 localStorage.clear();
-									
-									 window.location = "index.php?view=logout";
-								  </script>';
-                        }
+                        echo '<script>
+                                    localStorage.removeItem("usuario");
+                                    localStorage.removeItem("puesto");
+                                    localStorage.removeItem("ingreso");
+                                    localStorage.removeItem("turno");
+                                    localStorage.removeItem("verifica");
+                                    localStorage.clear();
+                                
+                                    window.location = "./logout.php";
+                                </script>';
 					}
 				}
             }
@@ -151,7 +148,6 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
             <?php echo $mensaje; ?>
             <span class="text-danger">*</span><?php echo $_SESSION['consigna']; ?>
         </div>
-        </br>
         <!-- Registro de Bitacora -->
         <div class="row">
             <div class="col-md-10">
@@ -215,9 +211,10 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="image" class="col-sm-4 control-label"> Verifique su identidad:</label>
+                                <label for="image1" class="col-sm-4 control-label"> Verifique su identidad:</label>
                                 <div class="col-sm-6">
-                                    <input type="file" name="image" id="image" class="SubirFoto" accept="image/*" capture="camera" /></br>
+                                    <input type="file" name="image1" id="image1" class="SubirFoto" accept="image/*" capture="camera" /></br>
+                                    <input type="file" name="image2" id="image2" class="SubirFoto" accept="image/*" capture="camera" /></br>
                                 </div>
                             </div>
                             <div class="form-group">

@@ -1,150 +1,97 @@
 <?php 
 //Asignacion de Tarea
-$companys = CompanyData::getById($_SESSION["id_company"]); 
+$grupos = GruposData::getAll(); 
 $users = UserData::getAll();
+$error = 0;
+
+// manejo modal nuevo grupo
+if(isset($_POST['guardar_grupo']) && !empty($_POST['grupo_nombre'])){
+    $g = new GruposData();
+    $g->name = $_POST['grupo_nombre'];
+    $g->idcompany = $_SESSION['id_company'];
+    $g->is_active = 1;
+    $g->add();
+    // refrescar lista de grupos para edición actual
+    $grupos = GruposData::getAll();
+}
+
+// manejo modal asignar miembro a grupo
+if(isset($_POST['guardar_miembro']) && isset($_POST['miembro_persona']) && $_POST['miembro_persona']>0 && isset($_POST['miembro_grupo']) && $_POST['miembro_grupo']>0){
+    $g = new GruposData();
+    $g->idgrupo = $_POST['miembro_grupo'];
+    $g->idperson = $_POST['miembro_persona'];
+    $g->is_active = 1;
+    $g->addGrupo();
+    // opcional: mensaje de confirmación simple
+    echo "<script>toastr.success('Miembro agregado al grupo');</script>";
+}
 
 if(count($_POST)>0){
-	$client = ClientData::getById($_SESSION["user_id"]);
-    $email = $client->email;
-	
-    if(isset($_POST["prorroga"])) $prorroga = 1; $prorroga = 0;
- 
-	$user = new TimelineData();
-	$user->idperson = $_SESSION["id_person"];
-	$user->prioridad = $_POST["prioridad"];
-	$user->quien_asigna = $client->contacto;
-	$user->status = 1;
-	$user->type = 3;
-	$user->asunto = $_POST["asunto"];
-	$user->title = $_POST["descripcion"];
-	$user->date_event = $_POST["fecha"];
-	$user->prorroga = $prorroga;
-	$user->add_task();
- 
-	$hoy = date("Y-m-d H:i:s");
+	if(isset($_POST["grupo"]) && $_POST["grupo"] > 0){	
+		$grupo = new GruposData();
+		$todos = $grupo->getAllGrupo($_POST["grupo"]);
 
-	// Varios destinatarios
-	$para  = $email; // atención a la coma
-	$email_from = 'Gilbert Lerma <j.fiallos@grupolatinamerica.com>';
-	$título = 'Solicitud de actividades asignada por: '.$nombre;
+		foreach($todos as $tarea){
+			$user = new TimelineData();
+			$user->idcompany = $_SESSION["id_company"];
+			$user->idperson = $tarea->idperson;
+			$user->prioridad = $_POST["prioridad"];
+			$user->quien_asigna = UserData::getById($_SESSION["user_id"])->name.' '.UserData::getById($_SESSION["user_id"])->lastname;
+			$user->status = 1;
+			$user->type = 2;
+			$user->asunto = $_POST["asunto"];
+			$user->title = $_POST["descripcion"];
+			$user->date_event = $_POST["fecha"];
+			$user->add_task();
+		}
+	}else{
+		if(isset($_POST["persona"]) && $_POST["persona"] > 0){
+			$nombre = UserData::getById($_SESSION["user_id"])->name.' '.UserData::getById($_SESSION["user_id"])->lastname;
+			$email = UserData::getById($_POST["persona"])->email;
 
-    if($_POST["prioridad"]==1) 
-    
-    switch ($_POST["prioridad"]) {
-      case "1":
-        $color = 'background-color:#59baa8;color:#ffffff;';
-        $prioridad = 'Prioridad: Baja';
-        break;
-      case "2":
-        $color = 'background-color:#FFFF00;color:#000000;';
-        $prioridad = 'Prioridad: Media';
-        break;
-      case "3":
-        $color = 'background-color:#FF0000;color:#ffffff;';
-        $prioridad = 'Prioridad: Media';
-        break;
-      default:
-        $prioridad = "No definido";
-    }
-    
-    if($prorroga) $nada = 'Tiene opcion a prorroga de la fecha maxima'; else $nada = 'No tiene opcion a porrogar la fecha maxima de entrega';
-	/* Envio de correos */
-	$mensaje = '<html>
-            	<head>
-            	    <title>Tiene Una actividad Pendiente</title>
-            	</head>
-            	<body>            	
-            		<div style="font-size:14px;font-weight:normal;color:#333333;line-height:20px;margin:20px">
-                		<table style="box-sizing:border-box;border-collapse:separate!important;width:100%;background-color:#fff;border-spacing:0;vertical-align:top;text-align:left;height:100%;color:#222222;font-family:&quot;Helvetica&quot;,&quot;Arial&quot;,sans-serif;font-weight:normal;line-height:19px;font-size:14px;margin:0;padding:10px" width="100%" bgcolor="#fff">
-                        	<tbody>
-                            	<tr style="vertical-align:top;text-align:left;padding:0" align="left">
-                            		<td style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;font-size:14px;vertical-align:top;display:block;max-width:580px;width:580px;word-break:break-word;border-collapse:collapse!important;text-align:left;color:#222222;font-weight:normal;line-height:19px;margin:0 auto;padding:24px" width="580" valign="top" align="left">
-                                		<div style="box-sizing:border-box;border-collapse:separate!important;width:100%;background-color:#fff;border-spacing:0;vertical-align:top;text-align:left;height:100%;color:#222222;font-family:&quot;Helvetica&quot;,&quot;Arial&quot;,sans-serif;font-weight:normal;line-height:19px;font-size:14px;margin:0;padding:10px" width="100%" bgcolor="#fff">
-                                            <p style="font-size:16px">Hola, <strong style="color:#3366bb">'.$_SESSION["usuario"].'</strong> le asigno una tarea, tienes una asignacion de <strong style="color:#5cb85c">1 Tarea pendiente</strong>:</p>                                            
-                                            <div style="font-family:Arial,sans-serif;font-size:15px;background-color:#ffffff;border-radius:10px;border:1px solid #e1e5ea">
-                                            	<table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="100%" style="font-family:Arial,sans-serif;border-radius:10px">
-                                            		<tbody>
-                                            			<tr>
-                                            				<td class="m_7958746675968730075box_mbl" style="padding-top:20px;padding-bottom:20px;padding-left:20px;padding-right:20px">
-                                            					<table style="font-family:Arial,sans-serif" align="left" border="0" cellpadding="0" cellspacing="0" width="100%">
-                                            						<tbody>
-                                            							<tr>
-                                            								<td style="font-size:14px;padding-bottom:10px">
-                                            								    <span style="border-radius:50px;'.$color.'font-size:12px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;display:inline-block;margin-top:5px;margin-right:5px">'.$prioridad.'</span>
-                                            								</td>
-                                            							</tr>
-                                            							<tr>
-                                            								<td class="m_7958746675968730075title_oferta" style="font-size:18px;padding-bottom:10px;line-height:24px">
-                                            									<strong>ASUNTO DE TAREA: '.$_POST["asunto"].'</strong>
-                                            								</td>
-                                            							</tr>
-                                            							<tr>
-                                            								<td class="m_7958746675968730075texto_oferta" style="font-size:16px;padding-bottom:5px;line-height:24px">
-                                            									<p><b>FECHA DE INICIO DE LA SOLICITUD: </b>'.$hoy.'</p>
-                                            								</td>
-                                            							</tr>
-                                            							<tr>
-                                            								<td class="m_7958746675968730075texto_oferta" style="font-size:16px;padding-bottom:10px;line-height:24px">
-                                            									<p><b>FECHA MÁXIMA DE ENTREGA ES: </b>'.$_POST["fecha"].'</p>
-                                            								</td>
-                                            							</tr>
-                                            							<tr>
-                                            								<td class="m_7958746675968730075texto_oferta" style="font-size:16px;padding-bottom:10px;line-height:24px">
-                                            									<p><b>PORCENTAJE DE INCUMPLIMIENTO: </b>'.$_POST ["porcentaje"].'% salario básico<p>
-                                            								</td>
-                                            							</tr>
-                                            							<tr>
-                                            								<td class="m_7958746675968730075texto_oferta" style="font-size:16px;padding-bottom:10px;line-height:24px">
-                                            									<p><b>OPCIÓN A PRORROGA: </b>'.$nada.'</p>
-                                            								</td>
-                                            							</tr>
-                                            							<tr>
-                                            								<td class="m_7958746675968730075texto_oferta" style="font-size:16px;padding-bottom:10px;line-height:24px">
-                                            									<p><b>OBSERVACION: </b>'.$_POST["descripcion"].'</p>
-                                            								</td>
-                                            							</tr>
-                                            						</tbody>
-                                            					</table>
-                                            				</td>
-                                            			</tr>
-                                            		</tbody>
-                                            	</table>
-                                            </div> 
-                                    		<!-- p><b>FECHA DE INICIO DE LA SOLICITUD: </b>'.$hoy.'</p>
-                                    	    <p><b>FECHA MÁXIMA DE ENTREGA ES: </b>'.$_POST["fecha"].'</p>
-                                    	    <p><b>ASUNTO DE TAREA: </b>'.$_POST["asunto"].'</p>
-                                    	    <P><b>IMPORTANCIA: </b>'.$prioridad.'<P>
-                                            <p><b>PORCENTAJE DE INCUMPLIMIENTO: </b>'.$_POST ["porcentaje"].'% salario básico<p>
-                                            <p><b>OPCIÓN A PRORROGA: </b>'.$nada.'</p>
-                                    	    
-                                    	    <p><b>OBSERVACION: </b>'.$_POST["descripcion"].'</p -->
-                                    	</div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-            	</body>
-            	</html>';
-    
-    // Set the headers
-    $headers = [
-        "MIME-Version: 1.0",
-        "Content-type: text/html; charset=UTF-8",
-        'From: Recordatorio <info@grupolatinamerica.com>',
-        'Cc: Jorge Fiallos <jorgefiallos@gmail.com>',
-    ];
-    
-	// Enviarlo
-	$bool = mail($para, $título, $mensaje, implode("\r\n", $headers));
+			$user = new TimelineData();
+			$user->idcompany = $_SESSION["id_company"];
+			$user->idperson = $_POST["persona"];
+			$user->prioridad = $_POST["prioridad"];
+			$user->quien_asigna = $nombre;
+			$user->status = 1;
+			$user->type = 2;
+			$user->asunto = $_POST["asunto"];
+			$user->title = $_POST["descripcion"];
+			$user->date_event = $_POST["fecha"];
+			$user->add_task();
+
+			$total = TimelineData::getByTotal();
+			$_SESSION["idtarea"] = $total->total;
+			$hoy = date("Y-m-d H:i:s");
+		}
+	}
 	
-	if ($bool) {
-        //echo '<br>----------------------<br>Success...!' . PHP_EOL;
-    } else {
-        echo 'Error.' . PHP_EOL;
-    }
-	
-	//Core::redir('tareas'); 
+	$tarea = (object) [
+		"idgrupo" => $_POST["grupo"],
+		"idperson" => $_POST["persona"],
+		"asunto" => $_POST["asunto"],
+		"descripcion" => $_POST["descripcion"],
+		"prioridad" => $_POST["prioridad"],
+		"date_event" => $_POST["fecha"],
+		"is_active" => "1"
+	];
+}else{
+	if(!isset($_GET["id"]) || $_GET["id"] <= 0){
+		$_SESSION["idtarea"] = 0;
+
+		$tarea = (object) [
+			"idperson" => 0,
+			"asunto" => "",
+			"title" => "",
+			"prioridad" => 0,
+			"date_event" => "",
+			"is_active" => "1"
+		];
+	}else{
+		$tarea = TimelineData::getById($_GET["id"]);
+		$_SESSION["idtarea"] = $_GET["id"];
+	}
 }
 
 ?>
@@ -155,12 +102,11 @@ if(count($_POST)>0){
 		<small>asignaci&oacute;n de tareas</small>
 	</h1>
 	<ol class="breadcrumb">
-		<li><a href="<?php if($_SESSION["idrol"] == 8) echo 'tareas'; else echo 'home'; ?>"><?php if($_SESSION["is_admin"] == 1) echo '<i class="fa fa-database"></i> Tareas'; else echo '<i class="fa fa-dashboard"></i> Inicio'; ?> </a></li>
+		<li><a href="<?php if($_SESSION["is_admin"] == 1) echo 'tareas'; else echo 'home'; ?>"><?php if($_SESSION["is_admin"] == 1) echo '<i class="fa fa-database"></i> Tareas'; else echo '<i class="fa fa-dashboard"></i> Inicio'; ?> </a></li>
 		<li class="active"> Asignaci&oacute;n</li>
 	</ol>
 </section>
-</br>
-<section id="main" role="main">
+<section id="main" role="main" style="padding: 1.5rem !important;">
     <div class="container-fluid">
 		<!-- Dialogo para seleccionar una cuenta -->
 		<p class="alert alert-info">
@@ -169,12 +115,23 @@ if(count($_POST)>0){
 		</p>
 		<!-- START panel -->
 		<form class="form-horizontal" method="post" id="addtask" action="tarea" role="form">
+			<input type="hidden" id="tarea_id" name="tarea_id" value="<?php echo $_SESSION["idtarea"]; ?>">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h3 class="panel-title">Asignaci&oacute;n de tareas</h3>
+					<h3 class="panel-title">Asignaci&oacute;n de tareas <?php echo $_SESSION["idtarea"]; ?></h3>
 				</div>
-				<div class="panel-body">				    
-			        <button type="submit" id="signin-button" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Agregar Tarea</button>
+				<div class="panel-body">
+					<?php if(isset($_SESSION["idtarea"]) && $_SESSION["idtarea"] > 0): ?>
+						<a href="tareas" class="btn btn-warning"><span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar</a>
+					<?php else: ?>
+						<button type="submit" id="signin-button" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Agregar Tarea</button>
+						<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalNuevoGrupo">
+							<i class="fa fa-plus"></i> Grupos
+						</button>
+						<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalAsignarMiembro">
+							<i class="fa fa-plus"></i> Miembros
+						</button>
+					<?php endif; ?>
 					<div class="form-group">
 						<div class="col-md-6 col-sm-3">
 							<span class="text-danger">&nbsp;</span>
@@ -183,11 +140,22 @@ if(count($_POST)>0){
 							<span class="text-danger">&nbsp;</span>
 						</div>
 					</div>
+					<div class="form-group" <?php if($_SESSION["idrol"] < 3) echo ''; else echo 'style="display:none;"'; ?>>
+						<label for="id_grupo" class="col-md-2 control-label">Grupo:</label>
+						<div class="col-md-4">
+							<select id="id_grupo" name="grupo" class="form-control">
+								<option value="0">--- SELECCIONE UN GRUPO ---</option><?php							
+								foreach($grupos as $grupo):?>
+									<option value="<?php echo $grupo->id; ?>"><?php echo $grupo->name; //utf8_encode() ?></option> <?php 
+								endforeach; ?>
+							</select>
+						</div>
+					</div>
 					<div class="form-group">
 						<label for="id_fecha" class="col-md-2 control-label"><span class="text-danger">*</span> Fecha Maxima:</label>
 						<div class="col-md-4">
 							<div class="input-group date" id="datetimepicker1">
-                               <input type="text" class="form-control" id="id_fecha" name="fecha" required/>
+                               <input type="text" class="form-control" id="id_fecha" name="fecha" value="<?php echo $tarea->date_event; ?>" required/>
                                <span class="input-group-addon">
                                    <span class="glyphicon glyphicon-remove"></span>
                                </span>
@@ -198,47 +166,207 @@ if(count($_POST)>0){
 						</div>
 					</div>
 					<div class="form-group">
+						<label for="id_persona" class="col-sm-2 control-label"> Responsable:</label>
+						<div class="col-md-4">
+							<select class="select-input form-control" id="id_persona" name="persona">
+								<option value="0" selected="selected"> Selecione... </option>
+								<?php
+									foreach($users as $user): 
+										if($user->id == $tarea->idperson) $cadena = 'selected="selected"'; else $cadena = '';?>
+										<option value="<?php echo $user->id; ?>" <?php echo $cadena; ?>><?php echo $user->name.' '.$user->lastname; //utf8_encode() ?></option>
+									<?php endforeach; ?>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
 						<label for="id_prioridad" class="col-sm-2 control-label"> Prioridad:</label>
 						<div class="col-md-4">
 							<select class="select-input form-control" id="id_prioridad" name="prioridad">
-								<option value="0" selected="selected"> Baja </option>
-								<option value="1"> Media </option>
-								<option value="2"> Alta </option>
+								<option value="0" <?php if($tarea->prioridad == 0) echo 'selected="selected"'; ?>> Baja </option>
+								<option value="1" <?php if($tarea->prioridad == 1) echo 'selected="selected"'; ?>> Media </option>
+								<option value="2" <?php if($tarea->prioridad == 2) echo 'selected="selected"'; ?>> Alta </option>
 							</select>
 						</div>
 					</div>			
     				<div class="form-group">
     					<label for="asunto" class="col-sm-2 control-label"><span class="text-danger">*</span> Asunto:</label>
     					<div class="col-sm-4">
-    					    <input class="text-field form-control input-sm" id="asunto" name="asunto" type="text" value="" placeholder="Asunto de la Tarea" required>
+    					    <input class="text-field form-control input-sm" id="asunto" name="asunto" type="text" value="<?php echo $tarea->asunto; ?>" placeholder="Asunto de la Tarea" required>
     					</div>
     				</div>
 					<div class="form-group">
-						<label for="id_descripcion" class="col-sm-2 col-sm-4 control-label"><span class="text-danger">*</span> Observaci&oacute;n:</label>
+						<label for="id_descripcion" class="col-sm-2 col-sm-4 control-label"><span class="text-danger">*</span> Descripci&oacute;n:</label>
 						<div class="col-md-4">
-							<textarea class="form-control input-sm" cols="50%" id="id_descripcion" name="descripcion" rows="4" required></textarea>
+							<textarea class="form-control input-sm" cols="50%" id="id_descripcion" name="descripcion" rows="4" required><?php echo $tarea->title; ?></textarea>
 						</div>
 					</div>
-    				<div class="form-group">
-    				    <div class="col-sm-3">
-                            <div class="radio">
-                                <label>
-                                  <input type="radio" name="optionsRadios" id="optionsRadios1" value="0" checked="">
-                                  No tiene proroga
-                                </label>
-                            </div>
-                            <div class="radio">
-                                <label>
-                                  <input type="radio" name="optionsRadios" id="optionsRadios2" value="1">
-                                  Si tiene proroga
-                                </label>
-                            </div>
-                        </div>
-                    </div>
 				</div>
 			</div>
 		</form>
-		</br>
+
+		<!-- modal nuevo grupo -->
+		<div class="modal fade" id="modalNuevoGrupo" tabindex="-1" role="dialog" aria-labelledby="modalNuevoGrupoLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalNuevoGrupoLabel">Nuevo Grupo</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				</div>
+				<form method="post" action="">
+					<div class="modal-body">
+					<div class="form-group">
+						<label for="grupo_nombre">Nombre del grupo</label>
+						<input type="text" class="form-control" id="grupo_nombre" name="grupo_nombre" required>
+					</div>
+					</div>
+					<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+					<button type="submit" class="btn btn-primary" name="guardar_grupo">Guardar</button>
+					</div>
+				</form>
+				</div>
+			</div>
+		</div>
+
+		<!-- modal asignar miembro -->
+		<div class="modal fade" id="modalAsignarMiembro" tabindex="-1" role="dialog" aria-labelledby="modalAsignarMiembroLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalAsignarMiembroLabel">Asignar miembro al grupo</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				</div>
+				<form method="post" action="">
+					<div class="modal-body">
+					<div class="form-group">
+						<label for="miembro_grupo">Grupo</label>
+						<select id="miembro_grupo" name="miembro_grupo" class="form-control" required>
+							<option value="0">--Seleccione--</option>
+							<?php foreach($grupos as $grupo): ?>
+								<option value="<?php echo $grupo->id; ?>"><?php echo $grupo->name; ?></option>
+							<?php endforeach; ?>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="miembro_persona">Persona</label>
+						<select id="miembro_persona" name="miembro_persona" class="form-control" required>
+							<option value="0">--Seleccione--</option>
+							<?php foreach($users as $user): ?>
+								<option value="<?php echo $user->id; ?>"><?php echo $user->name.' '.$user->lastname; ?></option>
+							<?php endforeach; ?>
+						</select>
+					</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+						<button type="submit" class="btn btn-primary" name="guardar_miembro">Guardar</button>
+					</div>
+				</form>
+				</div>
+			</div>
+		</div>
+		<div class="panel panel-default" <?php if(isset($_SESSION["idtarea"]) && $_SESSION["idtarea"] > 0) echo ''; else echo 'style="display:none;"'; ?>>
+			<div class="panel-heading">
+				<h3 class="panel-title">Asignaci&oacute;n de tareas</h3>
+			</div>
+			<div class="panel-body">
+				<div class="row">						
+					<div class="col-md-12">
+						<button id="btn_cargar_fechas_empresa" type="button" data-toggle="modal" data-target="#dlg_fechas_empresa" class="btn btn-sm btn-primary mb5" aria-label="">
+							<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+							Agregar/Modificar
+						</button>									
+						</br></br>
+						<!--- Datos de Liquidacion --->
+						<table id="viewBitacora" class="table table-bordered table-hover">
+							<thead>
+								<tr>
+									<th><div align="center">DSECRIPCION</div></th>
+									<th style="width: 20%"><div align="center">fecha</div></th>
+									<th style="width: 20%"><div align="center">creada</div></th>
+								</tr>
+							</thead>
+							<tbody>	<?php 								
+								if($_SESSION["idtarea"] == NULL){
+									//No hay Acciones
+								}else{
+									$users = TimelineData::getDetalle($_SESSION["idtarea"]);		
+									$resultado = count($users); 
+
+									if($resultado > 0){
+										foreach($users as $tables) {
+											echo '<tr>';
+												echo '<td>'.$tables->descripcion.'</td>';
+												echo '<td><div align="center">'.$tables->fecha.'</div></td>';
+												echo '<td><div align="center">'.$tables->created_at.'</div></td>';
+											echo '</tr>';
+										}
+									}
+								} ?>
+							</tbody>
+						</table>
+						<!-- pop up fechas Ingreso y Salida del empleado -->
+						<div id="dlg_fechas_empresa" class="modal">
+							<div class="modal-dialog">
+								<div class="modal-content">	
+									<form class="form-horizontal" method="post" id="addtareas" action="tarea" role="form">
+										<div class="box-header with-border">
+											<h3 class="box-title">Asignar Tareas</h3>
+											<div class="box-tools pull-right">
+												<button type="button" class="close" data-dismiss="modal">×</button>
+											</div><!-- /.box-tools -->
+										</div><!-- /.box-header -->
+										<div class="box-body" style="display: block;">
+											<div class="form-group">
+												<label for="id_persona" class="col-md-4 col-sm-3 control-label"> Responsable:</label>
+												<div class="col-md-6 col-sm-5">
+													<select class="select-input form-control" id="id_persona" name="persona">
+														<option value="0" selected="selected"> Selecione... </option>
+														<?php
+															foreach($users as $user): 
+																if($user->id == $tarea->idperson) $cadena = 'selected="selected"'; else $cadena = '';?>
+																<option value="<?php echo $user->id; ?>" <?php echo $cadena; ?>><?php echo $user->name.' '.$user->lastname; //utf8_encode() ?></option>
+															<?php endforeach; ?>
+													</select>
+												</div>
+											</div></br>	
+											<div class="form-group">
+												<label for="rubro" class="col-md-4 col-sm-3 control-label"><span class="text-danger">*</span> Descripci&oacute;n:</label>
+												<div class="col-md-8 col-sm-5">
+													<input type="text" class="form-control" id="rubro" name="rubro" value="" placeholder="Descripcion de la tarea">
+												</div>
+											</div></br>
+											<div class="form-group">
+												<label for="fechaTarea" class="col-md-4 col-sm-3 control-label"><span class="text-danger">*</span> Fecha Maxima:</label>
+												<div class="col-md-6">
+													<div class="input-group date" id="datetimepicker1">
+													<input type="text" class="form-control" id="fechaTarea" name="fechaTarea" value="<?php echo $tarea->fecha; ?>" required/>
+													<span class="input-group-addon">
+														<span class="glyphicon glyphicon-remove"></span>
+													</span>
+													<span class="input-group-addon">
+														<span class="glyphicon glyphicon-calendar"></span>
+													</span>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button id="agregar_fechas_empresa" class="btn btn-success">
+												<span class="glyphicon glyphicon-floppy-disk"></span> Grabar
+											</button>
+											<button type="button" class="btn btn-danger" data-dismiss="modal">
+												<span class="glyphicon glyphicon-remove"> </span> Cancelar
+											</button>
+										</div>
+									</form>
+								</div> <!-- /.modal-content -->
+							</div> <!-- /.modal-dialog -->
+						</div> <!--/ END modal -->					
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<!--/ END To Top Scroller -->
 </section>
@@ -257,5 +385,67 @@ if(count($_POST)>0){
     	$(function () {
             $('#datetimepicker1').datetimepicker();
         });
+
+        // validar que se seleccione grupo o persona antes de enviar
+        $('#addtask').on('submit', function(e){
+            var grupo = parseInt($('#id_grupo').val()) || 0;
+            var persona = parseInt($('#id_persona').val()) || 0;
+            if(grupo <= 0 && persona <= 0){
+                e.preventDefault();
+                sweetAlert('Error...','Debe seleccionar un grupo o una persona antes de continuar','error');
+            }
+        });
+	});
+	
+    $(function(){
+        $("#agregar_fechas_empresa").click(function(e){
+            e.preventDefault();
+			// Obtener valores de la modal
+			var tareas = $('#tarea_id').val();
+			var rubro = $('#rubro').val().trim();
+			var fechaTarea = $('#fechaTarea').val().trim();
+			
+			console.log('📋 Datos:', {tareas, rubro, fechaTarea});
+			
+			// Validar que los campos estén llenos
+			if(tareas == 0 || rubro == '' || fechaTarea == ''){
+				console.warn('⚠️ Campos vacíos');
+				sweetAlert('Errores pendientes...!!!', 'Debe llenar todos los campos para continuar', 'error');
+				return false;
+			}else{
+				// Añadimos la imagen de carga en el contenedor 
+				$('#finiquito').html('<div class="loading col-lg-12"><img src="assets/images/esperar.gif"/><br/>Un momento, por favor espere...!!!</div>');
+
+				$.ajax({
+					type: "POST",
+					url: "/bitacora/ajax/guardarSubtarea.php",
+					dataType: "json",
+					data: {
+						tareas: tareas,
+						rubro: rubro,
+						fechaTarea: fechaTarea
+					},
+					success: function(response) {
+						if(response.success){
+							sweetAlert('Éxito', 'Subtarea guardada correctamente', 'success');
+							setTimeout(function(){
+								window.location="<?php echo $_SESSION["url"]; ?>tarea/"+tareas;
+							}, 1500);
+						} else {
+							$('#finiquito').html('');
+							sweetAlert('Error', response.error || 'Error al guardar la subtarea', 'error');
+							console.error('Error:', response.error);
+						}
+					},
+					error: function(xhr, status, error) {
+						$('#finiquito').html('');
+						sweetAlert('Error', 'Error en la solicitud: ' + error, 'error');
+						console.error('AJAX Error:', error);
+					}
+				});
+			}
+
+			return false;
+		}) 
 	});
 </script>

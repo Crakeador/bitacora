@@ -11,34 +11,39 @@ if(isset($_GET['id'])){
     
     $falta = 0;
     if($person->image == ""){
-        $nombre_fichero1 = "https://cipol.ec/sidai/storage/persons/logo-Cipol-color.png"; $falta++;
+        $nombre_fichero1 = $_SESSION['url']."assets/images/logo-ameri.png"; $falta++;
     }else{      
-        $nombre_fichero1 = "https://cipol.ec/sidai/storage/persons/".$person->image; 
-    } 
+        $nombre_fichero1 = $_SESSION['url']."storage/persons/".$person->image; 
+    }
     if($person->cedula1 == ""){
-        $nombre_fichero2 = "https://cipol.ec/sidai/storage/persons/logo-Cipol-color.png"; $falta++;
+        $nombre_fichero2 = $_SESSION['url']."assets/images/logo-ameri.png"; $falta++;
     }else{
-        $nombre_fichero2 = "https://cipol.ec/sidai/storage/documento/".$person->cedula1;
+        $nombre_fichero2 = $_SESSION['url']."storage/documento/".$person->cedula1;
     }    
     if($person->cedula2 == ""){
-        $nombre_fichero3 = "https://cipol.ec/sidai/storage/persons/logo-Cipol-color.png"; $falta++;
+        $nombre_fichero3 = $_SESSION['url']."assets/images/logo-ameri.png"; $falta++;
     }else{    
-        $nombre_fichero3 = "https://cipol.ec/sidai/storage/documento/".$person->cedula2; 
+        $nombre_fichero3 = $_SESSION['url']."storage/documento/".$person->cedula2; 
     }    
     if($person->votacion == ""){
-        $nombre_fichero4 = "https://cipol.ec/sidai/storage/persons/logo-Cipol-color.png"; $falta++;
+        $nombre_fichero4 = $_SESSION['url']."assets/images/logo-ameri.png"; $falta++;
     }else{    
-        $nombre_fichero4 = "https://cipol.ec/sidai/storage/documento/".$person->votacion; 
+        $nombre_fichero4 = $_SESSION['url']."storage/documento/".$person->votacion; 
     }    
     if($person->firma == ""){
-        $nombre_fichero5 = "https://cipol.ec/sidai/storage/persons/logo-Cipol-color.png"; $falta++;
+        $nombre_fichero5 = $_SESSION['url']."assets/images/logo-ameri.png"; $falta++;
     }else{
-        $nombre_fichero5 = "https://cipol.ec/sidai/storage/documento/".$person->firma; 
+        $nombre_fichero5 = $_SESSION['url']."storage/documento/".$person->firma; 
     }
     if($person->carnet == ""){
-        $nombre_fichero6 = "https://cipol.ec/sidai/storage/persons/logo-Cipol-color.png"; $falta++;
+        $nombre_fichero6 = $_SESSION['url']."assets/images/logo-ameri.png"; $falta++;
     }else{
-        $nombre_fichero6 = "https://cipol.ec/sidai/storage/documento/".$person->carnet; 
+        $nombre_fichero6 = $_SESSION['url']."storage/documento/".$person->carnet; 
+    }
+    if($person->cuerpo == ""){
+        $nombre_fichero7 = $_SESSION['url']."assets/images/logo-ameri.png"; $falta++;
+    }else{
+        $nombre_fichero7 = $_SESSION['url']."storage/documento/".$person->cuerpo; 
     }
     
     $id_person = $_GET['id'];
@@ -408,11 +413,9 @@ if(isset($_GET['id'])){
         
         $person = PersonData::getCedula($_SESSION["id_card"]);
         
-        if (strlen($person->id) > 0) {
+        if ($person === null) {
             //El usuario existe
         }else{
-            $id_person = 0;
-    
             $id_person = 0;
             $person = (object) [
                "idcompany"=>$_SESSION['id_company'],
@@ -459,11 +462,68 @@ if(isset($_GET['id'])){
     }
 }
 
-if($person->id)
+if ($person === null){
+    $id_person = 0;
+    $person = (object) [
+        "idcompany"=>$_SESSION['id_company'],
+        "idcard"=>$_SESSION['id_card'],
+        "idlugar"=>0,
+        "tipo_sangre"=>0,
+        "image"=>NULL,
+        "name"=>"",
+        "cargo"=>11,
+        "tipo_sangre"=>0,
+        "altura"=>0,
+        "hijos"=>0,
+        "demanda"=>"",           
+        "monto"=>NULL,
+        "tiene_carnet"=>"0",
+        "reentrenamiento"=>"",
+        "tiene_afis"=>"0",
+        "ubicacion"=>"",
+        "email"=>"",
+        "copiacedula"=>"0",
+        "genero"=>"0",
+        "sector"=>"",
+        "direccion"=>"",
+        "referencia"=>"",
+        "fechanacimiento"=>"",
+        "planilla"=>"0",
+        "contrato"=>"0",
+        "croquis"=>"0",
+        "cedula1"=>"",
+        "cedula2"=>"",
+        "votacion"=>"",
+        "vivienda"=>"",
+        "carnet"=>"",
+        "firma"=>"",
+        "archivo"=>"",
+        "planilla"=>"",
+        "contrato"=>"",
+        "croquis"=>"",
+        "firma"=>"",
+        "completo"=>"",
+        "phone1"=>"",
+        "phone2"=>"",
+        "phone3"=>"",
+        "bachiller"=>"0",
+        "especializacion1"=>"",
+        "estado_civil"=>"1",
+        "esc_tecnico"=>"0",
+        "especializacion2"=>"",
+        "computadora"=>"0",
+        "celulartactil"=>"0",
+        "curso_realizado"=>"",
+        "tipo_contrato"=>"",
+        "computadora"=>"0",
+        "referencia1"=>"",
+        "referencia2"=>"",
+        "referencia3"=>"",
+        "is_active" => "1"
+    ];
+}else{
     $users = PersonData::getTrabajos($person->id);
-else
-    $users = NULL;
-    
+}
 ?>
 <style>
     /* Estilo para las previews */
@@ -1199,6 +1259,24 @@ else
                                                   </tr>
                                                   <tr>
                                                     <td><?php 
+                                                        if($person->archivo == NULL) { ?>
+                                                            <label for="foto" class="col-sm-4 control-label"> Uniformado cuerpo completo:</label>
+                                                            <div class="col-sm-6">
+                                                                <input type="file" name="archivo" id="archivo" class="SubirFoto" accept="image/jpeg"/></br>
+                                                            </div> <?php
+                                                        }else{ 
+                                                            echo $person->archivo; 
+                                                        } ?>
+                                                    </td>
+                                                    <td class="text-right py-0 align-middle">
+                                                      <div class="btn-group btn-group-sm">
+                                                        <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                                                        <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                                      </div>
+                                                    </td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td><?php 
                                                         if($person->firma == NULL) { ?>
                                                             <label for="firma" class="col-sm-4 control-label"> Firma personal:</label>
                                                             <div class="col-sm-6">
@@ -1377,11 +1455,7 @@ else
 		document.querySelector(".ampliacion").style.display="block";
 		document.querySelector(".imagenGrande").innerHTML=`<img src="${miImagen}"/>`;
 	}
-	
-	function cerrar(){	
-		this.style.display="none";
-		}
-	
+		
 	function limpiar(){
 		document.querySelector("#album").value="";
 		document.querySelector("#album").focus();

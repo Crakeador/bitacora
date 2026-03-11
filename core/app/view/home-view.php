@@ -1,17 +1,26 @@
 <?php
 //Vista del Panel de control
-//Modificado el: 15/05/2025 - Boton de tareas
-//Modificado el: 13/11/2025 - Ingreso desde dispositivo movil
+$ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
 
-$cadena = preg_match('/Mobile|Android|iPhone|iPad|iPod/i', $_SERVER['HTTP_USER_AGENT']);
-
-if ($cadena > 0) {
-  $_SESSION['dispositivo']=2; // Estás en un dispositivo móvil
-} else {
-  $_SESSION['dispositivo']=1;
+if($_SESSION['idrol']=='1' || $_SESSION['idrol']=='2'){
+	$events = TimelineData::getAll(30, 'milestone'); // Listado de administradores
+}else{
+	if($_SESSION['idrol']=='1' || $_SESSION['idrol']=='2'){
+		$events = TimelineData::getAll(30, 'milestone'); // Listado de administradores	
+	}else{
+		if($_SESSION['idrol']=='3' || $_SESSION['depart']=='4'){
+			$events = TimelineData::getTime($_SESSION['user_id'], $ano); // Listado de agentes comerciales
+			$totalLlam = ComercialData::getTotal('Llamada');
+			$totalMail = ComercialData::getTotal('Mailing');
+			$totalVisi = ComercialData::getTotal('Visita');
+			$totalGana = ComercialData::getTotal('Ganada');
+			$totalPerd = ComercialData::getTotal('Perdida'); 
+		} else{
+			print "<script>window.location='./vistas';</script>";
+		}
+	}
 }
 
-$cadena = '';
 if($_SESSION["ingreso"] == 3)
     if($_SESSION['dispositivo'] == 1)
 		print "<script>window.location='./videoip';</script>";
@@ -73,10 +82,12 @@ if($_SESSION['idrol'] ==  9) Core::redir('autorizan');
 if($_SESSION['idrol'] == 13) Core::redir('ruta');
 if($_SESSION['idrol'] == 15) Core::redir('supervisar');
 if($_SESSION['idrol'] == 18) Core::redir('trade');
+if($_SESSION['idrol'] == 22) Core::redir('horario');
+
 
 if($_SESSION['idrol'] == 10) 
 	if($_SESSION['depart'] == 3)	
-		print "<script>window.location='index.php?view=opeasi.personal';</script>";
+		print "<script>window.location='./personas';</script>";
 	else
 		print "<script>window.location='index.php?view=rrging.persons';</script>";
  
@@ -290,15 +301,23 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 							echo '</div>';
 						echo '</div>';
 						break;
-					case 4: // Area Comercial
+					case 4: // Area 
+						$total = ComercialData::getTotalCotizacion();
+						$totol = ComercialData::getValores('Ganada');
+						$totel = ComercialData::getValores('Perdida');
+						$valor = (float) $total->total;
+
+						$_SESSION['ventas'] = $valor;
+						$_SESSION['ganada'] = (float) $totol->total;
+						$_SESSION['perdida'] = (float) $totel->total;
 						echo '<div class="col-lg-3 col-xs-6">';
-							echo '<div class="small-box bg-aqua">';
+							echo '<div class="small-box bg-red">';
 								echo '<div class="inner">';
-									echo '<h3>'.count(ProductData::getAll()).'</h3>';
-									echo '<p>Visitas realizadas</p>';
+									echo '<h3>'.count(ComercialData::getCotizacion()).'</h3>';
+									echo '<p>Cotizaciones realizadas</p>';
 								echo '</div>';
 								echo '<div class="icon">';
-									echo '<i class="fa fa-shopping-cart"></i>';
+									echo '<i class="fa fa-print"></i>';
 								echo '</div>';
 								echo '<a href="ventas" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
 							echo '</div>';
@@ -306,11 +325,23 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 						echo '<div class="col-lg-3 col-xs-6">';
 							echo '<div class="small-box bg-purple">';
 								echo '<div class="inner">';
-									echo '<h3>'.count(ComercialData::getPhone($_SESSION['user_id'])).'</h3>';
-									echo '<p>Clientes registrados</p>';
+									echo '<h3>$ '.number_format($valor, 2, ',', '.').'</h3>';
+									echo '<p>Presupuesto Cotizado</p>';
 								echo '</div>';
 								echo '<div class="icon">';
-									echo '<i class="ion ion-person-add"></i>';
+									echo '<i class="fa fa-money"></i>';
+								echo '</div>';
+								echo '<a href="ventas" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
+							echo '</div>';
+						echo '</div>';
+						echo '<div class="col-lg-3 col-xs-6">';
+							echo '<div class="small-box bg-aqua">';
+								echo '<div class="inner">';
+									echo '<h3>'.$totalVisi->total.'</h3>';
+									echo '<p>Visitas realizadas</p>';
+								echo '</div>';
+								echo '<div class="icon">';
+									echo '<i class="fa fa-shopping-cart"></i>';
 								echo '</div>';
 								echo '<a href="ventas" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
 							echo '</div>';
@@ -325,18 +356,6 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 									echo '<i class="fa fa-user-friends"></i>';
 								echo '</div>';
 									echo '<a href="ventas" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
-							echo '</div>';
-						echo '</div>';
-						echo '<div class="col-lg-3 col-xs-6">';
-							echo '<div class="small-box bg-red">';
-								echo '<div class="inner">';
-									echo '<h3>'.count(DepartamentoData::getAll()).'</h3>';
-									echo '<p>Cotizaciones realizadas</p>';
-								echo '</div>';
-								echo '<div class="icon">';
-									echo '<i class="fa fa-dolly"></i>';
-								echo '</div>';
-								echo '<a href="ventas" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
 							echo '</div>';
 						echo '</div>';
 						break;
@@ -550,56 +569,59 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 						echo '<div class="col-lg-3 col-xs-6">';
 							echo '<div class="small-box bg-aqua">';
 								echo '<div class="inner">';
-									echo '<h3>'.count(ProductData::getAll()).'</h3>';
-									echo '<p>Productos</p>';
-								echo '</div>';
+									$total1 = TimelineData::getByTotal(1);
+									echo '<h3>'.(is_array($total1) ? count($total1) : 0).'</h3>';
+									echo '<p>Tareas activas</p>';
+								echo '</div>'; 
 								echo '<div class="icon">';
 									echo '<i class="fa fa-shopping-cart"></i>';
 								echo '</div>';
-								echo '<a href="index.php?view=productos" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
+								echo '<a href="tareas" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
 							echo '</div>';
 						echo '</div>';
 						echo '<div class="col-lg-3 col-xs-6">';
 							echo '<div class="small-box bg-purple">';
 								echo '<div class="inner">';
-									echo '<h3>'.count(PersonData::getClients()).'</h3>';
-									echo '<p>Agentes dotados</p>';
+									$totalFuture = TimelineData::getNewsByFutureDate();
+									echo '<h3>'.(is_array($totalFuture) ? count($totalFuture) : 0).'</h3>';
+									echo '<p>Tareas Vencidas</p>';
 								echo '</div>';
 								echo '<div class="icon">';
 									echo '<i class="fa fa-user"></i>';
 								echo '</div>';
-								echo '<a href="index.php?view=agentes" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
+								echo '<a href="tareas" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
 							echo '</div>';
 						echo '</div>';
 						echo '<div class="col-lg-3 col-xs-6">';
 							echo '<div class="small-box bg-yellow">';
 								echo '<div class="inner">';
-									echo '<h3>'.count(PuestoData::getAll(2)).'</h3>';
-									echo '<p>Puestos</p>';
+									$total2 = TimelineData::getByTotal(2);
+									echo '<h3>'.(is_array($total2) ? count($total2) : 0).'</h3>';
+									echo '<p>Tareas Terminadas</p>';
 								echo '</div>';
 								echo '<div class="icon">';
 									echo '<i class="fa fa-user-friends"></i>';
 								echo '</div>';
-								echo '<a href="index.php?view=puestos" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
+								echo '<a href="tareas" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
 							echo '</div>';
 						echo '</div>';
-						echo '<div class="col-lg-3 col-xs-6">'; // Logistica
+						echo '<div class="col-lg-3 col-xs-6">'; 
 							echo '<div class="small-box bg-red">';
 								echo '<div class="inner">';
 									echo '<h3>'.count(CategoryData::getAll()).'</h3>';
-									echo '<p>Proveedores</p>';
+									echo '<p>Citas de Hoy</p>';
 								echo '</div>';
 								echo '<div class="icon">';
 									echo '<i class="fa fa-dolly"></i>';
 								echo '</div>';
-								echo '<a href="proveedores" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
+								echo '<a href="calendario" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
 							echo '</div>';
 						echo '</div>';
 				}
 			}
 		}
 	echo '</div>';
-
+    /* Verificar al ingresar el venciniento de la clave y no dejar que avance hasta que la cambie
     if($diferencia->format('%R%a') > 0){
             if($diferencia->days > 250)
                 echo '<div class="callout callout-danger">
@@ -621,7 +643,132 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
                                 <br>
                            </div>';
     }
-    
+     */
+	if($_SESSION["depart"] == 4) { ?>
+		<div class="row">
+			<div class="col-md-8">
+				<div class="box box-default">
+					<div class="box-header with-border">
+						<h3 class="box-title">Grafico de Ventas</h3>
+						<div class="box-tools pull-right">
+							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+							<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+						</div>
+					</div>
+					<!-- /.box-header -->
+					<div class="box-body">
+						<div class="row">
+							<div class="col-md-8"><?php
+								if($_SESSION['ventas'] > 0) { ?>
+									<div class="card-body" id="donutContainer">
+										<canvas id="pieChart" height="285" width="305" style="width: 244px; height: 228px;"></canvas>
+									</div><?php 
+								}else{ ?>
+									<div class="chart-responsive">
+										<img src="assets/images/no-data.jpg" class="img-responsive" style="width:60%;height:200px;margin: auto;" alt="No hay datos para mostrar">
+										<h3> No hay datos que mostrar</h3>
+									</div><?php 
+								} ?>
+							</div>	<!-- /.col -->
+							<div class="col-md-4">
+								<ul class="chart-legend clearfix">
+									<li><i class="fa fa-circle-o text-red"></i> Presupuesto Cotizado </li>
+									<li><i class="fa fa-circle-o text-green"></i> Monto Ganado </li>
+									<li><i class="fa fa-circle-o text-yellow"></i> Monto Perdido </li>
+									<li><i class="fa fa-circle-o text-aqua"></i> En Negociacion </li>
+								</ul>
+							</div>	<!-- /.col -->
+						</div> 	<!-- /.row -->
+					</div>	<!-- /.box-body -->
+					<div class="box-footer no-padding">
+						<ul class="nav nav-pills nav-stacked">
+							<li>
+								<a href="#">Perdidas 
+									<span class="pull-right text-red"><i class="fa fa-angle-down"></i> $ <?php echo $_SESSION['perdida']; ?></span>
+								</a>
+							</li>
+							<li>
+								<a href="#">Ganadas
+									<span class="pull-right text-green"><i class="fa fa-angle-up"></i> $ <?php echo $_SESSION['ganada']; ?></span>
+								</a>
+							</li>
+							<li>
+								<a href="#">Cotizadas
+									<span class="pull-right text-yellow"><i class="fa fa-angle-left"></i> $ <?php echo $_SESSION['ventas']; ?></span>
+								</a>
+							</li>
+						</ul>
+					</div>	<!-- /.footer -->
+				</div>
+			</div> 
+			<div class="col-md-4">
+				<!-- Info Boxes Style 2 -->
+				<div class="info-box bg-yellow">
+					<span class="info-box-icon"><i class="fa fa-fax"></i></span>
+					<div class="info-box-content">
+						<span class="info-box-text">Llamadas Realizadas</span>
+						<span class="info-box-number"><?php echo $totalLlam->total; ?></span>
+
+						<div class="progress">
+							<div class="progress-bar" style="width: 50%"></div>
+						</div>
+						<span class="progress-description">
+							50% Increase in 30 Days
+						</span>
+					</div>
+					<!-- /.info-box-content -->
+				</div>
+				<!-- /.info-box -->
+				<div class="info-box bg-green">
+					<span class="info-box-icon"><i class="fa fa-envelope"></i></span>
+					<div class="info-box-content">
+						<span class="info-box-text">Contactos por correo</span>
+						<span class="info-box-number"><?php echo $totalMail->total; ?></span>
+
+						<div class="progress">
+							<div class="progress-bar" style="width: 20%"></div>
+						</div>
+						<span class="progress-description">
+							20% Increase in 30 Days
+						</span>
+					</div>
+					<!-- /.info-box-content -->
+				</div>
+				<!-- /.info-box -->
+				<div class="info-box bg-red">
+					<span class="info-box-icon"><i class="fa fa-beer"></i></span>
+					<div class="info-box-content">
+						<span class="info-box-text">Total de Visitas</span>
+						<span class="info-box-number"><?php echo $totalVisi->total; ?></span>
+
+						<div class="progress">
+							<div class="progress-bar" style="width: 70%"></div>
+						</div>
+						<span class="progress-description">
+							70% Increase in 30 Days
+						</span>
+					</div>
+					<!-- /.info-box-content -->
+				</div>
+				<!-- /.info-box -->
+				<div class="info-box bg-aqua">
+					<span class="info-box-icon"><i class="fa fa-send"></i></span>
+					<div class="info-box-content">
+						<span class="info-box-text">Total de Ganadas</span>
+						<span class="info-box-number"><?php echo $totalGana->total; ?></span>
+
+						<div class="progress">
+							<div class="progress-bar" style="width: 40%"></div>
+						</div>
+						<span class="progress-description">
+							40% Increase in 30 Days
+						</span>
+					</div>
+					<!-- /.info-box-content -->
+				</div>
+			</div>
+		</div> <?php
+	}
 	/* RRHH - Adicionales solo para Recursos Humanos
 	if($_SESSION['depart'] == 6){ ?>
 		<!-- Listado de Nominas -->
@@ -706,19 +853,19 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
         <div class="row">
             <section class="col-lg-7 connectedSortable ui-sortable">
 			<div class="box box-success">
-    <div class="box-header with-border">
-        <h3 class="box-title">Mapa de Visitas</h3>
-        <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                <i class="fa fa-minus"></i>
-            </button>
-        </div>
-    </div>
-    <div class="box-body" style="padding:0;">
-        <!-- Contenedor del mapa -->
-        <div id="map_visitas" style="width: 100%; height: 400px;"></div>
-    </div>
-</div>
+				<div class="box-header with-border">
+					<h3 class="box-title">Mapa de Visitas</h3>
+					<div class="box-tools pull-right">
+						<button type="button" class="btn btn-box-tool" data-widget="collapse">
+							<i class="fa fa-minus"></i>
+						</button>
+					</div>
+				</div>
+				<div class="box-body" style="padding:0;">
+					<!-- Contenedor del mapa -->
+					<div id="map_visitas" style="width: 100%; height: 400px;"></div>
+				</div>
+			</div>
             </section>
             <section class="col-lg-5 connectedSortable ui-sortable">
                 <div class="box box-solid bg-green-gradient">
@@ -1138,11 +1285,6 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 	}
 	
     if(isset($_SESSION['idrol'])){
-		if($_SESSION['idrol']=='1' || $_SESSION['idrol']=='2')
-			$events = TimelineData::getAll(10); // Listado de administradores
-		else
-			$events = TimelineData::getTime($_SESSION['user_id'], $ano); //getById
-
         $valor = count($events);
         
         if(count($events) > 0){
@@ -1220,25 +1362,15 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
                                     if($product->type == 'image') echo '<small>Solicitado a: '.$product->quien_asigna.'</small></h3>'; else echo '<small>Asignado por: '.$product->quien_asigna.'</small></h3>';
                                     echo '<div class="timeline-body">';
                                         if($product->type == 'image') echo 'Solitiud de permiso por: '.$descripcion->name.'</br>';
-                                        echo $product->title.'</br>';
+                                        echo 'Asunto: '.$product->asunto.'</br>';
+										echo '<strong>Descripci&oacute;n: </strong></br>';
+										echo $product->title.'</br>';
                                         if($product->type == 'image') {
                                             //Sin Acciones
-                                        }else{
-                                            if($product->prorroga == 0)
-                                                echo 'Esta tarea no tiene opcion a prorroga, fecha maxima de entrega: '.$product->date_event.'.</br>';
-                                            else
-                                                echo 'Esta tarea tiene opcion a prorroga, consulte con el administrador</br>';
-                                            
-                                            if($product->porcentaje == 0)
-                                                echo '';
-                                            else
-                                                echo '<div class="form-group has-error">
-                                                          <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> Fecha Maxima de entrega: '.$product->date_event.'. El inclumplimiento de la fecha maxima, genera un '.$product->porcentaje.'% de descuento del salario basico. </label>
-                                                      </div>'; 
                                         }
                                         echo $estilo.'</br>'; 
-                                        if($product->vistas == 0)
-                                            $info = 'No ha sido verificado por: '.$nombre.'</br>';
+                                        if($product->body != '')
+                                            $info = $nombre.' verifico su tarea </br>';
                                         else
                                             $info = 'Verificado '.$product->vistas.' veces</br>';
                                         
@@ -1265,15 +1397,15 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
                                             if($product->prioridad == 2)
                                                 echo '<p>Ya fue procesada su solicitud</p>';
                                             else
-                                                echo '<a class="btn btn-primary btn-xs" href="index.php?view=autoriza&id='.$product->id.'"><i class="fa fa-fa-thumbs-o-up"> </i> Autorizar Solicitud</a>&nbsp;&nbsp;';
+                                                echo '<a class="btn btn-primary btn-xs" href="./autoriza/'.$product->id.'"><i class="fa fa-fa-thumbs-o-up"> </i> Autorizar Solicitud</a>&nbsp;&nbsp;';
                                         else
-                                            echo '<a class="btn btn-primary btn-xs" href="index.php?view=ma.edittask&id='.$product->id.'"><i class="fa fa-fa-thumbs-o-up"> </i>'.$comentario.'</a>&nbsp;&nbsp;';
+                                            echo '<a class="btn btn-primary btn-xs" href="./edittask/'.$product->id.'"><i class="fa fa-fa-thumbs-o-up"> </i>'.$comentario.'</a>&nbsp;&nbsp;';
                                     echo '</div>';
                                 echo '</div>';
                             echo '</li>';
                 		}
                 		echo '<li>';
-                            echo '<i class="fa fa-clock bg-gray"></i>';
+                            echo '<i class="fa fa-clock-o bg-gray"></i>';
                         echo '</li>';
                 	echo '</ul>';
                 echo '</div>';
@@ -1282,9 +1414,79 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 	}
 echo '</section>';
 ?>
+<!-- Chart.js (incluido si AdminLTE ya trae una versión; si no, usa este CDN) -->
+<script src="https://adminlte.io/themes/AdminLTE/bower_components/chart.js/Chart.js"></script>
+<!-- Script principal (todo en este archivo) -->
 <script>
     var element = document.getElementById("sidai");
 
     element.classList.add("sidebar-collapse");
     document.title = "Near Solution | Panel de Control";
+
+	document.addEventListener('DOMContentLoaded', function () {
+		// -------------
+		// - PIE CHART -
+		// -------------
+		// Get context with jQuery - using jQuery's .get() method.
+		var pieChartCanvas = $('#pieChart').get(0).getContext('2d');
+		var pieChart       = new Chart(pieChartCanvas);
+		var PieData        = [
+			{
+				value    : <?php echo $_SESSION['ventas']; ?>,
+				color    : '#f56954',
+				highlight: '#f56954',
+				label    : 'Presupuesto Cotizado'
+			},
+			{
+				value    : <?php echo $_SESSION['ganada']; ?>,
+				color    : '#00a65a',
+				highlight: '#00a65a',
+				label    : 'Ganadas'
+			},
+			{
+				value    : <?php echo $_SESSION['perdida']; ?>,
+				color    : '#f39c12',
+				highlight: '#f39c12',
+				label    : 'Perdidas'
+			},
+			{
+				value    : <?php echo $_SESSION['ventas'] - ($_SESSION['ganada'] + $_SESSION['perdida']); ?>,
+				color    : '#3c8dbc',
+				highlight: '#3c8dbc',
+				label    : 'En Negociacion'
+			}
+		];
+		var pieOptions     = {
+			// Boolean - Whether we should show a stroke on each segment
+			segmentShowStroke    : true,
+			// String - The colour of each segment stroke
+			segmentStrokeColor   : '#fff',
+			// Number - The width of each segment stroke
+			segmentStrokeWidth   : 1,
+			// Number - The percentage of the chart that we cut out of the middle
+			percentageInnerCutout: 50, // This is 0 for Pie charts
+			// Number - Amount of animation steps
+			animationSteps       : 100,
+			// String - Animation easing effect
+			animationEasing      : 'easeOutBounce',
+			// Boolean - Whether we animate the rotation of the Doughnut
+			animateRotate        : true,
+			// Boolean - Whether we animate scaling the Doughnut from the centre
+			animateScale         : false,
+			// Boolean - whether to make the chart responsive to window resizing
+			responsive           : true,
+			// Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+			maintainAspectRatio  : false,
+			// String - A legend template
+			legendTemplate       : '<ul class=\'<%=name.toLowerCase()%>-legend\'><% for (var i=0; i<segments.length; i++){%><li><span style=\'background-color:<%=segments[i].fillColor%>\'></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>',
+			// String - A tooltip template
+			tooltipTemplate      : '<%=value %> <%=label%> '
+		};
+		// Create pie or douhnut chart
+		// You can switch between pie and douhnut using the method below.
+		pieChart.Doughnut(PieData, pieOptions);
+		// -----------------
+		// - END PIE CHART -
+		// -----------------
+	});
 </script>

@@ -134,7 +134,7 @@ if ($buscar !== '') {
 $testPK = $mysqli->query("SHOW COLUMNS FROM comercial LIKE 'id'")->num_rows > 0 ? 'id' : 'idclient';
 
 // Obtener lista de clientes para el SELECT
-$sqlClientes = "SELECT `$testPK` as id, nombre, ruc FROM comercial WHERE iduser = ".$_SESSION['user_id']." AND is_active = 1 ORDER BY nombre ASC";
+$sqlClientes = "SELECT `$testPK` as id, nombre, ruc FROM comercial WHERE iduser = ".$_SESSION['user_id']." ORDER BY nombre ASC";
 $clientes = [];
 if ($resClientes = $mysqli->query($sqlClientes)) {
     while ($rowCliente = $resClientes->fetch_assoc()) { 

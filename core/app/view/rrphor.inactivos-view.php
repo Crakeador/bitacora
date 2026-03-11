@@ -197,5 +197,5 @@ var_dump($users);
     var element = document.getElementById("sidai");
 
     element.classList.add("sidebar-collapse");
-    document.title = "Near Solutions | Resumen de asistencia activos";
+    document.title = "Near Solution | Resumen de asistencia activos";
 </script>

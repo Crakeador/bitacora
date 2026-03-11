@@ -15,7 +15,7 @@ if(count($_POST)>0){
 	$user->idclient = $_POST["company_id"];
 	$user->title = strtoupper($_POST["descripcion"]);
 	$user->date_event = $_POST["fecha"];
-
+ 
 	$user->add_acci();
 	
 	if($_POST["tipo"] == 1) $cadena = "Llamada"; elseif($_POST["tipo"] == 2) $cadena = "Mailing"; elseif($_POST["tipo"] == 3) $cadena = "Visita"; else $cadena = "Whatsapp";

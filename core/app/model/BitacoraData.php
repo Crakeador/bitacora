@@ -41,9 +41,8 @@ class BitacoraData {
 	}
     
 	public function addIMG(){
-		$sql = "INSERT INTO ".self::$tablename." (idpuesto, idperson, fecha, turno, proceso, observacion, accion, foto1, timestamp, latitude, longitude, rangoerror, sentido, velocidad, mensaje, is_active, usuario_log, ip) ";
-		$sql .= "value ($this->idpuesto, $this->idperson, \"$this->fecha\", \"$this->turno\", \"$this->proceso\", \"$this->observacion\", \"$this->accion\", \"$this->foto1\", \"$this->timestamp\", \"$this->latitude\", \"$this->longitude\", \"$this->rangoerror\", \"$this->sentido\", \"$this->velocidad\", \"$this->mensaje\", $this->is_active, \"$this->usuario_log\", \"$this->ip\")";
-	
+		$sql = "INSERT INTO ".self::$tablename." (idpuesto, idperson, fecha, turno, proceso, observacion, accion, foto1, foto2, timestamp, latitude, longitude, rangoerror, sentido, velocidad, mensaje, is_active, usuario_log, ip) ";
+		$sql .= "value ($this->idpuesto, $this->idperson, \"$this->fecha\", \"$this->turno\", \"$this->proceso\", \"$this->observacion\", \"$this->accion\", \"$this->foto1\", \"$this->foto2\", \"$this->timestamp\", \"$this->latitude\", \"$this->longitude\", \"$this->rangoerror\", \"$this->sentido\", \"$this->velocidad\", \"$this->mensaje\", $this->is_active, \"$this->usuario_log\", \"$this->ip\")"; 
 		return Executor::doit($sql);
 	}
 	

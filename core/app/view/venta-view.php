@@ -70,7 +70,7 @@ if(isset($_GET["id"])){
 				$user->update();
 			}
 
-			//Core::redir("ventas");
+			Core::redir("ventas");
         }else{
 			Core::alert("Error...!!!!", $error, "error");
 

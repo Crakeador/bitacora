@@ -217,9 +217,9 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
   </div>
 </section>
 <script>
-    document.title = "Near Solutions | Ingreso del Personal en PC";
+    document.title = "Near Solution | Ingreso del Personal en PC";
 
-    if(localStorage.getItem("usuario") != null){
+    if(localStorage.getItem("usuario") != null && localStorage.getItem("puesto") != null && localStorage.getItem("ingreso") != null && localStorage.getItem("turno") != null{
         var usuario = localStorage.getItem("usuario");
         var puesto = localStorage.getItem("puesto");
         var ingreso = localStorage.getItem("ingreso");
@@ -240,7 +240,6 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
         });
 	});
 </script>
-
 <script>
 	/*
 		Tomar una fotografía y guardarla en un archivo v3

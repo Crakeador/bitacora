@@ -214,7 +214,6 @@ If(isset($_POST["sd"])){
  
     element.classList.add("sidebar-collapse");
     document.title = "Near Solution | Bitacora Electronica";
-    setInterval("location.reload()", 30000);
 	
 	function btn_Imprimir($id, $ruta) {
 		VentanaCentrada('documentos/novedad_pdf.php?id='+$id+'&ruta='+$ruta,'Reporte de Bitacora','','1024','768','true');

@@ -344,8 +344,9 @@ else
 
 					//Escuchar el click del botón para tomar la foto
 					$boton.addEventListener("click", function() {
+						$boton.disabled = true;
 						// Añadimos la imagen de carga en el contenedor 
-						$('#content').html('<div class="loading col-lg-12"><img src="assets/images/esperar.gif"/><br/>Un momento, por favor espere...!!!</div>');
+						//$('#content').html('<div class="loading col-lg-12"><img src="assets/images/esperar.gif"/><br/>Un momento, por favor espere...!!!</div>');
 						
 						//Pausar reproducción
 						$video.pause();
@@ -357,7 +358,7 @@ else
 						contexto.drawImage($video, 0, 0, $canvas.width, $canvas.height);
 
 						let foto = $canvas.toDataURL(); //Esta es la foto, en base 64
-						$estado.innerHTML = "Enviando foto. Por favor, espera...";
+						$estado.innerHTML = "Procesando el envio... Por favor espere.";
 						fetch("ajax/guardar_foto.php", {
 								method: "POST",
 								body: encodeURIComponent(foto),
@@ -398,6 +399,7 @@ else
 									$foto06.value = nombreDeLaFoto;
 								}
 								$cuenta.value = parseInt($cuenta.value) + 1;
+								$boton.disabled = false;
 							})
 
 						//Reanudar reproducción

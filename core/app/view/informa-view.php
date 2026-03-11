@@ -1,17 +1,49 @@
 <?php
 //Vista del perfil del cliente
 if(count($_POST)>0){
+  $cadena = '';
 	$nombre = UserData::getById($_SESSION["user_id"])->name.' '.UserData::getById($_SESSION["user_id"])->lastname;
+  if($_POST["seguimiento"] == 8) 
+    $cadena = 'Ganada'; 
+  else
+    if($_POST["prioridad"] == 1) $cadena = 'Llamada'; elseif($_POST["prioridad"] == 2) $cadena = 'Mailing'; else $cadena = 'Visita';
+
+  if($_POST["monto"] != '') $monto = $_POST["monto"]; else $monto = 0;
+  
+  if($_POST["producto"] == 1) $producto = "Seguridad Electronica"; 
+  if($_POST["producto"] == 2) $producto = "Clearspeed"; 
+  if($_POST["producto"] == 3) $producto = "Consultoria"; 
+  if($_POST["producto"] == 4) $producto = "Armas"; 
+  if($_POST["producto"] == 5) $producto = "Accesorios Tacticos"; 
+  if($_POST["producto"] == 6) $producto = "MOC"; 
+  if($_POST["producto"] == 7) $producto = "Escuela de Tiro";  
+  if($_POST["producto"] == 8) $producto = "Seguridad Fisica"; 
+
 	$user = new TimelineData();
-	$user->idcompany = $_GET["id"];
+	$user->idclient = $_GET["id"];
 	$user->idperson = $_SESSION["user_id"];
 	$user->quien_asigna = $nombre;
-	$user->status = 1;
+	$user->status = $_POST["producto"];
 	$user->title = $_POST["descripcion"];
+	$user->body = $_POST["mensaje"];
+	$user->asunto = "";
+	$user->monto = $monto;
+	$user->prioridad = $_POST["prioridad"];
+	$user->resultado = $_POST["resultado"];
+  $user->seguimiento = $_POST["seguimiento"];
 	$user->date_event = $_POST["fecha"];
-	$user->prioridad = $_POST["accion"];
-	$user->add_task();
-	Core::redir("informa&id=".$_GET["id"]);
+	$user->date_pass = $_POST["alerta"];
+  
+	$user->add_info();
+  $estado = new ComercialData();
+  $estado->id = $_GET["id"];
+  $estado->gestion = $cadena;
+  $estado->monto = $monto;
+  $estado->producto = $producto;
+  $estado->observacion = $_POST["descripcion"];
+
+  $estado->estado();
+	//Core::redir("informa&id=".$_GET["id"]);
 }
 $empresa = ComercialData::getById($_GET["id"]);
 $totalLlam = TimelineData::getByTipo($_GET["id"], 1);
@@ -105,10 +137,10 @@ $events = TimelineData::getClient($_GET["id"], $ano);
                   echo '<ul class="timeline timeline-inverse">';
                   $fecha = '';
                   foreach($events as $product) {
-                    if($product->prioridad == 1) $prioridad = 'green'; 
+                    if($product->prioridad == 1) $prioridad = 'purple'; 
             				if($product->prioridad == 2) $prioridad = 'yellow'; 
-            				if($product->prioridad == 3) $prioridad = 'purple'; 
-            				if($product->prioridad == 4) $prioridad = 'red';  
+            				if($product->prioridad == 3) $prioridad = 'red';  
+            				if($product->prioridad == 4) $prioridad = 'green';  
                 			
                     $pos = strpos($product->idperson, ',');	
                     if ($pos === false) {
@@ -145,8 +177,8 @@ $events = TimelineData::getClient($_GET["id"], $ano);
                     if($product->status == 5) $estilo = '<div class="text-red"><i class="fa fa-bell"></i> Enviar cotizacion &#9733; </div>';
                     if($product->status == 6) $estilo = '<div class="text-red"><i class="fa fa-bell"></i> Negociacon pospuesta &#9733; &#9733; </div>';
                     if($product->status == 7) $estilo = '<div class="text-yellow"><i class="fa fa-bell"></i> En revision &#9733; &#9733; &#9733; </div>';
-                    if($product->status == 8) $estilo = '<div class="text-green"><i class="fa fa-bell"></i> Negociacion en Ganada &#9733; </div>';
-                    if($product->status == 9) $estilo = '<div class="text-red"><i class="fa fa-bell"></i> Negociacion en Perdida &#9733; </div>';
+                    if($product->status == 8) $estilo = '<div class="text-green"><i class="fa fa-bell"></i> Negociacion Ganada &#9733; </div>';
+                    if($product->status == 9) $estilo = '<div class="text-red"><i class="fa fa-bell"></i> Negociacion Perdida &#9733; </div>';
 
                     echo '<li>';
                         echo '<i class="fa fa-'.$tipo.' bg-'.$prioridad.'"></i>';
@@ -163,12 +195,17 @@ $events = TimelineData::getClient($_GET["id"], $ano);
                                     echo '<span class="time"><i class="fa fa-clock"></i> Asignada el: '.$product->created_at.'</span>';
                             }
                             
+                            if($product->resultado == 1) $resultado = '<span>Cotizacion por un monto de: '.$product->monto.'$</span>'; elseif($product->resultado == 2) $resultado = 'Inspeccion'; else $resultado = 'Visita Futura';
+
                             if($product->prioridad == 1) $cadena = 'Llamada realizada por:'; elseif($product->prioridad == 2) $cadena = 'Mailing realizado por:'; else $cadena = 'Visita realizada por:';
                             echo '<h3 class="timeline-header">'.$cadena.' '.$nombre.'&nbsp;&nbsp;</h3>'; 
-                            echo '<h3 class="text-primary"><i class="fa fa-info-circle"></i> Acci&oacute;n realizada</h3>';
                             echo '<div class="timeline-body">';
                                 echo '</br>';
                                 echo '<p>'.$product->title.'</p></br>';
+                                echo '</br>';
+                                echo '<p>'.$product->body.'</p></br>';
+                                
+                                echo '<h3 class="text-primary"><i class="fa fa-info-circle"></i> Acci&oacute;n resultante: '.$resultado.'</h3>';
                             echo '</div>';
                             echo '<div class="timeline-footer">';
                                     echo $estilo;
@@ -187,7 +224,7 @@ $events = TimelineData::getClient($_GET["id"], $ano);
                     echo '</div>';
                 }?>           
           </div>
-          <!-- /.tab-pane -->
+          <!-- /.tab-pane --> 
         </div>
         <!-- /.tab-content -->
       </div>
@@ -196,37 +233,120 @@ $events = TimelineData::getClient($_GET["id"], $ano);
     <!-- /.col -->
   </div>
   <!-- /.row -->
-
   <!-- Modal -->
   <div class="modal fade" id="modalActividad" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="myModalLabel">Nueva Actividad</h4>
+          <h4 class="modal-title" id="myModalLabel">Seguimiento Diario</h4>
         </div>
-        <form class="form-horizontal" method="post" action="index.php?view=informa&id=<?php echo $_GET["id"]; ?>">
+        <form class="form-horizontal" method="post" action="<?php echo $_SESSION['url']; ?>informa/<?php echo $_GET["id"]; ?>">
           <div class="modal-body">
-            <div class="form-group">
-              <label for="fecha" class="col-sm-2 control-label">Fecha</label>
-              <div class="col-sm-10">
-                <input type="datetime-local" class="form-control" id="fecha" name="fecha" required>
+            <div class="row">
+              <div class="col-md-6">
+                <legend>Acciones tomadas</legend>
+                <div class="form-group">
+                  <label for="fecha" class="col-sm-3 control-label text-right">Fecha:</label>
+                  <div class="col-sm-7">
+                    <div class="input-group date" id="datetimepicker1">
+                        <input type="text" class="form-control" id="fecha" name="fecha" required/>
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </span>
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="prioridad" class="col-sm-3 control-label text-right">Acci&oacute;n:</label>
+                  <div class="col-sm-6">
+                    <select class="form-control" id="prioridad" name="prioridad">
+                      <option value="1">Llamada</option>
+                      <option value="2">Mailing</option>
+                      <option value="3">Visita</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="seguimiento" class="col-sm-3 control-label text-right"> Estado:</label>
+                  <div class="col-md-6 col-sm-9">
+                    <select class="select-input form-control" id="seguimiento" name="seguimiento">
+                      <option value="2"> Seguimiento </option>
+                      <option value="5"> Enviar Cotizacion </option>
+                      <option value="6"> Negociacion </option>
+                      <option value="8"> Ganada </option>
+                      <option value="9"> Perdida </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="descripcion" class="col-sm-3 control-label text-right">Descripci&oacute;n:</label>
+                  <div class="col-sm-9">
+                    <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required></textarea>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="resultado" class="col-sm-3 control-label text-right"> Resultado:</label>
+                  <div class="col-md-6">
+                    <select class="select-input form-control" id="resultado" name="resultado">
+                      <option value="0"> NO APLICA </option>
+                      <option value="1"> Cotizaciones </option>
+                      <option value="2"> Inspeccion </option>
+                      <option value="3"> Visita Futura </option>
+                      <option value="4"> Seguimiento Futura </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="producto" class="col-sm-3 control-label text-right"> Producto:</label>
+                  <div class="col-md-6">
+                    <select class="select-input form-control" id="producto" name="producto">
+                      <option value="0"> NO APLICA </option>
+                      <option value="1"> Seguridad Electronica </option>
+                      <option value="2"> Clearspeed </option>
+                      <option value="3"> Consultoria </option>
+                      <option value="4"> Armas </option>
+                      <option value="5"> Accesorios Tacticos </option>
+                      <option value="6"> MOC</option>
+                      <option value="7"> Escuela de Tiro</option>
+                      <option value="8"> Seguridad Fisica </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="monto" class="col-md-3 col-sm-2 control-label"> Monto:</label>
+                  <div class="col-md-6">
+                    <input type="number" class="form-control" id="monto" name="monto" placeholder="Monto de la venta...">
+                  </div>
+                </div>
               </div>
-            </div>
-            <div class="form-group">
-              <label for="accion" class="col-sm-2 control-label">Acción</label>
-              <div class="col-sm-10">
-                <select class="form-control" id="accion" name="accion">
-                  <option value="1">Llamada</option>
-                  <option value="2">Mailing</option>
-                  <option value="3">Visita</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="descripcion" class="col-sm-2 control-label">Descripción</label>
-              <div class="col-sm-10">
-                <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required></textarea>
+              <div class="col-md-6">
+                <fieldset class="form-fieldset">
+                  <legend>Generar alertas</legend>
+                  <div class="form-group">
+                    <label for="alerta" class="col-md-3 col-sm-3 control-label"> Fecha:</label>
+                    <div class="col-md-7 col-sm-4">
+                      <div class="input-group date" id="datetimepicker2">
+                        <input type="text" class="form-control" id="alerta" name="alerta" required/>
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </span>
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="mensaje" class="col-md-3 col-sm-3 control-label"> Observacion:</label>
+                    <div class="col-md-9 col-sm-4">
+                      <textarea class="form-control input-sm" cols="50%" id="mensaje" name="mensaje" rows="4"></textarea>
+                    </div>
+                  </div>
+                </fieldset>
               </div>
             </div>
           </div>
@@ -239,3 +359,18 @@ $events = TimelineData::getClient($_GET["id"], $ano);
     </div>
   </div>
 </section>
+<script>
+	var element = document.getElementById("sidai");
+
+	element.classList.add("sidebar-collapse");
+	document.title = "Near Solution | Asignacion de las tareas";
+	
+	$(document).ready(function(){
+        $(function () {
+            $('#datetimepicker1').datetimepicker();
+        });
+        $(function () {
+            $('#datetimepicker2').datetimepicker();
+        });
+	});
+</script>

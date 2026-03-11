@@ -197,5 +197,5 @@ $ini="2020-01-01"; $fin=$ano."-".str_pad($mes, 2, "0", STR_PAD_LEFT)."-30"; $lug
     var element = document.getElementById("sidai");
 
     element.classList.add("sidebar-collapse");
-    document.title = "Near Solutions | Resumen de asistencia activos";
+    document.title = "Near Solution | Resumen de asistencia activos";
 </script>

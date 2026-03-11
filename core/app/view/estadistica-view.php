@@ -69,28 +69,33 @@
 									<tbody>
 										<tr>
 											<td class="text-grey-800"><left>USUARIOS</left> <a data-toggle="modal" data-target=".bs-example-modal-sm" style="color:#5b5d5f"></a></td>
+											<td class="text-grey-800"><left>DEPARTAMENTO</left> <a data-toggle="modal" data-target=".bs-example-modal-sm" style="color:#5b5d5f"></a></td>
 											<td><i class="icon-square" style="color:#37474F;" aria-hidden="true">ULTIMO INGRESO</i></td>
 											<td class="text-center"> Total Ingresos </td>
 											<td class="text-center"> Asignadas </td>
 											<td class="text-center"> Pendientes </td>
 											<td class="text-center"> Ejecutadas </td>
+											<td class="text-center"> Vencidas </td>
 											<td class="text-center"> % Eficiencia </td>
 										</tr>
 									    <?php
                                             $users = UserData::getEstado(1);
-	
+											
         									// Crea tabla de Ventas
         									foreach($users as $tables){
         									    $events = count(TimelineData::getById($tables->id));
-        									    
+												$total = TimelineData::getByTotalID($tables->id, 1)->total;
+
         										echo '<tr>';
         											echo '<td class="text-grey-800"><left>'.$tables->name.' '.$tables->lastname.'</left> <a data-toggle="modal" data-target=".bs-example-modal-sm" style="color:#5b5d5f"></a></td>';
+													echo '<td class="text-grey-800"><left>'.$tables->departamento.'</left> <a data-toggle="modal" data-target=".bs-example-modal-sm" style="color:#5b5d5f"></a></td>';
         											echo '<td><i class="icon-square" style="color:#37474F;" aria-hidden="true">'.$tables->ultima_session.'</i></td>';
         											echo '<td class="text-center">'.$tables->ingresos.'</td>';
         											echo '<td class="text-right">'.$events.'</td>';
+        											echo '<td class="text-right">'.$total.'</td>';
         											echo '<td class="text-right">'.$events.'</td>';
         											echo '<td class="text-right">'.$events.'</td>';
-        											echo '<td class="text-right">'.($events*100)/$events.'</td>';
+        											echo '<td class="text-right">'.($total>0 ? ($events*100)/$total : 0).'</td>';
         										echo '</tr>';
         									}
                                         ?>

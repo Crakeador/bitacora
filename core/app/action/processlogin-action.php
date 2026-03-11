@@ -1,5 +1,5 @@
 <?php
-// Procedimiento de verificacion de Usuarios
+//Procedimiento de verificacion de Usuarios
 Core::cargando();
 
 date_default_timezone_set('America/Guayaquil');
@@ -105,10 +105,11 @@ if(!isset($_SESSION["user_id"])) {
 			}
 		}else{
 			if(strlen($_POST['username']) == 10){
-				$sql = "SELECT * FROM person WHERE idcard = '".$user."' AND password = '".$_POST['password']."' AND is_active=1"; 
-
+				$sql = "SELECT * FROM person WHERE idcard = '".$user."'";
+				
 				if($query = $con->query($sql)){
 					$total = mysqli_num_rows($query);
+					
 					if($total==0){
 						$sql = "SELECT B.nombre AS clientes, A.* FROM residente A, client B WHERE B.id = A.idclient AND A.cedula = '".$user."' AND A.is_active=1";
 						
@@ -147,7 +148,7 @@ if(!isset($_SESSION["user_id"])) {
 								$_SESSION['correos']=$correos;
 
 								setcookie('userid', $_POST['username']); 
-								save_login_event($_SESSION['user_id']);
+								save_login_event($_SESSION['user_id']); 
 								echo '<script>
 										if(localStorage.getItem("usuario") != null){
 											var usuario = localStorage.getItem("usuario");
@@ -159,7 +160,7 @@ if(!isset($_SESSION["user_id"])) {
 										}else{
 											window.location="aspirante";
 										}
-									  </script>';
+									  </script>'; 
 							}else{
 								$rolid = 9;
 								$roldes = 'Residente';
@@ -211,119 +212,165 @@ if(!isset($_SESSION["user_id"])) {
 						}else{
 							echo '<script>window.location="index.php?view=aspirante&id='.$user.'";</script>';
 						}
-					}else{						
-						$rolid = 7;
-						$roldes = 'Agente de Seguridad';
+					}else{
+						$r = $query->fetch_array();
+						$id = $r['id'];
+						$name = $r['name'];
+						if($r["password"] == $_POST['password']){
+							if($r["is_active"] == 1){
+								if($r["idcargo"] == 22){
+									$_SESSION['error']=0;
+									$_SESSION['ingreso']=0;
+									$_SESSION['user_id']=$r["id"];
+									$_SESSION['id_card']=$r["idcard"];
+									$_SESSION['usuario']=$r["name"];
+									$_SESSION['asigna']=0;
+									$_SESSION['id_corporacion']=1;
+									$_SESSION['id_company']=$r["idcompany"];
+									$_SESSION['id_client']=4;
+									$_SESSION['id_localidad']=1;
+									$_SESSION['id_actividad']=8;
+									$_SESSION['company']='EXTREME SECURITY';
+									$_SESSION['email']='info@security.ec';
+									$_SESSION['logo-recibo']='logo.png';
+									$_SESSION['se_imprime']='logo.png';
+									$_SESSION['mision']='Cumplir con lo mejor de calidad';
+									$_SESSION['residencial']='0';
+									$_SESSION['etapas']='0';
+									$_SESSION['principal']='0';
+									$_SESSION['is_admin']=0;
 
-						$id = 0; $residencial = 9;
-						$name = ''; 
+									$_SESSION['name']=$r["name"];
+									$_SESSION['lastname']='';
+									$_SESSION['idrol']=22;
+									$_SESSION['desrol']='Administrativo';
+									$_SESSION['depart']=1;
+									$_SESSION['reportes']='';
+									$_SESSION['ultima_sesion']=$fechaActual;
+									$_SESSION['user_name']='Registro Horario';
+									$_SESSION['consigna']=$consigna;
+									$_SESSION['correos']=$correos;
+									
+									save_login_event($_SESSION['user_id']);							
+									echo '<script>window.location="horario";</script>';
+								}else{
+									$rolid = 7;
+									$roldes = 'Agente de Seguridad';
 
-						$userid = null;
-						while($r = $query->fetch_array()){
-							$id = $r['id'];
-							$name = $r['name'];
-							$roldes = 'Agente en servicio';
-						}
+									$residencial = 9;
+									$name = ''; 
 
-						$sql1 = "SELECT C.idcompany, D.name, C.etapas, A.*, B.idclient, B.residencial, B.principal FROM personpuestos A, puestos B, client C, company D 
-						          WHERE A.idservicio = B.id AND B.idclient = C.id AND D.id = C.idcompany AND A.idperson = ".$id." AND A.is_active = 1"; 
-						
-						if($query = $con->query($sql1)){ 
-							$total = mysqli_num_rows($query);
-							
-							if($total==0){								
-								$_SESSION['error']=4;
-								$_SESSION['ingreso']=0;
-								$_SESSION['user_id']=$id;
-								$_SESSION['id_card']=$_POST['username'];
-								$_SESSION['usuario']='Ingreso de Aspirantes';
-								$_SESSION['asigna']=0;
-								$_SESSION['id_corporacion']=1;
-								$_SESSION['id_company']=1;
-								$_SESSION['id_client']=4;
-								$_SESSION['id_localidad']=1;
-								$_SESSION['id_actividad']=8;
-								$_SESSION['company']='SECURITY';
-								$_SESSION['email']='info@security.ec';
-								$_SESSION['logo-recibo']='logo.png';
-								$_SESSION['se_imprime']='logo.png';
-								$_SESSION['mision']='Cumplir con lo mejor de calidad';
-								$_SESSION['residencial']='0';
-								$_SESSION['etapas']='0';
-								$_SESSION['principal']='0';
-								$_SESSION['is_admin']=0;
+									$userid = null;
+									$roldes = 'Agente en servicio';
 
-								$_SESSION['name']=$name;
-								$_SESSION['lastname']='';
-								$_SESSION['idrol']=11;
-								$_SESSION['desrol']='Aspirante';
-								$_SESSION['depart']=3;
-								$_SESSION['reportes']='';
-								$_SESSION['ultima_sesion']=$fechaActual;
-								$_SESSION['user_name']='Aspirante Registrado';
-								$_SESSION['consigna']=$consigna;
-								$_SESSION['correos']=$correos;
-								
-								save_login_event($_SESSION['user_id']);
-								echo '<script>window.location="index.php?view=aspirante&id='.$id.'";</script>';
-							}else{
-								$asigna = array(); $i = 0;
-								while($m = $query->fetch_array()){
-									$idclient = $m['idclient'];
-									$etapas = $m['etapas'];
-									$compania = $m['name'];
-									$principal = $m['principal'];
-									if($residencial == 9) $residencial = $m['residencial'];
-									$asigna[$i] = $m['idservicio']; $i++;
-								}							
-								
-								$_SESSION['ingreso']=0;
-								$_SESSION['user_id']=$id;
-								$_SESSION['id_card']=$_POST['username'];
-								$_SESSION['usuario']='Sistema de Ingreso';
-								$_SESSION['asigna']=$asigna;
-								$_SESSION['id_corporacion']=1;
-								$_SESSION['id_company']=1;
-								$_SESSION['id_client']=$idclient;
-								$_SESSION['id_localidad']=1;
-								$_SESSION['id_actividad']=8;
-								$_SESSION['company']=$compania;
-								$_SESSION['email']='info@nearsolution.com';
-								$_SESSION['logo-recibo']='logo.png';
-								$_SESSION['se_imprime']='logo.png';
-								$_SESSION['mision']='Cumplir con lo mejor de calidad';
-								$_SESSION['residencial']=$residencial;
-								$_SESSION['etapas']=$etapas;
-								$_SESSION['principal']=$principal;
-								$_SESSION['is_admin']=0;
+									$sql1 = "SELECT C.idcompany, D.name, C.etapas, A.*, B.idclient, B.residencial, B.principal FROM personpuestos A, puestos B, client C, company D 
+											WHERE A.idservicio = B.id AND B.idclient = C.id AND D.id = C.idcompany AND A.idperson = ".$id." AND A.is_active = 1"; 
+									
+									if($query = $con->query($sql1)){ 
+										$total = mysqli_num_rows($query);
+										
+										if($total==0){								
+											$_SESSION['error']=4;
+											$_SESSION['ingreso']=0;
+											$_SESSION['user_id']=$id;
+											$_SESSION['id_card']=$_POST['username'];
+											$_SESSION['usuario']='Ingreso de Aspirantes';
+											$_SESSION['asigna']=0;
+											$_SESSION['id_corporacion']=1;
+											$_SESSION['id_company']=1;
+											$_SESSION['id_client']=4;
+											$_SESSION['id_localidad']=1;
+											$_SESSION['id_actividad']=8;
+											$_SESSION['company']='SECURITY';
+											$_SESSION['email']='info@security.ec';
+											$_SESSION['logo-recibo']='logo.png';
+											$_SESSION['se_imprime']='logo.png';
+											$_SESSION['mision']='Cumplir con lo mejor de calidad';
+											$_SESSION['residencial']='0';
+											$_SESSION['etapas']='0';
+											$_SESSION['principal']='0';
+											$_SESSION['is_admin']=0;
 
-								$_SESSION['name']=$name;
-								$_SESSION['lastname']='';
-
-								$_SESSION['idrol']=$rolid;
-								$_SESSION['desrol']=$roldes;
-								$_SESSION['depart']=3;
-								$_SESSION['reportes']='';
-								$_SESSION['ultima_sesion']=$fechaActual;
-								$_SESSION['user_name']='Agente Seguro';
-								$_SESSION['consigna']=$consigna;
-								$_SESSION['correos']=$correos;
-
-								setcookie('userid', $userid); 
-								save_login_event($_SESSION['user_id']);
-								echo '<script>
-										if(localStorage.getItem("usuario") != null){
-											var usuario = localStorage.getItem("usuario");
-											var puesto = localStorage.getItem("puesto");
-											var ingreso = localStorage.getItem("ingreso");
-											var turno = localStorage.getItem("turno");
-												
-											window.location="index.php?view=novedad&usuario="+usuario+"&puesto="+puesto+"&ingreso="+ingreso+"&turno="+turno;
+											$_SESSION['name']=$name;
+											$_SESSION['lastname']='';
+											$_SESSION['idrol']=11;
+											$_SESSION['desrol']='Aspirante';
+											$_SESSION['depart']=3;
+											$_SESSION['reportes']='';
+											$_SESSION['ultima_sesion']=$fechaActual;
+											$_SESSION['user_name']='Aspirante Registrado';
+											$_SESSION['consigna']=$consigna;
+											$_SESSION['correos']=$correos;
+											
+											save_login_event($_SESSION['user_id']);
+											echo '<script>window.location="index.php?view=aspirante&id='.$id.'";</script>';
 										}else{
-											window.location="asignar";
+											$asigna = array(); $i = 0;
+											while($m = $query->fetch_array()){
+												$idclient = $m['idclient'];
+												$etapas = $m['etapas'];
+												$compania = $m['name'];
+												$principal = $m['principal'];
+												if($residencial == 9) $residencial = $m['residencial'];
+												$asigna[$i] = $m['idservicio']; $i++;
+											}							
+											
+											$_SESSION['ingreso']=0;
+											$_SESSION['user_id']=$id;
+											$_SESSION['id_card']=$_POST['username'];
+											$_SESSION['usuario']='Sistema de Ingreso';
+											$_SESSION['asigna']=$asigna;
+											$_SESSION['id_corporacion']=1;
+											$_SESSION['id_company']=1;
+											$_SESSION['id_client']=$idclient;
+											$_SESSION['id_localidad']=1;
+											$_SESSION['id_actividad']=8;
+											$_SESSION['company']=$compania;
+											$_SESSION['email']='info@nearsolution.com';
+											$_SESSION['logo-recibo']='logo.png';
+											$_SESSION['se_imprime']='logo.png';
+											$_SESSION['mision']='Cumplir con lo mejor de calidad';
+											$_SESSION['residencial']=$residencial;
+											$_SESSION['etapas']=$etapas;
+											$_SESSION['principal']=$principal;
+											$_SESSION['is_admin']=0;
+
+											$_SESSION['name']=$name;
+											$_SESSION['lastname']='';
+
+											$_SESSION['idrol']=$rolid;
+											$_SESSION['desrol']=$roldes;
+											$_SESSION['depart']=3;
+											$_SESSION['reportes']='';
+											$_SESSION['ultima_sesion']=$fechaActual;
+											$_SESSION['user_name']='Agente Seguro';
+											$_SESSION['consigna']=$consigna;
+											$_SESSION['correos']=$correos;
+
+											setcookie('userid', $userid); 
+											save_login_event($_SESSION['user_id']); 
+											echo '<script>
+													if(localStorage.getItem("usuario") != null && localStorage.getItem("puesto") != null){
+														var usuario = localStorage.getItem("usuario");
+														var puesto = localStorage.getItem("puesto");
+														var ingreso = localStorage.getItem("ingreso");
+														var turno = localStorage.getItem("turno");
+															
+														window.location="index.php?view=novedad&usuario="+usuario+"&puesto="+puesto+"&ingreso="+ingreso+"&turno="+turno;
+													}else{
+														window.location="asignar";
+													}
+												</script>';
 										}
-									  </script>'; 
+									}
+								}
+							}else{
+								$_SESSION['sweetalert_message'] = ['icon' => 'error', 'title' => '¡Error!', 'text' => 'Usted no tiene acceso al sistema, comuniquese con el administrador...!!!'];
+								echo "<script>window.location='./';</script>";
 							}
+						}else{
+							$_SESSION['sweetalert_message'] = ['icon' => 'error', 'title' => '¡Error!', 'text' => 'La Clave esta errada, corrija por favor...!!!'];
+							echo "<script>window.location='./';</script>";
 						}
 					}
 				}
@@ -364,7 +411,7 @@ if(!isset($_SESSION["user_id"])) {
 
 			setcookie('userid', $_SESSION['user_id']);
 
-			$ultimoLogin = UserData::update_user($fechaActual);
+			$ultimoLogin = UserData::update_user($_SESSION['user_id']);
 			save_login_event($_SESSION['user_id']);
 			Core::redir('home');
 		}else{

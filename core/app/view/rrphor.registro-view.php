@@ -185,7 +185,7 @@ $total=date("t", strtotime($fecha));
 	var element = document.getElementById("sidai");
 
 	element.classList.add("sidebar-collapse");
-	document.title = "Near Solutions | Horario Administrativos"
+	document.title = "Near Solution | Horario Administrativos"
 	
 	function btn_NuevoOnClick(id, dia, mes, ano, agente, servicio, boton, hiden) {
 		var oculto = document.getElementById(hiden);

@@ -44,11 +44,11 @@ if($resCli = $mysqli->query($sqlClientes)){
 		</div>
 		<div class="box-body">
 		  <div class="form-group">
-			<label>Buscar evento:</label>
+			<label for="searchEvent">Buscar por título:</label>
 			<input type="text" class="form-control" id="searchEvent" placeholder="Buscar por título...">
 		  </div>
 		  <div class="form-group">
-			<label>Filtrar por color/estado:</label>
+			<label for="filterColor">Filtrar por color/estado:</label>
 			<select class="form-control" id="filterColor">
 			  <option value="">Todos</option>
 			  <option value="#FF6B6B">Contacto Inicial</option>

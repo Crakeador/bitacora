@@ -1,7 +1,7 @@
 <?php
 //Listado de Usuarios
 if(isset($_GET["id"])) $users = UserData::update_activo($_GET["id"]);
-$users = UserData::getAll();
+$users = UserData::getAll(); 
 
 ?>
 <!-- Content Header (Page header) -->
@@ -11,7 +11,7 @@ $users = UserData::getAll();
 		<small>listado de los usuario</small>
 	</h1>
 	<ol class="breadcrumb">
-		<li><a href="index.php?view=home"><i class="fa fa-dashboard"></i> Panel de control </a></li>
+		<li><a href="./home"><i class="fa fa-dashboard"></i> Panel de control </a></li>
 	</ol>
 </section>
 <!-- Main content -->

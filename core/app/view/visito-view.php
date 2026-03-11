@@ -2,7 +2,7 @@
 //Reportes de supervicion
 //Modificado: 21/02/2024
 date_default_timezone_set('America/Guayaquil');
-$hoy = date("d-m-Y H:i:s"); $fecha = date("Y-m-d H:i:s"); $accion = ''; $Observacion = ''; $errores = '';
+$hoy = date("d-m-Y H:i:s"); $fecha = date("Y-m-d H:i:s"); $accion = ''; $telefono = ''; $Observacion = ''; $errores = '';
 
 // Cargar clientes activos de la tabla comercial
 require_once __DIR__ . '/../../../documentos/conexion.php';
@@ -220,7 +220,7 @@ if($hora<16){
                 					<div class="form-group">
                                         <label for="telefono" class="col-md-4 col-sm-4 control-label"><span class="text-danger">*</span> Telefono:</label>
                                         <div class="col-md-6 col-sm-6">
-                                            <input type="number" class="form-control" id="telefono" name="telefono" minlength="10" maxlength="10" data-inputmask='"mask": "9999999999"' data-mask placeholder="9999999999" value="<?php echo $client->kilometraje2; ?>" required>
+                                            <input type="number" class="form-control" id="telefono" name="telefono" minlength="10" maxlength="10" data-inputmask='"mask": "9999999999"' data-mask placeholder="9999999999" value="<?php echo $telefono; ?>" required>
                                         </div>
                                     </div>
                                     <div class="form-group">

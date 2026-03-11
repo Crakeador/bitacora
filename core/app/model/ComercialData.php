@@ -29,7 +29,7 @@ class ComercialData {
 
 	public function add(){
 		$sql = "INSERT INTO ".self::$tablename." (idcompany, iduser, tipo, ruc, empresa, nombre, contacto, email, telefono1, telefono2, telefonofac1, telefonofac2, observacion, is_active, created_at) 
-		             VALUES (".$_SESSION['id_company'].", ".$_SESSION['user_id'].",	 \"$this->tipo\", \"$this->ruc\", \"$this->empresa\", \"$this->nombre\", \"$this->contacto\", \"$this->email\", \"$this->telefono1\", \"$this->telefono2\", \"$this->telefonofac1\", \"$this->telefonofac2\", \"$this->observacion\", 1, $this->created_at)";		
+		             VALUES (".$_SESSION['id_company'].", ".$_SESSION['user_id'].",	 \"$this->tipo\", \"$this->ruc\", \"$this->empresa\", \"$this->nombre\", \"$this->contacto\", \"$this->email\", \"$this->telefono1\", \"$this->telefono2\", \"$this->telefonofac1\", \"$this->telefonofac2\", \"$this->observacion\", 1, $this->created_at)";
 		Executor::doit($sql);
 	}
 
@@ -46,7 +46,7 @@ class ComercialData {
 	}
 
 	public function estado(){
-		$sql = "UPDATE ".self::$tablename." SET observacion=\"$this->observacion\", gestion=\"$this->gestion\" WHERE id=$this->id";
+		$sql = "UPDATE ".self::$tablename." SET observacion=\"$this->observacion\", gestion=\"$this->gestion\", monto=$this->monto, producto=\"$this->producto\", is_active=\"$this->is_active\" WHERE id=$this->id"; 
 		$valor = Executor::doit($sql); 
 		return $valor;
 	}
@@ -63,14 +63,21 @@ class ComercialData {
 		return Model::one($query[0],new ComercialData());
 	}
 
+	public static function getByVentas(){
+		$sql = "SELECT * FROM ventas";
+		$query = Executor::doit($sql);
+		return Model::many($query[0],new ComercialData());
+	}
+
 	public static function getById($id){
 		$sql = "SELECT * FROM ".self::$tablename." WHERE id=$id";
 		$query = Executor::doit($sql);
 		return Model::one($query[0],new ComercialData());
 	}
 
-	public static function getTodos(){
-		$sql = "SELECT * FROM ".self::$tablename;
+	public static function getTodos($iduser=NULL){
+		if($iduser == NULL) $cadena = ''; else $cadena = 'WHERE iduser = '.$iduser;
+		$sql = "SELECT * FROM ".self::$tablename." ".$cadena;
 		$query = Executor::doit($sql);
 		return Model::many($query[0],new ComercialData());
 	}
@@ -93,7 +100,7 @@ class ComercialData {
 		$sql = "SELECT * FROM ".self::$tablename." WHERE ".$cadena." gestion LIKE '%$q%'"; 
 		$query = Executor::doit($sql);
 		return Model::many($query[0],new ComercialData());
-	}	
+	}
 
 	public static function getTotal($q, $iduser=NULL){
 		if($iduser == NULL) $cadena = ''; else $cadena = 'iduser = '.$iduser.' AND ';
@@ -101,12 +108,34 @@ class ComercialData {
 		$sql = "SELECT count(*) total FROM ".self::$tablename." WHERE ".$cadena." gestion LIKE '%$q%'"; 
 		$query = Executor::doit($sql);
 		return Model::one($query[0],new ComercialData());
-	}	
+	}
+
+	public static function getValores($q, $iduser=NULL){
+		if($iduser == NULL) $cadena = ''; else $cadena = 'iduser = '.$iduser.' AND ';
+		$sql = "SELECT sum(monto) total FROM ".self::$tablename." WHERE ".$cadena." producto LIKE '%$q%'"; 	
+		$query = Executor::doit($sql);
+		return Model::one($query[0],new ComercialData());
+	}
+
+	public static function getSuma($q, $iduser=NULL, $anio=2026, $mes=0){
+		if($iduser == NULL) $cadena = ''; else $cadena = 'iduser = '.$iduser.' AND ';
+		$sql = "SELECT
+					YEAR(update_at) AS anio,
+					MONTH(update_at) AS mes,
+					DATE_FORMAT(update_at, '%M') AS nombre_mes,
+					monto
+				FROM ".self::$tablename."
+				WHERE ".$cadena." producto LIKE '%$q%'
+  					AND YEAR(update_at) = $anio
+  					AND MONTH(update_at) = $mes"; 	
+		$query = Executor::doit($sql);
+		return Model::many($query[0],new ComercialData());
+	}
 
 	public static function getNulo($iduser=NULL){
 		if($iduser == NULL) $cadena = ''; else $cadena = 'iduser = '.$iduser.' AND ';
 
-		$sql = "SELECT * FROM ".self::$tablename." WHERE ".$cadena." gestion IS NULL"; 
+		$sql = "SELECT * FROM ".self::$tablename." WHERE ".$cadena." gestion IS NULL || gestion = ''"; 
 		$query = Executor::doit($sql);
 		return Model::many($query[0],new ComercialData());
 	}
@@ -123,5 +152,19 @@ class ComercialData {
 		$sql = "SELECT * FROM clientd WHERE id = $id AND is_active = 1";
 		$query = Executor::doit($sql);
 		return Model::many($query[0],new ComercialData());
+	}
+	
+	public static function getCotizacion($id=0){
+		if($id == 0) $cadena = ''; else $cadena = 'iduser = '.$id.' AND ';
+		$sql = "SELECT * FROM comercial WHERE ".$cadena." monto > 0";
+		$query = Executor::doit($sql);
+		return Model::many($query[0],new ComercialData());
+	}
+
+	public static function getTotalCotizacion($id=0){
+		if($id == 0) $cadena = ''; else $cadena = 'iduser = '.$id.' AND ';
+		$sql = "SELECT SUM(monto) as total FROM comercial WHERE ".$cadena." monto > 0"; 
+		$query = Executor::doit($sql);
+		return Model::one($query[0],new ComercialData());
 	}
 }

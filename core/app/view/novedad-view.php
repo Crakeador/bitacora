@@ -306,8 +306,8 @@ else
 														<input type="text" id="residente" name="residente" class="form-control" value="<?php echo $cargos->residente; ?>">
 													</div>
 													<div class="col-xs-6">
-														<label for="nombre" class="control-label">Fecha:</label>
-														<input type="text" id="nombre" name="nombre" class="form-control" value="<?php echo $cargos->ini_fec; ?>">
+														<label for="id_fecha" class="control-label">Fecha:</label>
+														<input type="text" id="id_fecha" name="id_fecha" class="form-control" value="<?php echo $cargos->ini_fec; ?>">
 													</div>
 												</div>
 											</div>
@@ -330,7 +330,7 @@ else
 												  endif; ?>
 											<div class="form-group" style="display:none;">
 												<div class="col-xs-6">
-													<label for="final" class="control-label">Verificaci&oacute;n:</label>
+													<span class="control-label">Verificaci&oacute;n:</span>
 													<?php if($diff_in_days < 0) echo '<span class="btn btn-block btn-danger btn-flat">LLAMAR AL RESIDENTE '.$diff_in_days.'</span>'; else if($diff_in_days == 99) echo '<span class="btn btn-block btn-warning btn-flat">VERIFICAR INGRESO</span>'; else echo '<span class="btn btn-block btn-success btn-flat">AUTORIZADO</span>'; ?>
 												</div>
 												<div class="col-md-6 col-sm-6">

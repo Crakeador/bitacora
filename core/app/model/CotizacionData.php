@@ -10,14 +10,23 @@ class CotizacionData {
 		$this->tipo_empresa = "";
 		$this->contacto = "";
 		$this->cargo = "";
+		$this->pago = "";
+		$this->detalle = "";
 		$this->asunto = "";
 		$this->email = "";
-		$this->telefono1 = "";
-		$this->telefono2 = "";
+		$this->telefono = "";
+		$this->ruc = "";
 		$this->ini_fec = "";
 		$this->status = "";
 		$this->is_active = "";
 		$this->created_at = "NOW()";
+	}
+
+	public function addDatos(){
+		$sql = "insert into salidas (idcotizacion, dato, tipo, usuario_log) value ($this->idcotizacion, $this->dato, $this->tipo, \"".$_SESSION['user_name']."\")"; 
+		$array = Executor::doit($sql);		
+		
+		return $array;
 	}
 
 	public function addObserva(){
@@ -27,17 +36,36 @@ class CotizacionData {
 		
 		return $array;
 	}
-	
+
 	public function add(){
-		$sql = "insert into ".self::$tablename." (idcompany, status, usuario_log, created_at) ";
-		$sql .= "value (".$_SESSION['id_company'].", \"Borrador\", \"".$_SESSION['user_name']."\", $this->created_at)"; 
+		$sql = "insert into ".self::$tablename." (idcompany, tipo, status, ruc, paquete, asunto, contacto, ini_fec, telefono, detalle, pago, usuario_log, created_at, ip) 
+		              value (".$_SESSION['id_company'].", 1, \"Borrador\", \"$this->ruc\", \"$this->paquete\", \"$this->asunto\", \"$this->contacto\", \"$this->ini_fec\", 
+		                     \"$this->telefono\", \"$this->detalle\", \"$this->pago\", \"".$_SESSION['user_name']."\", $this->created_at, \"".$_SESSION['ip']."\")"; 
+		$array = Executor::doit($sql);	
+		
+		return $array;
+	}
+	
+	public function addConducta(){
+		$sql = "insert into ".self::$tablename." (idcompany, tipo, status, usuario_log, created_at) ";
+		$sql .= "value (".$_SESSION['id_company'].", 2, \"Borrador\", \"".$_SESSION['user_name']."\", $this->created_at)"; 
 		$array = Executor::doit($sql);		
 		
 		return $array;
 	}
 	
+	public function delSalida(){
+		$sql = "update salidas set is_active = 0 where id=$this->id"; 
+		Executor::doit($sql);
+	}
+	
+	public function delDetalle(){
+		$sql = "update cotizaciond set is_active = 0 where id=$this->id"; 
+		Executor::doit($sql);
+	}
+	
 	public function del(){
-		$sql = "update ".self::$tablename." set is_active = 0 where id=$id";
+		$sql = "update observaciones set is_active = 0 where id=$this->id"; 
 		Executor::doit($sql);
 	}
 	
@@ -47,42 +75,37 @@ class CotizacionData {
 	}
 
 	public function update(){
-		$sql = "update ".self::$tablename." set tipo_empresa=\"$this->tipo_empresa\", contacto=\"$this->contacto\",
-							cargo=\"$this->cargo\", asunto=\"$this->asunto\", email=\"$this->email\", ini_fec=\"$this->ini_fec\",
-							 telefono1=\"$this->telefono1\", telefono2=\"$this->telefono2\", usuario_log=\"".$_SESSION['user_name']."\"
-				where id=$this->id"; 
+		$sql = "update ".self::$tablename." set paquete=\"$this->paquete\", tipo_empresa=\"$this->tipo_empresa\", contacto=\"$this->contacto\", email=\"$this->email\", 
+						cargo=\"$this->cargo\", asunto=\"$this->asunto\", ini_fec=\"$this->ini_fec\", fin_fec=\"$this->fin_fec\", pago=\"$this->pago\", detalle=\"$this->detalle\", 
+						telefono=\"$this->telefono\", ruc=\"$this->ruc\", municion=\"$this->municion\", observacion=\"$this->observacion\", 
+						usuario_log=\"".$_SESSION['user_name']."\"
+				where id=$this->id"; echo $sql;
 		Executor::doit($sql);
 	}
-
-	public static function getById($id){
-		$sql = "select * from ".self::$tablename." where id=$id";
-		$query = Executor::doit($sql);
-		return Model::one($query[0],new CotizacionData());
+	
+	public static function getPerson($id){
+		$sql = "SELECT C.*, B.* FROM salidas A, person B, cargo C WHERE B.id = A.dato AND C.id = B.cargo AND A.idcotizacion = $id AND A.tipo = 2 AND A.is_active = 1"; 
+		
+		$query = Executor::doit($sql); 
+		return Model::many($query[0],new CotizacionData());
+	}
+	
+	public static function getDatos($id){
+		$sql = "SELECT A.* FROM salidas A WHERE A.idcotizacion = $id AND A.tipo = 2 AND A.is_active = 1"; 
+		$query = Executor::doit($sql); 
+		return Model::many($query[0],new CotizacionData());
 	}
 	
 	public static function getArmas($id, $tipo = 1){
 		$sql = "SELECT A.id AS valor, B.serial, B.*, C.* FROM salidas A, operation B, product C WHERE B.id = A.dato AND C.id = B.product_id AND A.idcotizacion = $id AND A.tipo = $tipo AND A.is_active = 1"; 
 		$query = Executor::doit($sql);
-		
 		return Model::many($query[0],new CotizacionData());
 	}
 	
-	public static function getTipo($tipo){
-		$sql = "select * from ".self::$tablename." where tipo in ($tipo) idcompany = ".$_SESSION['id_company'];
-		$query = Executor::doit($sql);
-		$array = array();
-
-		$cnt = 0;
-		while($r = $query[0]->fetch_array()){
-			$array[$cnt] = new CategoryData();
-			$array[$cnt]->id = $r['id'];
-			$array[$cnt]->name = $r['name'];
-			$array[$cnt]->active = $r['is_active'];
-			$array[$cnt]->created_at = $r['created_at'];
-			$cnt++;
-		}
-
-		return $array;
+	public static function getById($id){
+		$sql = "select * from ".self::$tablename." where id=$id";
+		$query = Executor::doit($sql); 
+		return Model::one($query[0],new CotizacionData());
 	}
 
 	public static function getCodigo(){
@@ -91,20 +114,25 @@ class CotizacionData {
 		return Model::one($query[0],new CotizacionData());
 	}
 
-	public static function getAll(){
-		$sql = "SELECT * FROM ".self::$tablename." WHERE idcompany = ".$_SESSION['id_company']; 
+	public static function getAll($tipo, $user=NULL){
+	    if($user == 1)
+	        $cadena = "AND usuario_log='".$_SESSION["user_name"]."'";
+	    else
+	        $cadena = "";
+	    
+		$sql = "SELECT * FROM ".self::$tablename." WHERE idcompany = ".$_SESSION['id_company']." AND tipo=$tipo ".$cadena; 
 		$query = Executor::doit($sql); 
 		return Model::many($query[0],new CotizacionData());
 	}
 	
 	public static function getDetalle($id){
-		$sql = "SELECT * FROM cotizaciond WHERE idcotizacion = $id";
+		$sql = "SELECT A.*, B.descripcion AS lugar FROM cotizaciond A, localidad B WHERE A.idlugar = B.id AND A.idcotizacion = $id AND A.is_active = 1";
 		$query = Executor::doit($sql); 
 		return Model::many($query[0],new CotizacionData());
 	}
 	
 	public static function getObserva($id){
-		$sql = "SELECT B.name FROM observaciones A, operation_type B WHERE B.id = A.idoperation_type AND A.idcotizacion = $id";
+		$sql = "SELECT A.id, B.name FROM observaciones A, operation_type B WHERE B.id = A.idoperation_type AND A.idcotizacion = $id AND A.is_active = 1";
 		$query = Executor::doit($sql); 
 		return Model::many($query[0],new CotizacionData());
 	}

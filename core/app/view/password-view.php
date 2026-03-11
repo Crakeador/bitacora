@@ -49,15 +49,15 @@ if(isset($_POST['btn_update'])){
             <div class="col-lg-12">
               <div class="form-group">
                   <label for="password">Contraseña anterior</label>
-                  <input type="text" class="form-control" id="password" name="password" placeholder="Contraseña Actual" autocomplete="off" required>
+                  <input type="text" class="form-control" id="password" name="password" placeholder="Contraseña Actual" value="" autocomplete="off" required>
               </div>
               <div class="form-group">
                 <label for="newpassword">Nueva contraseña</label>
-                <input type="password" class="form-control" id="newpassword" name="newpassword" placeholder="Nueva Contraseña" autocomplete="off" required>
+                <input type="password" class="form-control" id="newpassword" name="newpassword" placeholder="Nueva Contraseña" value="" autocomplete="off" required>
               </div>
               <div class="form-group">
                 <label for="confirmnewpassword">Confirmar contraseña</label>
-                <input type="password" class="form-control" id="confirmnewpassword" name="confirmnewpassword" placeholder="Confirmar Nueva Contraseña" autocomplete="off" required>
+                <input type="password" class="form-control" id="confirmnewpassword" name="confirmnewpassword" placeholder="Confirmar Nueva Contraseña" value="" autocomplete="off" required>
               </div>
             </div>
           </div>

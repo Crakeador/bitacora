@@ -1,384 +1,339 @@
 <?php 
-//Detalle de las cotizaciones
-//Modificado: 12/03/2024
-$hoy = date("Y-m-d H:i:s");
+//Asignacion de Tarea
+$grupos = GruposData::getAll(); 
+$users = UserData::getAll();
+$error = 0;
 
-if(isset($_GET['borrar'])){
-	$mensaje = "modificar los datos adicionales de un salvo conducto";
-	$enlaces = "Modificar";
-	$user = new CotizacionData();
-	
-	$user->id = $_GET["borrar"];
-	$user->delSalida();
+// manejo modal nuevo grupo
+if(isset($_POST['guardar_grupo']) && !empty($_POST['grupo_nombre'])){
+    $g = new GruposData();
+    $g->name = $_POST['grupo_nombre'];
+    $g->idcompany = $_SESSION['id_company'];
+    $g->is_active = 1;
+    $g->add();
+    // refrescar lista de grupos para edición actual
+    $grupos = GruposData::getAll();
 }
 
-if(isset($_GET['dato'])){ //Ingreso de datos
-	$mensaje = "modificar los datos adicionales de un salvo conducto";
-	$enlaces = "Modificar";
+// manejo modal asignar miembro a grupo
+if(isset($_POST['guardar_miembro']) && isset($_POST['miembro_persona']) && $_POST['miembro_persona']>0 && isset($_POST['miembro_grupo']) && $_POST['miembro_grupo']>0){
+    $g = new GruposData();
+    $g->idgrupo = $_POST['miembro_grupo'];
+    $g->idperson = $_POST['miembro_persona'];
+    $g->is_active = 1;
+    $g->addGrupo();
+    // opcional: mensaje de confirmación simple
+    echo "<script>toastr.success('Miembro agregado al grupo');</script>";
+}
 
-	$user = new CotizacionData();
-	
-	$user->idcotizacion = $_GET["id"];
-	$user->dato = $_GET["dato"];
-	$user->tipo = $_GET["tipo"];
-	
-	$arma = $user->addDatos();
-	
-	if($_GET["tipo"] == 1){
-    	$user = new OperationData();
-    	$user->id = $_GET["dato"];
-    	
-    	$arma = $user->updateTipo();
-	}
-}else{
-	$mensaje = "crear un salvo conducto";
-	$enlaces = "Crear";
-	
-	if(count($_POST)>0){
-		$user = new CotizacionData();
-		
-		$user->id = (int) $_POST["cotizacion_id"];
-		$user->asunto = strtoupper($_POST['asunto']);
-		$user->tipo_empresa = $_POST["tipo_empresa"];
-		$user->contacto = strtoupper($_POST["contacto"]);
-		$user->ini_fec = $_POST["ini_fec"];
-		$user->fin_fec = $_POST["fin_fec"];
-		$user->telefono = $_POST["telefono"];
-		$user->ruc = $_POST["ruc"];
-		$user->observacion = $_POST["observacion"];
-		$user->municion = $_POST["municion"];
-		
-		$user->update();
-		Core::redir("conducta");
+$mensaje = "crear un salvo conducto";
+$enlaces = "Crear";
+
+if(count($_POST)>0){
+	if(isset($_POST["grupo"]) && $_POST["grupo"] > 0){	
+		$grupo = new GruposData();
+		$todos = $grupo->getAllGrupo($_POST["grupo"]);
+
+		foreach($todos as $tarea){
+			$user = new TimelineData();
+			$user->idcompany = $_SESSION["id_company"];
+			$user->idperson = $tarea->idperson;
+			$user->prioridad = $_POST["prioridad"];
+			$user->quien_asigna = UserData::getById($_SESSION["user_id"])->name.' '.UserData::getById($_SESSION["user_id"])->lastname;
+			$user->status = 1;
+			$user->type = 2;
+			$user->asunto = $_POST["asunto"];
+			$user->title = $_POST["descripcion"];
+			$user->date_event = $_POST["ini_fec"];
+			$user->add_task();
+		}
 	}else{
-		if($_GET["id"] == 0){
-			$user = new CotizacionData();
-			$user->addConducta();
-			
-			$valor = $user->getCodigo();
-			$idcotizacion=$valor->id;
-			$oficio = 'SC-'.date("Y").'-'.str_pad($valor->id, 3, "0", STR_PAD_LEFT);
-			$user->updateOficio($oficio, $valor->id);
-			
-			$client = (object) [
-				"tipo_empresa" => "Capital",
-				"asunto" => "",
-				"contacto" => "",
-				"cargo" => "",
-				"municion" => "", 
-				"telefono" => "",
-				"observacion" => "",
-				"ruc" => "",
-				"ini_fec" => date("Y-m-d"),
-				"is_active" => "1"
-			];
-		}else{
-			if(isset($_SESSION['cotizar']))
-				$idcotizacion=$_SESSION['cotizar'];	
-			else
-				$idcotizacion=$_GET["id"];	
+		if(isset($_POST["persona"]) && $_POST["persona"] > 0){
+			$nombre = UserData::getById($_SESSION["user_id"])->name.' '.UserData::getById($_SESSION["user_id"])->lastname;
+			$email = UserData::getById($_POST["persona"])->email;
 
-			$client = CotizacionData::getLike($idcotizacion);
-			$oficio = $client->oficio;
+			$user = new TimelineData();
+			$user->idcompany = $_SESSION["id_company"];
+			$user->idperson = $_POST["persona"];
+			$user->prioridad = $_POST["prioridad"];
+			$user->quien_asigna = $nombre;
+			$user->status = 1;
+			$user->type = 2;
+			$user->asunto = $_POST["asunto"];
+			$user->title = $_POST["descripcion"];
+			$user->date_event = $_POST["ini_fec"];
+			$user->add_task();
+
+			$total = TimelineData::getByTotal();
+			$_SESSION["idtarea"] = $total->total;
+			$hoy = date("Y-m-d H:i:s");
 		}
 	}
-}
+	
+	$tarea = (object) [
+		"idgrupo" => $_POST["grupo"],
+		"idperson" => $_POST["persona"],
+		"asunto" => $_POST["asunto"],
+		"descripcion" => $_POST["descripcion"],
+		"prioridad" => $_POST["prioridad"],
+		"fecha" => $_POST["ini_fec"],
+		"is_active" => "1"
+	];
+}else{
+	if(!isset($_SESSION["idtarea"]) || $_SESSION["idtarea"] <= 0) $_SESSION["idtarea"] = 0;
 
-if(isset($_GET['id']) && $_GET['id'] > 0){
-	$mensaje = "modificar los datos adicionales de un salvo conducto";
-	$enlaces = "Modificar";
-
-	$client = CotizacionData::getLike($_GET["id"]);	
-	$idcotizacion = $_GET["id"];
-	$oficio = $client->oficio;
+	$tarea = (object) [
+		"idperson" => 0,
+		"asunto" => "",
+		"descripcion" => "",
+		"prioridad" => 0,
+		"fecha" => "",
+		"is_active" => "1"
+	];
 }
 
 ?>
 <!-- Content Header (Page header) -->
 <section class="content-header">
 	<h1>
-		Documento Nro. <?php echo $oficio; ?>
-		<small><?php echo $mensaje; ?></small>
+		Tareas Nro. <?php echo $_SESSION["idtarea"]; ?>
+		<small>asignaci&oacute;n de tareas</small>
 	</h1>
 	<ol class="breadcrumb">
-		<li><a href="conducta"><i class="fa fa-database"></i> Salvo Conducto </a></li>
-		<li class="active"> <?php echo $enlaces; ?> </li>
+		<li><a href="<?php if($_SESSION["is_admin"] == 1) echo 'tareas'; else echo 'home'; ?>"><?php if($_SESSION["is_admin"] == 1) echo '<i class="fa fa-database"></i> Tareas'; else echo '<i class="fa fa-dashboard"></i> Inicio'; ?> </a></li>
+		<li class="active"> Asignaci&oacute;n</li>
 	</ol>
 </section>
-</br>
-<section id="main" role="main">
-    <div class="container-fluid">
-        <form class="form-horizontal" method="post" id="addconducta" name="addconducta" action="index.php?view=conductar" role="form">	
-    		<input type="hidden" id="cotizacion_id" name="cotizacion_id" value="<?php echo $idcotizacion; ?>">
-    		<div class="callout callout-danger" style="margin-bottom: 0!important;">
-    			<button type="submit" class="btn btn-success pull-right"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar </button>
-    			<h4><strong><i class="fa fa-bullhorn"></i> Importante...!</strong></h4>
-    			Los campos obligatorios estan marcados con asteriscos rojo <span class="text-danger">*</span>
-    		</div></br>
-    		<div class="panel panel-default">
-    			<div class="panel-heading">
-    				<h3 class="panel-title">Informaci&oacute;n del cliente</h3>
-    			</div>
-    			<div class="panel-body">
-    				<div class="form-group">
-    					<label for="contacto" class="col-md-2 col-sm-2 control-label"><span class="text-danger">*</span> Cliente:</label>
-    					<div class="col-md-4 col-sm-4">
-    						<input class="text-field form-control input-sm" id="contacto" name="contacto" type="text" placeholder="Empresa XYZ s.a." value="<?php echo $client->contacto; ?>" minlength="5" maxlength="100" required title="Tamaño mínimo: 5. Tamaño máximo: 100" required autofocus>
-    					</div>
-    					<div class="col-md-6 col-sm-4">
-    						<span class="text-danger">Alcance del Salvo conducto:</span>
-    						<div class="radiobutton">
-    							<input type="radio" id="tipo_empresa" name="tipo_empresa" value="3" <?php if($client->tipo_empresa == "Capital") echo 'checked="checked"'; ?>> Ciudad &nbsp;&nbsp;
-    							<input type="radio" id="tipo_empresa" name="tipo_empresa" value="4" <?php if($client->tipo_empresa == "Provincial") echo 'checked="checked"'; ?>> Provincia&nbsp;&nbsp;
-    							<input type="radio" id="tipo_empresa" name="tipo_empresa" value="5" <?php if($client->tipo_empresa == "Nacional") echo 'checked="checked"'; ?>> Nacional
-    						</div>
-    					</div>
-    				</div>
-    				<div class="form-group">
-    					<label for="asunto" class="col-md-2 col-sm-2 control-label">Destino:</label>
-    					<div class="col-md-4 col-sm-4">
-    						<input class="text-field form-control input-sm" id="asunto" maxlength="50" name="asunto" type="text" placeholder="Guayaquil-Guayas-Todo el territorio nacional" value="<?php echo $client->asunto; ?>" title="Solo Letras. Tamaño mínimo: 5. Tamaño máximo: 50" required>
-    					</div>					
-    					<label for="ini_fec" class="col-md-2 col-sm-2 control-label">Desde:</label>
-    					<div class="col-md-4 col-sm-4">
-    						<div class="input-group date form_date col-md-2 col-sm-6" data-date-format="yyyy-mm-dd">
-    							<input type="date" class="form-control" id="ini_fec" name="ini_fec" value="<?php echo $client->ini_fec; ?>" required="required" minlength="10" title="Debe de ser una fecha valida">
-    						</div>
-    					</div>
-    				</div>
-    				<div class="form-group">
-    				    <label for="inputEmpresa" class="col-lg-2 control-label"><span class="text-danger">*</span> RUC:</label>
-    					<div class="col-md-4 col-sm-4">
-    						<input type="number" class="form-control" id="ruc" name="ruc" minlength="13" maxlength="13" data-inputmask='"mask": "9999999999999"' data-mask placeholder="1234567890123" value="<?php echo $client->ruc; ?>" pattern="[0-9]{13}" title="Solo números, debe ser un RUC de empresa minimo 13" required>
-    					</div>					
-    					<label for="fin_fec" class="col-md-2 col-sm-2 control-label">Hasta:</label>
-    					<div class="col-md-4 col-sm-4">
-    						<div class="input-group date form_date col-md-2 col-sm-6" data-date-format="yyyy-mm-dd">
-    							<input type="date" class="form-control" id="fin_fec" name="fin_fec" value="<?php echo $client->fin_fec; ?>" required="required" minlength="10" title="Debe de ser una fecha valida">
-    						</div>
-    					</div>
-    				</div>
-    				<div class="form-group">
-    					<label for="observacion" class="col-md-2 col-sm-2 control-label">Valor a Proteger:</label>
-    					<div class="col-md-4 col-sm-4">
-    					    <textarea id="observacion" name="observacion" rows="4" cols="58"><?php echo $client->observacion; ?></textarea>
-    					</div>
-    					<label for="municion" class="col-md-2 col-sm-2 control-label">Municiones:</label>
-    					<div class="col-md-4 col-sm-4">
-    						<input class="text-field form-control input-sm" id="municion" name="municion" type="text" placeholder="Cantidad de municiones" value="<?php echo $client->municion; ?>">
-    					</div>
-    				</div>
-    				</br></br>
-    				<div class="panel panel-default">
-    					<ul class="nav nav-tabs">
-    						<li class="active">
-    							<a href="#tab_armamento" data-toggle="tab" aria-expanded="false">
-    								<b>Armamento</b>
-    							</a>
-    						</li>
-    						<li>
-    							<a href="#tab_personal" data-toggle="tab" aria-expanded="false">
-    								<b>Personal</b>
-    							</a>
-    						</li>
-    					</ul>
-    					<div class="panel-body">
-    						<!-- tabs content -->
-    						<div class="tab-content panel">
-    							<div class="tab-pane active" id="tab_armamento">
-    								<div class="row">						
-    									<div class="col-md-12">
-    									    <div class="form-group">
-    											<label for="idarmas" class="col-md-1 col-sm-3 control-label"><span class="text-danger">*</span> Armas:</label>
-    											<div class="col-md-6 col-sm-5">
-                    							    <?php
-                    			                        echo '<select id="idarmas" name="idarmas" class="form-control select2" style="width: 100%;" onchange="javascript:location.href=\'index.php?view=conductar&tipo=1&dato=\'+value+\'&id=\'+'.$idcotizacion.'">';
-                    					                    echo '<option value="0"> -- SELECCIONE -- </option>';
-                    					                    $armas = OperationData::getByAllTipo(6);
-    
-                    					                    foreach($armas as $tables) {
-                    					                        echo '<option value="'.$tables->id.'">'.$tables->serial.'</option>'; 
-                    					                    } 
-                    					               echo '</select>';
-                    		                        ?>
-    											</div>
-    										</div>
-    										<!--- Datos de las armas --->
-    										<table id="viewBitacora" class="table table-bordered table-hover">
-    											<thead>
-    												<tr>
-    													<th style="width: 12%"><div align="center">NRO.</div></th>
-    													<th><div align="center">DESCRIPCION</div></th>
-    													<th style="width: 20%"><div align="center">MARCA</div></th>
-    													<th style="width: 20%"><div align="center">SERIAL</div></th>
-    													<th style="width: 20%"><div align="center">COSTO</div></th>
-    												</tr>
-    											</thead>
-    											<tbody>
-    												<?php
-        												if($idcotizacion == NULL){
-        												    // Sin nada
-        												}else{
-        													$users = CotizacionData::getArmas($idcotizacion);		
-        													$resultado = count($users); 
-        													
-        													$i=1; $total=0;
-        													if($resultado > 0){
-        														foreach($users as $tables) {
-        														    $total=$total+$tables->price_out;
-        															echo '<tr>';
-        																echo '<td><div align="center">'.$i.'&nbsp;&nbsp;<a href="index.php?view=conductar&borrar='.$tables->valor.'&id='.$idcotizacion.'" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i></a></div></td>';
-        																echo '<td>'.$tables->name.'</td>';
-        																echo '<td>'.$tables->unit.'</td>';
-        																echo '<td>'.$tables->serial.'</td>';
-        																echo '<td><div align="right">'.number_format($tables->price_out,2, ",", ".").'</div></td>';
-        															echo '</tr>';
-        															$i++;
-        														}
-        													}
-        												}
-    												?>
-    											</tbody>
-    											<tfoot>
-    												<tr>
-    													<td colspan="4"><b>Total</b></td>
-    													<td headers="hours"><div align="right"><?php echo number_format($total,2, ",", "."); ?></div></td>
-    												</tr>
-    											</tfoot>
-    										</table>	
-    									</div>
-    								</div>
-    							</div>
-    							<div class="tab-pane" id="tab_personal">
-    							    <button id="btn_cargar_fechas_empresa" type="button" data-toggle="modal" data-target="#dlg_fechas_empresa" class="btn btn-sm btn-primary mb5" aria-label="">
-    									<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-    									Agregar/Modificar
-    								</button>									
-    								</br></br>
-    								<!-- pop up fechas Ingreso y Salida del empleado -->
-    								<div id="dlg_fechas_empresa" class="modal">
-    									<div class="modal-dialog">
-    										<div class="modal-content">
-    											<div class="box-header with-border">
-    												<h3 class="box-title">Valores a Cotizar</h3>
-    												<div class="box-tools pull-right">
-    													<button type="button" class="close" data-dismiss="modal">×</button>
-    												</div><!-- /.box-tools -->
-    											</div><!-- /.box-header -->
-    											<div class="box-body" style="display: block;">										
-    												<div class="form-group">
-    													<label for="cantidad" class="col-md-4 col-sm-3 control-label"><span class="text-danger">*</span> Cedula:</label>
-    													<div class="col-md-8 col-sm-5"><input type="text" class="form-control" id="cedula" name="cedula" value="" placeholder="Cedula"></div>
-    												</div>						
-    												<div class="form-group">
-    													<label for="rubro" class="col-md-4 col-sm-3 control-label"><span class="text-danger">*</span> Nombres y Apellidos:</label>
-    													<div class="col-md-8 col-sm-5"><input type="text" class="form-control" id="nombre" name="nombre" value="" placeholder="Nombres del protector"></div>
-    												</div>										
-    												<div class="form-group">
-    													<label for="cantidad" class="col-md-4 col-sm-3 control-label"><span class="text-danger">*</span> Cargo:</label>
-    													<div class="col-md-8 col-sm-5"><input type="text" class="form-control" id="cargo" name="cargo" value="" placeholder="Cargo"></div>
-    												</div>
-    												<div class="form-group">
-    													<label for="monto" class="col-md-4 col-sm-3 control-label"><span class="text-danger">*</span> Telefono:</label>
-    													<div class="col-md-8 col-sm-5"><input type="text" class="form-control" id="telefono" name="telefono" value="" placeholder="0909090909"></div>
-    												</div>
-    											</div>
-    											<div class="modal-footer">
-    												<button id="agregar_fechas_empresa" class="btn btn-success">
-    													<span class="glyphicon glyphicon-floppy-disk"></span> Grabar
-    												</button>
-    												<button type="button" class="btn btn-danger" data-dismiss="modal">
-    													<span class="glyphicon glyphicon-remove"> </span> Cancelar
-    												</button>
-    												<div id="finiquito"></div>
-    											</div>
-    										</div> <!-- /.modal-content -->
-    									</div> <!-- /.modal-dialog -->
-    								</div> <!--/ END modal -->	
-    								<div class="row">						
-    									<div class="col-md-12">
-    										<!--- Datos de Liquidacion --->
-    										<table id="viewBitacora" class="table table-bordered table-hover">
-    											<thead>
-    												<tr>
-    													<th style="width: 12%"><div align="center">NRO.</div></th>
-    													<th style="width: 20%"><div align="center">CARGO</div></th>
-    													<th><div align="center">APELLIDOS Y NOMBRE</div></th>
-    													<th style="width: 20%"><div align="center">CEDULA</div></th>
-    													<th style="width: 20%"><div align="center">TELEFONO</div></th>
-    												</tr>
-    											</thead>
-    											<tbody>
-    												<?php
-    												if($idcotizacion == NULL){
-    												    //No hay Acciones
-    												}else{
-    													$users = CotizacionData::getDatos($idcotizacion);		
-    													$resultado = count($users); 
-    													
-    													$i=1;
-    													if($resultado > 0){
-    														foreach($users as $tables) {
-    															echo '<tr>';
-    																echo '<td><div align="center">'.$i.'&nbsp;&nbsp;<a href="index.php?view=conductar&borrar='.$tables->id.'&id='.$idcotizacion.'" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i></a></div></td>';
-    																echo '<td>'.$tables->description.'</td>';
-    																echo '<td>'.$tables->name.'</td>';
-    																echo '<td><div align="center">'.$tables->idcard.'</div></td>';
-    																echo '<td><div align="center">'.$tables->phone.'</div></td>';
-    															echo '</tr>';																
-    															$i++;
-    														}
-    													}
-    												} ?>
-    											</tbody>
-    										</table>								
-    									</div>
-    								</div>
-    							</div>
-    						</div>
-    					</div>
-    				</div>			
-    			</div>
-    		</div>
-      	</form>
-    </div>
+<section id="main" role="main" style="padding: 1.5rem !important;">
+	<form class="form-horizontal" method="post" id="addconducta" name="addconducta" action="<?php echo $_SESSION["url"]; ?>conductar" role="form">
+		<input type="hidden" id="tarea_id" name="tarea_id" value="<?php echo $_SESSION["idtarea"]; ?>">
+		<div class="callout callout-danger" style="margin-bottom: 0!important;">
+			<button type="submit" class="btn btn-success pull-right"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar </button>
+			<h4><strong><i class="fa fa-bullhorn"></i> Importante...!</strong></h4>
+			Los campos obligatorios estan marcados con asteriscos rojo <span class="text-danger">*</span>
+		</div></br>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Informaci&oacute;n del cliente</h3>
+			</div>
+			<div class="panel-body">
+				<div class="form-group" <?php if($_SESSION["idrol"] < 3) echo ''; else echo 'style="display:none;"'; ?>>
+					<label for="id_grupo" class="col-md-2 control-label">Grupo:</label>
+					<div class="col-md-4">
+						<select id="id_grupo" name="grupo" class="form-control">
+							<option value="0">--- SELECCIONE UN GRUPO ---</option><?php							
+							foreach($grupos as $grupo):?>
+								<option value="<?php echo $grupo->id; ?>"><?php echo $grupo->name; //utf8_encode() ?></option> <?php 
+							endforeach; ?>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="id_persona" class="col-sm-2 control-label"> Responsable:</label>
+					<div class="col-md-4">
+						<select class="select-input form-control" id="id_persona" name="persona">
+							<option value="0" selected="selected"> Selecione... </option>
+							<?php
+								foreach($users as $user): 
+									if($user->id == $tarea->idperson) $cadena = 'selected="selected"'; else $cadena = '';?>
+									<option value="<?php echo $user->id; ?>" <?php echo $cadena; ?>><?php echo $user->name.' '.$user->lastname; //utf8_encode() ?></option>
+								<?php endforeach; ?>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="asunto" class="col-md-2 col-sm-2 control-label">Prioridad:</label>
+					<div class="col-md-4 col-sm-4">
+						<select class="select-input form-control" id="id_prioridad" name="prioridad">
+							<option value="0" <?php if($tarea->prioridad == 0) echo 'selected="selected"'; ?>> Baja </option>
+							<option value="1" <?php if($tarea->prioridad == 1) echo 'selected="selected"'; ?>> Media </option>
+							<option value="2" <?php if($tarea->prioridad == 2) echo 'selected="selected"'; ?>> Alta </option>
+						</select>
+					</div>
+					<label for="ini_fec" class="col-md-2 col-sm-2 control-label">Fecha Maxima:</label>
+					<div class="col-md-4 col-sm-4">
+						<div class="input-group date form_date col-md-2 col-sm-6" data-date-format="yyyy-mm-dd">
+							<input type="date" class="form-control" id="ini_fec" name="ini_fec" value="<?php echo $tarea->fecha; ?>" required title="Debe de ser una fecha válida">
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="asunto" class="col-sm-2 control-label"><span class="text-danger">*</span> Asunto:</label>
+					<div class="col-sm-4">
+						<input class="text-field form-control input-sm" id="asunto" name="asunto" type="text" value="<?php echo $tarea->asunto; ?>" placeholder="Asunto de la Tarea" required>
+					</div>
+				</div>
+				<div class="form-group">
+				<label for="id_descripcion" class="col-sm-2 col-sm-4 control-label"><span class="text-danger">*</span> Descripción:</label>
+				<div class="col-md-4">
+					<textarea class="form-control input-sm" id="id_descripcion" name="descripcion" rows="4" required placeholder="Ingrese la descripción de la tarea"><?php echo $tarea->descripcion; ?></textarea>
+					</div>
+				</div>
+				</br></br>
+				<div class="panel panel-default" <?php if(isset($_SESSION["idtarea"]) && $_SESSION["idtarea"] > 0) echo ''; else echo 'style="display:none;"'; ?>>
+					<ul class="nav nav-tabs">
+						<li class="active">
+							<a href="#tab_personal" data-toggle="tab" aria-expanded="false">
+								<b>Personal</b>
+							</a>
+						</li>
+					</ul>
+					<div class="panel-body">
+						<!-- tabs content -->
+						<div class="tab-content panel">
+							<div class="tab-pane active" id="tab_personal">
+								<button id="btn_cargar_fechas_empresa" type="button" data-toggle="modal" data-target="#dlg_fechas_empresa" class="btn btn-sm btn-primary mb5" aria-label="">
+									<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+									Agregar/Modificar
+								</button>									
+								</br></br>
+								<!-- pop up fechas Ingreso y Salida del empleado -->
+								<div id="dlg_fechas_empresa" class="modal fade" tabindex="-1" role="dialog">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+												<h4 class="modal-title">Descripción de la Tarea</h4>
+											</div>
+											<div class="modal-body">
+												<div class="form-group">
+													<label for="rubro"><span class="text-danger">*</span> Descripción:</label>
+													<textarea class="form-control" id="rubro" name="rubro" rows="4" required placeholder="Ingrese la descripción de la tarea"></textarea>
+												</div>										
+												<div class="form-group">
+													<label for="fechaTarea"><span class="text-danger">*</span> Fecha:</label>
+													<input type="date" class="form-control" id="fechaTarea" name="fechaTarea" required title="Debe de ser una fecha válida">
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button id="agregar_fechas_empresa" type="button" class="btn btn-success">
+													<span class="glyphicon glyphicon-floppy-disk"></span> Grabar
+												</button>
+												<button type="button" class="btn btn-danger" data-dismiss="modal">
+													<span class="glyphicon glyphicon-remove"> </span> Cancelar
+												</button>
+												<div id="finiquito"></div>
+											</div>
+										</div> <!-- /.modal-content -->
+									</div> <!-- /.modal-dialog -->
+								</div> <!--/ END modal -->	
+								<div class="row">						
+									<div class="col-md-12">
+										<!--- Datos de Liquidacion --->
+										<table id="viewBitacora" class="table table-bordered table-hover">
+											<thead>
+												<tr>
+													<th style="width: 12%"><div align="center">NRO.</div></th>
+													<th style="width: 20%"><div align="center">CARGO</div></th>
+													<th><div align="center">APELLIDOS Y NOMBRE</div></th>
+													<th style="width: 20%"><div align="center">CEDULA</div></th>
+													<th style="width: 20%"><div align="center">TELEFONO</div></th>
+												</tr>
+											</thead>
+											<tbody>
+												<?php
+												if($_SESSION["idtarea"] == NULL){
+													//No hay Acciones
+												}else{
+													$users = TimelineData::getDetalle($_SESSION["idtarea"]);		
+													$resultado = count($users); 
+													
+													$i=1;
+													if($resultado > 0){
+														foreach($users as $tables) {
+																echo '<tr>';
+																	echo '<td><div align="center">'.$i.'&nbsp;&nbsp;<a href="index.php?view=conductar&borrar='.$tables->id.'&id='.$_SESSION['idtarea'].'" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i></a></div></td>';
+																echo '<td>'.$tables->description.'</td>';
+																echo '<td>'.$tables->name.'</td>';
+																echo '<td><div align="center">'.$tables->idcard.'</div></td>';
+																echo '<td><div align="center">'.$tables->phone.'</div></td>';
+															echo '</tr>';																
+															$i++;
+														}
+													}
+												} ?>
+											</tbody>
+										</table>								
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>			
+			</div>
+		</div>
+	</form>
 </section>
 <script>
+    // Verificar que el elemento existe antes de usarlo
     var element = document.getElementById("sidai");
+    if(element) {
+        element.classList.add("sidebar-collapse");
+    }
+    document.title = "Near Solution | Registro de las tareas";
 
-    element.classList.add("sidebar-collapse");
-    document.title = "Near Solution | Registro de los Salvoconductos";
+	// Inicializar datepicker si existen elementos con esa clase
+	if($('.datepicker').length > 0) {
+		$('.datepicker').datepicker({		
+			locale: 'es',
+	        daysOfWeekDisabled: [0, 6],
+	        format: 'DD/MM/YYYY',
+	        useCurrent:true
+		});
+	}
 	
-	$('.datepicker').datepicker({		
-		locale: 'es',
-        daysOfWeekDisabled: [0, 6],
-        format: 'DD/MM/YYYY',
-        useCurrent:true
-	});
-	
-    $(function(){
-        $("#agregar_fechas_empresa").click(function(e){
-            e.preventDefault();
-            $cotizacion = $('#cotizacion_id').val();
-			$cedula = $('#cedula').val();			
-			$nombre = $('#nombre').val();
-			$cargo = $('#cargo').val();
-			$telefono = $('#telefono').val();
-			
-			if($nombre == '' || $cedula == '' || $cargo == '' || $telefono == ''){
-				sweetAlert('Errores pendientes...!!!', 'Debe seleccionar todos los campos para continuar', 'error');
-			}else{
-				$.ajax({
-					type: "POST",
-					url: "ajax/salvar.php?cotizacion="+$cotizacion+"&cedula="+$cedula+"&nombre="+$nombre+"&cargo="+$cargo+"&telefono="+$telefono,
-					success: function(data) {
-						/* Cargamos finalmente el contenido deseado */
-						window.location="index.php?view=conductar&id="+$cotizacion;
-					}
-				});
-			} 
-
+    // Usar delegación de eventos - más robusto
+    $(document).on('click', '#agregar_fechas_empresa', function(e){
+        e.preventDefault();
+        console.log('✓ Botón guardar clickeado');
+        
+        // Obtener valores de la modal
+        var tareas = $('#tarea_id').val();
+        var rubro = $('#rubro').val().trim();
+        var fechaTarea = $('#fechaTarea').val().trim();
+        
+        console.log('📋 Datos:', {tareas, rubro, fechaTarea});
+        
+        // Validar que los campos estén llenos
+        if(tareas == '' || rubro == '' || fechaTarea == ''){
+            console.warn('⚠️ Campos vacíos');
+            sweetAlert('Errores pendientes...!!!', 'Debe llenar todos los campos para continuar', 'error');
             return false;
-        }) 
+        }
+        
+        // Enviar datos por POST
+        $.ajax({
+            type: "POST",
+                url: "/bitacora/ajax/guardarSubtarea.php",
+            data: {
+                tareas: tareas,
+                rubro: rubro,
+                fechaTarea: fechaTarea
+            },
+            dataType: 'json',
+            success: function(response) {
+                console.log('✅ Respuesta exitosa:', response);
+                if(response.success){
+                    sweetAlert('Éxito', 'Subtarea grabada correctamente', 'success');
+                    // Limpiar campos de la modal
+                    $('#rubro').val('');
+                    $('#fechaTarea').val('');
+                    // Cerrar modal
+                    $('#dlg_fechas_empresa').modal('hide');
+                    // Esperar a que se cierre la modal antes de recargar
+                    setTimeout(function(){
+                        window.location = "index.php?view=conductar&id=" + tareas;
+                    }, 500);
+                } else {
+                    console.error('❌ Error del servidor:', response.error);
+                    sweetAlert('Error', response.error || 'No se pudo grabar la subtarea', 'error');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('❌ Error AJAX:', {status, error, xhr});
+                console.error('Respuesta:', xhr.responseText);
+                sweetAlert('Error', 'Error de conexión: ' + status, 'error');
+            }
+        });
     });
 </script>

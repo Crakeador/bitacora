@@ -64,7 +64,7 @@ if(count($_POST)>0){
 		<small><?php echo $mensaje; ?></small>
 	</h1>
 	<ol class="breadcrumb">
-		<li><a href="./personas"><i class="fa fa-database"></i> Asignacion </a></li>
+		<li><a href="<?php echo $_SESSION['url']; ?>personas"><i class="fa fa-database"></i> Asignacion </a></li>
 		<li class="active"><?php echo $enlaces; ?></li>
 	</ol>
 </section>
@@ -77,7 +77,7 @@ if(count($_POST)>0){
 				- Los campos obligatorios estan marcados con asteriscos rojo <span class="text-danger">*</span>
 			</p>
 			<!-- START panel -->
-			<form class="form-horizontal" method="post" id="addproduct" action="index.php?view=opeasi.personal" role="form">
+			<form class="form-horizontal" method="post" id="addproduct" action="<?php echo $_SESSION['url']; ?>persona" role="form">
 		        <input type="hidden" id="servicio" name="servicio" value="<?php echo $servicio; ?>">
 				<div class="panel panel-default">
 					<div class="panel-heading">
@@ -92,7 +92,7 @@ if(count($_POST)>0){
 						            echo '<option value="0"> -- SELECCIONE -- </option>';
 					                foreach($puestos as $tables) {
 										if($tables->id == $lugar->idservicio) $valor = 'selected'; else $valor = '';
-										echo '<option value="'.$tables->id.'" '.$valor.'>'.$tables->descripcion.'</option>';
+										echo '<option value="'.$tables->id.'" '.$valor.'>'.$tables->codigo.' ('.$tables->descripcion.') </option>';
 									}
 									echo '</select>';
 		                        ?>

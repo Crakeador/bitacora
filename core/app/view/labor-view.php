@@ -142,7 +142,7 @@ if(count($_POST)>0){
 								</div>
 							</div>
         					<div class="form-group">
-        						<label for="id_active" class="col-sm-2 control-label"> Prioridad:</label>
+        						<label for="id_active" class="col-sm-2 control-label"> Estado de la tarea:</label>
         						<div class="col-md-4">
         							<select class="select-input form-control" id="id_active" name="id_active">
         								<option value="4"> Ejecutado </option>

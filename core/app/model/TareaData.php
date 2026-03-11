@@ -27,7 +27,6 @@ class TareaData {
 		Executor::doit($sql);
 	}
 
-// part 2
 	public function update(){
 		$sql = "update ".self::$tablename." set title=\"$this->title\",description=\"$this->description\",due_date=\"$this->due_date\" where id=$this->id";
 		Executor::doit($sql);
@@ -52,5 +51,3 @@ class TareaData {
 	}
 
 }
-
-?>

@@ -3,15 +3,19 @@
 if(!isset($_SESSION["user_id"])){  Core::redir("./");  }//si no hay sesion redirecciona al login
 
 if(isset($_SESSION["idrol"]) && $_SESSION["idrol"] == 4){
-	$totalLlam = ComercialData::getNull($_SESSION['user_id']);
+	$totalPros = ComercialData::getNull($_SESSION['user_id']);
 	$totalLlam = ComercialData::getTotal('Llamada', $_SESSION['user_id']);
 	$totalMail = ComercialData::getTotal('Mailing', $_SESSION['user_id']);
 	$totalVisi = ComercialData::getTotal('Visita', $_SESSION['user_id']);
+	$totalGana = ComercialData::getTotal('Ganada', $_SESSION['user_id']);
+	$totalPerd = ComercialData::getTotal('Perdida', $_SESSION['user_id']);
 }else{
 	$totalPros = ComercialData::getNull();
 	$totalLlam = ComercialData::getTotal('Llamada');
 	$totalMail = ComercialData::getTotal('Mailing');
 	$totalVisi = ComercialData::getTotal('Visita');
+	$totalGana = ComercialData::getTotal('Ganada');
+	$totalPerd = ComercialData::getTotal('Perdida');
 }
 
 if(isset($_GET['id'])){	
@@ -52,13 +56,19 @@ if(isset($_GET['id'])){
 				<a href="#tab_prospecto" data-toggle="tab" aria-expanded="false"><b>Prospectos</b></a>
 			</li>			
 			<li>
-				<a href="#tab_llamadas" data-toggle="tab" aria-expanded="false"><b>Llamadas</b>&nbsp;&nbsp;<span data-toggle="tooltip" title="" class="badge bg-green" data-original-title="Agentes activos"><?php echo $totalLlam->total; ?></span></a>
+				<a href="#tab_llamadas" data-toggle="tab" aria-expanded="false"><b>Llamadas</b>&nbsp;&nbsp;<span data-toggle="tooltip" title="" class="badge bg-green" data-original-title="Listado de llamadas"><?php echo $totalLlam->total; ?></span></a>
 			</li>
 			<li>
-				<a href="#tab_mailing" data-toggle="tab" aria-expanded="false"><b>Mailing</b>&nbsp;&nbsp;<span data-toggle="tooltip" title="" class="badge bg-red" data-original-title="Agentes activos"><?php echo $totalMail->total; ?></span></a>
+				<a href="#tab_mailing" data-toggle="tab" aria-expanded="false"><b>Mailing</b>&nbsp;&nbsp;<span data-toggle="tooltip" title="" class="badge bg-red" data-original-title="Listado de Mailing"><?php echo $totalMail->total; ?></span></a>
 			</li>
 			<li>
-				<a href="#tab_visita" data-toggle="tab" aria-expanded="false"><b>Visitas</b>&nbsp;&nbsp;<span data-toggle="tooltip" title="" class="badge bg-yellow" data-original-title="Agentes activos"><?php echo $totalVisi->total; ?></span></a>
+				<a href="#tab_visita" data-toggle="tab" aria-expanded="false"><b>Visitas</b>&nbsp;&nbsp;<span data-toggle="tooltip" title="" class="badge bg-yellow" data-original-title="Listado de Visitas"><?php echo $totalVisi->total; ?></span></a>
+			</li>
+			<li>
+				<a href="#tab_ganada" data-toggle="tab" aria-expanded="false"><b>Ganadas</b>&nbsp;&nbsp;<span data-toggle="tooltip" title="" class="badge bg-blue" data-original-title="Contrados Ganados"><?php echo $totalGana->total; ?></span></a>
+			</li>
+			<li>
+				<a href="#tab_perdida" data-toggle="tab" aria-expanded="false"><b>Perdidas</b>&nbsp;&nbsp;<span data-toggle="tooltip" title="" class="badge bg-red" data-original-title="Contrados Perdidos"><?php echo $totalPerd->total; ?></span></a>
 			</li>
 		</ul>
 		<div class="box-body mailbox-messages">		
@@ -79,9 +89,9 @@ if(isset($_GET['id'])){
 						<tbody>
 							<?php
 								if($_SESSION['idrol'] == 3){ // Si es administrador ve todos los clientes
-									$client = ComercialData::getNulo();
+									$client = ComercialData::getTodos();
 								}else{
-									$client = ComercialData::getNulo($_SESSION['user_id']);
+									$client = ComercialData::getTodos($_SESSION['user_id']);
 								}
 
 								// Crea tabla de Ventas
@@ -116,17 +126,19 @@ if(isset($_GET['id'])){
 								<th>Contacto</th>
 								<th>E-Mail</th>
 								<th>Observacion</th>
+								<th>Monto</th>
 							</tr>
 						</thead>
 						<tbody>
 							<?php
 								if($_SESSION['idrol'] == 3){ // Si es administrador ve todos los clientes
 									echo "Administrador";
-									$client1 = ComercialData::getAll(1, "Llamada");
+									$client1 = ComercialData::getAll(0, "Llamada");
 								}else{
 									echo "Agente";
 									$client1 = ComercialData::getLike("Llamada", $_SESSION['user_id']);
 								}
+								$total = 0;
 
 								// Crea tabla de Ventas
 								foreach($client1 as $tables) {
@@ -142,10 +154,26 @@ if(isset($_GET['id'])){
 										echo '<td><b>'.$tables->contacto.'</b></td>';
 										echo '<td>'.$tables->email.'</td>';
 										echo '<td>'.$tables->observacion.'</br>Actualizado el: '.$tables->update_at.'</td>';
+										if($tables->monto == 0)
+											echo '<td>No tiene cotizaciones</td>';
+										else
+											echo '<td>Producto: '.$tables->producto.'</br>Monto: '.number_format($tables->monto, 2, ',', '.').'</td>';
 									echo '</tr>';
+									$total += $tables->monto;
 								}
 							?>
 						</tbody>
+						<tfooter>
+							<tr>
+								<th width="10%">&nbsp;&nbsp</th>
+								<th>&nbsp;&nbsp</th>
+								<th>&nbsp;&nbsp</th>
+								<th>&nbsp;&nbsp</th>
+								<th>&nbsp;&nbsp</th>
+								<th>Total</th>
+								<th align="right"><?php echo number_format($total, 2, ',', '.'); ?></th>
+							</tr>
+						</tfooter>
 					</table>
 				</div>
 				<div class="tab-pane" id="tab_mailing">
@@ -158,15 +186,17 @@ if(isset($_GET['id'])){
 								<th>Contacto</th>
 								<th>E-Mail</th>
 								<th>Observacion</th>
+								<th>Monto</th>
 							</tr>
 						</thead>
 						<tbody>
 							<?php
 								if($_SESSION['idrol'] == 3){ // Si es administrador ve todos los clientes
-									$client2 = ComercialData::getAll(1, "Mailing");
+									$client2 = ComercialData::getAll(0, "Mailing");
 								}else{
 									$client2 = ComercialData::getLike("Mailing", $_SESSION['user_id']);
 								}
+								$total = 0;
 
 								// Crea tabla de Ventas
 								foreach($client2 as $tables) {
@@ -182,10 +212,26 @@ if(isset($_GET['id'])){
 										echo '<td><b>'.$tables->contacto.'</b></td>';
 										echo '<td>'.$tables->email.'</td>';
 										echo '<td>'.$tables->observacion.'</br>Actualizado el: '.$tables->update_at.'</td>';
+										if($tables->monto == 0)
+											echo '<td>No tiene cotizaciones</td>';
+										else
+											echo '<td>Producto: '.$tables->producto.'</br>Monto: '.number_format($tables->monto, 2, ',', '.').'</td>';
 									echo '</tr>';
+									$total += $tables->monto;
 								}
 							?>
 						</tbody>
+						<tfooter>
+							<tr>
+								<th width="10%">&nbsp;&nbsp</th>
+								<th>&nbsp;&nbsp</th>
+								<th>&nbsp;&nbsp</th>
+								<th>&nbsp;&nbsp</th>
+								<th>&nbsp;&nbsp</th>
+								<th>Total</th>
+								<th align="right"><?php echo number_format($total, 2, ',', '.'); ?></th>
+							</tr>
+						</tfooter>
 					</table>
 				</div>
 				<div class="tab-pane" id="tab_visita">
@@ -198,15 +244,17 @@ if(isset($_GET['id'])){
 								<th>Contacto</th>
 								<th>E-Mail</th>
 								<th>Observacion</th>
+								<th>Monto</th>
 							</tr>
 						</thead>
 						<tbody>
 							<?php
 								if($_SESSION['idrol'] == 3){ // Si es administrador ve todos los clientes
-									$client3 = ComercialData::getAll(1, "Visita");
+									$client3 = ComercialData::getAll(0, "Visita");
 								}else{
 									$client3 = ComercialData::getLike("Visita", $_SESSION['user_id']);
 								}
+								$total = 0;
 
 								// Crea tabla de Ventas
 								foreach($client3 as $tables) {
@@ -222,10 +270,140 @@ if(isset($_GET['id'])){
 										echo '<td><b>'.$tables->contacto.'</b></td>';
 										echo '<td>'.$tables->email.'</td>';
 										echo '<td>'.$tables->observacion.'</br>Actualizado el: '.$tables->update_at.'</td>';
-									echo '</tr>';
+										if($tables->monto == 0)
+											echo '<td>No tiene cotizaciones</td>';
+										else
+											echo '<td>Producto: '.$tables->producto.'</br>Monto: '.number_format($tables->monto, 2, ',', '.').'</td>';
+									echo '</tr>';									
+									$total += $tables->monto;
 								}
 							?>
 						</tbody>
+						<tfooter>
+							<tr>
+								<th width="10%">&nbsp;&nbsp</th>
+								<th>&nbsp;&nbsp</th>
+								<th>&nbsp;&nbsp</th>
+								<th>&nbsp;&nbsp</th>
+								<th>&nbsp;&nbsp</th>
+								<th>Total</th>
+								<th align="right"><?php echo number_format($total, 2, ',', '.'); ?></th>
+							</tr>
+						</tfooter>
+					</table>
+				</div>
+				<div class="tab-pane" id="tab_ganada">
+					<table id="viewDotar" class="table table-bordered table-hover">
+						<thead>
+							<tr>
+								<th width="10%">RUC</th>
+								<th>Cliente</th>
+								<th>Telefono</th>
+								<th>Contacto</th>
+								<th>E-Mail</th>
+								<th>Observacion</th>
+								<th>Monto</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php
+								if($_SESSION['idrol'] == 3){ // Si es administrador ve todos los clientes
+									$client3 = ComercialData::getAll(0, "Ganada");
+								}else{
+									$client3 = ComercialData::getLike("Ganada", $_SESSION['user_id']);
+								}
+								$total = 0;
+								// Crea tabla de Ventas
+								foreach($client3 as $tables) {
+									echo '<tr>';
+										echo '<td><div align="center">';									
+											echo $tables->ruc.'</br>';
+												echo '<a href="./informa/'.$tables->id.'" class="btn btn-xs btn-warning"><i class="fa fa-eye"></i></a>';
+												echo '<a href="./venta/'.$tables->id.'" class="btn btn-xs btn-success"><i class="fa fa-edit"></i></a>';
+												echo '<button type="button" class="btn btn-xs btn-danger btn-sm" onClick="btn_EnviarOnClick(\''.$tables->id.'\', \''.$tables->is_active.'\');"><i class="fa fa-trash"></i></button>';
+										echo '</div></td>';
+										echo '<td>'.$tables->nombre.'</td>';
+										echo '<td><div align="center">'.$tables->telefono1.'</div></td>';
+										echo '<td><b>'.$tables->contacto.'</b></td>';
+										echo '<td>'.$tables->email.'</td>';
+										echo '<td>'.$tables->observacion.'</br>Actualizado el: '.$tables->update_at.'</td>';
+										if($tables->monto == 0)
+											echo '<td>No tiene cotizaciones</td>';
+										else
+											echo '<td>Producto: '.$tables->producto.'</br>Monto: '.number_format($tables->monto, 2, ',', '.').'</td>';
+									echo '</tr>';
+									$total += $tables->monto;
+								}
+							?>
+						</tbody>
+						<tfooter>
+							<tr>
+								<th width="10%">&nbsp;&nbsp</th>
+								<th>&nbsp;&nbsp</th>
+								<th>&nbsp;&nbsp</th>
+								<th>&nbsp;&nbsp</th>
+								<th>&nbsp;&nbsp</th>
+								<th>Total</th>
+								<th align="right"><?php echo number_format($total, 2, ',', '.'); ?></th>
+							</tr>
+						</tfooter>
+					</table>
+				</div>
+				<div class="tab-pane" id="tab_perdida">
+					<table id="viewDotar" class="table table-bordered table-hover">
+						<thead>
+							<tr>
+								<th width="10%">RUC</th>
+								<th>Cliente</th>
+								<th>Telefono</th>
+								<th>Contacto</th>
+								<th>E-Mail</th>
+								<th>Observacion</th>
+								<th>Monto</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php
+								if($_SESSION['idrol'] == 3){ // Si es administrador ve todos los clientes
+									$client3 = ComercialData::getAll(0, "Perdida");
+								}else{
+									$client3 = ComercialData::getLike("Perdida", $_SESSION['user_id']);
+								}
+								$total = 0;
+								// Crea tabla de Ventas
+								foreach($client3 as $tables) {
+									echo '<tr>';
+										echo '<td><div align="center">';									
+											echo $tables->ruc.'</br>';
+												echo '<a href="./informa/'.$tables->id.'" class="btn btn-xs btn-warning"><i class="fa fa-eye"></i></a>';
+												echo '<a href="./venta/'.$tables->id.'" class="btn btn-xs btn-success"><i class="fa fa-edit"></i></a>';
+												echo '<button type="button" class="btn btn-xs btn-danger btn-sm" onClick="btn_EnviarOnClick(\''.$tables->id.'\', \''.$tables->is_active.'\');"><i class="fa fa-trash"></i></button>';
+										echo '</div></td>';
+										echo '<td>'.$tables->nombre.'</td>';
+										echo '<td><div align="center">'.$tables->telefono1.'</div></td>';
+										echo '<td><b>'.$tables->contacto.'</b></td>';
+										echo '<td>'.$tables->email.'</td>';
+										echo '<td>'.$tables->observacion.'</br>Actualizado el: '.$tables->update_at.'</td>';
+										if($tables->monto == 0)
+											echo '<td>No tiene cotizaciones</td>';
+										else
+											echo '<td>Producto: '.$tables->producto.'</br>Monto: '.number_format($tables->monto, 2, ',', '.').'</td>';
+									echo '</tr>';
+									$total += $tables->monto;
+								}
+							?>
+						</tbody>
+						<tfooter>
+							<tr>
+								<th width="10%">&nbsp;&nbsp</th>
+								<th>&nbsp;&nbsp</th>
+								<th>&nbsp;&nbsp</th>
+								<th>&nbsp;&nbsp</th>
+								<th>&nbsp;&nbsp</th>
+								<th>Total</th>
+								<th align="right"><?php echo number_format($total, 2, ',', '.'); ?></th>
+							</tr>
+						</tfooter>
 					</table>
 				</div>
 			</div>

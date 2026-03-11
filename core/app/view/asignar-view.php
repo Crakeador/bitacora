@@ -12,10 +12,10 @@ $hoy = date("d-m-Y H:i:s"); $fecha = date("Y-m-d H:i:s"); $errores = ''; $_SESSI
 $ini = new DateTime(date("Y-m-d")." 07:00:00");
 $fin = new DateTime(date("Y-m-d")." 17:00:00");
 
-if(isset($_POST['id_person'])){
+if(isset($_SESSION['user_id']) && isset($_POST)) {
     $user = new BitacoraData();
     $user->idpuesto = (int) $_POST["id_localidad"];
-    $user->idperson = (int) $_POST["id_person"];
+    $user->idperson = (int) $_SESSION['user_id'];
     $user->fecha = $_POST["fecha"];
     $user->turno = $_POST["turno"];
     $user->proceso = (($_SESSION['ingreso'] == 0) ? 1: 3);
@@ -31,6 +31,7 @@ if(isset($_POST['id_person'])){
     $user->usuario_log = substr($_SESSION["name"]." ".$_SESSION["lastname"], 0, 20);
     $user->ip = $_SESSION["ip"];
 
+    var_dump($_POST);
     if(!isset($_POST["turno"])){
         $errores = 'debe de seleccionar el turno';
     }else{
@@ -41,18 +42,17 @@ if(isset($_POST['id_person'])){
                 $errores = 'debe de tomarse una foto para verificar su identidad';
             }else{
                 $image = new Upload($_FILES["image"]);
+                echo '<script>console.log("Usuario: '.$user->idperson.' - Puesto: '.$user->idpuesto.' - Ingreso: '.$user->proceso.' - Turno: '.$user->turno.' - Fecha: '.$user->fecha.'");</script>';
 
                 if($image->uploaded){
                     $image->Process("storage/ingreso/");
                     if($image->processed){
                         $user->foto1 = $image->file_dst_name;
-                        if($_POST["verifica"]==0) $prod = $user->addIMG();
                         
                         if(!isset($_FILES["foto2"]["name"])){
                             $user->foto2 = "";
                         }else{
                             $image = new Upload($_FILES["foto2"]);
-
                             if($image->uploaded){
                                 $image->Process("storage/ingreso/");
 
@@ -61,49 +61,41 @@ if(isset($_POST['id_person'])){
                                 }
                             }
                         }
-
-
-                        if(isset($_POST["short"])){
-                            $_SESSION["consigna"]=$_POST["consigna"];
-
-                            $config = new ConfigurationData();
-                            $config->id = 9;
-                            $config->val = $_POST["consigna"];
-
-                            $prod = $config->update();
-                        }
-
-                        $_SESSION['turno'] = $_POST["turno"];
-                        $_SESSION['puesto'] = (int) $_POST["id_localidad"];
-						
-                        if($_SESSION['ingreso']==0){
-                            $_SESSION['ingreso']=1;
-														
-							if($_SESSION['dispositivo'] == 1)
-								$valor = 'fotos';
-							else
-								$valor = 'novedad';
-							
-                            echo '<script>
-									 localStorage.setItem("usuario", "'.$_POST["id_person"].'");
-								 	 localStorage.setItem("puesto", "'.$_POST["id_localidad"].'");
-									 localStorage.setItem("ingreso", "'.$_SESSION['ingreso'].'");
-									 localStorage.setItem("turno", "'.$_POST["turno"].'");
-
-									 window.location = "index.php?view='.$valor.'";
-								  </script>';
-                        }else{ 
-                            $_SESSION['ingreso']=2;
-
-                            echo '<script>
-									 localStorage.removeItem("usuario");
-									 localStorage.clear();
-									
-									 window.location = "index.php?view=logout";
-								 </script>';
-                        }
                     }
                 }
+                
+                $prod = $user->addIMG();
+
+                if(isset($_POST["short"])){
+                    $_SESSION["consigna"]=$_POST["consigna"];
+
+                    $config = new ConfigurationData();
+                    $config->id = 9;
+                    $config->val = $_POST["consigna"];
+
+                    $prod = $config->update();
+                }
+
+                $_SESSION['turno'] = $_POST["turno"];
+                $_SESSION['puesto'] = (int) $_POST["id_localidad"];						
+                $_SESSION['ingreso']=1;
+                                            
+                if($_SESSION['dispositivo'] == 1)
+                    $valor = 'fotos';
+                else
+                    if($_SESSION['id_client'] == 8)
+                        $valor = 'registro';
+                    else
+                        $valor = 'novedad';
+                
+                echo '<script>
+                            localStorage.setItem("usuario", "'.$_POST["id_person"].'");
+                            localStorage.setItem("puesto", "'.$_POST["id_localidad"].'");
+                            localStorage.setItem("ingreso", "'.$_SESSION['ingreso'].'");
+                            localStorage.setItem("turno", "'.$_POST["turno"].'");
+                            console.log("Usuario: '.$_POST["id_person"].' - Puesto: '.$_POST["id_localidad"].' - Ingreso: '.$_SESSION['ingreso'].' - Turno: '.$_POST["turno"].' - Turno: '.$_POST["valor"].'");
+                            //window.location = "'.$valor.'";
+                        </script>';
             }
         }
     }
@@ -156,7 +148,7 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
 ?> 
 <!-- Content Header (Page header) -->
 <section id="main" role="main">
-    <form class="form-horizontal" method="post" enctype="multipart/form-data" id="bitacora" name="asignar" action="index.php?view=asignar" role="form">
+    <form class="form-horizontal" method="post" enctype="multipart/form-data" id="bitacora" name="bitacora" action="<?php echo $_SESSION['url']; ?>asignar" role="form">
         <input type="hidden" id="id_person"  name="id_person"  value="<?php echo $_SESSION['user_id']; ?>">
         <input type="hidden" id="verifica"   name="verifica"   value="0">
         <input type="hidden" id="timestamp"  name="timestamp"  value="">
@@ -209,16 +201,18 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
 								</div>
 							</div>
 							<div class="form-group">
-                                <div class="col-xs-6">
+                                <div class="col-md-12 col-xs-12">
                                     <span class="text-danger">Que turno esta cubriendo?</span>
                                     <div class="radiobutton">
                                         <input type="radio" id="turno1" name="turno" value="1" <?php if($_SESSION['turno']==1) echo "checked"; ?>> Diurno &nbsp;&nbsp;
                                         <input type="radio" id="turno2" name="turno" value="2" <?php if($_SESSION['turno']==2) echo "checked"; ?>> Nocturno
                                     </div>
                                 </div>
-                                <div class="col-xs-6">
-                                    <span class="text-danger">Pasar la siguiente consigna:</span>
-                                    <input type="checkbox" name="short">
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12 col-xs-12">
+                                    <input type="checkbox" name="short">&nbsp;&nbsp;
+                                    <span class="text-danger">Pasar la siguiente consigna</span>
                                 </div>
                             </div>
 							<div class="form-group">
@@ -256,15 +250,16 @@ $puestos = UnionData::getByIdLugares($_SESSION['user_id']);
 <script>
     document.title = "Near Solucions | Ingreso del Personal";
 
-    if(localStorage.getItem("usuario") != null){
+    if(localStorage.getItem("usuario") != null && localStorage.getItem("puesto") != null && localStorage.getItem("ingreso") != null && localStorage.getItem("turno") != null){
         var usuario = localStorage.getItem("usuario");
         var puesto = localStorage.getItem("puesto");
         var ingreso = localStorage.getItem("ingreso");
         var turno = localStorage.getItem("turno");
         var verifica = document.getElementById("verifica");
+        var cadena = <?php if($_SESSION['id_client'] == 8) echo "'registro'"; else echo "'novedad'"; ?>;
 
         verifica.value = 1;
-        //window.location="index.php?view=novedad&usuario="+usuario+"&puesto="+puesto+"&ingreso="+ingreso+"&turno="+turno;
+        window.location="index.php?view="+cadena+"&usuario="+usuario+"&puesto="+puesto+"&ingreso="+ingreso+"&turno="+turno;
     }else{
         alert("No hay ningun turno abierto...!!!");
     }
