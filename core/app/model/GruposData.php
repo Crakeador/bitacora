@@ -28,7 +28,7 @@ class GruposData {
 
 	public function update(){
 		$sql = "UPDATE ".self::$tablename." SET idclient='".$this->idclient."', codigo ='".$this->codigo."', residencial ='".$this->residencial."', descripcion ='".$this->descripcion."', activado ='".$this->activado."', idlugar ='".$this->idlugar."', horas ='".$this->horas."', horario ='".$this->horario."', observacion ='".$this->observacion."',";
-		$sql .= "lunes ='".$this->lunes."', martes ='".$this->martes."', miercoles ='".$this->miercoles."', jueves ='".$this->jueves."', viernes ='".$this->viernes."', sabado ='".$this->sabado."', domingo ='".$this->domingo."', feriado ='".$this->feriado."', principal ='".$this->principal."', is_active ='".$this->is_active."', usuario_log ='".$_SESSION['user_name']."' WHERE id=$this->id"; echo $sql;
+		$sql .= "lunes ='".$this->lunes."', martes ='".$this->martes."', miercoles ='".$this->miercoles."', jueves ='".$this->jueves."', viernes ='".$this->viernes."', sabado ='".$this->sabado."', domingo ='".$this->domingo."', feriado ='".$this->feriado."', principal ='".$this->principal."', is_active ='".$this->is_active."', usuario_log ='".$_SESSION['user_name']."' WHERE id=$this->id"; 
 		Executor::doit($sql);
 	}
 

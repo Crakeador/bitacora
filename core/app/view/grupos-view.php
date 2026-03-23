@@ -93,8 +93,8 @@ if(isset($_GET['id'])){
 						echo '<table id="viewactivo" class="table table-bordered table-hover dataTable no-footer dtr-inline" role="grid" aria-describedby="viewlista_info">';
 						  echo '<thead>';
 							echo '<tr>';                          
-							  echo '<th width="20%"><div align="center">Puesto</div></th>';
-							  echo '<th width="40%"><div align="center">Agente</div></th>';                            
+							  echo '<th width="20%"><div align="center">Grupo</div></th>';
+							  echo '<th width="40%"><div align="center">Miembro</div></th>';                            
 							  echo '<th><div align="center">Correo</div></th>';                         
 							  echo '<th width="12%"><div align="center">Activado</div></th>';
 							echo '</tr>';
@@ -112,25 +112,10 @@ if(isset($_GET['id'])){
 								}else{                 
 								  echo '<td>';
 									echo $users[$i]->departamento;
-									echo '</br>';
-									echo '<small>';
-									  echo '<a href="index.php?view=persona&id='.$users[$i]->servicio.'" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-edit"></i></a>&nbsp;';
-									  echo '<a href="index.php?view=personas&status='.$users[$i]->servicio.'" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i></a>&nbsp;';
-									  echo $users[$i]->lugar;
-									echo '</small>';
 								  echo '</td>';
 								}
 								echo '<td>';
 								  echo $users[$i]->nombre.' - '.$users[$i]->name.' - '.$users[$i]->lastname;
-								  echo '</br>';
-								  echo '<small>';
-									if($users[$i]->demanda == 0){
-									  echo '<span class="label label-success">&nbsp;&nbsp;&nbsp;&nbsp;Sin demanda&nbsp;&nbsp;&nbsp;&nbsp;</span>';
-									}else{
-									  echo '<span class="label label-danger">Esta demandado&nbsp;&nbsp;</span>';
-									}
-									echo '&nbsp;'.$users[$i]->updated_at;
-								  echo '</small>';
 								echo '</td>';
 								echo '<td>'.$users[$i]->email.'</br>'.$cadena.'</span></td>';
 								echo '<td><div align="center">'.$users[$i]->created_at.'</div></td>';

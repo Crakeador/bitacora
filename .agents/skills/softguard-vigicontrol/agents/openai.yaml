@@ -1,0 +1,4 @@
+version: 1
+display_name: SoftGuard VigiControl
+short_description: Mapea requerimientos de vigilancia, rondas y bitacoras a modulos SoftGuard y VigiControl.
+default_prompt: Usa esta skill para analizar flujos de guardias, bitacoras electronicas, rondas, hombre vivo, panico, accesos y novedades sobre SoftGuard y VigiControl.

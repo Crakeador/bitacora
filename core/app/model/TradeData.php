@@ -36,7 +36,7 @@ class TradeData {
     	
 	public function add(){
 		$sql = "INSERT INTO ".self::$tablename." (idpuesto, idperson, fecha, nacionalidad, cedula, apellidos, nombres, empresa, oficina, acompanante1, acompanante2, acompanante3, acompanante4, foto, timestamp, latitude, longitude, rangoerror, sentido, velocidad, mensaje, is_active, usuario_log, ip) 
-		            value ($this->idpuesto, $this->idperson, \"$this->fecha\", \"$this->nacionalidad\", \"$this->cedula\", \"$this->apellidos\", \"$this->nombres\", \"$this->empresa\", \"$this->oficina\", \"$this->acompanante1\", \"$this->acompanante2\", \"$this->acompanante3\", \"$this->acompanante4\", \"$this->foto\", \"$this->timestamp\", \"$this->latitude\", \"$this->longitude\", \"$this->rangoerror\", \"$this->sentido\", \"$this->velocidad\", \"$this->mensaje\", $this->is_active, \"$this->usuario_log\", \"$this->ip\")"; echo $sql;
+		            value ($this->idpuesto, $this->idperson, \"$this->fecha\", \"$this->nacionalidad\", \"$this->cedula\", \"$this->apellidos\", \"$this->nombres\", \"$this->empresa\", \"$this->oficina\", \"$this->acompanante1\", \"$this->acompanante2\", \"$this->acompanante3\", \"$this->acompanante4\", \"$this->foto\", \"$this->timestamp\", \"$this->latitude\", \"$this->longitude\", \"$this->rangoerror\", \"$this->sentido\", \"$this->velocidad\", \"$this->mensaje\", $this->is_active, \"$this->usuario_log\", \"$this->ip\")"; 
         $res = Executor::doit($sql);
 		return $res;
 	}

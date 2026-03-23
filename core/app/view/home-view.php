@@ -1,23 +1,29 @@
 <?php
 //Vista del Panel de control
-$ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
+$ano=date("Y"); $mes=date("m"); 
+$_SESSION["error"]=0; $_SESSION['ganada']=0; $_SESSION['perdida']=0; $_SESSION['ventas']=0;
 
 if($_SESSION['idrol']=='1' || $_SESSION['idrol']=='2'){
-	$events = TimelineData::getAll(30, 'milestone'); // Listado de administradores
+	//No hay datos
+	$total1 = TimelineData::getByTotal(4); 
+	$total2 = TimelineData::getByTotal(3); 
+	$total3 = TimelineData::getByTotal(2); 
+	$total4 = TimelineData::getByTotal(1);
+
+	$_SESSION['vencida'] = $total1->total;	
+	$_SESSION['terminada'] = $total2->total;
+	$_SESSION['encurso'] = $total3->total;
+	$_SESSION['activa'] = $total4->total;
 }else{
-	if($_SESSION['idrol']=='1' || $_SESSION['idrol']=='2'){
-		$events = TimelineData::getAll(30, 'milestone'); // Listado de administradores	
-	}else{
-		if($_SESSION['idrol']=='3' || $_SESSION['depart']=='4'){
-			$events = TimelineData::getTime($_SESSION['user_id'], $ano); // Listado de agentes comerciales
-			$totalLlam = ComercialData::getTotal('Llamada');
-			$totalMail = ComercialData::getTotal('Mailing');
-			$totalVisi = ComercialData::getTotal('Visita');
-			$totalGana = ComercialData::getTotal('Ganada');
-			$totalPerd = ComercialData::getTotal('Perdida'); 
-		} else{
-			print "<script>window.location='./vistas';</script>";
-		}
+	if($_SESSION['idrol']=='3' || $_SESSION['depart']=='4'){
+		$events = TimelineData::getTime($_SESSION['user_id'], $ano); // Listado de agentes comerciales
+		$totalLlam = ComercialData::getTotal('Llamada');
+		$totalMail = ComercialData::getTotal('Mailing');
+		$totalVisi = ComercialData::getTotal('Visita');
+		$totalGana = ComercialData::getTotal('Ganada');
+		$totalPerd = ComercialData::getTotal('Perdida'); 
+	} else{
+		print "<script>window.location='./vistas';</script>";
 	}
 }
 
@@ -569,9 +575,9 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 						echo '<div class="col-lg-3 col-xs-6">';
 							echo '<div class="small-box bg-aqua">';
 								echo '<div class="inner">';
-									$total1 = TimelineData::getByTotal(1);
-									echo '<h3>'.(is_array($total1) ? count($total1) : 0).'</h3>';
-									echo '<p>Tareas activas</p>';
+									$total1 = TimelineData::getByTotal(2);
+									echo '<h3>'.(is_object($total1) && isset($total1->total) ? $total1->total : 0).'</h3>';
+									echo '<p>Tareas en Curso </p>';
 								echo '</div>'; 
 								echo '<div class="icon">';
 									echo '<i class="fa fa-shopping-cart"></i>';
@@ -582,8 +588,8 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 						echo '<div class="col-lg-3 col-xs-6">';
 							echo '<div class="small-box bg-purple">';
 								echo '<div class="inner">';
-									$totalFuture = TimelineData::getNewsByFutureDate();
-									echo '<h3>'.(is_array($totalFuture) ? count($totalFuture) : 0).'</h3>';
+									$total1 = TimelineData::getByTotal(4);
+									echo '<h3>'.(is_object($total1) && isset($total1->total) ? $total1->total : 0).'</h3>';
 									echo '<p>Tareas Vencidas</p>';
 								echo '</div>';
 								echo '<div class="icon">';
@@ -595,9 +601,9 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 						echo '<div class="col-lg-3 col-xs-6">';
 							echo '<div class="small-box bg-yellow">';
 								echo '<div class="inner">';
-									$total2 = TimelineData::getByTotal(2);
-									echo '<h3>'.(is_array($total2) ? count($total2) : 0).'</h3>';
-									echo '<p>Tareas Terminadas</p>';
+									$total2 = TimelineData::getByTotal(3);
+									echo '<h3>'.(is_object($total2) && isset($total2->total) ? $total2->total : 0).'</h3>';
+									echo '<p>Tareas Ejecutadas</p>';
 								echo '</div>';
 								echo '<div class="icon">';
 									echo '<i class="fa fa-user-friends"></i>';
@@ -608,8 +614,9 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 						echo '<div class="col-lg-3 col-xs-6">'; 
 							echo '<div class="small-box bg-red">';
 								echo '<div class="inner">';
-									echo '<h3>'.count(CategoryData::getAll()).'</h3>';
-									echo '<p>Citas de Hoy</p>';
+									$total2 = TimelineData::getByTotal(1);
+									echo '<h3>'.(is_object($total2) && isset($total2->total) ? $total2->total : 0).'</h3>';
+									echo '<p>Tareas Asignadas</p>';
 								echo '</div>';
 								echo '<div class="icon">';
 									echo '<i class="fa fa-dolly"></i>';
@@ -765,6 +772,56 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 						</span>
 					</div>
 					<!-- /.info-box-content -->
+				</div>
+			</div>
+		</div> <?php
+	}
+
+	if($_SESSION["depart"] == 2 && $_SESSION["idrol"] == 2) { ?>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="box box-default">
+					<div class="box-header with-border">
+						<h3 class="box-title">Grafico de Tareas</h3>
+						<div class="box-tools pull-right">
+							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+							<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+						</div>
+					</div>
+					<!-- /.box-header -->
+					<div class="box-body">
+						<div class="row">
+							<div class="col-md-8"><?php
+								if($_SESSION['activa'] > 0) { ?>
+									<div class="card-body" id="donutContainer">
+										<canvas id="pieChart" height="285" width="305" style="width: 244px; height: 228px;"></canvas>
+									</div><?php 
+								}else{ ?>
+									<div class="chart-responsive">
+										<img src="assets/images/no-data.jpg" class="img-responsive" style="width:60%;height:200px;margin: auto;" alt="No hay datos para mostrar">
+										<h3> No hay datos que mostrar</h3>
+									</div><?php 
+								} ?>
+							</div>	<!-- /.col -->
+							<div class="col-md-4">
+								<ul class="chart-legend clearfix">
+									<li><i class="fa fa-circle-o text-red"></i> Tareas Vencidas </li>
+									<li><i class="fa fa-circle-o text-green"></i> Tareas Ejecutadas </li>
+									<li><i class="fa fa-circle-o text-yellow"></i> Tareas en Curso</li>
+									<li><i class="fa fa-circle-o text-aqua"></i> Tareas Asignadas </li>
+								</ul>
+							</div>	<!-- /.col -->
+						</div> 	<!-- /.row -->
+					</div>	<!-- /.box-body -->
+					<div class="box-footer no-padding">
+						<ul class="nav nav-pills nav-stacked">
+							<li>
+								<a href="#">Perdidas 
+									<span class="pull-right text-yellow"><i class="fa fa-angle-left"></i> $ <?php echo $_SESSION['activas']; ?></span>
+								</a>
+							</li>
+						</ul>
+					</div>	<!-- /.footer -->
 				</div>
 			</div>
 		</div> <?php
@@ -1282,180 +1339,46 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 				<?php
 			} 
 		}
-	}
-	
-    if(isset($_SESSION['idrol'])){
-        $valor = count($events);
-        
-        if(count($events) > 0){
-    		// Crea tabla de Tareas
-            echo '<div class="row">';
-                echo '<div class="col-md-12">';
-                    echo '<ul class="timeline">';
-                        $fecha = '';
-                		foreach($events as $product) {
-                        	if($product->prioridad == 0) $prioridad = 'green'; 
-            				if($product->prioridad == 1) $prioridad = 'yellow'; 
-            				if($product->prioridad == 2) $prioridad = 'red'; 
-                			
-                			$pos = strpos($product->idperson, ',');	
-                			if ($pos === false) {
-                				if($product->idperson > 0){
-                					$nombre = UserData::getById($product->idperson)->name.' '.UserData::getById($product->idperson)->lastname;
-                				}
-                			}else{
-                			    $array = explode (',', $product->idperson);
-                			    
-                                foreach ($array as $palabra) {
-                                    $valor = (int) $palabra;
-                                    if($valor > 0)
-                                        $nombre = UserData::getById($palabra)->name.' '.UserData::getById($palabra)->lastname;
-                                }
-                			}
-            				
-            				if($product->date_event == $fecha){
-								//Error
-            				}else{
-            				    $fecha=$product->date_event;
-                                echo '<li class="time-label">';
-                                    echo '<span class="bg-red">';
-                                        echo substr($product->date_event, 0, 10); //date_format(, 'Y-m-d');
-                                    echo '</span>';
-                                echo '</li>';    				    
-            				}
-            				
-            				if($product->type == 'news') 
-            				    $tipo = 'envelope';
-            				elseif($product->type == 'image') 
-            				    $tipo = 'eyedropper';
-            				else
-            				    $tipo = 'comments';
-            				
-            				if($product->type == 'image'){
-                				if($product->prioridad == 0) $estilo = '<div class="text-yellow"><i class="fa fa-bell"></i> Su solicitud esta en espera de ser aprobada </div>';
-    							if($product->prioridad == 1) $estilo = '<div class="text-red"><i class="fa fa-bell"></i> Su solicitud fue rechazada </div>';
-    							if($product->prioridad == 2) $estilo = '<div class="text-green"><i class="fa fa-bell"></i> Su solicitud fue aprobada </div>';
-            				}else{
-                				if($product->prioridad == 0) $estilo = '<div class="text-green"><i class="fa fa-bell"></i> Prioridad: Baja &#9733; </div>';
-    							if($product->prioridad == 1) $estilo = '<div class="text-yellow"><i class="fa fa-bell"></i> Prioridad: Media &#9733; &#9733; &#9733; </div>';
-    							if($product->prioridad == 2) $estilo = '<div class="text-red"><i class="fa fa-bell"></i> Prioridad: Alta &#9733; &#9733; &#9733; &#9733; &#9733;</div>';
-            				}
-            				$descripcion = OperationTypeData::getLike('id', $product->porcentaje);
-            				
-                            echo '<li>';
-                                echo '<i class="fa fa-'.$tipo.' bg-'.$prioridad.'"></i>';
-                                echo '<div class="timeline-item">';
-                                    if($product->type == 'image') {
-                                        if($product->date_pass == '')
-                                            echo '<span class="time"><i class="fa fa-clock"></i> Aprobado el: '.$product->update_at.'</span>';
-                                        else
-                                            echo '<span class="time"><i class="fa fa-clock"></i> Solicitado el: '.$product->created_at.'</span>';
-                                    }else{
-                                        if($product->date_pass == '')
-                                            echo '<span class="time"><i class="fa fa-clock"></i> Finalizada el: '.$product->update_at.'</span>';
-                                        else
-                                            echo '<span class="time"><i class="fa fa-clock"></i> Asignada el: '.$product->created_at.'</span>';
-                                    }
-                                    
-                                    if($product->type == 'image') $cadena = 'Solicitud Permiso de:'; else $cadena = 'Tarea asignada a:';
-                                    echo '<h3 class="timeline-header">'.$cadena.' '.$nombre.'&nbsp;&nbsp;'; //<a href="#"></a>
-                                    if($product->type == 'image') echo '<small>Solicitado a: '.$product->quien_asigna.'</small></h3>'; else echo '<small>Asignado por: '.$product->quien_asigna.'</small></h3>';
-                                    echo '<div class="timeline-body">';
-                                        if($product->type == 'image') echo 'Solitiud de permiso por: '.$descripcion->name.'</br>';
-                                        echo 'Asunto: '.$product->asunto.'</br>';
-										echo '<strong>Descripci&oacute;n: </strong></br>';
-										echo $product->title.'</br>';
-                                        if($product->type == 'image') {
-                                            //Sin Acciones
-                                        }
-                                        echo $estilo.'</br>'; 
-                                        if($product->body != '')
-                                            $info = $nombre.' verifico su tarea </br>';
-                                        else
-                                            $info = 'Verificado '.$product->vistas.' veces</br>';
-                                        
-                                        if($product->body != ''){
-                                            echo '<div class="direct-chat-msg">';
-                                                echo '<div class="direct-chat-info clearfix">';
-                                                    echo '<span class="direct-chat-name pull-left">'.$info.'</span>';
-                                                    echo '<span class="direct-chat-timestamp pull-right"> <i class="fa fa-clock"></i> Reportada el: '.$product->created_at.'</span>';
-                                                echo '</div>';
-                                                echo '<img class="direct-chat-img" src="assets/images/avatar/user01.png" alt="message user image">';
-                                                echo '<div class="direct-chat-text">';
-                                                    echo $product->body;
-                                                echo '</div>';
-                                            echo '</div>';
-                                        }
-                                    echo '</div>';
-                                    if($product->body != '')
-                                        $comentario = 'Modificar tarea';
-                                    else
-                                        $comentario = 'Finalizar tarea';
-                                        
-                                    echo '<div class="timeline-footer">';
-                                        if($product->type == 'image')
-                                            if($product->prioridad == 2)
-                                                echo '<p>Ya fue procesada su solicitud</p>';
-                                            else
-                                                echo '<a class="btn btn-primary btn-xs" href="./autoriza/'.$product->id.'"><i class="fa fa-fa-thumbs-o-up"> </i> Autorizar Solicitud</a>&nbsp;&nbsp;';
-                                        else
-                                            echo '<a class="btn btn-primary btn-xs" href="./edittask/'.$product->id.'"><i class="fa fa-fa-thumbs-o-up"> </i>'.$comentario.'</a>&nbsp;&nbsp;';
-                                    echo '</div>';
-                                echo '</div>';
-                            echo '</li>';
-                		}
-                		echo '<li>';
-                            echo '<i class="fa fa-clock-o bg-gray"></i>';
-                        echo '</li>';
-                	echo '</ul>';
-                echo '</div>';
-            echo '</div>';
-        }
-	}
+	}	
 echo '</section>';
-?>
+if($_SESSION['idrol'] == 2) { ?>
 <!-- Chart.js (incluido si AdminLTE ya trae una versión; si no, usa este CDN) -->
 <script src="https://adminlte.io/themes/AdminLTE/bower_components/chart.js/Chart.js"></script>
 <!-- Script principal (todo en este archivo) -->
 <script>
-    var element = document.getElementById("sidai");
-
-    element.classList.add("sidebar-collapse");
-    document.title = "Near Solution | Panel de Control";
-
 	document.addEventListener('DOMContentLoaded', function () {
 		// -------------
 		// - PIE CHART -
 		// -------------
 		// Get context with jQuery - using jQuery's .get() method.
 		var pieChartCanvas = $('#pieChart').get(0).getContext('2d');
-		var pieChart       = new Chart(pieChartCanvas);
-		var PieData        = [
+		var pieCharts       = new Chart(pieChartCanvas);
+		var PieData = [
 			{
-				value    : <?php echo $_SESSION['ventas']; ?>,
+				value    : <?php echo $_SESSION['vencida']; ?>,
 				color    : '#f56954',
 				highlight: '#f56954',
-				label    : 'Presupuesto Cotizado'
+				label    : 'Tareas Vencidas'
 			},
 			{
-				value    : <?php echo $_SESSION['ganada']; ?>,
+				value    : <?php echo $_SESSION['terminada']; ?>,
 				color    : '#00a65a',
 				highlight: '#00a65a',
-				label    : 'Ganadas'
+				label    : 'Tareas Pendientes'
 			},
 			{
-				value    : <?php echo $_SESSION['perdida']; ?>,
+				value    : <?php echo $_SESSION['encurso']; ?>,
 				color    : '#f39c12',
 				highlight: '#f39c12',
-				label    : 'Perdidas'
+				label    : 'Tareas Asignadas'
 			},
 			{
-				value    : <?php echo $_SESSION['ventas'] - ($_SESSION['ganada'] + $_SESSION['perdida']); ?>,
+				value    : <?php echo $_SESSION['activa']; ?>,
 				color    : '#3c8dbc',
 				highlight: '#3c8dbc',
-				label    : 'En Negociacion'
+				label    : 'Tareas Ejecutadas'
 			}
-		];
+		]; 
 		var pieOptions     = {
 			// Boolean - Whether we should show a stroke on each segment
 			segmentShowStroke    : true,
@@ -1484,9 +1407,90 @@ echo '</section>';
 		};
 		// Create pie or douhnut chart
 		// You can switch between pie and douhnut using the method below.
-		pieChart.Doughnut(PieData, pieOptions);
+		pieCharts.Doughnut(PieData, pieOptions);
 		// -----------------
 		// - END PIE CHART -
 		// -----------------
 	});
+</script><?php
+}
+if($_SESSION['idrol'] == 3) { ?>
+<!-- Chart.js (incluido si AdminLTE ya trae una versión; si no, usa este CDN) -->
+<script src="https://adminlte.io/themes/AdminLTE/bower_components/chart.js/Chart.js"></script>
+<!-- Script principal (todo en este archivo) -->
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		// -------------
+		// - PIE CHART -
+		// -------------
+		// Get context with jQuery - using jQuery's .get() method.
+		var pieChartCanvas = $('#pieChart').get(0).getContext('2d');
+		var pieCharts       = new Chart(pieChartCanvas);
+			var PieData        = [
+				{
+					value    : <?php echo $_SESSION['ventas']; ?>,
+					color    : '#f56954',
+					highlight: '#f56954',
+					label    : 'Cotizado'
+				},
+				{
+					value    : <?php echo $_SESSION['ganada']; ?>,
+					color    : '#00a65a',
+					highlight: '#00a65a',
+					label    : 'Ganadas'
+				},
+				{
+					value    : <?php echo $_SESSION['perdida']; ?>,
+					color    : '#f39c12',
+					highlight: '#f39c12',
+					label    : 'Perdidas'
+				},
+				{
+					value    : <?php echo $_SESSION['ventas'] - ($_SESSION['ganada'] + $_SESSION['perdida']); ?>,
+					color    : '#3c8dbc',
+					highlight: '#3c8dbc',
+					label    : 'En Negociacion'
+				}
+			]; 
+			var pieOptions     = {
+				// Boolean - Whether we should show a stroke on each segment
+				segmentShowStroke    : true,
+				// String - The colour of each segment stroke
+				segmentStrokeColor   : '#fff',
+				// Number - The width of each segment stroke
+				segmentStrokeWidth   : 1,
+				// Number - The percentage of the chart that we cut out of the middle
+				percentageInnerCutout: 50, // This is 0 for Pie charts
+				// Number - Amount of animation steps
+				animationSteps       : 100,
+				// String - Animation easing effect
+				animationEasing      : 'easeOutBounce',
+				// Boolean - Whether we animate the rotation of the Doughnut
+				animateRotate        : true,
+				// Boolean - Whether we animate scaling the Doughnut from the centre
+				animateScale         : false,
+				// Boolean - whether to make the chart responsive to window resizing
+				responsive           : true,
+				// Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+				maintainAspectRatio  : false,
+				// String - A legend template
+				legendTemplate       : '<ul class=\'<%=name.toLowerCase()%>-legend\'><% for (var i=0; i<segments.length; i++){%><li><span style=\'background-color:<%=segments[i].fillColor%>\'></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>',
+				// String - A tooltip template
+				tooltipTemplate      : '<%=value %> <%=label%> '
+			};
+			// Create pie or douhnut chart
+			// You can switch between pie and douhnut using the method below.
+			pieCharts.Doughnut(PieData, pieOptions);
+			// -----------------
+			// - END PIE CHART -
+			// ----------------- 
+	});
+</script><?php
+}
+?>
+<script>
+    var element = document.getElementById("sidai");
+
+    element.classList.add("sidebar-collapse");
+    document.title = "Near Solution | Panel de Control";
 </script>

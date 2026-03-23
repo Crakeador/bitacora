@@ -34,7 +34,7 @@ Flight::route('POST /uploadRegistro', function () {
     if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
         $file = $_FILES['photo'];
         $filename = basename($file['name']); // uniqid() . '-' . Nombre único para el archivo
-        $targetPath = '../sidai/storage/ingreso/'.$filename;
+        $targetPath = '/var/www/latin.grupolatinamerica.com/public_html/storage/ingreso/'.$filename;
 
         // Mueve el archivo a la carpeta de uploads
         if (move_uploaded_file($file['tmp_name'], $targetPath)) {
@@ -53,7 +53,7 @@ Flight::route('POST /uploadNovedad', function () {
     if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
         $file = $_FILES['photo'];
         $filename = basename($file['name']); // uniqid() . '-' . Nombre único para el archivo
-        $targetPath = '../sidai/storage/novedad/'.$filename;
+        $targetPath = '/var/www/latin.grupolatinamerica.com/public_html/storage/novedad/'.$filename;
 
         // Mueve el archivo a la carpeta de uploads
         if (move_uploaded_file($file['tmp_name'], $targetPath)) {
@@ -238,7 +238,6 @@ Flight::route('POST /registros', function () {
 
     Flight::json($array);
 });
-
 
 Flight::route('POST /residente', function () {
     $db = Flight::db();
@@ -507,16 +506,10 @@ Flight::route('POST /ingreso', function () {
     Flight::json($array);
 });
 
-Flight::route('POST /botonpanico', function () {
+Flight::route('POST /panico', function () {
     $idpuesto = Flight::request()->data->idpuesto;
     $idpersona = Flight::request()->data->idpersona;
-    $foto1 = "";
-    $foto2 = "";
-    $foto3 = "";
-    $foto4 = "";
-    $foto5 = "";
-    $foto6 = "";
-    $turno = 1;
+    $turno = Flight::request()->data->turno;
     $fecha = Flight::request()->data->fecha;
     $proceso = Flight::request()->data->proceso;
     $tipo = Flight::request()->data->tipo;
@@ -530,7 +523,7 @@ Flight::route('POST /botonpanico', function () {
 
     $db = Flight::db();
     $stmt = $db->prepare("INSERT INTO bitacora(idpuesto, idperson, turno, fecha, proceso, tipo, nota, observacion, foto1, foto2, foto3, foto4, foto5, foto6, latitude, longitude, rangoerror, mensaje, is_active, created_at, usuario_log, ip) VALUES
-            (:idpuesto, :idpersona, :turno, :fecha, :proceso, :tipo, :nota, :observacion, :foto1, :foto2, :foto3, :foto4, :foto5, :foto6, :latitude, :longitud, :rangoerror, :mensaje, 1, NOW(), 'APLICACION MOVIL', :ip)");
+            (:idpuesto, :idpersona, :turno, :fecha, :proceso, :tipo, :nota, :observacion, :latitude, :longitud, :rangoerror, :mensaje, 1, NOW(), 'APLICACION MOVIL', :ip)");
 
     $array = [
         "data" => [
@@ -542,12 +535,6 @@ Flight::route('POST /botonpanico', function () {
             "tipo" => $tipo,
             "nota" => $nota,
             "observacion" => $observacion,
-            "foto1" => $foto1,
-            "foto2" => $foto2,
-            "foto3" => $foto3,
-            "foto4" => $foto4,
-            "foto5" => $foto5,
-            "foto6" => $foto6,
             "latitude" => $latitud,
             "longitude" => $longitud,
             "rangoerror" => $rangoerror,
@@ -559,8 +546,7 @@ Flight::route('POST /botonpanico', function () {
     ];
 
     if(!$stmt->execute([":idpuesto" => $idpuesto, ":idpersona" => $idpersona, ":turno" => $turno, ":fecha" => $fecha, ":proceso" => $proceso, ":tipo" => $tipo, ":nota" => $nota, 
-                        ":observacion" => $observacion, ":foto1" => $foto1, ":foto2" => $foto2, ":foto3" => $foto3, ":foto4" => $foto4, ":foto5" => $foto5, ":foto6" => $foto6, 
-                        ":latitude" => $latitud, ":longitude" => $longitud, ":rangoerror" => $rangoerror, ":mensaje" => $mensaje, ":ip" => $ip])){
+                        ":observacion" => $observacion, ":latitude" => $latitud, ":longitude" => $longitud, ":rangoerror" => $rangoerror, ":mensaje" => $mensaje, ":ip" => $ip])){
         var_dump($stmt);
         echo "Fallo la ejecucion: (" . $stmt->errno . ") " . $stmt->error;
     }else{

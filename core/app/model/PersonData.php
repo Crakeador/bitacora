@@ -73,7 +73,7 @@ class PersonData {
 	
 	public function addVac(){
 		$sql = "INSERT INTO persond(idperson, region, idcargo, tipo_contrato, hijos, sueldo, startwork, endwork, dias, observacion, tipo_pago, acumula, estado, is_active, created_at, usuario_log, ip)";
-		$sql .= " VALUES ($this->idperson, 2, 7, \"Vacaciones del Guardia\", 0, $this->sueldo, \"$this->startwork\", \"$this->endwork\", $this->dias, \"$this->observacion\", \"0\", \"0\", \"V\", \"1\", NOW(), \"".$_SESSION['user_name']."\", \"".$_SESSION['ip']."\")"; echo $sql;
+		$sql .= " VALUES ($this->idperson, 2, 7, \"Vacaciones del Guardia\", 0, $this->sueldo, \"$this->startwork\", \"$this->endwork\", $this->dias, \"$this->observacion\", \"0\", \"0\", \"V\", \"1\", NOW(), \"".$_SESSION['user_name']."\", \"".$_SESSION['ip']."\")"; 
 		Executor::doit($sql);
 	}
 

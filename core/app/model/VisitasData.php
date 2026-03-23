@@ -38,7 +38,6 @@ class VisitasData {
 	public function add(){
 		$sql = "INSERT INTO ".self::$tablename." (idpuesto, idperson, fecha, familiar, telefonof, vecino, telefonov, observacion, accion, foto1, foto2, foto3, foto4, foto5, foto6, timestamp, latitude, longitude, rangoerror, sentido, velocidad, mensaje, is_active, usuario_log, ip) ";
 		$sql .= "value ($this->idpuesto, $this->idperson, \"$this->fecha\", \"$this->familiar\", \"$this->telefonof\", \"$this->vecino\", \"$this->telefonov\", \"$this->observacion\", \"$this->accion\", \"$this->foto1\", \"$this->foto2\", \"$this->foto3\", \"$this->foto4\", \"$this->foto5\", \"$this->foto6\", \"$this->timestamp\", \"$this->latitude\", \"$this->longitude\", \"$this->rangoerror\", \"$this->sentido\", \"$this->velocidad\", \"$this->mensaje\", $this->is_active, \"$this->usuario_log\", \"$this->ip\")"; 
-		echo $sql;
 		$valor = Executor::doit($sql);
 		return $valor;
 	}

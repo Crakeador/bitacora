@@ -31,22 +31,25 @@ $sql = "SELECT * FROM timelined WHERE idtimeline = $id";
 error_log("DEBUG getSubtasks.php - SQL: " . $sql); // Log para debugging
 $sub = $con->query($sql);
 
-if (!$sub){
-    $response['success'] = false;
-    $response['error'] = "Error en consulta SQL: " . $con->error . " | SQL: " . $sql;
-    error_log("ERROR getSubtasks.php: " . $response['error']);
-} else {
-    $response['success'] = true;
-}
-
-if($sub && $sub->num_rows > 0){
-    while($s = $sub->fetch_object()){
-        $response['data'][] = [
-            'name'=>$s->descripcion,
-            'date'=>$s->fecha,
-            'status'=>$s->status
-        ];
+if ($sub) {
+    if ($sub->num_rows > 0) {
+        $response['success'] = true;
+        // Limpiar el array de datos antes de llenarlo, como has solicitado.
+        $response['data'] = [];
+        while ($s = $sub->fetch_object()) {
+            $response['data'][] = [
+                'name' => $s->descripcion,
+                'date' => $s->fecha,
+                'status' => $s->status
+            ];
+        }
+    } else {
+        // No hay subtareas, lo cual no es un error, pero el cliente espera success: false
+        $response['success'] = false;
     }
+}else{
+    $response['error'] = "Error en la consulta SQL: " . $con->error;
+    error_log("ERROR getSubtasks.php: " . $response['error'] . " | SQL: " . $sql);
 }
 echo json_encode($response);
 exit;

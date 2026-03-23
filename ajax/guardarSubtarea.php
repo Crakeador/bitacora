@@ -48,10 +48,12 @@ $sql = "INSERT INTO timelined
         VALUES 
         ($tareas, '$rubro', '$fechaTarea', 1, $userid)";
 
+$response['error'] = "Error al grabar: " . $con->error . " | SQL: " . $sql;
 if($con->query($sql) === TRUE){
     $response['success'] = true;
     $response['id'] = $con->insert_id;
-    error_log("Subtarea grabada exitosamente: ID=" . $response['id']);
+    $response['aaaa'] = "Error al grabar: " . $con->error . " | SQL: " . $sql;
+    $response['error'] = "Subtarea grabada exitosamente: ID=" . $response['id'];
 } else {
     $response['error'] = "Error al grabar: " . $con->error . " | SQL: " . $sql;
     error_log("Error al grabar subtarea: " . $response['error']);

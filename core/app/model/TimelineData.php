@@ -28,7 +28,7 @@ class TimelineData {
 	public function add_task(){
 		$sql = "insert into timeline (idcompany, idperson, quien_asigna, prioridad, status, asunto, title, type, date_event, date_pass, created_at) ";
 		$sql .= "value (".$_SESSION['id_company'].", \"$this->idperson\", \"$this->quien_asigna\", \"$this->prioridad\", 1, \"$this->asunto\", \"$this->title\", \"$this->type\", \"$this->date_event\", \"$this->date_pass\", $this->created_at)"; 
-		Executor::doit($sql);
+		return Executor::doit($sql);
 	}
 	
 	public function add_info(){
@@ -45,7 +45,7 @@ class TimelineData {
 
 	public function add_resp(){
 		$sql = "insert into respuesta (idtimeline, iduser, descripcion, created_at) ";
-		$sql .= "value ($this->idtimeline, \"$this->iduser\", \"$this->descripcion\", $this->created_at)"; echo $sql;
+		$sql .= "value ($this->idtimeline, \"$this->iduser\", \"$this->descripcion\", $this->created_at)";
 		return Executor::doit($sql);
 	}
 
@@ -66,7 +66,7 @@ class TimelineData {
 		             date_pass=NOW(), 
 					 status=$this->status, 
 		             update_at=NOW() 
-		         WHERE id=$id"; echo $sql;
+		         WHERE id=$id";
 		Executor::doit($sql);
 	}
 	
@@ -188,7 +188,7 @@ class TimelineData {
 			$sql = "SELECT count(*) as total FROM ".self::$tablename." where type LIKE 'news' AND status=$status AND idcompany = ".$_SESSION['id_company'];
 		else
 			$sql = "SELECT count(*) as total FROM ".self::$tablename." where type LIKE 'news' AND idperson = ".$_SESSION['user_id']." AND status=$status AND idcompany = ".$_SESSION['id_company'];
-
+		
 		$query = Executor::doit($sql);
 
 		return Model::one($query[0], new TimelineData());

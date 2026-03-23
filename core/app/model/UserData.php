@@ -38,7 +38,7 @@ class UserData {
 	}
 
 	public static function update_user($id){
-		$sql = "UPDATE ".self::$tablename." SET ingresos=ingresos+1, ultima_session=NOW() WHERE id=$id"; echo $sql;
+		$sql = "UPDATE ".self::$tablename." SET ingresos=ingresos+1, ultima_session=NOW() WHERE id=$id"; 
 		Executor::doit($sql);
 	}
 
@@ -84,6 +84,16 @@ class UserData {
 		return Model::many($query[0],new UserData());
 	}
 
+	public static function getAllTipo(){
+		$sql = "SELECT D.idcard, E.idtipo, D.idcargo, B.nombre, C.name AS departamento, A.* FROM user A, rol B, departamento C, person D, cargo E
+                 WHERE A.idrol = B.id AND A.iddepartamento = C.id AND A.idperson = D.id AND E.id = D.idcargo AND A.idcompany = 1 AND
+                 idtipo = 1
+                 ORDER BY idcargo";
+		$query = Executor::doit($sql);
+
+		return Model::many($query[0],new UserData());
+	}
+	
 	public static function getLike($q){
 		$sql = "select * from ".self::$tablename." where name like '%$q%'";
 		$query = Executor::doit($sql);

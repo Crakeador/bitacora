@@ -38,13 +38,12 @@ class PuestoData {
 	public function add(){
 		$sql = "insert into ".self::$tablename." (grupo, idcompany, idclient, tipo, codigo, residencial, descripcion, activado, idlugar, horas, horario, lunes, martes, miercoles, jueves, viernes, sabado, domingo, feriado, observacion, principal, is_active, usuario_log, created_at) ";
 		$sql .= "value ($this->grupo, ".$_SESSION['id_company'].", $this->idclient, $this->tipo, \"$this->codigo\", $this->residencial, \"$this->descripcion\", \"$this->activado\", $this->idlugar, $this->horas, \"$this->horario\", $this->lunes, $this->martes, $this->miercoles, $this->jueves, $this->viernes, $this->sabado, $this->domingo, $this->feriado,\"".$this->observacion."\", $this->principal, $this->is_active, \"".$_SESSION['user_name']."\", $this->created_at)";
-        echo $sql;
 		return Executor::doit($sql);
 	}
 
 	public function update(){
 		$sql = "UPDATE ".self::$tablename." SET idclient='".$this->idclient."', codigo ='".$this->codigo."', residencial ='".$this->residencial."', descripcion ='".$this->descripcion."', activado ='".$this->activado."', idlugar ='".$this->idlugar."', horas ='".$this->horas."', horario ='".$this->horario."', observacion ='".$this->observacion."',";
-		$sql .= "lunes ='".$this->lunes."', martes ='".$this->martes."', miercoles ='".$this->miercoles."', jueves ='".$this->jueves."', viernes ='".$this->viernes."', sabado ='".$this->sabado."', domingo ='".$this->domingo."', feriado ='".$this->feriado."', principal ='".$this->principal."', is_active ='".$this->is_active."', usuario_log ='".$_SESSION['user_name']."' WHERE id=$this->id"; echo $sql;
+		$sql .= "lunes ='".$this->lunes."', martes ='".$this->martes."', miercoles ='".$this->miercoles."', jueves ='".$this->jueves."', viernes ='".$this->viernes."', sabado ='".$this->sabado."', domingo ='".$this->domingo."', feriado ='".$this->feriado."', principal ='".$this->principal."', is_active ='".$this->is_active."', usuario_log ='".$_SESSION['user_name']."' WHERE id=$this->id"; 
 		Executor::doit($sql);
 	}
 
@@ -115,7 +114,7 @@ class PuestoData {
 		$sql .= "WHERE A.idservicio = B.id AND A.idperson = C.idcargo AND C.idcargo = D.id AND B.tipo = 2 AND B.idclient = $client AND D.idtipo = $tipo AND A.is_active = $estado ";
 		$sql .= "AND date(C.startwork) >= \"".$ini."\" AND date(C.startwork) <= \"".$fin."\" "; 
 		$sql .= "GROUP BY A.idperson ";
-		$sql .= "ORDER BY C.name"; echo $sql;
+		$sql .= "ORDER BY C.name"; 
 		$query = $con->query($sql);
 
 		$x = 0; $array = array();
@@ -499,7 +498,7 @@ class PuestoData {
 	}
 
 	public static function getByLibre($id){
-		$sql = "select * from personpuestos A WHERE A.idperson = $id AND A.is_active = 1"; echo $sql;
+		$sql = "select * from personpuestos A WHERE A.idperson = $id AND A.is_active = 1";
 		$query = Executor::doit($sql); 
 		return Model::many($query[0],new PuestoData());
 	}

@@ -11,7 +11,7 @@ if(count($_POST)>0){
 	if(isset($_POST["active"]))
 		$user->status = $_POST["active"];
 	else
-		$user->status = 1;
+		$user->status = 2;
 
 	$user->idejecuta = $_POST["persona"];
 	$user->body = $_POST["descripcion"];
@@ -136,7 +136,7 @@ if(count($_POST)>0){
 							<div class="form-group">
 								<div class="col-sm-5">
 									<span class="col-sm-1 control-label">&nbsp;</span>
-									<input id="id_active" name="active" value="2" type="checkbox">
+									<input id="id_active" name="active" value="3" type="checkbox">
 									<label for="id_active" class="control-label">&nbsp;&nbsp;Ejecutado </label>
 								</div>
 							</div>

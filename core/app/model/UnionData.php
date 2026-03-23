@@ -14,7 +14,7 @@ class UnionData {
 
 	public function add(){
 		$sql = "INSERT INTO ".self::$tablename." (idservicio, idperson, is_active) ";
-		$sql .= "value (\"$this->idservicio\", \"$this->idperson\", $this->is_active)"; echo $sql;
+		$sql .= "value (\"$this->idservicio\", \"$this->idperson\", $this->is_active)"; 
 		return Executor::doit($sql);
 	}
 
@@ -29,7 +29,7 @@ class UnionData {
 	}
 
 	public function finTurno(){
-		$sql = "UPDATE ".self::$tablename." SET is_active = 0 WHERE idperson=$this->idperson"; //echo $sql;
+		$sql = "UPDATE ".self::$tablename." SET is_active = 0 WHERE idperson=$this->idperson"; 
 		return Executor::doit($sql);
 	}
 		
@@ -40,7 +40,7 @@ class UnionData {
 
 	public function update(){
 		$sql = "UPDATE ".self::$tablename." SET is_active=$this->is_active, idservicio=\"$this->idservicio\", ";
-		$sql .= "idperson=\"$this->idperson\", usuario_log=\"".$_SESSION['user_name']."\" WHERE id=$this->id"; //echo $sql;
+		$sql .= "idperson=\"$this->idperson\", usuario_log=\"".$_SESSION['user_name']."\" WHERE id=$this->id";
 		return Executor::doit($sql);
 	}
 

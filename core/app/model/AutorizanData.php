@@ -87,7 +87,7 @@ class AutorizanData {
 	}
 	
 	public static function getByQRCode($q){
-		$sql = "SELECT * FROM ".self::$tablename." WHERE clave LIKE '%$q%'"; echo $sql;
+		$sql = "SELECT * FROM ".self::$tablename." WHERE clave LIKE '%$q%'"; 
 		$query = Executor::doit($sql);
 
 		return Model::one($query[0],new AutorizanData());

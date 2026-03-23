@@ -118,7 +118,7 @@ if(isset($_GET['id'])){
 									echo '</br>';
 									echo '<small>';
 									  echo '<a href="'.$_SESSION['url'].'persona/'.$users[$i]->servicio.'" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-edit"></i></a>&nbsp;';
-									  echo '<a href="index.php?view=personas&status='.$users[$i]->servicio.'" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i></a>&nbsp;';
+									  echo '<a href="'.$_SESSION['url'].'index.php?view=personas&status='.$users[$i]->servicio.'" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i></a>&nbsp;';
 									  echo $users[$i]->lugar;
 									echo '</small>';
 								  echo '</td>';

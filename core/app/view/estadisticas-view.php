@@ -19,8 +19,11 @@
 					<div class="col-md-12">
 						<div class="tabbable">
 							<ul class="nav nav-tabs nav-tabs-highlight">
-								<li class="active"><a href="#tab-asignadas" data-toggle="tab"><i class="icon-folder-plus"></i> Resumen de Tareas </a></li>
-								<li><a href="#tab-pendientes" data-toggle="tab"><i class="icon-hourglass"></i> Grafico de Tareas </a></li>
+								<li class="active"><a href="#tab-asignadas" data-toggle="tab"><i class="icon-folder-plus"></i> Tareas Asignadas</a></li>
+								<li><a href="#tab-pendientes" data-toggle="tab"><i class="icon-hourglass"></i> Tareas Pendientes</a></li>
+								<li><a href="#tab-ejecutadas" data-toggle="tab"><i class="icon-checkmark-circle"></i> Tareas Entregadas</a></li>
+								<li><a href="#tab-vencidas" data-toggle="tab"><i class="icon-alert"></i> Tareas Vencidas</a></li>
+								<li><a href="#tab-eficiencia" data-toggle="tab"><i class="icon-stats-dots"></i> Eficiencia</a></li>
 							</ul>
 							<div class="tab-content">
 								<!-- Tab: Tareas Asignadas -->

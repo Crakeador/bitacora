@@ -79,7 +79,7 @@ class CotizacionData {
 						cargo=\"$this->cargo\", asunto=\"$this->asunto\", ini_fec=\"$this->ini_fec\", fin_fec=\"$this->fin_fec\", pago=\"$this->pago\", detalle=\"$this->detalle\", 
 						telefono=\"$this->telefono\", ruc=\"$this->ruc\", municion=\"$this->municion\", observacion=\"$this->observacion\", 
 						usuario_log=\"".$_SESSION['user_name']."\"
-				where id=$this->id"; echo $sql;
+				where id=$this->id"; 
 		Executor::doit($sql);
 	}
 	

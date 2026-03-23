@@ -4,20 +4,39 @@
 
 // Nota: El manejo AJAX de cambios de estado se realiza en /ajax/changeTaskStatus.php
 // que devuelve SOLO JSON sin cargar el layout
+$users = TimelineData::getTime($_SESSION["user_id"], $_SESSION["ano"]);
 
-
+foreach($users as $tables) {
+    if($tables->date_pass == "" || $tables->date_pass == "0000-00-00 00:00:00"){        
+        $ini = explode(" ", $tables->date_event);
+        $fin = date("Y-m-d");
+        
+        $fecha1 = new DateTime($ini[0]);
+        $fecha2 = new DateTime($fin);
+        
+        $intervalo = $fecha1->diff($fecha2);
+        $dias = $intervalo->format('%R%a');
+        
+        if($dias > 0){
+            $sql = "UPDATE timeline SET body='Tarea vencida hace " . abs($dias) . " días', status=4 WHERE id=$tables->id";
+            $query = Executor::doit($sql);
+        } else {
+            // tarea aún no vencida, mostrar botón de marcar como completada
+        }
+    }
+}
 // mapear estados de la tabla timeline a nombres legibles
 $statuses = [
-    1 => 'Pendiente',
-    2 => 'Asignado',      // ajusta este texto si es necesario
-    3 => 'En Curso',
-    4 => 'Completadas'
+    1 => 'Asignadas',
+    2 => 'En curso',
+    3 => 'Ejecutadas',
+    4 => 'Vencidas'
 ];
 
 // recolectar tareas por cada estado
 $tasksByStatus = [];
 foreach ($statuses as $code => $label) {
-    $sql = "SELECT * FROM timeline WHERE idcompany=" . $_SESSION['id_company'] . " AND type=2 AND status=$code ORDER BY date_event DESC";
+    $sql = "SELECT * FROM timeline WHERE idcompany=" . $_SESSION['id_company'] . " AND idperson=" . $_SESSION['user_id'] . " AND type=2 AND status=$code ORDER BY date_event DESC";
     $query = Executor::doit($sql);
     $tasksByStatus[$code] = Model::many($query[0], new TimelineData());
 }
@@ -105,21 +124,20 @@ foreach ($statuses as $code => $label) {
                                 
                                 echo '</div>';
                                 
-                                echo '<div style="clear:both;"></div>';
-                                
-                                echo '<strong>' . htmlspecialchars($task->title) . '</strong><br/>';
-                                echo '<small>' . htmlspecialchars($task->body) . '</small><br/>';
-                                echo '<small class="text-muted"><i class="fa fa-calendar"></i> ' . $task->date_event . '</small><br/>';
-                                
-                                // status selector - show selector only if role allowed
-                                if($_SESSION['idrol'] <= 2){
-                                    echo '<select class="status-selector" data-id="'.$task->id.'">';
-                                    foreach($statuses as $sCode=>$sLabel){
-                                        $sel = ($task->status==$sCode)?' selected':'';
-                                        echo '<option value="'.$sCode.'"'.$sel.'>'.$sLabel.'</option>';
+                                echo '<div style="clear:both;"></div>';                                
+                                    echo '<strong>Asunto: ' . htmlspecialchars($task->asunto) . '</strong><br/>';
+                                    echo '<small>' . htmlspecialchars($task->title) . '</small><br/>';
+                                    echo '<small class="text-muted"><i class="fa fa-calendar"></i> ' . $task->date_event . '</small><br/>';
+                                    
+                                    // status selector - show selector only if role allowed
+                                    if($_SESSION['idrol'] <= 2){
+                                        echo '<select class="status-selector" data-id="'.$task->id.'">';
+                                        foreach($statuses as $sCode=>$sLabel){
+                                            $sel = ($task->status==$sCode)?' selected':'';
+                                            echo '<option value="'.$sCode.'"'.$sel.'>'.$sLabel.'</option>';
+                                        }
+                                        echo '</select>';
                                     }
-                                    echo '</select>';
-                                }
                                 echo '</div>';
                             }
                         } ?>
@@ -148,11 +166,11 @@ $(function(){
     var originalColumn = null;
     
     // mapeo de estados para mostrar nombres legibles
-    var statusNamesMap = {
-        1: 'Pendiente',
-        2: 'Asignado',
-        3: 'En Curso',
-        4: 'Completadas'
+    var statusNamesMap = {        
+        1: 'Asignadas',
+        2: 'En curso',
+        3: 'Ejecutadas',
+        4: 'Vencidas'
     };
     
     $('.status-selector').change(function(){

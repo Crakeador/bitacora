@@ -4,7 +4,7 @@
 header('Content-Type: text/html; charset=UTF-8');
 date_default_timezone_set('America/Guayaquil');
 
-$_SESSION["url"] = "http://localhost/bitacora/"; // "http://45.224.149.75/latin/"; // "https://latin.near-solution.com/"; // 
+$_SESSION["url"] = "https://latin.grupolatinamerica.com/"; // "http://localhost/bitacora/"; // "http://45.224.149.75/latin/"; // 
 if(!isset($_SESSION['depart'])) unset($_SESSION['user_id']);
 
 $notificacion = 0;
@@ -473,9 +473,9 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                           </div>
                           <div class="pull-right"><?php
                             if(isset($_SESSION["idrol"]) && ($_SESSION["idrol"]=='7')): ?>
-                              <a href="./salir" class="btn btn-default btn-flat">Salir del Sistema</a> <?php
+                              <a href="<?php echo $_SESSION["url"]; ?>salir" class="btn btn-default btn-flat">Salir del Sistema</a> <?php
                             else: ?>
-                              <a href="./logout" class="btn btn-default btn-flat">Salir del Sistema</a> <?php
+                              <a href="<?php echo $_SESSION["url"]; ?>logout" class="btn btn-default btn-flat">Salir del Sistema</a> <?php
                             endif; ?>
                           </div>
                         </li>
