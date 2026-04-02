@@ -62,7 +62,7 @@ class VisitantesData
 		$this->usuario_log = "";
 		$this->ip = "";
 	}
-
+ 
 	public function add()
 	{
 		$sql = "INSERT INTO " . self::$tablename . " (idpuesto, idperson, nombre, cedula, placa, observacion, accion, foto1, foto2, foto3, foto4, foto5, foto6, timestamp, latitude, longitude, rangoerror, sentido, velocidad, mensaje, is_active, usuario_log, ip) ";

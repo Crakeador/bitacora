@@ -106,7 +106,7 @@ if(count($_POST)>0){
 					                    echo '<option value="0"> -- SELECCIONE -- </option>';
 					                    foreach($persons as $tables) {
 					                        if($tables->id == $lugar->idperson) $valor = 'selected'; else $valor = '';
-					                        echo '<option value="'.$tables->id.'" '.$valor.'>'.utf8_encode($tables->name).'</option>';
+					                        echo '<option value="'.$tables->id.'" '.$valor.'>'.$tables->name.'</option>'; //utf8_encode()
 					                    }
 					                    echo '</select>';
 		                        ?>

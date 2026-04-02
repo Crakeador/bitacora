@@ -41,20 +41,30 @@
 													</tr>
 													<?php
 														$users = UserData::getAllTipo();
-													
+													 
 														// Crea tabla de Ventas
-														foreach($users as $tables){
-															$events = count(TimelineData::getById($tables->id));
-															$total = TimelineData::getByTotalID($tables->id, 1)->total;
+														foreach($users as $tables){														
+															$total1 = TimelineData::getStatus($tables->id, 1); // getByTotalID($tables->id, 1);
+															
+															$events = TimelineData::getAsignado($tables->id);
+															$total2 = TimelineData::getByTotalID($tables->id, 2);
+															$total3 = TimelineData::getByTotalID($tables->id, 3);
+															$total4 = TimelineData::getByTotalID($tables->id, 4);
+															
+															$events1 = (count($total1) ? $total1->total : 0);
+															$events2 = (is_object($total2) && isset($total2->total) ? $total2->total : 0);
+															$events3 = (is_object($total3) && isset($total3->total) ? $total3->total : 0);
+															$events4 = (is_object($total3) && isset($total4->total) ? $total4->total : 0);
+															$total = ($events1+$events3);
 
 															echo '<tr>';
 																echo '<td class="text-grey-800"><left>'.$tables->name.' '.$tables->lastname.'</left> <a data-toggle="modal" data-target=".bs-example-modal-sm" style="color:#5b5d5f"></a></td>';
 																echo '<td class="text-grey-800"><left>'.$tables->departamento.'</left> <a data-toggle="modal" data-target=".bs-example-modal-sm" style="color:#5b5d5f"></a></td>';
-																echo '<td class="text-right">'.$events.'</td>';
-																echo '<td class="text-right">'.$total.'</td>';
-																echo '<td class="text-right">'.$events.'</td>';
-																echo '<td class="text-right">'.$events.'</td>';
-																echo '<td class="text-right">'.($total>0 ? ($events*100)/$total : 0).'</td>';
+																echo '<td class="text-right">'.(is_object($events) && isset($events->total) ? $events->total : 0).'</td>'; // $events1
+																echo '<td class="text-right">'.$events2.'</td>';
+																echo '<td class="text-right">'.$events3.'</td>';
+																echo '<td class="text-right">'.$events4.'</td>';
+																echo '<td class="text-right">'.($total>0 ? ($events3*100)/$total : 0).'</td>';
 															echo '</tr>';
 														}
 													?>

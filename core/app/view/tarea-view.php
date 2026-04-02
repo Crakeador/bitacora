@@ -1,7 +1,7 @@
-<?php 
+<?php
 //Asignacion de Tarea
 $grupos = GruposData::getAll(); 
-$users = UserData::getAll();
+$users = UserData::getAllTipo(); // UserData::getAll();
 
 // manejo modal nuevo grupo
 if(isset($_POST['guardar_grupo']) && !empty($_POST['grupo_nombre'])){
@@ -28,11 +28,14 @@ if(isset($_POST['guardar_miembro']) && isset($_POST['miembro_persona']) && $_POS
 $mensaje = "crear un salvo conducto";
 $enlaces = "Crear";
 
-if(count($_POST)>0){
+if(count($_POST)>0){	
+	$consecutivo = GruposData::getValores("Tareas");
+	$_SESSION["idtarea"] = $consecutivo->consecutivo;
+
 	if(isset($_POST["grupo"]) && $_POST["grupo"] > 0){	
 		$grupo = new GruposData();
 		$todos = $grupo->getAllGrupo($_POST["grupo"]);
-
+ 
 		foreach($todos as $tarea){
 			$user = new TimelineData();
 			$user->idcompany = $_SESSION["id_company"];
@@ -45,6 +48,13 @@ if(count($_POST)>0){
 			$user->title = $_POST["descripcion"];
 			$user->date_event = $_POST["ini_fec"];
 			$user->add_task();
+
+			$_SESSION["idtarea"]++;
+
+			$tarea = new GruposData();
+			$tarea->tarea("Tareas", $_SESSION["idtarea"]);
+
+			Core::redir('tareas');
 		}
 	}else{
 		if(isset($_POST["persona"]) && $_POST["persona"] > 0){
@@ -62,9 +72,13 @@ if(count($_POST)>0){
 			$user->title = $_POST["descripcion"];
 			$user->date_event = $_POST["ini_fec"];
 			$newTask = $user->add_task();
+			
+			$_SESSION["idtarea"]++;
 
-			$_SESSION["idtarea"] = $newTask[1];
-			$hoy = date("Y-m-d H:i:s");
+			$tarea = new GruposData();
+			$tarea->tarea("Tareas", $_SESSION["idtarea"]);
+
+			Core::redir('tareas');
 		}
 	}
 	
@@ -101,7 +115,7 @@ if(count($_POST)>0){
 <!-- Content Header (Page header) -->
 <section class="content-header">
 	<h1>
-		Tareas Nro. <?php echo $_SESSION["idtarea"]; ?>
+		Tareas <?php if($_SESSION["idtarea"] > 0) echo 'Nro. '.$_SESSION["idtarea"]; else echo ''; ?>
 		<small>asignaci&oacute;n de tareas</small>
 	</h1>
 	<ol class="breadcrumb">

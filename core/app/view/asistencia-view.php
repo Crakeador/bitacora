@@ -53,11 +53,11 @@ $total=date("t", strtotime($fecha));
 				<div id="example_filter">
 					Oficina:&nbsp;&nbsp;
 					<label>	<?php
-						echo '<select id="localidad_id" name="localidad_id" class="form-control" onchange="javascript:location.href=\'index.php?action=asistencia&tipo=3&id=\'+value;">';
+						echo '<select id="localidad_id" name="localidad_id" class="form-control" onchange="javascript:location.href=\''.$_SESSION['url'].'index.php?action=asistencia&tipo=3&id=\'+value;">';
 							echo '<option value="0"> -- SELECCIONE PUESTO -- </option>';
-							foreach($puestos as $tables) {
+							foreach($puestos as $tables) { 
 								if($tables->id == $lugar) $valor = 'selected'; else $valor = '';
-								echo '<option value="'.$tables->id.'" '.$valor.'>'.$tables->descripcion.'</option>';  
+								echo '<option value="'.$tables->id.'" '.$valor.'>'.$tables->codigo.' ('.$tables->descripcion.')</option>';  
 							}
 						echo '</select>'; ?>
 					</label>

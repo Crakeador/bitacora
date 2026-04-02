@@ -3,6 +3,23 @@
 $ano=date("Y"); $mes=date("m"); 
 $_SESSION["error"]=0; $_SESSION['ganada']=0; $_SESSION['perdida']=0; $_SESSION['ventas']=0;
 
+$users = TimelineData::getTipe(2);
+foreach($users as $tables) {	
+	$fecha = explode(" ",$tables->date_event);
+	$tables->date_event = $fecha[0];
+
+	$ini = explode(" ", $tables->date_event);
+	$fin = date("Y-m-d");
+	
+	$fecha1 = new DateTime($ini[0]);
+	$fecha2 = new DateTime($fin);
+	
+	$intervalo = $fecha1->diff($fecha2);
+	$dias = $intervalo->format('%R%a');
+	
+	if($dias > 0) $vencida = TimelineData::changeStatus($tables->id, 4);
+} 
+
 if($_SESSION['idrol']=='1' || $_SESSION['idrol']=='2'){
 	//No hay datos
 	$total1 = TimelineData::getByTotal(4); 
@@ -228,7 +245,7 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 						echo '<div class="icon">';
 							echo '<i class="fa fa-user"></i>';
 						echo '</div>';
-						echo '<a href="index.php?view=opehor.activos" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
+						echo '<a href="asistencia" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
 					echo '</div>';
 				echo '</div>';
 				echo '<div class="col-lg-3 col-xs-6">';
@@ -267,7 +284,7 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 								echo '<div class="icon">';
 									echo '<i class="fa fa-user"></i>';
 								echo '</div>';
-								echo '<a href="index.php?view=opehor.activos" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
+								echo '<a href="asistencia" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
 							echo '</div>';
 						echo '</div>';
 						echo '<div class="col-lg-3 col-xs-6">';
@@ -573,25 +590,16 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 						break;
 					default:
 						echo '<div class="col-lg-3 col-xs-6">';
-							echo '<div class="small-box bg-aqua">';
+							echo '<div class="small-box bg-yellow">';
 								echo '<div class="inner">';
-									$total1 = TimelineData::getByTotal(2);
-									echo '<h3>'.(is_object($total1) && isset($total1->total) ? $total1->total : 0).'</h3>';
-									echo '<p>Tareas en Curso </p>';
+									if($_SESSION['idrol'] == 2)
+										$_SESSION['activa'] = count(TimelineData::getTipe(2));
+									else
+										$_SESSION['activa'] = count(TimelineData::getTipeUser($_SESSION['user_id'], 2026));
+
+									echo '<h3>'.($_SESSION['activa'] > 0 ? $_SESSION['activa'] : 0).'</h3>';
+									echo '<p>Tareas Asignadas</p>';
 								echo '</div>'; 
-								echo '<div class="icon">';
-									echo '<i class="fa fa-shopping-cart"></i>';
-								echo '</div>';
-								echo '<a href="tareas" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
-							echo '</div>';
-						echo '</div>';
-						echo '<div class="col-lg-3 col-xs-6">';
-							echo '<div class="small-box bg-purple">';
-								echo '<div class="inner">';
-									$total1 = TimelineData::getByTotal(4);
-									echo '<h3>'.(is_object($total1) && isset($total1->total) ? $total1->total : 0).'</h3>';
-									echo '<p>Tareas Vencidas</p>';
-								echo '</div>';
 								echo '<div class="icon">';
 									echo '<i class="fa fa-user"></i>';
 								echo '</div>';
@@ -599,14 +607,14 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 							echo '</div>';
 						echo '</div>';
 						echo '<div class="col-lg-3 col-xs-6">';
-							echo '<div class="small-box bg-yellow">';
+							echo '<div class="small-box bg-green">';
 								echo '<div class="inner">';
 									$total2 = TimelineData::getByTotal(3);
 									echo '<h3>'.(is_object($total2) && isset($total2->total) ? $total2->total : 0).'</h3>';
 									echo '<p>Tareas Ejecutadas</p>';
 								echo '</div>';
 								echo '<div class="icon">';
-									echo '<i class="fa fa-user-friends"></i>';
+									echo '<i class="fa fa-users"></i>';
 								echo '</div>';
 								echo '<a href="tareas" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
 							echo '</div>';
@@ -614,15 +622,28 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 						echo '<div class="col-lg-3 col-xs-6">'; 
 							echo '<div class="small-box bg-red">';
 								echo '<div class="inner">';
-									$total2 = TimelineData::getByTotal(1);
+									$total2 = TimelineData::getByTotal(4);
 									echo '<h3>'.(is_object($total2) && isset($total2->total) ? $total2->total : 0).'</h3>';
-									echo '<p>Tareas Asignadas</p>';
+									echo '<p>Tareas Vencidas</p>';
 								echo '</div>';
 								echo '<div class="icon">';
-									echo '<i class="fa fa-dolly"></i>';
+									echo '<i class="fa fa-calendar"></i>';
 								echo '</div>';
 								echo '<a href="calendario" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
 							echo '</div>';
+						echo '</div>';
+						echo '<div class="col-lg-3 col-xs-6">';
+							echo '<div class="small-box bg-aqua">';
+								echo '<div class="inner">';
+									$total1 = TimelineData::getByTotal(2);
+									echo '<h3>'.($total2*100)/$_SESSION['activa'].' %</h3>';
+									echo '<p>Porcenjate de Cumplimieto </p>';
+								echo '</div>'; 
+								echo '<div class="icon">';
+									echo '<i class="fa fa-shopping-cart"></i>';
+								echo '</div>';
+								echo '<a href="tareas" class="small-box-footer">Ver mas <i class="fa fa-arrow-circle-right"></i></a>';
+							echo '</div>'; 
 						echo '</div>';
 				}
 			}
@@ -779,7 +800,7 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 
 	if($_SESSION["depart"] == 2 && $_SESSION["idrol"] == 2) { ?>
 		<div class="row">
-			<div class="col-md-6">
+			<section class="col-lg-7 connectedSortable ui-sortable">
 				<div class="box box-default">
 					<div class="box-header with-border">
 						<h3 class="box-title">Grafico de Tareas</h3>
@@ -807,23 +828,103 @@ echo '<section class="content" style="padding: 1.5rem !important;">';
 								<ul class="chart-legend clearfix">
 									<li><i class="fa fa-circle-o text-red"></i> Tareas Vencidas </li>
 									<li><i class="fa fa-circle-o text-green"></i> Tareas Ejecutadas </li>
-									<li><i class="fa fa-circle-o text-yellow"></i> Tareas en Curso</li>
-									<li><i class="fa fa-circle-o text-aqua"></i> Tareas Asignadas </li>
+									<li><i class="fa fa-circle-o text-yellow"></i> Tareas Asignadas </li>
+									<li><i class="fa fa-circle-o text-aqua"></i> Tareas en Curso </li>
 								</ul>
 							</div>	<!-- /.col -->
 						</div> 	<!-- /.row -->
 					</div>	<!-- /.box-body -->
 					<div class="box-footer no-padding">
-						<ul class="nav nav-pills nav-stacked">
-							<li>
-								<a href="#">Perdidas 
-									<span class="pull-right text-yellow"><i class="fa fa-angle-left"></i> $ <?php echo $_SESSION['activas']; ?></span>
-								</a>
-							</li>
-						</ul>
+						&nbsp;&nbsp;<h4>Graficos actualizados</h4>
 					</div>	<!-- /.footer -->
 				</div>
-			</div>
+			</section>
+			<section class="col-lg-5 connectedSortable ui-sortable">				
+				<div class="box box-success">
+					<div class="box-header with-border">
+						<h3 class="box-title">Visitors Report</h3>
+						<div class="box-tools pull-right">
+							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+							<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+						</div>
+					</div>
+					<!-- /.box-header -->
+					<div class="box-body no-padding">						
+						<div class="row">
+							<div class="col-md-9 col-sm-8">
+								<div class="pad">
+									<!-- Map will be created here -->
+									<div id="map" style="height: 325px;">
+										<div class="jvectormap-container" style="width: 100%; height: 100%; position: relative; overflow: hidden; background-color: transparent;">
+											<svg width="679.875" height="325"><g transform="scale(5.899620533252399) translate(-316.3536924865014, -154.94120682918154)">
+											<path d="M652.71,228.85l-0.04,1.38l-0.46,-0.21l-0.42,0.3l0.05,0.65l-0.17,-1.37l-0.48,-1.26l-1.08,-1.6l-0.23,-0.13l-2.31,-0.11l-0.31,0.36l0.21,0.98l-0.6,1.11l-0.8,-0.4l-0.37,0.09l-0.23,0.3l-0.54,-0.21l-0.78,-0.19l-0.38,-2.04l-0.83,-1.89l0.4,-1.5l-0.16,-0.35l-1.24,-0.57l0.36,-0.62l1.5,-0.95l0.02,-0.49l-1.62,-1.26l0.64,-1.31l1.7,1.0l0.12,0.04l0.96,0.11l0.19,1.62l0.25,0.26l2.38,0.37l2.32,-0.04l1.06,0.33l-0.92,1.79l-0.97,0.13l-0.23,0.16l-0.77,1.51l0.05,0.35l1.37,1.37l0.5,-0.14l0.35,-1.46l0.24,-0.0l1.24,3.92Z" data-code="BD" fill="rgba(210, 214, 222, 1)" fill-opacity="1" stroke="none" stroke-width="0" stroke-opacity="1" fill-rule="evenodd" class="jvectormap-region jvectormap-element"></path>
+											<path d="M429.28,143.95l1.76,0.25l0.13,-0.01l2.16,-0.64l1.46,1.34l1.26,0.71l-0.23,1.8l-0.44,0.08l-0.24,0.25l-0.2,1.36l-1.8,-1.22l-0.23,-0.05l-1.14,0.23l-1.62,-1.43l-1.15,-1.31l-0.21,-0.1l-0.95,-0.04l-0.21,-0.68l1.66,-0.54Z" data-code="BE" fill="rgba(210, 214, 222, 1)" fill-opacity="1" stroke="none" stroke-width="0" stroke-opacity="1" fill-rule="evenodd" class="jvectormap-region jvectormap-element"></path>
+											<path d="M413.48,260.21l-1.22,-0.46l-0.13,-0.02l-1.17,0.1l-0.15,0.06l-0.73,0.53l-0.87,-0.41l-0.39,-0.75l-0.13,-0.13l-0.98,-0.48l-0.14,-1.2l0.63,-0.99l0.05,-0.18l-0.05,-0.73l1.9,-2.01l0.08,-0.14l0.35,-1.65l0.49,-0.44l1.05,0.3l0.21,-0.02l1.05,-0.52l0.13,-0.13l0.3,-0.58l1.87,-1.1l0.11,-0.1l0.43,-0.72l2.23,-1.01l1.21,-0.32l0.51,0.4l0.19,0.06l1.25,-0.01l-0.14,0.89l0.01,0.13l0.34,1.16l0.06,0.11l1.35,1.59l0.07,1.13l0.24,0.28l2.64,0.53l-0.05,1.39l-0.42,0.59l-1.11,0.21l-0.22,0.17l-0.46,0.99l-0.69,0.23l-2.12,-0.05l-1.14,-0.2l-0.19,0.03l-0.72,0.36l-1.07,-0.17l-4.35,0.12l-0.29,0.29l-0.06,1.44l0.25,1.45Z" data-code="BF" fill="rgba(210, 214, 222, 1)" fill-opacity="1" stroke="none" stroke-width="0" stroke-opacity="1" fill-rule="evenodd" class="jvectormap-region jvectormap-element"></path>
+											<path d="M477.63,166.84l0.51,0.9l0.33,0.14l0.9,-0.21l1.91,0.47l3.68,0.16l0.17,-0.05l1.2,-0.75l2.78,-0.67l1.72,1.05l1.02,0.24l-0.97,0.97l-0.91,2.17l0.0,0.24l0.56,1.19l-1.58,-0.3l-0.16,0.01l-2.55,0.95l-0.2,0.28l-0.02,1.23l-1.92,0.24l-1.68,-0.99l-0.27,-0.02l-1.94,0.8l-1.52,-0.07l-0.15,-1.72l-0.12,-0.21l-0.99,-0.76l0.18,-0.18l0.02,-0.39l-0.17,-0.22l0.33,-0.75l0.91,-0.91l0.01,-0.42l-1.16,-1.25l-0.18,-0.89l0.24,-0.27Z" data-code="BG" fill="rgba(210, 214, 222, 1)" fill-opacity="1" stroke="none" stroke-width="0" stroke-opacity="1" fill-rule="evenodd" class="jvectormap-region jvectormap-element"></path>
+											<path d="M468.39,164.66l0.16,0.04l0.43,-0.0l-0.43,0.93l0.06,0.34l1.08,1.06l-0.28,1.09l-0.5,0.13l-0.47,0.28l-0.86,0.74l-0.1,0.16l-0.28,1.29l-1.81,-0.94l-0.9,-1.22l-1.0,-0.73l-1.1,-1.1l-0.55,-0.96l-1.11,-1.3l0.3,-0.75l0.59,0.46l0.42,-0.04l0.46,-0.54l1.0,-0.06l2.11,0.5l1.72,-0.03l1.06,0.64Z" data-code="BA" fill="rgba(210, 214, 222, 1)" fill-opacity="1" stroke="none" stroke-width="0" stroke-opacity="1" fill-rule="evenodd" class="jvectormap-region jvectormap-element"></path>
+											<path d="M707.34,273.57l0.76,-0.72l1.59,-1.03l-0.18,1.93l-0.9,-0.06l-0.28,0.14l-0.31,0.51l-0.68,-0.78Z" data-code="BN" fill="rgba(210, 214, 222, 1)" fill-opacity="1" stroke="none" stroke-width="0" stroke-opacity="1" fill-rule="evenodd" class="jvectormap-region jvectormap-element"></path>
+											<path d="M263.83,340.79l-0.23,-0.12l-2.86,-0.11l-0.28,0.17l-0.77,1.67l-1.17,-1.51l-0.18,-0.11l-3.28,-0.64l-0.28,0.1l-2.02,2.3l-1.43,0.29l-0.91,-3.35l-1.31,-2.88l0.75,-2.41l-0.09,-0.32l-1.23,-1.03l-0.31,-1.76l-0.05,-0.12l-1.12,-1.6l1.49,-2.62l0.01,-0.28l-1.0,-2.0l0.48,-0.72l0.02,-0.29l-0.37,-0.78l0.87,-1.13l0.06,-0.18l0.05,-2.17l0.12,-1.71l0.5,-0.8l0.01,-0.3l-1.9,-3.58l1.3,0.15l1.34,-0.05l0.23,-0.12l0.51,-0.7l2.12,-0.99l1.31,-0.93l2.81,-0.37l-0.21,1.51l0.01,0.13l0.29,0.91l-0.19,1.64l0.11,0.27l2.72,2.27l0.15,0.07l2.71,0.41l0.92,0.88l0.12,0.07l1.64,0.49l1.0,0.71l0.18,0.06l1.5,-0.02l1.24,0.64l0.1,1.31l0.05,0.14l0.44,0.68l0.02,0.73l-0.44,0.03l-0.27,0.39l0.96,2.99l0.28,0.21l4.43,0.1l-0.28,1.12l0.0,0.15l0.27,1.02l0.15,0.19l1.27,0.67l0.52,1.42l-0.42,1.91l-0.66,1.1l-0.04,0.2l0.21,1.3l-0.19,0.13l-0.01,-0.27l-0.15,-0.24l-2.33,-1.33l-0.14,-0.04l-2.38,-0.03l-4.36,0.76l-0.21,0.16l-1.2,2.29l-0.03,0.13l-0.06,1.37l-0.79,2.53l-0.05,-0.08Z" data-code="BO" fill="rgba(210, 214, 222, 1)" fill-opacity="1" stroke="none" stroke-width="0" stroke-opacity="1" fill-rule="evenodd" class="jvectormap-region jvectormap-element"></path>
+											
+											<path d="M494.7,295.83l-0.14,-2.71l-0.04,-0.13l-0.34,-0.62l0.93,0.12l0.3,-0.16l0.67,-1.25l0.9,0.11l0.11,0.76l0.08,0.16l0.46,0.48l0.02,0.56l-0.55,0.48l-0.96,1.29l-0.82,0.82l-0.61,0.07Z" data-code="BI" fill="rgba(210, 214, 222, 1)" fill-opacity="1" stroke="none" stroke-width="0" stroke-opacity="1" fill-rule="evenodd" class="jvectormap-region jvectormap-element"></path>
+											<path d="M427.4,268.94l-1.58,0.22l-0.52,-1.45l0.11,-5.73l-0.08,-0.21l-0.43,-0.44l-0.09,-1.13l-0.09,-0.19l-1.52,-1.52l0.24,-1.01l0.7,-0.23l0.18,-0.16l0.45,-0.97l1.07,-0.21l0.19,-0.12l0.53,-0.73l0.73,-0.65l0.68,-0.0l1.69,1.3l-0.08,0.67l0.02,0.14l0.52,1.38l-0.44,0.9l-0.01,0.24l0.2,0.52l-1.1,1.42l-0.76,0.76l-0.08,0.13l-0.47,1.59l0.05,1.69l-0.13,3.79Z" data-code="BJ" fill="rgba(210, 214, 222, 1)" fill-opacity="1" stroke="none" stroke-width="0" stroke-opacity="1" fill-rule="evenodd" class="jvectormap-region jvectormap-element"></path>
+											<path d="M650.38,213.78l0.88,0.75l-0.13,1.24l-1.77,0.07l-2.1,-0.18l-1.57,0.4l-2.02,-0.91l-0.02,-0.24l1.54,-1.87l1.18,-0.6l1.67,0.59l1.32,0.08l1.01,0.67Z" data-code="BT" fill="rgba(210, 214, 222, 1)" fill-opacity="1" stroke="none" stroke-width="0" stroke-opacity="1" fill-rule="evenodd" class="jvectormap-region jvectormap-element"></path>
+											<path d="M226.67,238.37l1.64,0.23l1.2,0.56l0.11,0.19l-1.25,0.03l-0.14,0.04l-0.65,0.37l-1.24,-0.37l-1.17,-0.77l0.11,-0.22l0.86,-0.15l0.52,0.08Z" data-code="JM" fill="rgba(210, 214, 222, 1)" fill-opacity="1" stroke="none" stroke-width="0" stroke-opacity="1" fill-rule="evenodd" class="jvectormap-region jvectormap-element"></path>
+											<path d="M484.91,331.96l0.53,0.52l0.82,1.53l2.83,2.86l0.14,0.08l0.85,0.22l0.03,0.81l0.74,1.66l0.21,0.17l1.87,0.39l1.17,0.87l-3.13,1.71l-2.3,2.01l-0.07,0.1l-0.82,1.74l-0.66,0.88l-1.24,0.19l-0.24,0.2l-0.65,1.98l-1.4,0.55l-1.9,-0.12l-1.2,-0.74l-1.06,-0.32l-0.22,0.02l-1.22,0.62l-0.14,0.14l-0.58,1.21l-1.16,0.79l-1.18,1.13l-1.5,0.23l-0.4,-0.68l0.22,-1.53l-0.04,-0.19l-1.48,-2.54l-0.11,-0.11l-0.53,-0.31l-0.0,-7.25l2.18,-0.08l0.29,-0.3l0.07,-9.0l1.63,-0.08l3.69,-0.86l0.84,0.93l0.38,0.05l1.53,-0.97l0.79,-0.03l1.3,-0.53l0.23,0.1l0.92,1.96Z" data-code="BW" fill="rgba(210, 214, 222, 1)" fill-opacity="1" stroke="none" stroke-width="0" stroke-opacity="1" fill-rule="evenodd" class="jvectormap-region jvectormap-element"></path>
+											<path d="M259.49,274.87l1.42,0.25l1.97,0.62l0.28,-0.05l0.67,-0.55l1.76,-0.38l2.8,-0.94l0.12,-0.08l0.92,-0.96l0.05,-0.33l-0.15,-0.32l0.73,-0.06l0.36,0.35l-0.27,0.93l0.17,0.36l0.76,0.34l0.44,0.9l-0.58,0.73l-0.06,0.13l-0.4,2.13l0.03,0.19l0.62,1.22l0.17,1.11l0.11,0.19l1.54,1.18l0.15,0.06l1.23,0.12l0.29,-0.15l0.2,-0.36l0.71,-0.11l1.13,-0.44l0.79,-0.63l1.25,0.19l0.65,-0.08l1.32,0.2l0.32,-0.18l0.23,-0.51l-0.05,-0.31l-0.31,-0.37l0.11,-0.31l0.75,0.17l0.13,0.0l1.1,-0.24l1.34,0.5l1.08,0.51l0.33,-0.05l0.67,-0.58l0.27,0.05l0.28,0.57l0.31,0.17l1.2,-0.18l0.17,-0.08l1.03,-1.05l0.76,-1.82l1.39,-2.16l0.49,-0.07l0.52,1.17l1.4,4.37l0.2,0.2l1.14,0.35l0.05,1.39l-1.8,1.97l0.01,0.42l0.78,0.75l0.18,0.08l4.16,0.37l0.08,2.25l0.5,0.22l1.78,-1.54l2.98,0.85l4.07,1.5l1.07,1.28l-0.37,1.23l0.36,0.38l2.83,-0.75l4.8,1.3l3.75,-0.09l3.6,2.02l3.27,2.84l1.93,0.72l2.13,0.11l0.76,0.66l1.22,4.56l-0.96,4.03l-1.22,1.58l-3.52,3.51l-1.63,2.91l-1.75,2.09l-0.5,0.04l-0.26,0.19l-0.72,1.99l0.18,4.76l-0.95,5.56l-0.74,0.96l-0.06,0.15l-0.43,3.39l-2.49,3.34l-0.06,0.13l-0.4,2.56l-1.9,1.07l-0.13,0.16l-0.51,1.38l-2.59,0.0l-3.94,1.01l-1.82,1.19l-2.85,0.81l-3.01,2.17l-2.12,2.65l-0.06,0.13l-0.36,2.0l0.01,0.13l0.4,1.42l-0.45,2.63l-0.53,1.23l-1.76,1.53l-2.76,4.79l-2.16,2.15l-1.69,1.29l-0.09,0.12l-1.12,2.6l-1.3,1.26l-0.45,-1.02l0.99,-1.18l0.01,-0.37l-1.5,-1.95l-1.98,-1.54l-2.58,-1.77l-0.2,-0.05l-0.81,0.07l-2.42,-2.05l-0.25,-0.07l-0.77,0.14l2.75,-3.07l2.8,-2.61l1.67,-1.09l2.11,-1.49l0.13,-0.24l0.05,-2.15l-0.07,-0.2l-1.26,-1.54l-0.35,-0.09l-0.64,0.27l0.3,-0.95l0.34,-1.57l0.01,-1.52l-0.16,-0.26l-0.9,-0.48l-0.27,-0.01l-0.86,0.39l-0.65,-0.08l-0.23,-0.8l-0.23,-2.39l-0.04,-0.12l-0.47,-0.79l-0.14,-0.12l-1.69,-0.71l-0.25,0.01l-0.93,0.47l-2.29,-0.44l0.15,-3.3l-0.03,-0.15l-0.62,-1.22l0.57,-0.39l0.13,-0.3l-0.22,-1.37l0.67,-1.13l0.44,-2.04l-0.01,-0.17l-0.59,-1.61l-0.14,-0.16l-1.25,-0.66l-0.22,-0.82l0.35,-1.41l-0.28,-0.37l-4.59,-0.1l-0.78,-2.41l0.34,-0.02l0.28,-0.31l-0.03,-1.1l-0.05,-0.16l-0.45,-0.68l-0.1,-1.4l-0.16,-0.24l-1.45,-0.76l-0.14,-0.03l-1.48,0.02l-1.04,-0.73l-1.62,-0.48l-0.93,-0.9l-0.16,-0.08l-2.72,-0.41l-2.53,-2.12l0.18,-1.54l-0.01,-0.13l-0.29,-0.91l0.26,-1.83l-0.34,-0.34l-3.28,0.43l-0.14,0.05l-1.3,0.93l-2.16,1.01l-0.12,0.09l-0.47,0.65l-1.12,0.05l-1.84,-0.21l-0.12,0.01l-1.33,0.41l-0.82,-0.21l0.16,-3.6l-0.48,-0.26l-1.97,1.43l-1.96,-0.06l-0.86,-1.23l-0.22,-0.13l-1.23,-0.11l0.34,-0.69l-0.05,-0.33l-1.36,-1.5l-0.92,-2.0l0.45,-0.32l0.13,-0.25l-0.0,-0.87l1.34,-0.64l0.17,-0.32l-0.23,-1.23l0.56,-0.77l0.05,-0.13l0.16,-1.03l2.7,-1.61l2.01,-0.47l0.16,-0.09l0.24,-0.27l2.11,0.11l0.31,-0.25l1.13,-6.87l0.06,-1.12l-0.4,-1.53l-0.1,-0.15l-1.0,-0.82l0.01,-1.45l1.08,-0.32l0.39,0.2l0.44,-0.24l0.08,-0.96l-0.25,-0.32l-1.22,-0.22l-0.02,-1.01l4.57,0.05l0.22,-0.09l0.6,-0.63l0.44,0.5l0.47,1.42l0.45,0.16l0.27,-0.18l1.21,1.16l0.23,0.08l1.95,-0.16l0.23,-0.14l0.43,-0.67l1.76,-0.55l1.05,-0.42l0.18,-0.2l0.25,-0.92l1.65,-0.66l0.18,-0.35l-0.14,-0.53l-0.26,-0.22l-1.91,-0.19l-0.29,-1.33l0.1,-1.64l-0.15,-0.28l-0.44,-0.25Z" data-code="BR" fill="rgba(210, 214, 222, 1)" fill-opacity="1" stroke="none" stroke-width="0" stroke-opacity="1" fill-rule="evenodd" class="jvectormap-region jvectormap-element"></path>
+											<path d="M227.51,216.69l0.3,0.18l-0.24,1.07l0.03,-1.04l-0.09,-0.21ZM226.5,224.03l-0.13,0.03l-0.54,-1.3l-0.09,-0.12l-0.78,-0.64l0.4,-1.26l0.33,0.05l0.79,2.0l0.01,1.24ZM225.76,216.5l-2.16,0.34l-0.07,-0.41l0.85,-0.16l1.36,0.07l0.02,0.16Z" data-code="BS" fill="rgba(210, 214, 222, 1)" fill-opacity="1" stroke="none" stroke-width="0" stroke-opacity="1" fill-rule="evenodd" class="jvectormap-region jvectormap-element"></path>
+											<path d="M480.08,135.28l2.09,0.02l0.13,-0.03l2.72,-1.3l0.16,-0.19l0.55,-1.83l1.94,-1.06l0.15,-0.31l-0.2,-1.33l1.33,-0.52l2.58,-1.3l2.39,0.8l0.3,0.75l0.37,0.17l1.22,-0.39l2.18,0.75l0.2,1.36l-0.48,0.85l0.01,0.32l1.57,2.26l0.92,0.6l-0.1,0.41l0.19,0.35l1.61,0.57l0.48,0.6l-0.64,0.49l-1.91,-0.11l-0.18,0.05l-0.48,0.32l-0.1,0.39l0.57,1.1l0.51,1.78l-1.79,0.17l-0.18,0.08l-0.77,0.73l-0.09,0.19l-0.13,1.31l-0.75,-0.22l-2.11,0.15l-0.56,-0.66l-0.39,-0.06l-0.8,0.49l-0.79,-0.4l-0.13,-0.03l-1.94,-0.07l-2.76,-0.79l-2.58,-0.27l-1.98,0.07l-0.15,0.05l-1.31,0.86l-0.8,0.09l-0.04,-1.16l-0.03,-0.12l-0.63,-1.28l1.22,-0.56l0.17,-0.27l0.01,-1.35l-0.04,-0.15l-0.66,-1.24l-0.08,-1.12Z" data-code="BY" fill="rgba(210, 214, 222, 1)" fill-opacity="1" stroke="none" stroke-width="0" stroke-opacity="1" fill-rule="evenodd" class="jvectormap-region jvectormap-element"></path>
+											<path d="M198.03,239.7l0.28,0.19l0.43,-0.1l0.82,-1.42l0.0,0.07l0.29,0.29l0.16,0.0l-0.02,0.35l-0.39,1.08l0.02,0.25l0.16,0.29l-0.23,0.8l0.04,0.24l0.09,0.14l-0.25,1.12l-0.38,0.53l-0.33,0.06l-0.21,0.15l-0.41,0.74l-0.25,0.0l0.17,-2.58l0.01,-2.2Z" data-code="BZ" fill="rgba(210, 214, 222, 1)" fill-opacity="1" stroke="none" stroke-width="0" stroke-opacity="1" fill-rule="evenodd" class="jvectormap-region jvectormap-element"></path>
+											<path d="M507.71,314.14l1.65,-0.18l2.96,0.7l0.2,-0.02l0.6,-0.29l1.68,-0.06l0.18,-0.07l0.8,-0.69l1.5,0.02l2.74,-0.98l1.74,-1.27l0.25,0.7l-0.1,2.47l0.31,2.27l0.1,3.97l0.42,1.24l-0.7,1.71l-0.94,1.73l-1.52,1.52l-5.06,2.21l-2.88,2.8l-1.01,0.51l-1.72,1.81l-0.99,0.58l-0.15,0.23l-0.21,1.86l0.04,0.19l1.17,1.95l0.47,1.47l0.03,0.74l0.39,0.28l0.05,-0.01l-0.06,2.13l-0.39,1.19l0.1,0.33l0.42,0.32l-0.28,0.83l-0.95,0.86l-2.03,0.88l-3.08,1.49l-1.1,0.99l-0.09,0.28l0.21,1.13l0.21,0.23l0.38,0.11l-0.14,0.89l-1.39,-0.02l-0.17,-0.94l-0.38,-1.23l-0.2,-0.89l0.44,-2.91l-0.01,-0.14l-0.65,-1.88l-1.15,-3.55l2.52,-2.85l0.68,-1.89l0.29,-0.18l0.14,-0.2l0.28,-1.53l-0.03,-0.19l-0.36,-0.7l0.1,-1.83l0.49,-1.84l-0.01,-3.26l-0.14,-0.25l-1.3,-0.83l-0.11,-0.04l-1.08,-0.17l-0.47,-0.55l-0.1,-0.08l-1.16,-0.54l-0.13,-0.03l-1.83,0.04l-0.32,-2.25l7.19,-1.99l1.32,1.12l0.29,0.06l0.55,-0.19l0.75,0.49l0.11,0.81l-0.49,1.11l-0.02,0.15l0.19,1.81l0.09,0.18l1.63,1.59l0.48,-0.1l0.72,-1.68l0.99,-0.49l0.17,-0.29l-0.21,-3.29l-0.04,-0.13l-1.11,-1.92l-0.9,-0.82l-0.21,-0.08l-0.62,0.03l-0.63,-2.98l0.61,-1.67Z" data-code="MZ" fill="rgba(210, 214, 222, 1)" fill-opacity="1" stroke="none" stroke-width="0" stroke-opacity="1" fill-rule="evenodd" class="jvectormap-region jvectormap-element"></path></g><g><circle data-index="0" cx="801.0193815826044" cy="109.01664739712453" fill="#00a65a" stroke="#111" fill-opacity="1" stroke-width="1" stroke-opacity="1" r="5" class="jvectormap-marker jvectormap-element"></circle><circle data-index="1" cx="726.5644394418839" cy="76.30840838675294" fill="#00a65a" stroke="#111" fill-opacity="1" stroke-width="1" stroke-opacity="1" r="5" class="jvectormap-marker jvectormap-element"></circle><circle data-index="2" cx="3083.122449419605" cy="774.3466454906164" fill="#00a65a" stroke="#111" fill-opacity="1" stroke-width="1" stroke-opacity="1" r="5" class="jvectormap-marker jvectormap-element"></circle>
+											<circle data-index="3"	cx="3264.5325068577094" cy="892.6781714227358" fill="#00a65a" stroke="#111" fill-opacity="1" stroke-width="1" stroke-opacity="1" r="5" class="jvectormap-marker jvectormap-element"></circle><circle data-index="4" cx="801.1671096424072" cy="72.69872730615873" fill="#00a65a" stroke="#111" fill-opacity="1" stroke-width="1" stroke-opacity="1" r="5" class="jvectormap-marker jvectormap-element"></circle><circle data-index="5" cx="757.7350600603197" cy="13.75169190094266" fill="#00a65a" stroke="#111" fill-opacity="1" stroke-width="1" stroke-opacity="1" r="5" class="jvectormap-marker jvectormap-element"></circle><circle data-index="6" cx="3144.134138118251" cy="661.457115789418" fill="#00a65a" stroke="#111" fill-opacity="1" stroke-width="1" stroke-opacity="1" r="5" class="jvectormap-marker jvectormap-element"></circle><circle data-index="7" cx="-309.60017201647474" cy="508.5729617934941" fill="#00a65a" stroke="#111" fill-opacity="1" stroke-width="1" stroke-opacity="1" r="5" class="jvectormap-marker jvectormap-element"></circle><circle data-index="8" cx="1698.7628010055362" cy="719.3760030668881" fill="#00a65a" stroke="#111" fill-opacity="1" stroke-width="1" stroke-opacity="1" r="5" class="jvectormap-marker jvectormap-element"></circle><circle data-index="9" cx="831.3036338422223" cy="212.94313654446717" fill="#00a65a" stroke="#111" fill-opacity="1" stroke-width="1" stroke-opacity="1" r="5" class="jvectormap-marker jvectormap-element"></circle><circle data-index="10" cx="-295.1228221557792" cy="587.8065524711964" fill="#00a65a" stroke="#111" fill-opacity="1" stroke-width="1" stroke-opacity="1" r="5" class="jvectormap-marker jvectormap-element"></circle><circle data-index="11" cx="-287.44096304602226" cy="571.1512744827156" fill="#00a65a" stroke="#111" fill-opacity="1" stroke-width="1" stroke-opacity="1" r="5" class="jvectormap-marker jvectormap-element"></circle><circle data-index="12" cx="-262.6226489991154" cy="571.1512744827156" fill="#00a65a" stroke="#111" fill-opacity="1" stroke-width="1" stroke-opacity="1" r="5" class="jvectormap-marker jvectormap-element"></circle>
+											<circle data-index="13" cx="-296.6001027538093" cy="511.4627799769286" fill="#00a65a" stroke="#111" fill-opacity="1" stroke-width="1" stroke-opacity="1" r="5" class="jvectormap-marker jvectormap-element"></circle>
+											<circle data-index="14" cx="1436.2500387355756" cy="834.8144304376964" fill="#00a65a" stroke="#111" fill-opacity="1" stroke-width="1" stroke-opacity="1" r="5" class="jvectormap-marker jvectormap-element"></circle>
+											<circle data-index="15" cx="2603.449439239209" cy="657.8934978914796" fill="#00a65a" stroke="#111" fill-opacity="1" stroke-width="1" stroke-opacity="1" r="5" class="jvectormap-marker jvectormap-element"></circle>
+											<circle data-index="16" cx="639.4048841581036" cy="98.35508324975171" fill="#00a65a" stroke="#111" fill-opacity="1" stroke-width="1" stroke-opacity="1" r="5" class="jvectormap-marker jvectormap-element"></circle>
+											<circle data-index="17" cx="-283.74776155094673" cy="558.3649774240959" fill="#00a65a" stroke="#111" fill-opacity="1" stroke-width="1" stroke-opacity="1" r="5" class="jvectormap-marker jvectormap-element"></circle>
+											<circle data-index="18" cx="2953.8603970919658" cy="664.4258872012321" fill="#00a65a" stroke="#111" fill-opacity="1" stroke-width="1" stroke-opacity="1" r="5" class="jvectormap-marker jvectormap-element"></circle>
+											<circle data-index="19" cx="2150.5152078831607" cy="747.459016453391" fill="#00a65a" stroke="#111" fill-opacity="1" stroke-width="1" stroke-opacity="1" r="5" class="jvectormap-marker jvectormap-element"></circle>
+											<circle data-index="20" cx="3173.236565899445" cy="745.0949281576433" fill="#00a65a" stroke="#111" fill-opacity="1" stroke-width="1" stroke-opacity="1" r="5" class="jvectormap-marker jvectormap-element"></circle>
+											<circle data-index="21" cx="3347.112492287595" cy="1083.4436142613813" fill="#00a65a" stroke="#111" fill-opacity="1" stroke-width="1" stroke-opacity="1" r="5" class="jvectormap-marker jvectormap-element"></circle>
+											<circle data-index="22" cx="-289.65688394306744" cy="538.9017314149454" fill="#00a65a" stroke="#111" fill-opacity="1" stroke-width="1" stroke-opacity="1" r="5" class="jvectormap-marker jvectormap-element"></circle>
+											<circle data-index="23" cx="1466.5342909951944" cy="1069.1123504979191" fill="#00a65a" stroke="#111" fill-opacity="1" stroke-width="1" stroke-opacity="1" r="5" class="jvectormap-marker jvectormap-element"></circle>
+											<circle data-index="24" cx="1363.863289432097" cy="373.5300435421856" fill="#00a65a" stroke="#111" fill-opacity="1" stroke-width="1" stroke-opacity="1" r="5" class="jvectormap-marker jvectormap-element"></circle><circle data-index="25" cx="716.5189313752783" cy="761.7896756637616" fill="#00a65a" stroke="#111" fill-opacity="1" stroke-width="1" stroke-opacity="1" r="5" class="jvectormap-marker jvectormap-element"></circle></g>
+										</svg>
+										<div class="jvectormap-zoomin">+</div>
+										<div class="jvectormap-zoomout">−</div>
+									</div>
+								</div>
+								</div>
+							</div>
+							<!-- /.col -->
+							<div class="col-md-3 col-sm-4">
+								<div class="pad box-pane-right bg-green" style="min-height: 280px">
+									<div class="description-block margin-bottom">
+										<div class="sparkbar pad" data-color="#fff"><canvas width="34" height="30" style="display: inline-block; width: 34px; height: 30px; vertical-align: top;"></canvas></div>
+											<h5 class="description-header">8390</h5>
+											<span class="description-text">Visits</span>
+										</div>
+										<!-- /.description-block -->
+										<div class="description-block margin-bottom">
+											<div class="sparkbar pad" data-color="#fff"><canvas width="34" height="30" style="display: inline-block; width: 34px; height: 30px; vertical-align: top;"></canvas></div>
+												<h5 class="description-header">30%</h5>
+												<span class="description-text">Referrals</span>
+											</div>
+										<!-- /.description-block -->
+										<div class="description-block">
+										<div class="sparkbar pad" data-color="#fff"><canvas width="34" height="30" style="display: inline-block; width: 34px; height: 30px; vertical-align: top;"></canvas></div>
+											<h5 class="description-header">70%</h5>
+											<span class="description-text">Organic</span>
+										</div>
+									<!-- /.description-block -->
+								</div>
+							</div>
+							<!-- /.col -->
+						</div>
+						<!-- /.row -->
+					</div>
+					<!-- /.box-body -->
+				</div>
+            </section>
 		</div> <?php
 	}
 	/* RRHH - Adicionales solo para Recursos Humanos
@@ -1364,19 +1465,19 @@ if($_SESSION['idrol'] == 2) { ?>
 				value    : <?php echo $_SESSION['terminada']; ?>,
 				color    : '#00a65a',
 				highlight: '#00a65a',
-				label    : 'Tareas Pendientes'
+				label    : 'Tareas Ejecutadas'
 			},
 			{
 				value    : <?php echo $_SESSION['encurso']; ?>,
-				color    : '#f39c12',
-				highlight: '#f39c12',
-				label    : 'Tareas Asignadas'
+				color    : '#3c8dbc',
+				highlight: '#3c8dbc',
+				label    : 'Tareas en Curso'
 			},
 			{
 				value    : <?php echo $_SESSION['activa']; ?>,
-				color    : '#3c8dbc',
-				highlight: '#3c8dbc',
-				label    : 'Tareas Ejecutadas'
+				color    : '#f39c12',
+				highlight: '#f39c12',
+				label    : 'Tareas Asignadas'
 			}
 		]; 
 		var pieOptions     = {

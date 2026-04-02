@@ -95,7 +95,7 @@ class TimelineData {
 		$query = Executor::doit($sql);
 		return Model::many($query[0],new TimelineData());
 	}
-	
+
 	public static function getEstados($id, $status){	    
 		$sql = "SELECT * FROM ".self::$tablename." WHERE idcompany = ".$_SESSION['id_company']." AND type=$id AND status=$status";
 		$query = Executor::doit($sql);
@@ -111,7 +111,7 @@ class TimelineData {
 
 		return Model::many($query[0],new TimelineData());
 	}
-
+ 
 	public static function getTipe($id){	    
 		$sql = "select * from ".self::$tablename." where idcompany = ".$_SESSION['id_company']." AND type=$id order by date_event DESC"; 
 		$query = Executor::doit($sql);
@@ -119,13 +119,20 @@ class TimelineData {
 		return Model::many($query[0],new TimelineData());
 	}
 	
+	public static function getTipeUser($id, $ano){
+		$sql = "select * from ".self::$tablename." where idcompany = ".$_SESSION['id_company']." AND type='news' AND idperson=$id AND YEAR(date_event)='$ano' order by date_event DESC"; 
+		$query = Executor::doit($sql);
+		
+		return Model::many($query[0],new TimelineData());
+	}	
+	
 	public static function getClient($id, $ano){
 		$sql = "select * from ".self::$tablename." where idcompany = ".$_SESSION['id_company']." AND type=3 AND idclient=$id AND YEAR(date_event)='$ano' order by date_event DESC"; 
 		$query = Executor::doit($sql);
 
 		return Model::many($query[0],new TimelineData());
 	}
-	
+
 	public static function getTime($id, $ano){
 		$sql = "select * from ".self::$tablename." where idcompany = ".$_SESSION['id_company']." AND idperson=$id AND YEAR(date_event)='$ano' order by date_event DESC"; 
 		$query = Executor::doit($sql);
@@ -161,6 +168,7 @@ class TimelineData {
 			$array[$cnt]->status = $r['status'];
 			$array[$cnt]->quien_asigna = $r['quien_asigna'];
 			$array[$cnt]->type = $r['type'];
+			$array[$cnt]->asunto = $r['asunto'];
 			$array[$cnt]->title = $r['title'];
 			$array[$cnt]->body = $r['body'];
 			$array[$cnt]->date_event = $r['date_event'];
@@ -191,6 +199,12 @@ class TimelineData {
 		
 		$query = Executor::doit($sql);
 
+		return Model::one($query[0], new TimelineData());
+	}
+
+	public static function getAsignado($id){
+		$sql = "SELECT count(*) as total FROM ".self::$tablename." where type LIKE 'news' AND idperson = ".$id." AND idcompany = ".$_SESSION['id_company'];
+		$query = Executor::doit($sql);
 		return Model::one($query[0], new TimelineData());
 	}
 

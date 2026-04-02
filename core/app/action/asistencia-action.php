@@ -21,7 +21,7 @@ if(isset($_GET['id']) && $_GET['id'] != '0'){
 	$lugar=$_SESSION['id'];
 }
 
-$cadena='opehor.activos';
+$cadena='asistencia';
 $tabla = PuestoData::getByIdHorario($lugar, 3, 1, $ini, $fin); // Verificacion de los guardias por puesto
 
 if(count($tabla) > 0){	

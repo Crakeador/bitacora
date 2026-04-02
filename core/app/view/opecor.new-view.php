@@ -116,7 +116,7 @@ $user = (object) [
 					<div class="col-md-4 col-sm-4">
 						<label>
 							<?php
-								echo '<select id="localidad_id" name="localidad_id" class="form-control" onchange="javascript:location.href=\'index.php?view=opehor.activos&id=\'+value;">';
+								echo '<select id="localidad_id" name="localidad_id" class="form-control" onchange="javascript:location.href=\'index.php?view=asistencia&id=\'+value;">';
 								echo '<option value="0"> -- SELECCIONE PUESTO -- </option>';
 								foreach($puestos as $tables) {
 									if($tables->id == $lugar) $valor = 'selected'; else $valor = '';

@@ -16,7 +16,7 @@ $_SESSION['actividad']=1;
 $hoy = date("d-m-Y H:i:s"); $fecha = date("Y-m-d H:i:s"); 
 $errores = ''; $observacion = ''; $estilo = ''; $validador = 99;
 $today = getdate(); $hora=$today["hours"];
-
+ 
 if(isset($_GET["id"])) $users = VisitantesData::update($_GET["id"]);
 if(isset($_GET["person"])) 
     $cargos = ContactoData::getLike($_GET["person"]);
@@ -371,7 +371,7 @@ else
 </section>
 
 <!-- Modal para Añadir Persona -->
-<div class="modal fade" id="modalAgregarPersona" tabindex="-1" role="dialog" aria-labelledby="modalAgregarPersonaLabel">
+<div class="modal fade" id="modalAgregarPersona" tabindex="-1" role="dialog" aria-labelledby="modalAgregarPersonaLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header" style="background-color: #f4f4f4; border-bottom: 1px solid #ddd;">
@@ -486,5 +486,11 @@ else
     // Limpiar formulario cuando se cierra el modal
     $('#modalAgregarPersona').on('hidden.bs.modal', function() {
         $('#formAgregarPersona')[0].reset();
+        $(this).attr('aria-hidden', 'true');
+    });
+
+    // Actualizar aria-hidden cuando se abre el modal
+    $('#modalAgregarPersona').on('shown.bs.modal', function() {
+        $(this).attr('aria-hidden', 'false');
     });
 </script>

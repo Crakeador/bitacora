@@ -39,7 +39,7 @@ class TareaData {
 	}
 
 	public static function getAll(){
-		$sql = "select * from ".self::$tablename;
+		$sql = "select * from ".self::$tablename; echo $sql;
 		$query = Executor::doit($sql);
 		return Model::many($query[0],new TareaData());
 	}

@@ -44,20 +44,23 @@
 													</tr>
 													<?php
 														$users = UserData::getAllTipo();
-													
+													 
 														// Crea tabla de Ventas
 														foreach($users as $tables){
-															$events = count(TimelineData::getById($tables->id));
-															$total = TimelineData::getByTotalID($tables->id, 1)->total;
+															$events = TimelineData::getAsignado($tables->id);
+															$total1 = TimelineData::getByTotalID($tables->id, 1)->total;
+															$total2 = TimelineData::getByTotalID($tables->id, 2)->total;
+															$total3 = TimelineData::getByTotalID($tables->id, 3)->total;
+															$total4 = TimelineData::getByTotalID($tables->id, 4)->total;
 
 															echo '<tr>';
 																echo '<td class="text-grey-800"><left>'.$tables->name.' '.$tables->lastname.'</left> <a data-toggle="modal" data-target=".bs-example-modal-sm" style="color:#5b5d5f"></a></td>';
 																echo '<td class="text-grey-800"><left>'.$tables->departamento.'</left> <a data-toggle="modal" data-target=".bs-example-modal-sm" style="color:#5b5d5f"></a></td>';
-																echo '<td class="text-right">'.$events.'</td>';
-																echo '<td class="text-right">'.$total.'</td>';
-																echo '<td class="text-right">'.$events.'</td>';
-																echo '<td class="text-right">'.$events.'</td>';
-																echo '<td class="text-right">'.($total>0 ? ($events*100)/$total : 0).'</td>';
+																echo '<td class="text-right">'.(is_object($events) && isset($events->total) ? $events->total : 0).'</td>';
+																echo '<td class="text-right">'.$total1.'</td>';
+																echo '<td class="text-right">'.$total3.'</td>';
+																echo '<td class="text-right">'.$total4.'</td>';
+																echo '<td class="text-right">'.($total1>0 ? ($total3*100)/$total1 : 0).'</td>';
 															echo '</tr>';
 														}
 													?>

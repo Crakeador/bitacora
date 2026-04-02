@@ -95,6 +95,13 @@ class SellData {
 		return Model::many($query[0],new SellData());
 	}
 
+	public static function getPuestos(){ 
+		$sql = "SELECT D.id AS sell_id, C.nombre cliente, B.descripcion lugar, A.*, D.total FROM sell D, puestos A, localidad B, client C 
+		         WHERE D.puesto_id = A.id AND A.idclient = C.id AND A.idlugar = B.id AND D.puesto_id > 1 AND D.operation_type_id = 2 AND D.is_active = 1 ORDER BY idclient";
+		$query = Executor::doit($sql);
+		return Model::many($query[0],new SellData());
+	}
+
 	public static function getAgentes(){
 		$sql = "select B.name, A.* from sell A, person B where A.person_id = B.id and A.operation_type_id=2 and B.idcargo in (7,8) GROUP by A.person_id order by created_at desc";
 		$query = Executor::doit($sql);

@@ -22,7 +22,7 @@ if(isset($_GET['id']) && $_GET['id'] != '0'){
 }
 
 if($_GET['tipo'] == 3){
-	$cadena='opehor.activos';
+	$cadena='asistencia';
 	$tabla = PuestoData::getByIdHorario($lugar, 3, 1, $ini, $fin); // Verificacion de los guardias por puesto
 }else{	
 	$cadena='rrphor.registro';

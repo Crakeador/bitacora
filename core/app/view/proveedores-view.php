@@ -10,9 +10,9 @@
 </section>
 <!-- Main content -->
 <section class="content" style="padding: 1.5rem !important;">
-	<div class="box">	
+	<div class="box">
 		<div class="box-header with-border">
-			<a href="index.php?view=proveedor&id=0" class="btn btn-success btn-sm">
+			<a href="<?php echo $_SESSION["url"]; ?>proveedor/0" class="btn btn-success btn-sm">
 				<span class="glyphicon glyphicon-plus"></span> Ingresar Proveedor
 			</a>		
 		</div>

@@ -80,8 +80,14 @@ $_SESSION["idtarea"] = 0;
 											$dias = $intervalo->format('%R%a');
 											
 											if($dias > 0){												
-												echo " Se vencio hace: ".abs($intervalo->format('%R%a'))." días</br>";
-												echo '<span class="label label-danger">&nbsp;&nbsp; VENCIDA &nbsp;&nbsp;</span>';
+												if($tables->status == 5){
+													echo " Se vencio hace: ".abs($intervalo->format('%R%a'))." días</br>";
+													echo '<span class="label label-purple"> DESTIEMPO </span>';
+												}else{
+													echo " Se vencio hace: ".abs($intervalo->format('%R%a'))." días</br>";
+													echo '<span class="label label-danger">&nbsp;&nbsp; VENCIDA &nbsp;&nbsp;</span>';
+												}
+												$boton = ' disabled';
 											}else{
 												echo " Se vence en: ".abs($intervalo->format('%R%a'))." días</br>";
 												
@@ -95,8 +101,12 @@ $_SESSION["idtarea"] = 0;
 										echo '<td>'.$nombre.'</td>';
 										echo '<td>'.$tables->asunto.'</br>';
 										echo '<small>';
-											if($tables->status == 4){
-												echo '<span class="glyphicon glyphicon-ok-sign text-success"></span>&nbsp;&nbsp;<span class="label label-success">TERMINADA</span>';
+											if($tables->status == 4 || $tables->status == 5){
+												if($tables->date_pass == '0000-00-00 00:00:00'){
+													//Sin fecha de entrega
+												}else{
+													echo '<span class="glyphicon glyphicon-ok-sign text-success"></span>&nbsp;&nbsp;<span class="label label-success">TERMINADA</span>';
+												}
 											}else{
 												if($tables->prioridad == 0){
 													echo '<span class="glyphicon glyphicon-remove-sign text-danger"></span>&nbsp;&nbsp;<span>PRIORIDAD BAJA</span>';
@@ -123,7 +133,7 @@ $_SESSION["idtarea"] = 0;
 													else
 														echo '<a class="btn btn-success btn-sm'.$boton.'" href="edittask/'.$tables->id.'"><i class="fa fa-edit"></i></a>';
 												}else{
-													echo '<button type="button" class="btn btn-success btn-sm'.$boton.'" onClick="btn_EnviarPermiso(\''.$tables->id.'\');"><i class="fa fa-edit"></i></button>';
+													echo '<a class="btn btn-success btn-sm'.$boton.'" href="edittask/'.$tables->id.'"><i class="fa fa-edit"></i></a>';
 												}
 												// Botón para ver subtareas (modal)
 												echo '<button type="button" class="btn btn-info btn-sm'.$boton.'" onClick="openSubtasksModal(\''.$tables->id.'\');"><i class="fa fa-eye"></i></button>';

@@ -37,6 +37,11 @@ class GruposData {
 		Executor::doit($sql);
 	}
 
+	public function tarea($valor, $clave){
+		$sql = "UPDATE consecutivo SET consecutivo ='".$clave."' WHERE tabla='".$valor."'";
+		Executor::doit($sql);
+	}
+
 	public function desvincular(){
 		$sql = "UPDATE grupoperson SET is_active=0, usuario_log ='".$_SESSION['user_name']."', ip ='".$_SESSION['ip']."' WHERE idperson=$this->id";
 		Executor::doit($sql);
@@ -44,6 +49,12 @@ class GruposData {
 	
 	public static function getByIdOperation($id){
 		$sql = "select * from operation where id=$id";
+		$query = Executor::doit($sql);
+		return Model::one($query[0],new GruposData());
+	}
+
+	public static function getValores($tabla){
+		$sql = "SELECT * FROM consecutivo WHERE tabla = '$tabla' AND is_active = 1"; 
 		$query = Executor::doit($sql);
 		return Model::one($query[0],new GruposData());
 	}

@@ -896,7 +896,7 @@ if(isset($_SESSION['depart'])) $departamento = DepartamentoData::getById($_SESSI
                               <li>
                                 <a href="#"><i class="fa fa-circle-o"></i> Asistencia <i class="fa fa-angle-left pull-right"></i></a>
                                 <ul class="treeview-menu">
-                                  <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=opehor.activos"><i class="fa fa-circle-o"></i><span> Activos </span></a></li>
+                                  <li><a href="<?php echo $_SESSION['url']; ?>asistencia"><i class="fa fa-circle-o"></i><span> Activos </span></a></li>
                                   <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=opehor.eventual"><i class="fa fa-circle-o"></i><span> Eventuales </span></a></li>
                                   <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=opehor.inactivos"><i class="fa fa-circle-o"></i><span> Inactivos </span></a></li>
                                 </ul>
@@ -919,7 +919,7 @@ if(isset($_SESSION['depart'])) $departamento = DepartamentoData::getById($_SESSI
                               <li>
                                 <a href="#"><i class="fa fa-circle-o"></i> Asistencia <i class="fa fa-angle-left pull-right"></i></a>
                                 <ul class="treeview-menu">
-                                  <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=opehor.activos"><i class="fa fa-circle-o"></i><span> Activos </span></a></li>
+                                  <li><a href="<?php echo $_SESSION['url']; ?>asistencia"><i class="fa fa-circle-o"></i><span> Activos </span></a></li>
                                   <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=opehor.eventual"><i class="fa fa-circle-o"></i><span> Eventuales </span></a></li>
                                   <li><a href="<?php echo $_SESSION['url']; ?>index.php?view=opehor.inactivos"><i class="fa fa-circle-o"></i><span> Inactivos </span></a></li>
                                 </ul>
