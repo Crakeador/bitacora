@@ -158,7 +158,8 @@ class PersonData {
 		$sql .= "1, \"$this->fechanacimiento\", \"$this->phone1\", \"$this->phone2\", \"$this->phone3\", \"$this->genero\", \"$this->image\", \"$this->cedula1\", \"$this->cedula2\", \"$this->votacion\", $this->tipo_sangre, ";
 		$sql .= "\"$this->bachiller\", \"$this->computadora\", \"$this->celulartactil\", \"$this->curso_realizado\", \"$this->certificados\", \"$this->altura\", ";
 		$sql .= "$this->idlugar, \"$this->archivo\", \"$this->direccion\", \"$this->sector\", \"$this->referencia\", \"$this->tiene_carnet\", \"$this->reentrenamiento\", \"$this->vivienda\",  \"$this->referencia1\",  \"$this->referencia2\",  \"$this->referencia3\", \"$this->is_active\", \"$this->usuario_log\", \"".$_SESSION['ip']."\", $this->created_at)";
-        $query = Executor::doit($sql); 
+        echo $sql;
+		$query = Executor::doit($sql); 
 		return $query;
 	}
 	

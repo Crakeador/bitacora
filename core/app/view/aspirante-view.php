@@ -54,15 +54,11 @@ if(isset($_GET['id'])){
         ini_set("max_execution_time","300");
 
         if($_POST["id_person"] == 0){
-            if(is_object(PersonData::getLike("idcard", $_POST["cedula"]))){
+            if(is_object(PersonData::getLike("idcard", $_POST["cedula"])))
                 $errores8 = "- Cedula repetida \r\n";
-            }
+            else
+                $errores8 = "";
         }
-        
-        if($_POST["altura"]=="0") 
-            $errores1 = "- No puede dejar altura del aspirante en blanco\r\n";
-        else
-            $cadena = "";
             
         if(isset($_FILES["image"]) && $_FILES["image"]["name"]=="") 
             $errores1 = "- No puede dejar la foto del aspirante en blanco\r\n";
@@ -83,9 +79,7 @@ if(isset($_GET['id'])){
            "estado_civil" => $_POST["estado_civil"],
            "conyuge" => $_POST["conyuge"],
            "cargo" => $_POST["cmb_idcargo"],
-           "copiacedula" => $_POST["copiacedula"],
            "fechanacimiento" => $_POST["fechanacimiento"],
-           "tiene_carnet" => $_POST["tiene_carnet"],
            "reentrenamiento" => $_POST["reentrenamiento"],
            "phone1" => $_POST["telefono1"],
            "phone2" => $_POST["telefono2"],
@@ -99,8 +93,6 @@ if(isset($_GET['id'])){
            "celulartactil" => $_POST["celulartactil"],
            "computadora" => $_POST["computadora"],
            "curso_realizado" => $_POST["curso_realizado"],
-           "tiene_carnet" => $_POST["tiene_carnet"],
-           "tiene_afis" => $_POST["tiene_afis"],
            "referencia1" => $_POST["referencia1"],
            "referencia2" => $_POST["referencia2"],
            "referencia3" => $_POST["referencia3"],
@@ -110,10 +102,11 @@ if(isset($_GET['id'])){
         ];
 
         if($errores1 != '' || $errores8 != ''){
-            echo "<script type=\"text/javascript\">
+            echo "<script src=\"https://unpkg.com/sweetalert/dist/sweetalert.min.js\"></script>
+                  <script type=\"text/javascript\">
                       swal({                
                       	 title: 'Corrija...!!!!',
-                         text: '".$errores1."&nbsp;&nbsp;".$errores2."&nbsp;&nbsp;".$errores3."&nbsp;&nbsp;".$errores4."&nbsp;&nbsp;".$errores5."&nbsp;&nbsp;".$errores6."&nbsp;&nbsp;".$errores7."&nbsp;&nbsp;".$errores8."&nbsp;&nbsp;',
+                         text: '".$errores1."&nbsp;&nbsp;".$errores8."&nbsp;&nbsp;',
                          html: true,
                          type: 'error'
                       });
@@ -293,7 +286,7 @@ if(isset($_GET['id'])){
                 else
                     $user->upd_campo("archivo", $_FILES["archivo"]["name"]);
             }
-    
+            echo 'AAAAAAAA: '.$_POST["id_person"];
             if($_POST["id_person"] == 0) {
                 $ingreso = $user->add_aspirante();
                 
@@ -319,7 +312,8 @@ if(isset($_GET['id'])){
             if($errores1 == '' && $errores2 == '' && $errores3 == '' && $errores4 == '' && $errores5 == '' && $errores6 == ''){
                 //
             }else{
-                echo '<script type="text/javascript">
+                echo '<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+                      <script type="text/javascript">
             			swal("Corrija...!!!!", "'.$errores1.'&nbsp;&nbsp;'.$errores2.'&nbsp;&nbsp;'.$errores3.'&nbsp;&nbsp;'.$errores4.'&nbsp;&nbsp;'.$errores5.'&nbsp;&nbsp;'.$errores6.'&nbsp;&nbsp;'.$errores7.'&nbsp;&nbsp;'.'", "error");
             		  </script>'; 
             }
@@ -399,13 +393,17 @@ if(isset($_GET['id'])){
             }
             
             echo '<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    	           <script>
+    	          <script>
         	            swal("Gracias...!", "Se ingresaron sus datos correctamente", "success");
                         setTimeout(function(){
-        	                window.location="https://cipol.ec";
+        	                window.location="https://latin.grupolatinamerica.com/";
                         }, 3000);
-        	       </script>';
-            echo '<script>window.location="https://cipol.ec/sidai/aspirantes/'.$valor.'";</script>';
+        	      </script>';
+
+            echo 'ID: '.$valor;
+            //echo '<script>window.location="https://latin.grupolatinamerica.com/aspirantes/'.$valor.'";</script>';
+
+            $falta = 0;
         }
     }else{
         $mensaje = "crear un nuevo aspirante al sistema";
@@ -477,7 +475,13 @@ if ($person === null){
         "hijos"=>0,
         "demanda"=>"",           
         "monto"=>NULL,
-        "tiene_carnet"=>"0",
+        "curso_01"=>"0",
+        "curso_02"=>"0",
+        "curso_03"=>"0",
+        "curso_04"=>"0",
+        "curso_05"=>"0",
+        "curso_06"=>"0",
+        "curso_07"=>"0",
         "reentrenamiento"=>"",
         "tiene_afis"=>"0",
         "ubicacion"=>"",
@@ -494,6 +498,7 @@ if ($person === null){
         "cedula1"=>"",
         "cedula2"=>"",
         "votacion"=>"",
+        "archivo"=>"",
         "vivienda"=>"",
         "carnet"=>"",
         "firma"=>"",
@@ -522,7 +527,7 @@ if ($person === null){
         "is_active" => "1"
     ];
 }else{
-    $users = PersonData::getTrabajos($person->id);
+    $users = PersonData::getTrabajos($person->idcard);
 }
 ?>
 <style>
@@ -745,7 +750,7 @@ if ($person === null){
 		<small><?php echo $mensaje; ?></small>
 	</h1>
 	<ol class="breadcrumb">
-		<li><a href="aspirantes"><i class="fa fa-database"></i> Aspirantes </a></li>
+		<li><a href="<?php if($_SESSION['idrol']=='11') echo 'aspirante'; else echo 'aspirantes'; ?>"><i class="fa fa-database"></i> Aspirantes </a></li>
 		<li class="active"><?php echo $enlaces; ?></li>
 	</ol>
 </section>
@@ -770,7 +775,7 @@ if ($person === null){
                     <div class="tab-content panel">
                         <div class="tab-pane active" id="tab_generales">
                           	<!-- Dialogo para seleccionar una cuenta -->
-                          	<form class="form-horizontal" method="POST" enctype="multipart/form-data" id="aspirante" name="aspirante" action="https://cipol.ec/sidai/aspirantes" role="form">
+                          	<form class="form-horizontal" method="POST" enctype="multipart/form-data" id="aspirante" name="aspirante" action="#" role="form" onsubmit="return validarAspiranteForm();">
                                 <input type="hidden" id="verifica"   name="verifica"   value="0">
                                 <input type="hidden" id="timestamp"  name="timestamp"  value="">
                                 <input type="hidden" id="latitude"   name="latitude"   value="">
@@ -785,12 +790,19 @@ if ($person === null){
                            	    <input type="hidden" id="imgCedula2" name="imgCedula2" value="<?php echo $person->cedula2; ?>">
                            	    <input type="hidden" id="imgCertifi" name="imgCertifi" value="<?php echo $person->votacion; ?>">
                            	    <input type="hidden" id="imgHistori" name="imgHistori" value="<?php echo $person->archivo; ?>">
+                                <div id="aspiranteValidationAlert" class="alert alert-danger alert-dismissible" style="display:none; margin-top:15px;">
+                                    <button type="button" class="close" aria-label="Cerrar" onclick="document.getElementById('aspiranteValidationAlert').style.display='none';">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <strong><i class="fa fa-exclamation-circle" style="margin-right: 8px;"></i>Atención:</strong>
+                                    <div id="aspiranteValidationText"></div>
+                                </div>
                           		<div class="row">
                           		    <div class="col-md-12">
           		                        <button type="submit" class="btn btn-success pull-right"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar </button>
           		                    </div>
           		                    <br><br>
-                          			<div class="col-md-7">
+                          			<div class="col-md-6">
                           				<div class="panel panel-default">
                           					<div class="panel-heading">
                           						<h3 class="panel-title"><i class="fa fa-car"></i> Informaci&oacute;n del Coolaborador</h3>
@@ -815,7 +827,9 @@ if ($person === null){
                           								</div>
                           								<div class="form-group">
                           									<label for="email" class="col-sm-4 control-label"><span class="text-danger">*</span> Correo electronico:</label>
-                          									<div class="col-sm-6"><input class="text-field form-control input-sm" id="email" name="email" type="email" value="<?php echo utf8_encode($person->email); ?>" minlength="3" maxlength="60" style="text-transform: lowercase;" placeholder="Correo personal" required></div>
+                          									<div class="col-sm-6">
+                                                                <input class="text-field form-control input-sm" id="email" name="email" type="email" value="<?php echo utf8_encode($person->email); ?>" minlength="3" maxlength="60" style="text-transform: lowercase;" placeholder="Correo personal" autocomplete required>
+                                                            </div>
                           								</div>
                           								<div class="form-group">
                           									<label for="idlugar" class="col-sm-4 control-label"><span class="text-danger">*</span> Ciudad:</label>
@@ -867,9 +881,9 @@ if ($person === null){
                           									</div>
                           								</div>                                                
                           								<div class="form-group">
-                                                            <label class="col-sm-4 control-label"><span class="text-danger">*</span> Altura:</label>
+                                                            <label for="altura" class="col-sm-4 control-label"><span class="text-danger">*</span> Altura:</label>
                                                             <div class="col-sm-2">
-                                                                <input type="text" class="form-control" id="altura" name="altura" value="<?php echo $person->altura; ?>">
+                                                                <input type="text" class="form-control" id="altura" name="altura" value="<?php echo $person->altura; ?>">&nbsp;&nbsp;<span style="font-size: 12px; color: #555;">(en cm)</span>
                                                             </div>
                                                         </div>
                                                         <div class="form-group" id="masculino" style="display: none;">
@@ -920,7 +934,7 @@ if ($person === null){
                           				</div>
                           			</div>
                           			<!-- Informacion personal Operativo -->
-                          			<div class="col-md-5">
+                          			<div class="col-md-6">
                           				<div id="datos_laborales">
                           					<div class="panel panel-default">
                           						<div class="panel-heading">
@@ -941,13 +955,67 @@ if ($person === null){
                         									</div>
                         								</div>
                           								<div class="form-group">
-                          									<div class="col-sm-offset-1 col-sm-10">
-                          										Curso de Guardia:
-                          										<div class="radiobutton">
-                          											<input type="radio" id="tiene_carnet" name="tiene_carnet" value="1" <?php if($person->tiene_carnet==1) echo 'checked'; ?>> Primer nivel  &nbsp;&nbsp;
-                          											<input type="radio" id="tiene_carnet" name="tiene_carnet" value="2" <?php if($person->tiene_carnet==2) echo 'checked'; ?>> Segundo nivel &nbsp;&nbsp;
-                          										</div>
-                          									</div>
+                                                            <label for="curso_01" class="col-sm-6 control-label">Nivel I</label>
+                                                            <div class="col-md-3">
+                                                                <div class="radiobutton">
+                                                                    <input type="radio" id="curso_01" name="curso_01" value="1" <?php if($person->curso_01==1) echo 'checked'; ?>> Si &nbsp;&nbsp;
+                                                                    <input type="radio" id="curso_01" name="curso_01" value="0" <?php if($person->curso_01==0) echo 'checked'; ?>> No
+                                                                </div>
+                                                            </div>
+                          								</div>
+                          								<div class="form-group">
+                                                            <label for="curso_02" class="col-sm-6 control-label">Reentrenamiento</label>
+                                                            <div class="col-md-3">
+                                                                <div class="radiobutton">
+                                                                    <input type="radio" id="curso_02" name="curso_02" value="1" <?php if($person->curso_02==1) echo 'checked'; ?>> Si &nbsp;&nbsp;
+                                                                    <input type="radio" id="curso_02" name="curso_02" value="0" <?php if($person->curso_02==0) echo 'checked'; ?>> No
+                                                                </div>
+                                                            </div>
+                          								</div>
+                          								<div class="form-group">
+                                                            <label for="curso_03" class="col-sm-6 control-label">CE Manejo de Consolas</label>
+                                                            <div class="col-md-3">
+                                                                <div class="radiobutton">
+                                                                    <input type="radio" id="curso_03" name="curso_03" value="1" <?php if($person->curso_03==1) echo 'checked'; ?>> Si &nbsp;&nbsp;
+                                                                    <input type="radio" id="curso_03" name="curso_03" value="0" <?php if($person->curso_03==0) echo 'checked'; ?>> No
+                                                                </div>
+                                                            </div>
+                          								</div>
+                          								<div class="form-group">
+                                                            <label for="curso_04" class="col-sm-6 control-label">CE Seguridad Privada</label>
+                                                            <div class="col-md-3">
+                                                                <div class="radiobutton">
+                                                                    <input autocomplete="off" type="radio" id="curso_04" name="curso_04" value="1" <?php if($person->curso_04==1) echo 'checked'; ?>> Si &nbsp;&nbsp;
+                                                                    <input autocomplete="off" type="radio" id="curso_04" name="curso_04" value="0" <?php if($person->curso_04==0) echo 'checked'; ?>> No
+                                                                </div>
+                                                            </div>
+                          								</div>
+                          								<div class="form-group">
+                                                            <label for="curso_05" class="col-sm-6 control-label">CE Supervisor</label>
+                                                            <div class="col-md-3">
+                                                                <div class="radiobutton">
+                                                                    <input autocomplete="off" type="radio" id="curso_05" name="curso_05" value="1" <?php if($person->curso_05==1) echo 'checked'; ?>> Si &nbsp;&nbsp;
+                                                                    <input autocomplete="off" type="radio" id="curso_05" name="curso_05" value="0" <?php if($person->curso_05==0) echo 'checked'; ?>> No
+                                                                </div>
+                                                            </div>
+                          								</div>
+                          								<div class="form-group">
+                                                            <label for="curso_06" class="col-sm-6 control-label">Nivel II</label>
+                                                            <div class="col-md-3">
+                                                                <div class="radiobutton">
+                                                                    <input type="radio" id="curso_06" name="curso_06" value="1" <?php if($person->curso_06==1) echo 'checked'; ?>> Si &nbsp;&nbsp;
+                                                                    <input type="radio" id="curso_06" name="curso_06" value="0" <?php if($person->curso_06==0) echo 'checked'; ?>> No
+                                                                </div>
+                                                            </div>
+                          								</div>
+                          								<div class="form-group">
+                                                            <label for="curso_07" class="col-sm-6 control-label">Seguridad Financiera</label>
+                                                            <div class="col-md-3">
+                                                                <div class="radiobutton">
+                                                                    <input type="radio" id="curso_07" name="curso_07" value="1" <?php if($person->curso_07==1) echo 'checked'; ?>> Si &nbsp;&nbsp;
+                                                                    <input type="radio" id="curso_07" name="curso_07" value="0" <?php if($person->curso_07==0) echo 'checked'; ?>> No
+                                                                </div>
+                                                            </div>
                           								</div>
                           								<div class="form-group">
                           									<label for="reentrenamiento" class="col-sm-4 control-label"> Reentrenamientos:</label>
@@ -958,7 +1026,7 @@ if ($person === null){
                           					</div>
                           				</div>
                           			</div>
-                          			<div class="col-md-5">
+                          			<div class="col-md-6">
                           				<div id="personalizados_proveedor">
                           					<div class="panel panel-default">
                           						<div class="panel-heading">
@@ -1002,7 +1070,7 @@ if ($person === null){
                           								<div class="form-group">
                           									<label for="curso_realizado" class="col-sm-4 control-label">Cursos realizados:</label>
                           									<div class="col-sm-7">
-                          										<textarea class="form-control" id="curso_realizado" name="curso_realizado" placeholder="Especifique los cursos realizados" rows="8" cols="50"><?php echo $person->curso_realizado; ?></textarea>
+                          										<textarea class="form-control" id="curso_realizado" name="curso_realizado" placeholder="Especifique los cursos realizados" rows="8" cols="80" style="width: 408px; height: 184px;"><?php echo $person->curso_realizado; ?></textarea>
                           									</div>
                           								</div>
                           							</div>
@@ -1010,8 +1078,8 @@ if ($person === null){
                           					 </div>
                           				</div>
                           			</div> 
-                          			<div class="col-md-5">
-                          				<div id="personalizados_proveedor">
+                          			<div class="col-md-6">
+                          				<div id="Referencias_personales">
                           					<div class="panel panel-default">
                           						<div class="panel-heading">
                           							<h3 class="panel-title"><i class="fa fa-users"></i> Referencias Personales </h3>
@@ -1028,7 +1096,7 @@ if ($person === null){
                           								</div>
                           								<div class="form-group">
                           									<label for="referencia3" class="col-sm-3 control-label">Nombres y Telefono:</label>
-                          									<div class="col-md-8 col-sm-8"><input type="text" class="form-control" id="referencia3" name="referencia3" placeholder="Referencia personal con nombre y telefono" value="<?php echo $person->referencia2; ?>"></div>
+                          									<div class="col-md-8 col-sm-8"><input type="text" class="form-control" id="referencia3" name="referencia3" placeholder="Referencia personal con nombre y telefono" value="<?php echo $person->referencia3; ?>"></div>
                           								</div>
                           							</div>
                           						</div>
@@ -1038,6 +1106,42 @@ if ($person === null){
                           			<!--/ Nivel de educacion -->
                           		</div>
               	            </form>
+                            <script type="text/javascript">
+                                function validarAspiranteForm() {
+                                    var altura = document.getElementById('altura').value.trim();
+                                    var tipoSangre = document.getElementById('tipo_sangre').value;
+                                    var genero = document.getElementById('genero').value;
+                                    var errores = [];
+
+                                    if (altura === '' || altura === '0') {
+                                        errores.push('Debe ingresar la altura del aspirante.');
+                                    } else if (!/^[0-9]+(\.?[0-9]*)?$/.test(altura)) {
+                                        errores.push('Altura debe ser un valor numérico válido.');
+                                    }
+
+                                    if (tipoSangre === '0' || tipoSangre === '') {
+                                        errores.push('Seleccione el tipo de sangre.');
+                                    }
+
+                                    if (genero === '0' || genero === '') {
+                                        errores.push('Seleccione el género.');
+                                    }
+
+                                    var alertBox = document.getElementById('aspiranteValidationAlert');
+                                    var alertText = document.getElementById('aspiranteValidationText');
+
+                                    if (errores.length > 0) {
+                                        alertText.innerHTML = errores.join('<br>');
+                                        alertBox.style.display = 'block';
+                                        alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                        return false;
+                                    }
+
+                                    alertBox.style.display = 'none';
+                                    alertText.innerHTML = '';
+                                    return true;
+                                }
+                            </script>
                       	</div>
                         <div class="tab-pane" id="tab_trabajos">
                             <div class="row">
@@ -1082,9 +1186,9 @@ if ($person === null){
                         </div>
                         <div class="tab-pane" id="tab_documentos">  <?php
             			    if($person->image == NULL) {
-            			        $nombre_fichero1 = "https://cipol.ec/sidai/storage/persons/logo-Cipol-color.png"; 
+            			        $nombre_fichero1 = $_SESSION['url']."assets/images/logo-ameri.png"; 
             			    }else {
-                			    $nombre_fichero1 = "https://cipol.ec/sidai/storage/persons/".$person->image;
+                			    $nombre_fichero1 = $_SESSION['url']."storage/persons/".$person->image;
 
                                 if (file_exists("storage/persons/".$person->image)) {
                                     $tamano1 = filesize("storage/persons/".$person->image);
@@ -1093,9 +1197,9 @@ if ($person === null){
                                 }
             			    }
             			    if($person->cedula1 == NULL) {
-            			        $nombre_fichero2 = "https://cipol.ec/sidai/storage/persons/logo-Cipol-color.png"; 
+            			        $nombre_fichero2 = $_SESSION['url']."assets/images/logo-ameri.png"; 
             			    }else {
-            			        $nombre_fichero2 = "https://cipol.ec/sidai/storage/documento/".$person->cedula1;
+            			        $nombre_fichero2 = $_SESSION['url']."storage/documento/".$person->cedula1;
 
                                 if (file_exists("storage/documento/".$person->cedula1)) {
                                     $tamano2 = filesize("storage/documento/".$person->cedula1);
@@ -1104,9 +1208,9 @@ if ($person === null){
                                 }
             			    }
             			    if($person->cedula2 == NULL) {
-            			        $nombre_fichero3 = "https://cipol.ec/sidai/storage/persons/logo-Cipol-color.png"; 
+            			        $nombre_fichero3 = $_SESSION['url']."assets/images/logo-ameri.png"; 
             			    }else {
-            			        $nombre_fichero3 = "https://cipol.ec/sidai/storage/documento/".$person->cedula2;
+            			        $nombre_fichero3 = $_SESSION['url']."storage/documento/".$person->cedula2;
 
                                 if (file_exists("storage/documento/".$person->cedula2)) {
                                     $tamano3 = filesize("storage/documento/".$person->cedula2);
@@ -1115,9 +1219,9 @@ if ($person === null){
                                 }
             			    }
             			    if($person->votacion == NULL) {
-            			        $nombre_fichero4 = "https://cipol.ec/sidai/storage/persons/logo-Cipol-color.png"; 
+            			        $nombre_fichero4 = $_SESSION['url']."assets/images/logo-ameri.png"; 
             			    }else {
-            			        $nombre_fichero4 = "https://cipol.ec/sidai/storage/documento/".$person->votacion;
+            			        $nombre_fichero4 = $_SESSION['url']."storage/documento/".$person->votacion;
 
                                 if (file_exists("storage/documento/".$person->votacion)) {
                                     $tamano4 = filesize("storage/documento/".$person->votacion);
@@ -1126,9 +1230,9 @@ if ($person === null){
                                 }
             			    }
             			    if($person->firma == NULL) {
-            			        $nombre_fichero5 = "https://cipol.ec/sidai/storage/persons/logo-Cipol-color.png"; 
+            			        $nombre_fichero5 = $_SESSION['url']."assets/images/logo-ameri.png"; 
             			    }else {
-            			        $nombre_fichero5 = "https://cipol.ec/sidai/storage/documento/".$person->firma;
+            			        $nombre_fichero5 = $_SESSION['url']."storage/documento/".$person->firma;
 
                                 if (file_exists("storage/documento/".$person->firma)) {
                                     $tamano5 = filesize("storage/documento/".$person->firma);
@@ -1137,9 +1241,9 @@ if ($person === null){
                                 }
             			    }
             			    if($person->archivo == NULL) {
-            			        $nombre_fichero6 = "https://cipol.ec/sidai/storage/persons/logo-Cipol-color.png"; 
+            			        $nombre_fichero6 = $_SESSION['url']."assets/images/logo-ameri.png"; 
             			    }else {
-            			        $nombre_fichero6 = "https://cipol.ec/sidai/storage/documento/".$person->archivo;
+            			        $nombre_fichero6 = $_SESSION['url']."storage/documento/".$person->archivo;
 
                                 if (file_exists("storage/documento/".$person->archivo)) {
                                     $tamano6 = filesize("storage/documento/".$person->archivo);
@@ -1546,16 +1650,16 @@ if ($person === null){
         return `${(number / 1e6).toFixed(1)} MB`;
       }
     }
-    
+    /*
     const button = document.querySelector("form button");
     button.addEventListener("click", (e) => {
       e.preventDefault();
       const para = document.createElement("p");
       para.append("Image uploaded!");
       preview.replaceChildren(para);
-    });
+    }); */
 
-    document.title = "CIPOL | Ingreso de aspirante";
+    document.title = "Near Solution | Ingreso de aspirante";
 
     $(document).ready(function(){
         $("input").iCheck({
@@ -1602,7 +1706,7 @@ if ($person === null){
 					url: "ajax/trabajo.php?persona="+$persona+"&cargo="+$cargo+"&empresa="+$empresa+"&date_ini="+$date_ini+"&date_fin="+$date_fin+"&actividades="+$actividades,
 					success: function(data) {
 						/* Cargamos finalmente el contenido deseado */
-						window.location="https://cipol.ec/sidai/aspirantes/"+$persona;
+						window.location="<?php echo $_SESSION['url']; ?>aspirantes/"+$persona;
 					}
 				});
 			} 

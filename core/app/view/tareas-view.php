@@ -42,16 +42,15 @@ $_SESSION["idtarea"] = 0;
                                 <tr>
                                     <th><div align="center">Asignado el</div></th>
                                     <th><div align="center">Entregar el</div></th>
-                                    <th width="12%><div align="center">Asignado por</div></th>
-                                    <th><div align="center">Asignado a</div></th>
+                                    <th width="14%"><div align="center">Asignado por</div></th>
+                                    <th>Nro.</th>
                                     <th width="16%">Asunto</th>
                                     <th width="25%">Descripci&oacute;n</th>
                                     <th width="25%">Avances</th>
-                                    <th width="10%"><div align="center">Acci&oacute;n</div></th>
+                                    <th width="12%><div align="center">Asignado a</div></th>
                                 </tr>
                             </thead>
                             <tbody>	<?php
-								// Crea tabla de memos
 								foreach($users as $tables) {
 									$nombre = UserData::getById($tables->idperson)->name.' '.UserData::getById($tables->idperson)->lastname;
 									$email = UserData::getById($tables->idperson)->email; $dias = 0; $boton = '';
@@ -83,11 +82,24 @@ $_SESSION["idtarea"] = 0;
 												if($tables->status == 5){
 													echo " Se vencio hace: ".abs($intervalo->format('%R%a'))." días</br>";
 													echo '<span class="label label-purple"> DESTIEMPO </span>';
-												}else{
-													echo " Se vencio hace: ".abs($intervalo->format('%R%a'))." días</br>";
-													echo '<span class="label label-danger">&nbsp;&nbsp; VENCIDA &nbsp;&nbsp;</span>';
+												}else{													
+													if($tables->status == 4){
+														echo " Se vencio hace: ".abs($intervalo->format('%R%a'))." días</br>";
+														echo '<span class="label label-danger">&nbsp;&nbsp; VENCIDA &nbsp;&nbsp;</span>';
+													}elseif($tables->status == 3){
+														echo " Se vencio hace: ".abs($intervalo->format('%R%a'))." días</br>";
+														echo '<span class="label label-danger">&nbsp;&nbsp; VENCIDA 3 &nbsp;&nbsp;</span>';
+													}elseif($tables->status == 2){
+														echo " Se vencio hace: ".abs($intervalo->format('%R%a'))." días</br>";
+														echo '<span class="label label-danger">&nbsp;&nbsp; VENCIDA 2 &nbsp;&nbsp;</span>';
+													}elseif($tables->status == 1){
+														echo " Se vencio hace: ".abs($intervalo->format('%R%a'))." días</br>";
+														echo '<span class="label label-danger">&nbsp;&nbsp; VENCIDA 1 &nbsp;&nbsp;</span>';
+													}else{
+														echo " Se vencio hace: ".abs($intervalo->format('%R%a'))." días</br>";
+														echo '<span class="label label-danger">&nbsp;&nbsp; VENCIDA 0 &nbsp;&nbsp;</span>';
+													}
 												}
-												$boton = ' disabled';
 											}else{
 												echo " Se vence en: ".abs($intervalo->format('%R%a'))." días</br>";
 												
@@ -98,14 +110,21 @@ $_SESSION["idtarea"] = 0;
 											}
 										}
 										echo '</td>';
-										echo '<td>'.$nombre.'</td>';
+										echo '<td><div align="center">'.str_pad($tables->consigna, 5, "0", STR_PAD_LEFT).'</div></td>';
 										echo '<td>'.$tables->asunto.'</br>';
 										echo '<small>';
 											if($tables->status == 4 || $tables->status == 5){
 												if($tables->date_pass == '0000-00-00 00:00:00'){
-													//Sin fecha de entrega
+													//Sin fecha de entrega													
+													$boton = '';
 												}else{
-													echo '<span class="glyphicon glyphicon-ok-sign text-success"></span>&nbsp;&nbsp;<span class="label label-success">TERMINADA</span>';
+													if($tables->status == 3){
+														$boton = ' disabled';
+														echo '<span class="glyphicon glyphicon-ok-sign text-success"></span>&nbsp;&nbsp;<span class="label label-success">TERMINADA</span>';
+													}else{
+														$boton = '';
+														echo '<span class="glyphicon glyphicon-ok-sign text-warning"></span>&nbsp;&nbsp;<span class="label label-warning">EN EJECUCION</span>';
+													}
 												}
 											}else{
 												if($tables->prioridad == 0){
@@ -125,20 +144,19 @@ $_SESSION["idtarea"] = 0;
 										}else{
 											echo '<td>No hay avances registrados en la tarea&nbsp;</td>';
 										}
-										echo '<td>';
-											echo '<div align="center">';
-												if($_SESSION["usuario"] == $tables->quien_asigna || $_SESSION["idrol"] == 2 || $_SESSION["idrol"] == 1){
-													if($dias > 0)
-														echo '<a class="btn btn-success btn-sm'.$boton.'" href="labor/'.$tables->id.'"><i class="fa fa-edit"></i></a>';
-													else
-														echo '<a class="btn btn-success btn-sm'.$boton.'" href="edittask/'.$tables->id.'"><i class="fa fa-edit"></i></a>';
-												}else{
+										echo '<td>';										
+											echo $nombre.'</br>';
+											if($_SESSION["usuario"] == $tables->quien_asigna || $_SESSION["idrol"] == 2 || $_SESSION["idrol"] == 1){
+												if($dias > 0)
+													echo '<a class="btn btn-success btn-sm'.$boton.'" href="labor/'.$tables->id.'"><i class="fa fa-edit"></i></a>';
+												else
 													echo '<a class="btn btn-success btn-sm'.$boton.'" href="edittask/'.$tables->id.'"><i class="fa fa-edit"></i></a>';
-												}
-												// Botón para ver subtareas (modal)
-												echo '<button type="button" class="btn btn-info btn-sm'.$boton.'" onClick="openSubtasksModal(\''.$tables->id.'\');"><i class="fa fa-eye"></i></button>';
-												echo '<button type="button" class="btn btn-warning btn-sm'.$boton.'" onClick="openRespuestaModal(\''.$tables->id.'\');"><i class="fa fa-key"></i></button>';
-											echo '</div>';
+											}else{
+												echo '<a class="btn btn-success btn-sm'.$boton.'" href="edittask/'.$tables->id.'"><i class="fa fa-edit"></i></a>';
+											}
+											// Botón para ver subtareas (modal)
+											echo '<button type="button" class="btn btn-info btn-sm" onClick="openSubtasksModal(\''.$tables->consigna.'\');"><i class="fa fa-eye"></i></button>';
+											echo '<button type="button" class="btn btn-warning btn-sm" onClick="openRespuestaModal(\''.$tables->id.'\');"><i class="fa fa-key"></i></button>';
 										echo '</td>';
 									echo '</tr>';
 								} ?>
@@ -211,7 +229,8 @@ $_SESSION["idtarea"] = 0;
 				});
 				$('#modalSubtasks').modal('show');
 			} else {
-				toastr.error('No se pudieron cargar subtareas');
+				console.log(resp.error);
+				toastr.error('No se pudieron cargar subtareas 1');
 			}
 		},'json').fail(function(e){
 			toastr.error('Error cargando subtareas');
@@ -255,7 +274,7 @@ $_SESSION["idtarea"] = 0;
                     });
                     $('#modalSubtasks').modal('show');
                 } else {
-                    toastr.error('No se pudieron cargar subtareas');
+                    toastr.error('No se pudieron cargar subtareas 2');
                 }
             },'json').fail(function(e){
                 toastr.error('Error cargando subtareas');
@@ -274,7 +293,7 @@ $_SESSION["idtarea"] = 0;
 				});
 				$('#modalSubtasks').modal('show');
 			} else {
-				toastr.error('No se pudieron cargar subtareas');
+				toastr.error('No se pudieron cargar subtareas 3');
 			}
 		},'json').fail(function(e){
 			toastr.error('Error cargando subtareas');

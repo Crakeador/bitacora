@@ -95,95 +95,80 @@ if(isset($_POST['id_person'])){
 					<div class="panel-collapse pull out">
 						<div class="panel-body">						
 							<div class="col-md-6">
-								<form class="form-horizontal" method="post" enctype="multipart/form-data" id="trade" name="trade" action="trade" role="form">
-									<input type="hidden" id="id_person"  name="id_person"  value="<?php echo $_SESSION['user_id']; ?>">
-									<input type="hidden" id="verifica"   name="verifica"   value="0">
-									<input type="hidden" id="timestamp"  name="timestamp"  value="">
-									<input type="hidden" id="latitude"   name="latitude"   value="">
-									<input type="hidden" id="longitude"  name="longitude"  value="">
-									<input type="hidden" id="rangoerror" name="rangoerror" value="">
-									<input type="hidden" id="sentido"    name="sentido"    value="">
-									<input type="hidden" id="velocidad"  name="velocidad"  value="">
-									<input type="hidden" id="mensaje"    name="mensaje"    value="">
-									<input type="hidden" id="foto"       name="foto"       value="">
-									<div class="form-group">
-										<div class="col-xs-6">
-											<label for="cedula" class="control-label">Fecha:</label>
-											<div class="input-group date form_datetime col-md-9 col-sm-9">
-												<input id="fechas" class="form-control" size="10" type="text" value="<?php echo $hoy; ?>" readonly>
-												<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-												<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
-												<input type="hidden" name="fecha" value="<?php echo $fecha; ?>">
-											</div>
-										</div>
-										<div class="col-xs-6">
-											<label for="nombre" class="control-label">Puesto:</label></br>
-											<label class="control-label">EDIFICIO TRADE BUILDING</label>
+								<div class="form-group">
+									<div class="col-xs-6">
+										<label for="cedula" class="control-label">Fecha:</label>
+										<div class="input-group date form_datetime col-md-9 col-sm-9">
+											<input id="fechas" class="form-control" size="10" type="text" value="<?php echo $hoy; ?>" readonly>
+											<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+											<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+											<input type="hidden" name="fecha" value="<?php echo $fecha; ?>">
 										</div>
 									</div>
-									<div class="form-group">
-										<div class="col-xs-6">
-											<label for="nacionalidad" class="control-label">Nacionalidad:</label>
-											<select id="nacionalidad" name="nacionalidad" class="form-control">
-												<option value="0">Ecuatoriana</option>
-												<option value="1">Extranjera</option>
-											</select>
-										</div>
-										<div class="col-xs-6">
-											<label for="nombre" class="control-label">Cedula:</label>
-											<input type="text" id="cedula" name="cedula" class="form-control" value="">
-										</div>
+								</div>
+								<div class="form-group">
+									<div class="col-xs-6">
+										<label for="nombre" class="control-label">Puesto:</label></br>
+										<label class="control-label">EDIFICIO TRADE BUILDING</label>
 									</div>
-									<div class="form-group">
-										<div class="col-xs-6">
-											<label for="apellidos" class="control-label">Apellidos:</label>
-											<input type="text" id="apellidos" name="apellidos" class="form-control" value="">
-										</div>
-										<div class="col-xs-6">
-											<label for="nombres" class="control-label">Nombres:</label>
-											<input type="text" id="nombres" name="nombres" class="form-control" value="">
-										</div>
+								</div>
+								<div class="form-group">
+									<div class="col-xs-6">
+										<label for="nacionalidad" class="control-label">Nacionalidad:</label>
+										<select id="nacionalidad" name="nacionalidad" class="form-control">
+											<option value="0">Ecuatoriana</option>
+											<option value="1">Extranjera</option>
+										</select>
 									</div>
-									<div class="form-group">
-										<div class="col-xs-6">
-											<label for="empresa" class="control-label">Empresa:</label>
-											<select id="empresa" name="empresa" class="form-control">
-												<option value="1">LATIN AMERICA</option>
-												<option value="2">PRIMESHOP</option>
-												<option value="3">SALICA DEL ECUADOR S.A.</option>
-											</select>
-										</div>
-										<div class="col-xs-6">
-											<label for="oficina" class="control-label">Nro. Oficina:</label>
-											<input type="text" id="oficina" name="oficina" class="form-control" value="">
-										</div>
+									<div class="col-xs-6">
+										<label for="nombre" class="control-label">Cedula:</label>
+										<input type="text" id="cedula" name="cedula" class="form-control" value="">
 									</div>
-									<div class="form-group">
-										<div class="col-xs-6">
-											<label for="acompanante1" class="control-label">Acompañante 1:</label>
-											<input type="text" id="acompanante1" name="acompanante1" class="form-control" value="">
-										</div>
-										<div class="col-xs-6">
-											<label for="acompanante2" class="control-label">Acompañante 2:</label>
-											<input type="text" id="acompanante2" name="acompanante2" class="form-control" value="">
-										</div>
+								</div>
+								<div class="form-group">
+									<div class="col-xs-6">
+										<label for="apellidos" class="control-label">Apellidos:</label>
+										<input type="text" id="apellidos" name="apellidos" class="form-control" value="">
 									</div>
-									<div class="form-group">
-										<div class="col-xs-6">
-											<label for="acompanante3" class="control-label">Acompañante 3:</label>
-											<input type="text" id="acompanante3" name="acompanante3" class="form-control" value="">
-										</div>
-										<div class="col-xs-6">
-											<label for="acompanante4" class="control-label">Acompañante 4:</label>
-											<input type="text" id="acompanante4" name="acompanante4" class="form-control" value="">
-										</div>
+									<div class="col-xs-6">
+										<label for="nombres" class="control-label">Nombres:</label>
+										<input type="text" id="nombres" name="nombres" class="form-control" value="">
 									</div>
-									<div class="form-group">
-										<div class="col-sm-10">
-											<button type="submit" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar </button>
-										</div>
+								</div>
+								<div class="form-group">
+									<div class="col-xs-6">
+										<label for="empresa" class="control-label">Empresa:</label>
+										<select id="empresa" name="empresa" class="form-control">
+											<option value="1">LATIN AMERICA</option>
+											<option value="2">PRIMESHOP</option>
+											<option value="3">SALICA DEL ECUADOR S.A.</option>
+										</select>
 									</div>
-								</form>
+									<div class="col-xs-6">
+										<label for="oficina" class="control-label">Nro. Oficina:</label>
+										<input type="text" id="oficina" name="oficina" class="form-control" value="">
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-xs-6">
+										<label for="acompanante1" class="control-label">Acompañante 1:</label>
+										<input type="text" id="acompanante1" name="acompanante1" class="form-control" value="">
+									</div>
+									<div class="col-xs-6">
+										<label for="acompanante2" class="control-label">Acompañante 2:</label>
+										<input type="text" id="acompanante2" name="acompanante2" class="form-control" value="">
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-xs-6">
+										<label for="acompanante3" class="control-label">Acompañante 3:</label>
+										<input type="text" id="acompanante3" name="acompanante3" class="form-control" value="">
+									</div>
+									<div class="col-xs-6">
+										<label for="acompanante4" class="control-label">Acompañante 4:</label>
+										<input type="text" id="acompanante4" name="acompanante4" class="form-control" value="">
+									</div>
+								</div>
 							</div>
 							<div class="col-md-6">							
 								<div>
@@ -266,17 +251,33 @@ if(isset($_POST['id_person'])){
 			const canvas = document.getElementById('canvas');
 			const btnTomarFoto = document.getElementById('btnTomarFoto');
 			const estadoFoto = document.getElementById('estadoFoto');
-			const fotosEndpoint = '/ajax/guardar_foto.php'; // ajusta si es necesario
+			const fotosEndpoint = '/bitacora/ajax/guardar_foto.php'; // Ruta ajustada
 			const fotoNombreInput = document.getElementById('fotoNombre');
+			const listaDeDispositivos = document.getElementById('listaDeDispositivos');
 
 			// Iniciar cámara
-			async function iniciarCamara() {
+			async function iniciarCamara(deviceId = null) {
 				try {
-				const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-				video.srcObject = stream;
-				await video.play();
+					const constraints = { 
+						video: { audio: false },
+						audio: false 
+					};
+					
+					if (deviceId) {
+						constraints.video.deviceId = { exact: deviceId };
+					}
+					
+					const stream = await navigator.mediaDevices.getUserMedia(constraints);
+					
+					// Detener stream anterior
+					if (video.srcObject) {
+						video.srcObject.getTracks().forEach(track => track.stop());
+					}
+					
+					video.srcObject = stream;
+					await video.play();
 				} catch (err) {
-				estadoFoto.textContent = 'No se pudo acceder a la cámara: ' + err.message;
+					estadoFoto.textContent = 'No se pudo acceder a la cámara: ' + err.message;
 				}
 			}
 
@@ -297,37 +298,91 @@ if(isset($_POST['id_person'])){
 				const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.92));
 				const formData = new FormData();
 				formData.append('foto', blob, 'foto.jpg');
+				
+				// Agregar datos del formulario
+				const cedula = document.getElementById('cedula').value;
+				const nombres = document.getElementById('nombres').value;
+				const apellidos = document.getElementById('apellidos').value;
+				
+				formData.append('cedula', cedula);
+				formData.append('nombres', nombres);
+				formData.append('apellidos', apellidos);
 
-				estadoFoto.textContent = 'Enviando foto...';
+				estadoFoto.textContent = 'Enviando foto a: ' + fotosEndpoint;
 
 				try {
+				console.log('Enviando a:', fotosEndpoint);
+				console.log('Datos:', { cedula, nombres, apellidos });
 				const res = await fetch(fotosEndpoint, {
 					method: 'POST',
 					body: formData
 				});
-				const json = await res.json();
+				
+				console.log('Status:', res.status, res.statusText);
+				
+				// Verificar si la respuesta es válida
+				if (!res.ok) {
+					estadoFoto.innerHTML = '<strong>Error ' + res.status + ': ' + res.statusText + '</strong><br>' +
+										  'URL: ' + fotosEndpoint + '<br>' +
+										  'Verifica que el archivo exista en esa ruta.';
+					return;
+				}
+				
+				const contentType = res.headers.get('content-type');
+				let json;
+				
+				// Intenta parsear como JSON
+				if (contentType && contentType.includes('application/json')) {
+					json = await res.json();
+					console.log('Respuesta JSON:', json);
+				} else {
+					// Si no es JSON, muestra el responses como texto
+					const text = await res.text();
+					console.error('Respuesta no JSON recibida:', text);
+					estadoFoto.innerHTML = '<strong>Error: El servidor no devolvió JSON</strong><br>' +
+										  'Respuesta: ' + text.substring(0, 200);
+					return;
+				}
+				
 				if (json && json.success && json.filename) {
 					const filename = json.filename;
 					fotoNombreInput.value = filename; // Usado al guardar el registro
-					estadoFoto.innerHTML = 'Foto guardada con éxito. Nombre: ' + filename;
-					// Opcional: mostrar enlace
-					// const enlace = document.createElement('a');
-					// enlace.href = '/storage/trade/' + filename;
-					// enlace.target = '_blank';
-					// enlace.textContent = 'Ver foto';
-					// estadoFoto.appendChild(document.createElement('br'));
-					// estadoFoto.appendChild(enlace);
+					
+					let mensaje = '<strong style="color:green;">✓ Foto guardada con éxito</strong><br>Nombre: ' + filename;
+					
+					// Mostrar resultado del API si está disponible
+					if (json.api_success) {
+						mensaje += '<br><strong style="color:green;">✓ Sincronizado con dispositivo de acceso</strong>';
+					} else if (json.api_results) {
+						mensaje += '<br><span style="color:orange;">⚠ Foto guardada pero sin sincronización con dispositivo</span>';
+					}
+					
+					estadoFoto.innerHTML = mensaje;
 				} else {
-					estadoFoto.textContent = 'Error al guardar la foto: ' + (json?.error ?? 'desconocido');
+					estadoFoto.innerHTML = '<strong>Error al guardar:</strong> ' + (json?.error ?? 'desconocido');
 				}
 				} catch (e) {
-				console.error(e);
-				estadoFoto.textContent = 'Error al enviar la foto.';
+				console.error('Error al enviar foto:', e);
+				estadoFoto.innerHTML = '<strong>Error de red/conexión:</strong><br>' + e.message + 
+									   '<br>URL: ' + fotosEndpoint +
+									   '<br>Consola: ' + e.toString();
 				}
 			});
 
-			// Inicia la cámara al cargar la página
+			// Cambiar de cámara cuando el usuario selecciona una diferente
+			listaDeDispositivos.addEventListener('change', function() {
+				const deviceId = this.value;
+				if (deviceId) {
+					estadoFoto.textContent = 'Cambiando cámara...';
+					iniciarCamara(deviceId);
+				}
+			});
+
+			// Inicia la cámara al cargar la página y llena el select de dispositivos
 			iniciarCamara();
+			setTimeout(() => {
+				llenarSelectConDispositivosDisponibles();
+			}, 500);
 		})();
 	});
 </script>

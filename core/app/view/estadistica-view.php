@@ -51,12 +51,12 @@
 															$total3 = TimelineData::getByTotalID($tables->id, 3);
 															$total4 = TimelineData::getByTotalID($tables->id, 4);
 															
-															$events1 = (count($total1) ? $total1->total : 0);
+															$events1 = (is_object($total1) && isset($total1->total) ? $total1->total : 0);
 															$events2 = (is_object($total2) && isset($total2->total) ? $total2->total : 0);
 															$events3 = (is_object($total3) && isset($total3->total) ? $total3->total : 0);
 															$events4 = (is_object($total3) && isset($total4->total) ? $total4->total : 0);
-															$total = ($events1+$events3);
-
+															$total = (is_object($events) && isset($events->total) ? $events->total : 0);
+ 
 															echo '<tr>';
 																echo '<td class="text-grey-800"><left>'.$tables->name.' '.$tables->lastname.'</left> <a data-toggle="modal" data-target=".bs-example-modal-sm" style="color:#5b5d5f"></a></td>';
 																echo '<td class="text-grey-800"><left>'.$tables->departamento.'</left> <a data-toggle="modal" data-target=".bs-example-modal-sm" style="color:#5b5d5f"></a></td>';
@@ -64,7 +64,7 @@
 																echo '<td class="text-right">'.$events2.'</td>';
 																echo '<td class="text-right">'.$events3.'</td>';
 																echo '<td class="text-right">'.$events4.'</td>';
-																echo '<td class="text-right">'.($total>0 ? ($events3*100)/$total : 0).'</td>';
+																echo '<td class="text-right">'.number_format(($total > 0 ? ($events3*100)/$total : 0), 2, '.', ',').'%</td>';
 															echo '</tr>';
 														}
 													?>

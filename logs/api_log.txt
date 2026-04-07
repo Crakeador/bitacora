@@ -1,0 +1,57 @@
+2026-04-07 17:14:26 - Cedula: 0987654321, API Results: {"usuario":{"success":true,"httpCode":200,"response":"{\n\t\"statusCode\":\t1,\n\t\"statusString\":\t\"OK\",\n\t\"subStatusCode\":\t\"ok\"\n}"},"rostro":{"success":true,"httpCode":400,"response":"{\n\t\"statusCode\":\t4,\n\t\"statusString\":\t\"Invalid Operation\",\n\t\"subStatusCode\":\t\"methodNotAllowed\",\n\t\"errorCode\":\t1073741828,\n\t\"errorMsg\":\t\"methodNotAllowed\"\n}"}}
+2026-04-07 18:47:49 - Cedula: 0987654321
+  Usuario Response Code: 400
+  Usuario Response: {"success":true,"httpCode":400,"response":"{\n\t\"statusCode\":\t6,\n\t\"statusString\":\t\"Invalid Content\",\n\t\"subStatusCode\":\t\"employeeNoAlreadyExist\",\n\t\"errorCode\":\t1610637344,\n\t\"errorMsg\":\t\"checkUser\"\n}"}
+  Rostro Response Code: 400
+  Rostro Response: {"success":true,"httpCode":400,"response":"{\n\t\"statusCode\":\t6,\n\t\"statusString\":\t\"Invalid Content\",\n\t\"subStatusCode\":\t\"MessageParametersLack\",\n\t\"errorCode\":\t1610612761,\n\t\"errorMsg\":\t\"MessageParametersLack\"\n}"}
+  Archivo guardado: C:\laragon\www\bitacora\ajax/../storage/trade/foto_20260407_184749_69d5515563587.jpg (tamaño: 45702 bytes)
+---
+2026-04-07 18:55:12 - Cedula: 0987654321
+  Usuario Response Code: 400
+  Usuario Response: {"success":true,"httpCode":400,"response":"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<ResponseStatus version=\"1.0\" xmlns=\"http:\/\/www.hikvision.com\/ver10\/XMLSchema\">\n<requestURL><\/requestURL>\n<statusCode>5<\/statusCode>\n<statusString>Invalid Format<\/statusString>\n<subStatusCode>badJsonFormat<\/subStatusCode>\n<errorCode>1342177282<\/errorCode>\n<errorMsg>badJsonFormat<\/errorMsg>\n<\/ResponseStatus>\n"}
+  Rostro Response Code: 400
+  Rostro Response: {"success":true,"httpCode":400,"response":""}
+  Archivo guardado: C:\laragon\www\bitacora\ajax/../storage/trade/foto_20260407_185512_69d5531056bab.jpg (tamaño: 47508 bytes)
+---
+2026-04-07 18:58:33 - Cedula: 0987654321
+  Usuario Response Code: 400
+  Usuario Response: {"success":true,"httpCode":400,"response":"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<ResponseStatus version=\"1.0\" xmlns=\"http:\/\/www.hikvision.com\/ver10\/XMLSchema\">\n<requestURL><\/requestURL>\n<statusCode>5<\/statusCode>\n<statusString>Invalid Format<\/statusString>\n<subStatusCode>badJsonFormat<\/subStatusCode>\n<errorCode>1342177282<\/errorCode>\n<errorMsg>badJsonFormat<\/errorMsg>\n<\/ResponseStatus>\n"}
+  Rostro Response Code: 400
+  Rostro Response: {"success":true,"httpCode":400,"response":""}
+  Archivo guardado: C:\laragon\www\bitacora\ajax/../storage/trade/foto_20260407_185833_69d553d92f13e.jpg (tamaño: 47189 bytes)
+---
+2026-04-07 19:03:44 - Cedula: 0987654322
+  Usuario Response Code: 400
+  Usuario Response: {"success":true,"httpCode":400,"response":"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<ResponseStatus version=\"1.0\" xmlns=\"http:\/\/www.hikvision.com\/ver10\/XMLSchema\">\n<requestURL><\/requestURL>\n<statusCode>5<\/statusCode>\n<statusString>Invalid Format<\/statusString>\n<subStatusCode>badJsonFormat<\/subStatusCode>\n<errorCode>1342177282<\/errorCode>\n<errorMsg>badJsonFormat<\/errorMsg>\n<\/ResponseStatus>\n"}
+  Rostro Response Code: 400
+  Rostro Response: {"success":true,"httpCode":400,"response":""}
+  Archivo guardado: C:\laragon\www\bitacora\ajax/../storage/trade/foto_20260407_190344_69d5551027d95.jpg (tamaño: 46297 bytes)
+---
+2026-04-07 19:07:26 - Cedula: 0987654323
+  Usuario Response Code: 400
+  Usuario Response: {"success":true,"httpCode":400,"response":"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<ResponseStatus version=\"1.0\" xmlns=\"http:\/\/www.hikvision.com\/ver10\/XMLSchema\">\n<requestURL><\/requestURL>\n<statusCode>5<\/statusCode>\n<statusString>Invalid Format<\/statusString>\n<subStatusCode>badJsonFormat<\/subStatusCode>\n<errorCode>1342177282<\/errorCode>\n<errorMsg>badJsonFormat<\/errorMsg>\n<\/ResponseStatus>\n"}
+  Rostro Response Code: 400
+  Rostro Response: {"success":true,"httpCode":400,"response":""}
+  Archivo guardado: C:\laragon\www\bitacora\ajax/../storage/trade/foto_20260407_190726_69d555eec344d.jpg (tamaño: 46515 bytes)
+---
+2026-04-07 19:10:41 - Cedula: 0987654333
+  Usuario Response Code: 200
+  Usuario Response: {"success":true,"httpCode":200,"response":"{\n\t\"statusCode\":\t1,\n\t\"statusString\":\t\"OK\",\n\t\"subStatusCode\":\t\"ok\"\n}"}
+  Rostro Response Code: 200
+  Rostro Response: {"success":true,"httpCode":200,"response":"{\n\t\"statusCode\":\t1,\n\t\"statusString\":\t\"OK\",\n\t\"subStatusCode\":\t\"ok\"\n}"}
+  Archivo guardado: C:\laragon\www\bitacora\ajax/../storage/trade/foto_20260407_191041_69d556b11424a.jpg (tamaño: 47044 bytes)
+---
+2026-04-07 19:13:07 - Cedula: 0964991731
+  Usuario Response Code: 200
+  Usuario Response: {"success":true,"httpCode":200,"response":"{\n\t\"statusCode\":\t1,\n\t\"statusString\":\t\"OK\",\n\t\"subStatusCode\":\t\"ok\"\n}"}
+  Rostro Response Code: 200
+  Rostro Response: {"success":true,"httpCode":200,"response":"{\n\t\"statusCode\":\t1,\n\t\"statusString\":\t\"OK\",\n\t\"subStatusCode\":\t\"ok\"\n}"}
+  Archivo guardado: C:\laragon\www\bitacora\ajax/../storage/trade/foto_20260407_191306_69d55742e080d.jpg (tamaño: 42308 bytes)
+---
+2026-04-07 19:31:09 - Cedula: 0987654321
+  Usuario Response Code: 200
+  Usuario Response: {"success":true,"httpCode":200,"response":"{\n\t\"statusCode\":\t1,\n\t\"statusString\":\t\"OK\",\n\t\"subStatusCode\":\t\"ok\"\n}"}
+  Rostro Response Code: 200
+  Rostro Response: {"success":true,"httpCode":200,"response":"{\n\t\"statusCode\":\t1,\n\t\"statusString\":\t\"OK\",\n\t\"subStatusCode\":\t\"ok\"\n}"}
+  Archivo guardado: C:\laragon\www\bitacora\ajax/../storage/trade/foto_20260407_193109_69d55b7d5352c.jpg (tamaño: 45545 bytes)
+---

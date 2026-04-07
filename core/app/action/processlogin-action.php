@@ -1,7 +1,6 @@
 <?php
 //Procedimiento de verificacion de Usuarios
-Core::cargando();
-
+ 
 date_default_timezone_set('America/Guayaquil');
 $fecha = date('Y-m-d'); $hora = date('H:i:s');
 $fechaActual = date('Y-m-d').' '.date('H:i:s');
@@ -53,7 +52,9 @@ if(!isset($_SESSION["user_id"])) {
 	$_SESSION['ingreso']=0; $_SESSION['etapas']=0;
 	if(is_numeric($_POST['username'])){
 		if(strlen($_POST['username']) == 13){
-			if($_POST['username'] && $_POST['password']){
+			if($_POST['username'] && $_POST['password']){				
+				Core::cargando();
+
 				$sql = "SELECT * FROM client WHERE ruc = \"".$user."\" AND telefono1 = \"".$_POST['password']."\" AND is_active = 1"; 
 
 				if($query = $con->query($sql)){
@@ -148,7 +149,85 @@ if(!isset($_SESSION["user_id"])) {
 								$_SESSION['correos']=$correos;
 
 								setcookie('userid', $_POST['username']); 
-								save_login_event($_SESSION['user_id']); 
+								save_login_event($_SESSION['user_id']); 								
+								
+								echo '<!DOCTYPE html><html lang="es">
+										<head>
+											<meta charset="UTF-8">
+											<title>Aceptar Términos</title>
+											<style>
+												body{font-family:Inter,system-ui,Arial,sans-serif;background:linear-gradient(135deg,#0b1320 0%,#121d34 45%,#101b2d 100%);color:#e2e8f0;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;padding:24px}
+												.overlay{position:fixed;inset:0;background:rgba(8,15,32,.78);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;}
+												.popup{background:rgba(15,23,42,.98);border:1px solid rgba(148,163,184,.16);border-radius:24px;max-width:560px;width:100%;padding:32px;box-shadow:0 32px 70px rgba(15,23,42,.35);}
+												.popup h1{font-size:28px;margin-bottom:16px;color:#f8fafc;line-height:1.1;} 
+												.popup p{font-size:15px;line-height:1.9;color:#cbd5e1;margin-bottom:24px;} 
+												.popup label{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:flex-start;padding:18px 16px;border:1px solid rgba(148,163,184,.16);border-radius:18px;background:rgba(148,163,184,.05);color:#e2e8f0;font-size:15px;line-height:1.8;} 
+												.popup input[type=checkbox]{width:20px;height:20px;margin:0;accent-color:#2563eb;border-radius:6px;} 
+												.popup p a {
+													color: #60a5fa;
+													text-decoration: underline;
+													text-decoration-color: transparent;
+													text-underline-offset: 3px;
+													transition: color 0.2s ease, text-decoration-color 0.2s ease;
+													font-weight: 500;
+													outline-offset: 3px;
+													border-radius: 3px;
+												}
+
+												.popup p a:hover {
+													color: #93c5fd;
+													text-decoration-color: #93c5fd;
+												}
+
+												.popup p a:focus-visible {
+													outline: 2px solid #3b82f6;
+													text-decoration-color: #60a5fa;
+												}
+
+												.popup p a:visited {
+													color: #a78bfa;
+												}
+												.actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:flex-end;margin-top:28px;} 
+												.actions button{min-width:150px;border:none;border-radius:14px;padding:14px 22px;font-size:15px;font-weight:700;cursor:pointer;transition:transform .2s ease,background .2s ease;color:#fff;} 
+												.actions button:hover:not(:disabled){transform:translateY(-1px);} 
+												.actions button:disabled{background:#334155;cursor:not-allowed;color:#94a3b8;} 
+												.actions button.primary{background:linear-gradient(90deg,#2563eb 0%,#3b82f6 100%);box-shadow:0 12px 25px rgba(59,130,246,.28);} 
+												.actions button.secondary{background:#1e293b;color:#cbd5e1;}
+											</style>
+										</head>
+										<body>
+											<div class="overlay">
+												<div class="popup">
+													<h1>Confirmar aceptación</h1>
+													<p>Antes de continuar como aspirante debes aceptar los términos y condiciones <a href="https://latin.grupolatinamerica.com/storage/documentos/politicas.pdf" target="_blank">de la Política de Protección de Datos de LATIN AMERICA CLOSE PROTECTION &amp; SECURITY CLOSEPROT CIA. LTDA.</a></p>
+													<label>
+														<input type="checkbox" id="acceptTerms"> He leído y estoy de acuerdo con los términos y condiciones 
+													</label>
+													<div class="actions">
+														<button id="cancelBtn" type="button" class="secondary">Volver</button>
+														<button id="continueBtn" type="button" class="primary" disabled>Continuar a Aspirante</button>
+													</div>
+												</div>
+											</div>
+											<script>
+												const btnContinue=document.getElementById("continueBtn");
+												const chkAccept=document.getElementById("acceptTerms");
+												const btnCancel=document.getElementById("cancelBtn");
+												
+												chkAccept.addEventListener("change",()=>{
+													btnContinue.disabled=!chkAccept.checked;
+												});
+												
+												btnContinue.addEventListener("click",()=>{
+													window.location.href="aspirante";
+												});
+												
+												btnCancel.addEventListener("click",()=>{
+													window.location.href="./logout.php";
+												});
+											</script>
+										</body>
+									</html>'; 
 								echo '<script>
 										if(localStorage.getItem("usuario") != null){
 											var usuario = localStorage.getItem("usuario");
@@ -158,10 +237,11 @@ if(!isset($_SESSION["user_id"])) {
 												
 											window.location="index.php?view=aspirante&usuario="+usuario+"&puesto="+puesto+"&ingreso="+ingreso+"&turno="+turno;
 										}else{
-											window.location="aspirante";
+											//window.location="aspirante";
 										}
 									  </script>'; 
 							}else{
+								Core::cargando();
 								$rolid = 9;
 								$roldes = 'Residente';
 
@@ -210,7 +290,7 @@ if(!isset($_SESSION["user_id"])) {
 								echo '<script>window.location="noticias";</script>';
 							}
 						}else{
-							echo '<script>window.location="index.php?view=aspirante&id='.$user.'";</script>';
+							echo '<script>window.location="aspirante/'.$user.'";</script>';
 						}
 					}else{
 						$r = $query->fetch_array();
@@ -303,7 +383,8 @@ if(!isset($_SESSION["user_id"])) {
 											$_SESSION['correos']=$correos;
 											
 											save_login_event($_SESSION['user_id']);
-											echo '<script>window.location="index.php?view=aspirante&id='.$id.'";</script>';
+											echo '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Aceptar Términos</title><style>body{font-family:Inter,system-ui,Arial,sans-serif;background:linear-gradient(135deg,#0b1320 0%,#121d34 45%,#101b2d 100%);color:#e2e8f0;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;padding:24px}.overlay{position:fixed;inset:0;background:rgba(8,15,32,.78);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;} .popup{background:rgba(15,23,42,.98);border:1px solid rgba(148,163,184,.16);border-radius:24px;max-width:560px;width:100%;padding:32px;box-shadow:0 32px 70px rgba(15,23,42,.35);} .popup h1{font-size:28px;margin-bottom:16px;color:#f8fafc;line-height:1.1;} .popup p{font-size:15px;line-height:1.9;color:#cbd5e1;margin-bottom:24px;} .popup label{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:flex-start;padding:18px 16px;border:1px solid rgba(148,163,184,.16);border-radius:18px;background:rgba(148,163,184,.05);color:#e2e8f0;font-size:15px;line-height:1.8;} .popup input[type=checkbox]{width:20px;height:20px;margin:0;accent-color:#2563eb;border-radius:6px;} .actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:flex-end;margin-top:28px;} .actions button{min-width:150px;border:none;border-radius:14px;padding:14px 22px;font-size:15px;font-weight:700;cursor:pointer;transition:transform .2s ease,background .2s ease;color:#fff;} .actions button:hover:not(:disabled){transform:translateY(-1px);} .actions button:disabled{background:#334155;cursor:not-allowed;color:#94a3b8;} .actions button.primary{background:linear-gradient(90deg,#2563eb 0%,#3b82f6 100%);box-shadow:0 12px 25px rgba(59,130,246,.28);} .actions button.secondary{background:#1e293b;color:#cbd5e1;}</style></head><body><div class="overlay"><div class="popup"><h1>Confirmar aceptación</h1><p>Antes de continuar como aspirante debes aceptar los términos y condiciones de la Política de Protección de Datos de LATIN AMERICA CLOSE PROTECTION & SECURITY CLOSEPROT CIA. LTDA.</p><label><input type="checkbox" id="acceptTerms"> He leído y estoy de acuerdo con los términos y condiciones de la Política de Protección de Datos de LATIN AMERICA CLOSE PROTECTION & SECURITY CLOSEPROT CIA. LTDA.</label><div class="actions"><button id="cancelBtn" type="button" class="secondary">Volver</button><button id="continueBtn" type="button" class="primary" disabled>Continuar a Aspirante</button></div></div></div><script>const btnContinue=document.getElementById("continueBtn");const chkAccept=document.getElementById("acceptTerms");const btnCancel=document.getElementById("cancelBtn");chkAccept.addEventListener("change",()=>{btnContinue.disabled=!chkAccept.checked;});btnContinue.addEventListener("click",()=>{window.location.href="index.php?view=aspirante&id='.intval($id).'";});btnCancel.addEventListener("click",()=>{window.location.href="./";});</script></body></html>';
+											exit;
 										}else{
 											$asigna = array(); $i = 0;
 											while($m = $query->fetch_array()){
@@ -380,6 +461,8 @@ if(!isset($_SESSION["user_id"])) {
 			}
 		}
 	}else{
+		Core::cargando();
+
 		$sql = "SELECT B.name AS compania, A.id AS user, A.username, A.name AS nombre, A.lastname, A.email AS correo, A.cambio, A.is_admin, A.idrol, A.idperson, A.iddepartamento, idlocalidad, A.ultima_session, B.id AS company, B.*, C.nombre desrol FROM user A, company B, rol C 
 		         WHERE username= \"".$user."\" and password= \"".$pass."\" and A.idcompany = B.id and A.idrol = C.id and A.is_active=1";
 		$query = $con->query($sql); 

@@ -46,6 +46,8 @@ if ($sub) {
     } else {
         // No hay subtareas, lo cual no es un error, pero el cliente espera success: false
         $response['success'] = false;
+        $response['error'] = "Error en la consulta SQL: " . $con->error . " SQL: ". $sql;
+        error_log("ERROR getSubtasks.php: " . $response['error'] . " | SQL: " . $sql);
     }
 }else{
     $response['error'] = "Error en la consulta SQL: " . $con->error;

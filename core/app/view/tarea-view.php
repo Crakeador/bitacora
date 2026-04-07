@@ -53,32 +53,29 @@ if(count($_POST)>0){
 
 			$tarea = new GruposData();
 			$tarea->tarea("Tareas", $_SESSION["idtarea"]);
-
-			Core::redir('tareas');
 		}
 	}else{
 		if(isset($_POST["persona"]) && $_POST["persona"] > 0){
 			$nombre = UserData::getById($_SESSION["user_id"])->name.' '.UserData::getById($_SESSION["user_id"])->lastname;
 			$email = UserData::getById($_POST["persona"])->email;
-
-			$user = new TimelineData();
-			$user->idcompany = $_SESSION["id_company"];
-			$user->idperson = $_POST["persona"];
-			$user->prioridad = $_POST["prioridad"];
-			$user->quien_asigna = $nombre;
-			$user->status = 1;
-			$user->type = 2;
-			$user->asunto = $_POST["asunto"];
-			$user->title = $_POST["descripcion"];
-			$user->date_event = $_POST["ini_fec"];
-			$newTask = $user->add_task();
 			
 			$_SESSION["idtarea"]++;
 
 			$tarea = new GruposData();
 			$tarea->tarea("Tareas", $_SESSION["idtarea"]);
 
-			Core::redir('tareas');
+			$user = new TimelineData();
+			$user->idcompany = $_SESSION["id_company"];
+			$user->idperson = $_POST["persona"];
+			$user->prioridad = $_POST["prioridad"];
+			$user->quien_asigna = $nombre;
+			$user->consigna = $_SESSION["idtarea"];
+			$user->status = 1;
+			$user->type = 2;
+			$user->asunto = $_POST["asunto"];
+			$user->title = $_POST["descripcion"];
+			$user->date_event = $_POST["ini_fec"];
+			$newTask = $user->add_task();
 		}
 	}
 	
@@ -316,7 +313,7 @@ if(count($_POST)>0){
         // Enviar datos por POST
         $.ajax({
             type: "POST",
-                url: "/latin/ajax/guardarSubtarea.php",
+                url: "/ajax/guardarSubtarea.php",
             data: {
                 tareas: tareas,
                 rubro: rubro,

@@ -1,0 +1,260 @@
+*   Trying 192.168.0.150:80...
+* Connected to 192.168.0.150 (192.168.0.150) port 80 (#0)
+* Server auth using Digest with user 'admin'
+> PUT /ISAPI/Intelligent/FDLib/FDSetUp?format=json HTTP/1.1
+Host: 192.168.0.150
+Accept: */*
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary69d5515568efd
+Content-Length: 0
+
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 401 Unauthorized
+< Date: Tue, 07 Apr 2026 13:47:37 GMT
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Content-Length: 195
+< Connection: close
+< WWW-Authenticate: Digest qop="auth", realm="DS-C6E5841C", nonce="ZTJlZDUyY2Q5NTlmZWVjOTRjMmE3ZGE2NGE4YTc0YzE=", stale="false", opaque="", domain="::"
+< Content-Type: application/json
+< 
+* Closing connection 0
+* Issue another request to this URL: 'http://192.168.0.150/ISAPI/Intelligent/FDLib/FDSetUp?format=json'
+* Hostname 192.168.0.150 was found in DNS cache
+*   Trying 192.168.0.150:80...
+* Connected to 192.168.0.150 (192.168.0.150) port 80 (#1)
+* Server auth using Digest with user 'admin'
+> PUT /ISAPI/Intelligent/FDLib/FDSetUp?format=json HTTP/1.1
+Host: 192.168.0.150
+Authorization: Digest username="admin",realm="DS-C6E5841C",nonce="ZTJlZDUyY2Q5NTlmZWVjOTRjMmE3ZGE2NGE4YTc0YzE=",uri="/ISAPI/Intelligent/FDLib/FDSetUp?format=json",cnonce="97648e97eb942761d5db8521bc0d21eb",nc=00000001,response="a39188e7bcfa54767d7d186b54607526",qop="auth"
+Accept: */*
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary69d5515568efd
+Content-Length: 45986
+
+* upload completely sent off: 45986 out of 45986 bytes
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 400 Bad Request
+< Date: Tue, 07 Apr 2026 13:47:37 GMT
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Content-Length: 163
+< Connection: close
+< Content-Type: application/json
+< 
+* Closing connection 1
+*   Trying 192.168.0.150:80...
+* Connected to 192.168.0.150 (192.168.0.150) port 80 (#0)
+* Server auth using Digest with user 'admin'
+> PUT /ISAPI/Intelligent/FDLib/FDSetUp?format=jpg HTTP/1.1
+Host: 192.168.0.150
+Accept: */*
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary69d553105a43f
+Content-Length: 0
+
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 400 Bad Request
+< Date: Tue, 07 Apr 2026 13:55:00 GMT
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Content-Length: 0
+< Connection: close
+< Content-Type: application/xml
+< 
+* Closing connection 0
+*   Trying 192.168.0.150:80...
+* Connected to 192.168.0.150 (192.168.0.150) port 80 (#0)
+* Server auth using Digest with user 'admin'
+> POST /ISAPI/Intelligent/FDLib/FDSetUp?format=jpg HTTP/1.1
+Host: 192.168.0.150
+Accept: */*
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary69d553d932f9c
+Content-Length: 0
+
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 400 Bad Request
+< Date: Tue, 07 Apr 2026 13:58:20 GMT
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Content-Length: 0
+< Connection: close
+< Content-Type: application/xml
+< 
+* Closing connection 0
+*   Trying 192.168.0.150:80...
+* Connected to 192.168.0.150 (192.168.0.150) port 80 (#0)
+* Server auth using Digest with user 'admin'
+> PUT /ISAPI/Intelligent/FDLib/FDSetUp?format=jpg&employeeNo=0987654322 HTTP/1.1
+Host: 192.168.0.150
+Accept: */*
+Content-Type: image/jpeg
+Content-Length: 0
+
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 400 Bad Request
+< Date: Tue, 07 Apr 2026 14:03:31 GMT
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Content-Length: 0
+< Connection: close
+< Content-Type: application/xml
+< 
+* Closing connection 0
+*   Trying 192.168.0.150:80...
+* Connected to 192.168.0.150 (192.168.0.150) port 80 (#0)
+* Server auth using Digest with user 'admin'
+> PUT /ISAPI/Intelligent/FDLib/FDSetUp?format=jpg&employeeNo=0987654323 HTTP/1.1
+Host: 192.168.0.150
+Accept: */*
+Content-Type: image/jpeg
+Content-Length: 0
+
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 400 Bad Request
+< Date: Tue, 07 Apr 2026 14:07:14 GMT
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Content-Length: 0
+< Connection: close
+< Content-Type: application/xml
+< 
+* Closing connection 0
+*   Trying 192.168.0.150:80...
+* Connected to 192.168.0.150 (192.168.0.150) port 80 (#0)
+* Server auth using Digest with user 'admin'
+> PUT /ISAPI/Intelligent/FDLib/FDSetUp?format=json HTTP/1.1
+Host: 192.168.0.150
+Accept: */*
+Content-Type: multipart/form-data; boundary=----HikvisionBoundary3e0ff1b2b9110a86
+Content-Length: 0
+
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 401 Unauthorized
+< Date: Tue, 07 Apr 2026 14:10:28 GMT
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Content-Length: 195
+< Connection: close
+< WWW-Authenticate: Digest qop="auth", realm="DS-C6E5841C", nonce="OTljNjcwZDZjNTkzODhiY2FmM2ZlOWM5NjI1NzlmYTc=", stale="false", opaque="", domain="::"
+< Content-Type: application/json
+< 
+* Closing connection 0
+* Issue another request to this URL: 'http://192.168.0.150/ISAPI/Intelligent/FDLib/FDSetUp?format=json'
+* Hostname 192.168.0.150 was found in DNS cache
+*   Trying 192.168.0.150:80...
+* Connected to 192.168.0.150 (192.168.0.150) port 80 (#1)
+* Server auth using Digest with user 'admin'
+> PUT /ISAPI/Intelligent/FDLib/FDSetUp?format=json HTTP/1.1
+Host: 192.168.0.150
+Authorization: Digest username="admin",realm="DS-C6E5841C",nonce="OTljNjcwZDZjNTkzODhiY2FmM2ZlOWM5NjI1NzlmYTc=",uri="/ISAPI/Intelligent/FDLib/FDSetUp?format=json",cnonce="61904dd8f757c5b8f7a358765a96c607",nc=00000001,response="8917d0a357a4eab8b19e9245d7587b39",qop="auth"
+Accept: */*
+Content-Type: multipart/form-data; boundary=----HikvisionBoundary3e0ff1b2b9110a86
+Content-Length: 47411
+
+* upload completely sent off: 47411 out of 47411 bytes
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 200 OK
+< Date: Tue, 07 Apr 2026 14:10:28 GMT
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Content-Length: 67
+< Connection: close
+< Content-Type: application/json
+< 
+* Closing connection 1
+*   Trying 192.168.0.150:80...
+* Connected to 192.168.0.150 (192.168.0.150) port 80 (#0)
+* Server auth using Digest with user 'admin'
+> PUT /ISAPI/Intelligent/FDLib/FDSetUp?format=json HTTP/1.1
+Host: 192.168.0.150
+Accept: */*
+Content-Type: multipart/form-data; boundary=----HikvisionBoundaryea595b26334cbdf3
+Content-Length: 0
+
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 401 Unauthorized
+< Date: Tue, 07 Apr 2026 14:12:54 GMT
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Content-Length: 195
+< Connection: close
+< WWW-Authenticate: Digest qop="auth", realm="DS-C6E5841C", nonce="YzViZDM3MzRmODRjNGM5YjU3NzNkNzdhZDJkY2NjZTU=", stale="false", opaque="", domain="::"
+< Content-Type: application/json
+< 
+* Closing connection 0
+* Issue another request to this URL: 'http://192.168.0.150/ISAPI/Intelligent/FDLib/FDSetUp?format=json'
+* Hostname 192.168.0.150 was found in DNS cache
+*   Trying 192.168.0.150:80...
+* Connected to 192.168.0.150 (192.168.0.150) port 80 (#1)
+* Server auth using Digest with user 'admin'
+> PUT /ISAPI/Intelligent/FDLib/FDSetUp?format=json HTTP/1.1
+Host: 192.168.0.150
+Authorization: Digest username="admin",realm="DS-C6E5841C",nonce="YzViZDM3MzRmODRjNGM5YjU3NzNkNzdhZDJkY2NjZTU=",uri="/ISAPI/Intelligent/FDLib/FDSetUp?format=json",cnonce="3c5c416a8e84ed34f63f870e092e63e4",nc=00000001,response="176f1f85c4fa16e8d19cb1bb97e5ab4f",qop="auth"
+Accept: */*
+Content-Type: multipart/form-data; boundary=----HikvisionBoundaryea595b26334cbdf3
+Content-Length: 42675
+
+* upload completely sent off: 42675 out of 42675 bytes
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 200 OK
+< Date: Tue, 07 Apr 2026 14:12:54 GMT
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Content-Length: 67
+< Connection: close
+< Content-Type: application/json
+< 
+* Closing connection 1
+*   Trying 192.168.0.150:80...
+* Connected to 192.168.0.150 (192.168.0.150) port 80 (#0)
+* Server auth using Digest with user 'admin'
+> PUT /ISAPI/Intelligent/FDLib/FDSetUp?format=json HTTP/1.1
+Host: 192.168.0.150
+Accept: */*
+Content-Type: multipart/form-data; boundary=----HikvisionBoundaryf3f549a2b69c8e1b
+Content-Length: 0
+
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 401 Unauthorized
+< Date: Tue, 07 Apr 2026 14:30:56 GMT
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Content-Length: 195
+< Connection: close
+< WWW-Authenticate: Digest qop="auth", realm="DS-C6E5841C", nonce="ZDBkNmI3MjAxYWU0YjYxZDAzZjliN2M1NDI0NmVkZmM=", stale="false", opaque="", domain="::"
+< Content-Type: application/json
+< 
+* Closing connection 0
+* Issue another request to this URL: 'http://192.168.0.150/ISAPI/Intelligent/FDLib/FDSetUp?format=json'
+* Hostname 192.168.0.150 was found in DNS cache
+*   Trying 192.168.0.150:80...
+* Connected to 192.168.0.150 (192.168.0.150) port 80 (#1)
+* Server auth using Digest with user 'admin'
+> PUT /ISAPI/Intelligent/FDLib/FDSetUp?format=json HTTP/1.1
+Host: 192.168.0.150
+Authorization: Digest username="admin",realm="DS-C6E5841C",nonce="ZDBkNmI3MjAxYWU0YjYxZDAzZjliN2M1NDI0NmVkZmM=",uri="/ISAPI/Intelligent/FDLib/FDSetUp?format=json",cnonce="2699375394643742c5a88adacf7a0d3a",nc=00000001,response="6e22549755fb4af0f3a961b2cbcc1550",qop="auth"
+Accept: */*
+Content-Type: multipart/form-data; boundary=----HikvisionBoundaryf3f549a2b69c8e1b
+Content-Length: 45912
+
+* upload completely sent off: 45912 out of 45912 bytes
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 200 OK
+< Date: Tue, 07 Apr 2026 14:30:56 GMT
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Content-Length: 67
+< Connection: close
+< Content-Type: application/json
+< 
+* Closing connection 1

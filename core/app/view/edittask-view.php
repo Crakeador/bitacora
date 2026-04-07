@@ -8,11 +8,29 @@ if(count($_POST)>0){
 	$user->idtimeline = $_POST["id"];
 	$user->iduser = $_SESSION["user_id"];
 	$user->idperson = $_POST["persona"];
-	if(isset($_POST["active"]))
-		$user->status = $_POST["active"];
-	else
-		$user->status = 2;
 
+	if(isset($_POST["active"])){
+		$fecha = explode(" ",$_POST["finales"]);
+		$user->date_event = $fecha[0];
+
+		$ini = explode(" ", $user->date_event);
+		$fin = date("Y-m-d");
+		
+		$fecha1 = new DateTime($ini[0]);
+		$fecha2 = new DateTime($fin);
+		
+		$intervalo = $fecha1->diff($fecha2);
+		$dias = intval($intervalo->format('%R%a'));
+		
+		if($dias > 0) {
+			$user->status = 5; 
+		}else{
+			$user->status = $_POST["active"];
+		}
+	}else{
+		$user->status = 2;
+	}
+	$user->asunto = $_POST["asunto"];
 	$user->idejecuta = $_POST["persona"];
 	$user->body = $_POST["descripcion"];
 	$user->descripcion = $_POST["descripcion"];
@@ -66,7 +84,7 @@ if(count($_POST)>0){
 		<small>asignacion de tareas</small>
 	</h1>
 	<ol class="breadcrumb">
-		<li><a href="./home"><i class="fa fa-dashboard"></i> Panel de Control </a></li>
+		<li><a href="<?php echo $_SESSION['url']; ?>home"><i class="fa fa-dashboard"></i> Panel de Control </a></li>
 		<li class="active"> Asignaciones </li>
 	</ol>
 </section>
@@ -85,6 +103,7 @@ if(count($_POST)>0){
 				<div class="col-md-6">
 					<!-- START panel -->
 					<input type="hidden" id="id" name="id" value="<?php echo $_GET["id"]; ?>">
+					<input type="hidden" id="finales" name="finales" value="<?php echo $datos->date_event; ?>">
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h3 class="panel-title"><i class="fa fa-legal"></i>&nbsp;&nbsp;Actualizar una tarea</h3>

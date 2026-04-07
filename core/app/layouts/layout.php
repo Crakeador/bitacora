@@ -4,7 +4,7 @@
 header('Content-Type: text/html; charset=UTF-8');
 date_default_timezone_set('America/Guayaquil');
 
-$_SESSION["url"] = "https://latin.grupolatinamerica.com/"; // "http://localhost/bitacora/"; // "http://45.224.149.75/latin/"; // 
+$_SESSION["url"] = "http://localhost/bitacora/"; // "https://latin.grupolatinamerica.com/"; // "http://45.224.149.75/latin/"; // 
 if(!isset($_SESSION['depart'])) unset($_SESSION['user_id']);
 
 $notificacion = 0;
@@ -83,9 +83,6 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
           echo '<link type="text/css" rel="stylesheet" href="'.$_SESSION["url"].'plugins/jQueryUI/jquery-ui.min.css?v=1.0.1"/>';
           // Switchery
           echo '<link type="text/css" rel="stylesheet" href="'.$_SESSION["url"].'plugins/switchery/switchery.min.css?v=1.0.1"/>';
-          if($_SESSION["depart"] == 2 && $_SESSION["idrol"] == 2) {
-            echo '<link rel="stylesheet" href="https://adminlte.io/themes/AdminLTE/bower_components/jvectormap/jquery-jvectormap.css">';
-          }
       } ?>
     <style>
       /*Flecha para hacer la pagina hacia arriba*/
@@ -441,7 +438,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                   <?php endif; ?>
                   <!-- User Account: style can be found in dropdown.less -->
                   <li class="dropdown user user-menu">
-                      <a href="#" class="dropdown-toggle2" data-toggle="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                           <img src="<?php echo $_SESSION["url"]; ?>assets/<?php if($_SESSION["idrol"] == 7) echo "images/avatar/user13.png"; else if(isset($_SESSION["user_id"])) if(UserData::getById($_SESSION["user_id"])->image == "") echo "images/usuario.jpg"; else echo "images/avatar/".UserData::getById($_SESSION["user_id"])->image; ?>" class="user-image" alt="User Image">
                           <span class="">
                               <?php
@@ -451,7 +448,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                                   echo UserData::getById($_SESSION["user_id"])->name.' '.UserData::getById($_SESSION["user_id"])->lastname; // htmlentities(
                                 }?>
                             <b class="caret"></b>
-                          </span> 
+                          </span>
                       </a>
                       <ul class="dropdown-menu">
                         <!-- User image -->
@@ -497,7 +494,7 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                 <?php
                   if(isset($_SESSION["user_id"])): ?>                  
                       <?php // 1 Gerencia
-                        if($_SESSION['id_company'] > 1){?>
+                        if($_SESSION['id_company'] == 2){?>
                           <li><a href="<?php echo $_SESSION['url']; ?>asistencias"><i class='fa fa-cube'></i> <span>Horario</span></a></li> <?php
                         } ?>
                       <?php // 2 Administracion
@@ -972,11 +969,13 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
                         if($_SESSION["idrol"] == 22 || $_SESSION["idrol"] == 11){ 
                           // Sin opciones
                         }else{
-                          if($_SESSION["idrol"] == 7 || $_SESSION["idrol"] == 2){ 
-                            // Sin Tareas asignadas
-                          }else{ ?>
-                            <li><a href="<?php echo $_SESSION['url']; ?>tareas"><i class='fa fa-wrench'></i> <span>Tareas</span></a></li>
-                            <li><a href="<?php echo $_SESSION['url']; ?>agenda"><i class='fa fa-table'></i> <span>Agenda Semanal</span></a></li><?php 
+                          if($_SESSION["id_company"] == 1){ 
+                            if($_SESSION["idrol"] == 7 || $_SESSION["idrol"] == 2){ 
+                              // Sin Tareas asignadas
+                            }elseif($_SESSION["idrol"] == 8 || $_SESSION["idrol"] == 9){ ?>
+                              <li><a href="<?php echo $_SESSION['url']; ?>tareas"><i class='fa fa-wrench'></i> <span>Tareas</span></a></li>
+                              <li><a href="<?php echo $_SESSION['url']; ?>agenda"><i class='fa fa-table'></i> <span>Agenda Semanal</span></a></li><?php 
+                            } 
                           } ?>
                           <li><a href="<?php echo $_SESSION['url']; ?>password"><i class='fa fa-cube'></i> <span>Cambio de clave</span></a></li>
                           <li><a href="<?php echo $_SESSION['url']; ?>ayudas"><i class='fa fa-info-circle'></i> <span>Acerca de </span></a></li><?php 
@@ -1062,18 +1061,14 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
         document.frm.username.focus();
       </script>
     <?php endif;?>
-    <script src="https://adminlte.io/themes/AdminLTE/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
-    <script src="https://adminlte.io/themes/AdminLTE/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
-    <script src="https://adminlte.io/themes/AdminLTE/plugins/jvectormap/jquery-jvectormap-us-aea-en.js"></script>
-
+    <!-- Bootstrap 3.3.2 JS -->
+    <script type="text/javascript" src="<?php echo $_SESSION["url"]; ?>plugins/bootstrap/js/bootstrap.min.js"></script>
     <!-- AdminLTE App -->
     <script type="text/javascript" src="<?php echo $_SESSION["url"]; ?>assets/js/app.min.js"></script>
     <script type="text/javascript" src="<?php echo $_SESSION["url"]; ?>assets/js/bootstrap-select.min.js"></script>
     <!-- JS PDF -->
     <script type="text/javascript" src="<?php echo $_SESSION["url"]; ?>plugins/jspdf/jspdf.min.js"></script>
     <script type="text/javascript" src="<?php echo $_SESSION["url"]; ?>plugins/jspdf/jspdf.plugin.autotable.js"></script>
-    <!-- Bootstrap 3.3.2 JS -->
-    <script type="text/javascript" src="<?php echo $_SESSION["url"]; ?>plugins/bootstrap/js/bootstrap.min.js"></script>
     <!-- bootstrap datepicker -->
     <script type="text/javascript" src="<?php echo $_SESSION["url"]; ?>plugins/datetimepicker/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
     <script type="text/javascript" src="<?php echo $_SESSION["url"]; ?>plugins/datetimepicker/js/locales/bootstrap-datetimepicker.es.js" charset="UTF-8"></script>
@@ -1335,22 +1330,6 @@ $ano=date("Y"); $mes=date("m"); $_SESSION["error"]=0;
             language: "es",
             calendarWeeks: true,
             autoclose: true
-          });
-
-          $(document).ready(function() {
-              var toggled = false;
-
-              $('.dropdown-toggle').on('click', function() {
-                  if (toggled === false) {
-                      $('.nav .open ul').hide();
-                      $('.nav .dropdown ul').show();
-                      toggled = true;
-                  } else {
-                      $('.nav .dropdown ul').hide();
-                      $('.nav .open ul').show();
-                      toggled = false;
-                  }
-              });
           });
       });
 

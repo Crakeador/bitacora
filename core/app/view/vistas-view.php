@@ -18,8 +18,10 @@ foreach($users as $tables) {
         $dias = $intervalo->format('%R%a');
         
         if($dias > 0){
-            $sql = "UPDATE timeline SET body='Tarea vencida hace " . abs($dias) . " días', status=4 WHERE id=$tables->id";
-            $query = Executor::doit($sql);
+            if($tables->type == 'news'){
+                $sql = "UPDATE timeline SET body='Tarea vencida hace " . abs($dias) . " días', status=4 WHERE id=$tables->id";
+                $query = Executor::doit($sql);
+            }
         } else {
             // tarea aún no vencida, mostrar botón de marcar como completada
         }

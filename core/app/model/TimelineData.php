@@ -26,8 +26,8 @@ class TimelineData {
 	}
 
 	public function add_task(){
-		$sql = "insert into timeline (idcompany, idperson, quien_asigna, prioridad, status, asunto, title, type, date_event, date_pass, created_at) ";
-		$sql .= "value (".$_SESSION['id_company'].", \"$this->idperson\", \"$this->quien_asigna\", \"$this->prioridad\", 1, \"$this->asunto\", \"$this->title\", \"$this->type\", \"$this->date_event\", \"$this->date_pass\", $this->created_at)"; 
+		$sql = "insert into timeline (idcompany, idclient, idperson, consigna, quien_asigna, prioridad, status, asunto, title, type, date_event, date_pass, created_at) ";
+		$sql .= "value (".$_SESSION['id_company'].", ".$_SESSION['user_id'].", \"$this->idperson\", \"$this->consigna\", \"$this->quien_asigna\", \"$this->prioridad\", 1, \"$this->asunto\", \"$this->title\", \"$this->type\", \"$this->date_event\", \"$this->date_pass\", $this->created_at)"; 
 		return Executor::doit($sql);
 	}
 	
@@ -107,6 +107,7 @@ class TimelineData {
 	    if($status == 0) $cadena = ''; else $cadena = ' AND status='.$status;
 	    
 		$sql = "select * from ".self::$tablename." where idcompany = ".$_SESSION['id_company']." AND idperson=$id".$cadena;
+		
 		$query = Executor::doit($sql);
 
 		return Model::many($query[0],new TimelineData());
@@ -134,9 +135,9 @@ class TimelineData {
 	}
 
 	public static function getTime($id, $ano){
-		$sql = "select * from ".self::$tablename." where idcompany = ".$_SESSION['id_company']." AND idperson=$id AND YEAR(date_event)='$ano' order by date_event DESC"; 
+		$sql = "select * from ".self::$tablename." where idcompany = ".$_SESSION['id_company']." AND (idperson=$id OR idclient=$id) AND YEAR(date_event)='$ano' order by date_event DESC"; 
 		$query = Executor::doit($sql);
-
+		
 		return Model::many($query[0],new TimelineData());
 	}
 		
@@ -187,7 +188,7 @@ class TimelineData {
 	public static function getByTotalID($id=1, $status=1){
 		$sql = "SELECT count(*) as total FROM ".self::$tablename." where type LIKE 'news' AND idperson = $id AND status=$status AND idcompany = ".$_SESSION['id_company'];
 		$query = Executor::doit($sql);
-
+		
 		return Model::one($query[0], new TimelineData());
 	}
 
